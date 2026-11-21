@@ -33,9 +33,10 @@ docs/*.pdf
 starter/
 third_party/
 
-# Generated training set (large; partly derived from the proprietary Durance dataset).
-# Rebuild with: uv run tools/build_dataset.py. Only the review videos are kept.
-dataset/build/*
-!dataset/build/videos/
+# Generated training set. Built WITHOUT the Durance dataset (--durance /nonexistent), so it
+# contains only our own recordings, procedural clips and freely licensed videos.
+# synth_train event files (GBs) are reproducible from their seeds: only previews are kept.
+dataset/build/synth_train/*.bin
 dataset/build/videos/reel_durance_train.mp4
+dataset/build/durance_train/
 runs/

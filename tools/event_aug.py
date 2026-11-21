@@ -37,7 +37,7 @@ def window(ev, t0, t1, rebase=True):
     return sel
 
 
-def geometric(ev, rng, flip=None, shift=40, scale=(0.75, 1.25), rotate_deg=10.0):
+def geometric(ev, rng, flip=None, shift=15, scale=(0.9, 1.1), rotate_deg=5.0):
     """Random mirror / scale / rotation / translation around the image centre."""
     x = ev["x"].astype(np.float64)
     y = ev["y"].astype(np.float64)
@@ -63,7 +63,7 @@ def time_stretch(ev, factor, anchor_us):
     return out[np.argsort(out["timestamp"], kind="stable")]
 
 
-def dropout(ev, rng, keep=(0.6, 1.0), polarity_bias=0.15):
+def dropout(ev, rng, keep=(0.85, 1.0), polarity_bias=0.08):
     """Drop events uniformly (contrast / lighting) with a slight ON/OFF imbalance."""
     k = rng.uniform(*keep)
     bias = rng.uniform(-polarity_bias, polarity_bias)
@@ -71,7 +71,7 @@ def dropout(ev, rng, keep=(0.6, 1.0), polarity_bias=0.15):
     return ev[rng.random(len(ev)) < p]
 
 
-def add_noise(ev, rng, duration_us, rate_hz=(0.0, 60_000.0), hot_pixels=(0, 12), hot_rate_hz=200.0):
+def add_noise(ev, rng, duration_us, rate_hz=(0.0, 500.0), hot_pixels=(0, 3), hot_rate_hz=(20.0, 100.0)):
     """Uniform background activity plus a few hot pixels."""
     n = rng.poisson(rng.uniform(*rate_hz) * duration_us / 1e6)
     noise = np.empty(n, DTYPE)
@@ -81,7 +81,7 @@ def add_noise(ev, rng, duration_us, rate_hz=(0.0, 60_000.0), hot_pixels=(0, 12),
     noise["timestamp"] = rng.integers(0, max(1, duration_us), n)
     parts = [ev, noise]
     for _ in range(rng.integers(*hot_pixels)):
-        m = rng.poisson(hot_rate_hz * duration_us / 1e6)
+        m = rng.poisson(rng.uniform(*hot_rate_hz) * duration_us / 1e6)
         hot = np.empty(m, DTYPE)
         hot["x"], hot["y"] = rng.integers(0, SENSOR), rng.integers(0, SENSOR)
         hot["polarity"] = rng.integers(0, 2, m)
@@ -103,33 +103,87 @@ def reverse(ev, t0, t1):
     return seg[np.argsort(seg["timestamp"], kind="stable")]
 
 
-def feint_from_throw(ev, release_us, rng, stop_before=(0.04, 0.22), back=(0.25, 0.5), hold=(0.0, 0.15)):
-    """Turn a real throw into a feint: cut before release, hold, then replay the wind-up backwards.
+def ease_out(ev, t0, t1, extend_us, power=1.5):
+    """Time-warp [t0, t1) so the motion decelerates and lasts `extend_us` longer; later events shift."""
+    out = ev.copy()
+    t = out["timestamp"].astype(np.float64)
+    seg = (t >= t0) & (t < t1)
+    u = (t[seg] - t0) / (t1 - t0)
+    out["timestamp"][seg] = (t0 + (t1 - t0 + extend_us) * u ** power).astype(np.int64)
+    out["timestamp"][t >= t1] += int(extend_us)
+    return out[np.argsort(out["timestamp"], kind="stable")]
 
-    stop_before: how long before the release the arm stops (seconds)
-    back:        length of the wind-up segment replayed backwards (seconds)
-    hold:        pause at the turning point (seconds); only sparse events during the pause
-    Returns (events, stop_time_us).
+
+def feint_splice(throw, throw_rel, donor, donor_rel, rng, stop_before=(0.0, 0.05), ease=0.06,
+                 extend=(0.0, 0.03), fade=0.03):
+    """Synthetic feint: real wind-up of a throw, decelerated, cross-faded into the return phase
+    of a REAL feint (donor). Replaces the earlier cut-and-reverse recipe whose rate trough was a
+    100 %-separable shortcut (see dataset/README.md).
+
+    throw/donor: native event arrays; *_rel: decision moment (us) in each stream.
+    Returns (events, decision_us).
     """
-    stop = int(release_us - rng.uniform(*stop_before) * 1e6)
-    seg_len = int(rng.uniform(*back) * 1e6)
-    pause = int(rng.uniform(*hold) * 1e6)
-    before = ev[ev["timestamp"] < stop]
-    tail = reverse(ev, stop - seg_len, stop)
-    tail["timestamp"] += seg_len + pause
-    # during the pause the scene is almost still: keep a thin sample of the last 30 ms
-    still = ev[(ev["timestamp"] >= stop - 30_000) & (ev["timestamp"] < stop)].copy()
-    still = still[rng.random(len(still)) < 0.1]
-    if pause > 0 and len(still):
-        still["timestamp"] = stop + rng.integers(0, pause, len(still))
-    else:
-        still = still[:0]
-    # the background (static scene) continues after the cut: reuse late-clip sparse events
-    return merge(before, still, tail), stop
+    stop = int(throw_rel - rng.uniform(*stop_before) * 1e6)
+    ext = int(rng.uniform(*extend) * 1e6)
+    a = ease_out(throw[throw["timestamp"] < stop], stop - int(ease * 1e6), stop, ext)
+    decision = stop + ext
+    f = int(fade * 1e6)
+    # donor: everything after its decision moment, shifted so it starts at our decision and
+    # moved so the donor's body sits where the thrower's body is (takes differ in position)
+    def body_centre(ev, t_end):
+        sel = ev[(ev["timestamp"] >= t_end - 300_000) & (ev["timestamp"] < t_end)]
+        return (np.median(sel["x"]), np.median(sel["y"])) if len(sel) > 100 else (np.nan, np.nan)
+    tx, ty = body_centre(throw, stop)
+    dx, dy = body_centre(donor, donor_rel)
+    d = donor[donor["timestamp"] >= donor_rel - f].copy()
+    d["timestamp"] = d["timestamp"] - donor_rel + decision
+    if np.isfinite([tx, ty, dx, dy]).all():
+        d = _from_float(d["x"] + (tx - dx), d["y"] + (ty - dy), d["polarity"], d["timestamp"].astype(np.float64))
+    # linear cross-fade over `fade`: thin the throw tail and the donor head
+    ta = a["timestamp"].astype(np.float64)
+    keep_a = rng.random(len(a)) < np.clip((decision - ta) / f, 0, 1)
+    td = d["timestamp"].astype(np.float64)
+    keep_d = rng.random(len(d)) < np.clip((td - decision + f) / f, 0, 1)
+    return merge(a[keep_a | (ta < decision - f)], d[keep_d]), decision
 
 
-def overlay(base, distractor, rng, weight=(0.3, 0.8), shift=80):
-    """Mix events of another recording (people moving in the background) into a clip."""
-    d = distractor[rng.random(len(distractor)) < rng.uniform(*weight)]
+def refractory(ev, dead_us):
+    """Drop events that follow the previous event of the same pixel within `dead_us`."""
+    if len(ev) == 0 or dead_us <= 0:
+        return ev
+    key = ev["y"].astype(np.int64) * 320 + ev["x"].astype(np.int64)
+    order = np.lexsort((ev["timestamp"], key))
+    k, t = key[order], ev["timestamp"][order].astype(np.int64)
+    keep = np.ones(len(ev), bool)
+    same = k[1:] == k[:-1]
+    keep[1:] = ~(same & (t[1:] - t[:-1] < dead_us))
+    return ev[np.sort(order[keep])]
+
+
+def ego_motion(ev, rng, amplitude_px=(1.0, 3.0), slice_us=20_000):
+    """Small coherent camera shake (robot body motion): one smooth 2-D offset per time slice."""
+    if len(ev) == 0:
+        return ev
+    t = ev["timestamp"].astype(np.float64)
+    amp = rng.uniform(*amplitude_px)
+    fx, fy = rng.uniform(0.5, 3.0, 2)
+    px, py = rng.uniform(0, 2 * np.pi, 2)
+    ts = np.floor(t / slice_us) * slice_us / 1e6
+    dx = amp * np.sin(2 * np.pi * fx * ts + px)
+    dy = amp * np.sin(2 * np.pi * fy * ts + py)
+    return _from_float(np.round(ev["x"] + dx), np.round(ev["y"] + dy), ev["polarity"], t)
+
+
+def overlay(base, distractor, rng, budget=(0.1, 0.3), shift=80, duration_us=None):
+    """Mix a random time crop of another recording (a person moving in the background) into a
+    clip, thinned so it adds `budget` x the base event count."""
+    duration_us = duration_us or int(base["timestamp"].max() + 1 if len(base) else 1_000_000)
+    span = int(distractor["timestamp"].max()) if len(distractor) else 0
+    t0 = int(rng.uniform(0, max(1, span - duration_us)))
+    d = window(distractor, t0, t0 + duration_us)
+    if len(d) == 0:
+        return base
+    target = rng.uniform(*budget) * max(len(base), 1)
+    d = d[rng.random(len(d)) < min(1.0, target / len(d))]
     d = geometric(d, rng, shift=shift, scale=(0.5, 0.9), rotate_deg=5)
     return merge(base, d)

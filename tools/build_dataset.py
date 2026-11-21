@@ -12,13 +12,15 @@ Pipeline
   4. Grow the training split:
        aug     label-preserving event augmentation of real windows
                (mirror, shift, scale, rotation, speed, dropout, noise, time jitter, distractors)
-       cutrev  synthetic feints from real throws: stop before release, replay the wind-up backwards
-       synth   procedural renderer + event simulator (tools/synth_throw.py)
+       splice  synthetic feints: real wind-up of a throw, decelerated, cross-faded into the return
+               phase of a real feint (event_aug.feint_splice); kept at ~10 % of training clips
+       synth   procedural renderer + event simulator (tools/synth_throw.py); large sets via
+               tools/generate_data.py synth --out <out>/synth_train
        durance other human motion from the Durance gesture dataset as extra `idle` (local only)
   5. Write manifest.csv (one row per file) and MP4 review videos / reels.
 
 Output layout (each folder is a "session" for training/train_snn.py):
-  <out>/real_train  real_val  real_test  aug_train  cutrev_train  synth_train  durance_train
+  <out>/real_train  real_val  real_test  aug_train  splice_train  synth_train  video_train  durance_train
   <out>/manifest.csv  <out>/videos/*.mp4
 
   uv run tools/build_dataset.py --raw dataset/01/samples --out dataset/build
@@ -169,15 +171,26 @@ def assign_splits(items):
     return split
 
 
-def augment(ev, rng, duration_us, release_us, distractors):
-    out = A.geometric(ev, rng)
-    factor = rng.uniform(0.8, 1.25)
-    out = A.time_stretch(out, factor, release_us)
-    out = A.dropout(out, rng)
-    if distractors and rng.random() < 0.3:
-        out = A.overlay(out, distractors[rng.integers(len(distractors))], rng)
-    out = A.add_noise(out, rng, duration_us)
-    return out, factor
+def augment_window(raw, anchor_us, pre_us, win_us, rng, distractors, jitter=0.1, halo=0.25):
+    """Augment from the full recording (with a temporal halo) and cut afterwards, so time
+    stretching never clips context. Returns (events, anchor offset in the window, params)."""
+    h = int(halo * 1e6)
+    seg = A.window(raw, anchor_us - pre_us - h, anchor_us - pre_us + win_us + h)   # rebased
+    a = pre_us + h                                                                 # anchor in seg
+    factor = rng.uniform(0.9, 1.1)
+    ev = A.time_stretch(seg, factor, a)
+    ev = A.geometric(ev, rng)
+    ev = A.dropout(ev, rng)
+    if rng.random() < 0.2:
+        ev = A.ego_motion(ev, rng)
+    j = int(rng.uniform(-jitter, jitter) * 1e6)
+    start = a - pre_us - j
+    ev = A.window(ev, start, start + win_us)
+    if distractors and rng.random() < 0.15:
+        ev = A.overlay(ev, distractors[rng.integers(len(distractors))], rng, duration_us=win_us)
+    ev = A.add_noise(ev, rng, win_us)
+    ev = A.refractory(ev, rng.uniform(100, 500))
+    return ev, pre_us + j, {"stretch": round(factor, 3), "jitter_us": j}
 
 
 # --- main -------------------------------------------------------------------------
@@ -187,10 +200,12 @@ def main():
     p.add_argument("--raw", default="dataset/01/samples")
     p.add_argument("--out", default="dataset/build")
     p.add_argument("--pre", type=float, default=0.7, help="seconds kept before the peak")
-    p.add_argument("--post", type=float, default=0.3, help="seconds kept after the peak")
+    p.add_argument("--post", type=float, default=0.5, help="seconds kept after the peak")
     p.add_argument("--aug-per-clip", type=int, default=25)
-    p.add_argument("--cutrev-per-throw", type=int, default=10)
-    p.add_argument("--synth-per-class", type=int, default=120)
+    p.add_argument("--splice-per-throw", type=int, default=6, help="synthetic feints per training throw (~10 %%)")
+    p.add_argument("--synth-per-class", type=int, default=0,
+                   help="in-process procedural clips; for large sets use tools/generate_data.py synth "
+                        "--out <out>/synth_train instead")
     p.add_argument("--durance", default="data/motion_buddy_dataset", help="Durance dataset root (optional)")
     p.add_argument("--durance-count", type=int, default=150)
     p.add_argument("--min-confidence", type=float, default=0.6)
@@ -216,7 +231,8 @@ def main():
     for d in distractors:
         d["timestamp"] -= d["timestamp"][0]
 
-    real_windows = {}
+    real_windows = {}          # throw/feint: file -> (raw events, anchor_us, split, label)
+    idle_sources = []          # (file, raw events, anchor_us, split): centre of a quiet stretch
     for r in usable:
         ev = A.as_native(ET.load(Path(args.raw) / r["file"]))
         m = motion_profile(ev)
@@ -224,44 +240,47 @@ def main():
         t0 = max(m["start_us"], m["peak_us"] - pre)
         w = A.window(ev, t0, t0 + win)
         rel = m["peak_us"] - t0
-        real_windows[r["file"]] = (w, rel, s, r["label"])
+        real_windows[r["file"]] = (ev, m["peak_us"], s, r["label"])
         stem = Path(r["file"]).stem.replace("sample_", "")
         out.save(f"real_{s}", r["label"], "real", r["file"], w, rel, stem, confidence=r["confidence"])
         # idle: quiet stretch before the wind-up (person standing, holding the ball)
         if m["windup_us"] - m["start_us"] >= 0.6e6:
             iw = A.window(ev, m["start_us"], min(m["windup_us"], m["start_us"] + win))
             out.save(f"real_{s}", "idle", "real", r["file"], iw, None, stem + "-pre")
+            idle_sources.append((r["file"], ev, (m["start_us"] + m["windup_us"]) // 2, s))
         # idle: after a throw the thrower stands still again
         if r["label"] == "throw" and m["end_us"] - (m["peak_us"] + 400_000) >= 0.6e6:
             iw = A.window(ev, m["peak_us"] + 400_000, min(m["end_us"], m["peak_us"] + 400_000 + win))
             out.save(f"real_{s}", "idle", "real", r["file"], iw, None, stem + "-post")
+            idle_sources.append((r["file"], ev, (m["peak_us"] + 400_000 + m["end_us"]) // 2, s))
 
     train = {f: v for f, v in real_windows.items() if v[2] == "train"}
-    print(f"real windows: {len(real_windows)} ({sum(v[2] == 'train' for v in real_windows.values())} train)")
+    print(f"real windows: {len(real_windows)} ({len(train)} train), idle sources {len(idle_sources)}")
 
-    # augmentation of real training windows (throw, feint and their idle parts)
-    for f, (w, rel, _, label) in train.items():
+    # augmentation of real training recordings: throw, feint and their idle stretches
+    for f, (raw, peak, _, label) in train.items():
         stem = Path(f).stem.replace("sample_", "")
         for k in range(args.aug_per_clip):
-            jitter = int(rng.uniform(-0.1, 0.1) * 1e6)
-            shifted = w.copy()
-            shifted["timestamp"] -= jitter
-            shifted = shifted[(shifted["timestamp"] >= 0) & (shifted["timestamp"] < win)]
-            ev, factor = augment(shifted, rng, win, rel - jitter, distractors)
-            ev = ev[(ev["timestamp"] >= 0) & (ev["timestamp"] < win)]
-            out.save("aug_train", label, "aug", f, ev, (rel - jitter), f"{stem}-a{k:03d}", stretch=round(factor, 3))
-
-    # synthetic feints from real training throws
-    for f, (w, rel, _, label) in train.items():
-        if label != "throw":
+            ev, rel, prm = augment_window(raw, peak, pre, win, rng, distractors)
+            out.save("aug_train", label, "aug", f, ev, rel, f"{stem}-a{k:03d}", **prm)
+    for f, raw, centre, s in idle_sources:
+        if s != "train":
             continue
         stem = Path(f).stem.replace("sample_", "")
-        for k in range(args.cutrev_per_throw):
-            ev, stop = A.feint_from_throw(w, rel, rng)
-            if rng.random() < 0.7:
-                ev, _ = augment(ev, rng, win, stop, distractors)
-            ev = ev[(ev["timestamp"] >= 0) & (ev["timestamp"] < win)]
-            out.save("cutrev_train", "feint", "cutrev", f, ev, stop, f"{stem}-c{k:03d}")
+        for k in range(max(1, args.aug_per_clip // 2)):
+            ev, _, prm = augment_window(raw, centre, win // 2, win, rng, distractors, jitter=0.2, halo=0.05)
+            out.save("aug_train", "idle", "aug", f, ev, None, f"{stem}-i{centre % 997}-a{k:03d}", **prm)
+
+    # synthetic feints: real wind-up of a training throw spliced into the return of a training feint
+    throws = [(f, v) for f, v in train.items() if v[3] == "throw"]
+    feints = [(f, v) for f, v in train.items() if v[3] == "feint"]
+    for f, (raw, peak, _, _) in throws:
+        stem = Path(f).stem.replace("sample_", "")
+        for k in range(args.splice_per_throw if feints else 0):
+            df, (draw, dpeak, _, _) = feints[rng.integers(len(feints))]
+            ev, decision = A.feint_splice(raw, peak, draw, dpeak, rng)
+            ev, rel, prm = augment_window(ev, decision, pre, win, rng, distractors)
+            out.save("splice_train", "feint", "splice", f, ev, rel, f"{stem}-s{k:03d}", donor=df, **prm)
 
     # Durance gestures as idle (non-throw human motion)
     for k, f in enumerate(distractor_files[30:30 + args.durance_count]):
@@ -275,8 +294,8 @@ def main():
         import synth_throw as S
         for label in ("throw", "feint", "idle"):
             for k in range(args.synth_per_class):
-                view = "profile" if k % 3 else "frontal"       # 2/3 match our camera setup
-                ev, _, meta = S.make_clip(rng, label, view, 1.3, 500)
+                view = "profile" if k % 3 == 2 else "frontal"  # real takes are frontal
+                ev, _, meta = S.make_clip(rng, label, view, args.pre + args.post + 0.3, 500)
                 ev = A.as_native(ev)
                 if label != "idle":
                     t0 = max(0, meta["release_us"] - pre)

@@ -44,9 +44,9 @@ class Scene:
     def __init__(self, rng, label, view, duration):
         self.rng, self.label, self.view, self.duration = rng, label, view, duration
         r = rng.uniform
-        self.height = r(150, 290)                         # body height in pixels (distance)
+        self.height = r(0.75, 1.0) * SENSOR               # body height in pixels (real takes fill most of the frame)
         self.cx = r(0.3, 0.7) * SENSOR
-        self.ground = r(0.85, 1.05) * SENSOR
+        self.ground = r(0.95, 1.12) * SENSOR
         self.facing = rng.choice([-1, 1])                 # profile: throws left or right
         self.background = r(0.35, 0.65)
         sign = 1 if rng.random() < 0.5 else -1
@@ -162,7 +162,7 @@ class Scene:
         if self.camera_shake:
             dx = int(self.camera_shake * SS * math.sin(2 * math.pi * 7.0 * t))
             dy = int(self.camera_shake * SS * math.cos(2 * math.pi * 5.0 * t))
-            img = img.transform(img.size, Image.AFFINE, (1, 0, dx, 0, 1, dy))
+            img = img.transform(img.size, Image.AFFINE, (1, 0, dx, 0, 1, dy), fillcolor=int(self.background * 255))
         d = ImageDraw.Draw(img)
         h = self.height * SS
         cx = (self.cx + self.body_offset(t)) * SS
@@ -280,10 +280,11 @@ def save_bin(path, ev):
 
 
 def make_clip(rng, label, view, duration, fps):
+    import event_sim
     scene = Scene(rng, label, view, duration)
     times = np.arange(int(duration * fps)) / fps
     frames = np.stack([scene.draw(t) for t in times])
-    ev = simulate_events(frames, fps, rng)
+    ev = event_sim.simulate(frames, times * 1e6, event_sim.SensorParams.sample(rng), rng)
     meta = {"label": label, "view": view, "release_us": int(scene.t_release * 1e6),
             "windup_start_us": int(scene.t_start * 1e6), "height_px": round(scene.height, 1),
             "idle_kind": scene.idle_kind if label == "idle" else "",
@@ -297,7 +298,7 @@ def main():
     p.add_argument("--out", required=True)
     p.add_argument("--count", type=int, default=30, help="clips per class")
     p.add_argument("--classes", default="throw,feint,idle")
-    p.add_argument("--views", default="profile,frontal")
+    p.add_argument("--views", default="frontal,frontal,profile", help="views cycled per clip (real takes are frontal)")
     p.add_argument("--duration", type=float, default=1.3)
     p.add_argument("--fps", type=int, default=500)
     p.add_argument("--seed", type=int, default=0)

@@ -158,7 +158,7 @@ def main():
     args = p.parse_args()
 
     torch.manual_seed(args.seed)
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
     classes = args.classes.split(",")
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

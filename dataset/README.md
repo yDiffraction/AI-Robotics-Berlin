@@ -7,20 +7,16 @@ Recorded on 2026-11-21 with `river-tools capture --host root@durance-kria.local`
 
 | Folder | Files | Content |
 |---|---|---|
-| `01/samples/` | 25 | thrower in profile view, throws and feints |
+| `01/samples/` | 25 | one person facing the camera, overhand throws and feints |
 | `unsorted/samples/` | 1 | first test recording (8 s) |
 
-Same format as the Durance dataset (4-byte length, then events `x, y, polarity, timestamp`):
-
-```bash
-uv run tools/events_tool.py info dataset/01/samples/*.bin
-uv run tools/events_video.py clip dataset/01/samples/<file>.bin --out clip.mp4
-```
+Format (same as the Durance dataset): 4-byte big-endian length, then events
+`x uint16, y uint16, polarity uint8, timestamp int64 (µs)`, all big-endian.
 
 ### Labels — `01/samples/labels.csv`
 
-Written by `tools/build_dataset.py` from each recording's motion profile
-(event rate over time, 20 ms bins):
+Auto labels from each recording's motion profile (event rate, 20 ms bins), written by
+`tools/build_dataset.py`:
 
 | Pattern | Label |
 |---|---|
@@ -28,34 +24,71 @@ Written by `tools/build_dataset.py` from each recording's motion profile
 | activity continues after the swing (post/pre > 0.6): arm stops and comes back | `feint` |
 | peak at the very end of the file | `invalid` (cut off) |
 
-Uncertain labels (confidence ≤ 0.6) take the label of both neighbouring takes when they agree,
-because takes were recorded in blocks (13:05–13:08 throws, 13:08–13:14 feints).
-Result for `01`: 13 throw, 11 feint, 1 invalid; 1 throw below the confidence cut-off (0.6).
+Uncertain labels (confidence ≤ 0.6) take the label of both neighbouring takes when they agree
+(takes were recorded in blocks: 13:05–13:08 throws, 13:08–13:14 feints).
+Result for `01`: 13 throw, 11 feint, 1 invalid.
 
-**To confirm a label:** watch `build/videos/_review/<file>.mp4`, then set `label` and
-`status=confirmed` in `labels.csv`. Confirmed rows are never overwritten.
+**Review findings (2026-11-21):** an independent frame-by-frame review agreed with all 24
+usable auto labels as *arm-motion* labels, but **the yarn ball is not visible to the sensor**
+in any clip — no detached object after the swing. Whether the ball really left the hand is
+therefore not verifiable from these files; the network can only learn arm kinematics
+(throw: fast swing, then still; feint: stop and return). To confirm a label, watch
+`build/videos/_review/<file>.mp4` and set `status=confirmed`; confirmed rows are never overwritten.
 
-## Training set — `build/` (generated, not in git)
+**For the next recordings:** a brighter / larger ball against a calm background (check first
+that a ball thrown alone produces events), note per take whether it was a real throw, and film
+a 240 fps phone video of the same takes. Target ≥ 50 throws and ≥ 50 feints from several people.
+
+## Training set — `build/` (generated)
 
 ```bash
-uv run tools/build_dataset.py --raw dataset/01/samples --out dataset/build
+uv run tools/build_dataset.py --raw dataset/01/samples --out dataset/build             # real, aug, splice
+uv run tools/generate_data.py synth --out dataset/build/synth_train --per-class 600     # procedural
+uv run tools/generate_data.py video --takes <takes.csv> --out dataset/build/video_train # phone videos
+# on a GPU box (A100: CPU workers render, the GPU simulates 32 clips at once)
+uv run tools/generate_data.py synth --out dataset/build/synth_train --per-class 10000 --device cuda --batch 32
 ```
 
-Every sample is a 1.0 s window in the same `.bin` format, named
-`gesture_<ID>-<label>-<source>-<tag>.bin` (01 throw, 02 feint, 03 idle), so
-`training/train_snn.py` reads it directly. Throw/feint windows span 0.7 s before to
-0.3 s after the decision moment (swing peak); `manifest.csv` lists its offset as `release_us`.
+In git: every folder except the `synth_train` event files (several GB; regenerate them with the
+command above, the seeds make them reproducible). The build uses no Durance data.
+
+Every sample is a 1.2 s window in the same `.bin` format named
+`gesture_<ID>-<label>-<source>-<tag>.bin` (01 throw, 02 feint, 03 idle). Throw/feint
+windows span 0.7 s before to 0.5 s after the decision moment (swing peak, `release_us`
+in the manifests). Each folder is one "session" for the training scripts.
 
 | Folder | Source | Content |
 |---|---|---|
-| `real_train/ real_val/ real_test/` | real | cut windows + `idle` windows from the quiet parts before the wind-up / after a throw |
-| `aug_train/` | real → augmented | mirror, shift, scale, ±10° rotation, speed 0.8–1.25×, event dropout + ON/OFF imbalance, background noise + hot pixels, ±100 ms time jitter, 30 % with a distractor person mixed in |
-| `cutrev_train/` | real throw → synthetic feint | cut 40–220 ms before release, short hold, wind-up replayed backwards (time reversal swaps ON/OFF) |
-| `synth_train/` | procedural | stick-figure thrower rendered at 500 fps + event simulator (`tools/synth_throw.py`); profile and frontal view, ball looming towards the camera in frontal throws |
-| `durance_train/` | Durance gesture dataset | other human motion (sit, wave, dance …) as `idle`; **proprietary, never commit** |
+| `real_train/ real_val/ real_test/` | real | cut windows + `idle` from the quiet parts before the wind-up / after a throw |
+| `aug_train/` | real → augmented | from the full recording with a 250 ms halo (no clipping): speed 0.9–1.1×, mirror, scale 0.9–1.1, ±15 px, ±5°, event thinning 85–100 %, 20 % camera shake, 15 % distractor person, 0–500 ev/s noise + ≤ 3 hot pixels, refractory 100–500 µs, ±100 ms time jitter; idle stretches are augmented too |
+| `splice_train/` | real → synthetic feint | wind-up of a real throw cross-faded (30 ms) into the return phase of a real feint, body positions aligned (`event_aug.feint_splice`); ~10 % of training clips |
+| `synth_train/` | procedural | figure + ball rendered at 500 fps, events from `tools/event_sim.py`; frontal view by default (as the real camera), 1/3 profile |
+| `video_train/` | phone video → events | `tools/video_to_events.py`: real people, clothes and backgrounds; ball visible in RGB, so labels and release times are reliable |
 
-Splits are by source recording: all variants of a recording stay in its split, and
-`real_val` / `real_test` contain only unmodified real windows.
+Splits are by source recording; every variant of a recording (and every splice that uses it
+as donor) stays with it. Validation and test use only unmodified real windows.
+
+### Quality gates
+
+`tools/shortcut_probe.py` trains a simple classifier to tell a generated source from real
+data (grouped by recording). Balanced accuracy near 50 % = no obvious artefact.
+
+| Generated vs real | Before fixes | After fixes |
+|---|---|---|
+| cut-and-reverse feints vs real feints | 100 % | replaced by splice |
+| splice feints vs real feints | 95.5 % | 84.7 % (still detectable, keep the share small) |
+| aug throws / feints vs real | — | 62 % / 70 % |
+
+Fixes came from a multi-agent review: uniform noise was ~10× too high (the Kria camera runs
+with a noise filter), time stretching clipped context, idle windows were never augmented,
+geometry was too strong, and the splice deceleration contradicted real feints (their activity
+peaks at the decision moment).
+
+### Honest evaluation
+
+`training/cv_snn.py` holds out every real recording once (grouped k-fold) and removes all of its
+generated derivatives from training; no model selection on the test fold.
 
 Videos: `build/videos/reel_<folder>.mp4` (12 clips per page, 4× slow motion, label and
-release marker) and `build/videos/_review/` (every raw recording with its label).
+decision marker), `build/videos/_review/` (every raw recording with its label),
+`build/synth_train/videos/` (rendered source next to the events).
