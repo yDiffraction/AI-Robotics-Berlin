@@ -1,0 +1,22 @@
+# Durance proprietary material (tools, SDK, docs, dataset) - must not be published
+vendor/
+data/
+*.zip
+*.whl
+*_sdk_installer.sh
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Training / build artifacts
+*.pt
+runs/
+build-yocto/
+install-yocto/
+log/
+kria-runtime.tar.gz
+
+.DS_Store

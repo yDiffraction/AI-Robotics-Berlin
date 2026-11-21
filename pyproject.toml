@@ -1,0 +1,20 @@
+[project]
+name = "go2-reflex"
+version = "0.1.0"
+description = "Event-vision SNN behavior for the Unitree Go2 on RiverFPGA (Durance AI track, HackLab Berlin 2026)"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "riverops",
+    "torch~=2.14.0",
+    "numpy~=2.2.6",
+    "matplotlib",
+    "jupyterlab",
+    "ipykernel",
+    "tqdm",
+]
+
+[tool.uv.sources]
+riverops = { path = "vendor/downloads/riverops-0.2.0-py3-none-any.whl" }
+
+[tool.uv]
+package = false
