@@ -1,0 +1,10 @@
+# Large release files from riversdk.dev (wheels, dataset, SDK installers, zips)
+downloads/
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+
+# Durance hand-gesture dataset (proprietary - do not publish)
+data/

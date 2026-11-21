@@ -40,6 +40,9 @@ rosdep update --rosdistro humble
 mkdir -p /root/go2_ws/src
 cd /root/go2_ws/src
 [ -d unitree-go2-ros2 ] || git clone --branch humble https://github.com/anujjain-dev/unitree-go2-ros2.git
+# Load controllers with `spawner` instead of the daemon-based CLI (avoids robot collapsing on spawn)
+python3 "$(dirname "$(readlink -f "$0")")/patch_go2_spawners.py" 2>/dev/null \
+  || python3 /mnt/c/Users/diffr/code/AI-Robotics-Berlin/scripts/patch_go2_spawners.py
 cd /root/go2_ws
 set +u
 source /opt/ros/humble/setup.bash
@@ -54,6 +57,10 @@ grep -q "/opt/ros/humble/setup.bash" /root/.bashrc || cat >> /root/.bashrc <<'EO
 source /opt/ros/humble/setup.bash
 source /root/go2_ws/install/setup.bash
 source /usr/share/gazebo/setup.sh
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+# WSL mirrored networking: start the ros2 CLI daemon up front, otherwise the first
+# `ros2 topic/node ...` hangs probing for a daemon that isn't there.
+ros2 daemon start >/dev/null 2>&1
 EOF
 
 echo "INSTALL_DONE"
