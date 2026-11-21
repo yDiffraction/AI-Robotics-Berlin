@@ -110,7 +110,8 @@ def run(model, x, y, args, device, optimizer=None):
             logits = running_logits(model(xb), args.temperature)
             t0 = args.warmup
             loss = F.cross_entropy(logits[:, t0:].reshape(-1, logits.shape[-1]),
-                                   yb.repeat_interleave(logits.shape[1] - t0))
+                                   yb.repeat_interleave(logits.shape[1] - t0),
+                                   weight=getattr(args, "class_weight", None))
             if training:
                 optimizer.zero_grad()
                 loss.backward()
@@ -170,6 +171,9 @@ def main():
     print(f"data: train {len(xtr)}  val {len(xva)}  ({time.time() - t:.0f}s)  "
           f"class counts train {torch.bincount(ytr, minlength=len(classes)).tolist()}")
 
+    counts = torch.bincount(ytr, minlength=len(classes)).float().clamp(min=1)
+    args.class_weight = (counts.sum() / (len(classes) * counts)).to(device)
+    print("class weights:", [round(w, 2) for w in args.class_weight.tolist()])
     model = TinySNN(len(classes), args.size).to(device)
     n_weights = sum(m.weight.numel() for m in model.modules() if isinstance(m, nn.Conv2d))
     print(f"model: {n_weights} conv weights, device {device}")
@@ -182,7 +186,8 @@ def main():
         final = va_acc[-1].item()
         if final > best:
             best = final
-            torch.save({"model": model.state_dict(), "classes": classes, "args": vars(args)}, out / "best.pt")
+            saved_args = {k: v for k, v in vars(args).items() if k != "class_weight"}
+            torch.save({"model": model.state_dict(), "classes": classes, "args": saved_args}, out / "best.pt")
         print(f"epoch {epoch:2d}  train loss {tr_loss:.3f} acc {tr_acc[-1]:.1%}  "
               f"val loss {va_loss:.3f} acc@end {final:.1%} acc@300ms {va_acc[29]:.1%}  ({time.time() - t:.0f}s)")
 

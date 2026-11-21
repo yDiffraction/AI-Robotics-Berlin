@@ -32,3 +32,10 @@ docs/riversdk/
 docs/*.pdf
 starter/
 third_party/
+
+# Generated training set (large; partly derived from the proprietary Durance dataset).
+# Rebuild with: uv run tools/build_dataset.py. Only the review videos are kept.
+dataset/build/*
+!dataset/build/videos/
+dataset/build/videos/reel_durance_train.mp4
+runs/
