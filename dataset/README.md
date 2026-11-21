@@ -49,7 +49,9 @@ uv run tools/generate_data.py video --takes <takes.csv> --out dataset/build/vide
 uv run tools/generate_data.py synth --out dataset/build/synth_train --per-class 10000 --device cuda --batch 32
 ```
 
-Everything is in git, including `synth_train` (synth v2, `--seed 11`, 400 clips per class, ~2 GB).
+In git: everything except the `synth_train` event files (synth v2, `--seed 11`, 400 clips per class,
+~2 GB). They live on the team GPU box in `~/robotics_hackathon/dataset/build/synth_train`; the
+manifest and previews are in git.
 The build uses no Durance data.
 
 Every sample is a 1.2 s window in the same `.bin` format named
