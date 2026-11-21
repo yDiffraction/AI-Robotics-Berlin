@@ -56,6 +56,7 @@ class Table:
         self.start, self.end = off[:-1], off[1:]
         for k in ("y", "anchor", "kind", "domain", "group", "parent", "src", "start_s", "fname"):
             setattr(self, k, z[k])
+        self.move = z["move"] if "move" in z else np.full(len(self.y), "")
         self.n = len(self.y)
         self.density = (self.end - self.start) / T
 
@@ -359,6 +360,7 @@ def main():
     ap.add_argument("--shares", default="own:1=0.2,own:0=0.2,own_aug:1=0.05,own_aug:0=0.05,"
                                          "sim:1=0.1,sim:0=0.1,dd:1=0.15,dd:0=0.15")
     ap.add_argument("--dd-kinds", default="throw,toss,arm,idle", help="DailyDVS kinds used for training")
+    ap.add_argument("--dd-static", type=int, default=0, help="1 = only DailyDVS clips with a static camera")
     ap.add_argument("--pre", type=int, default=25, help="frames before the anchor labelled as motion")
     ap.add_argument("--post", type=int, default=30, help="frames after the anchor labelled as motion")
     ap.add_argument("--warm", type=int, default=15)
@@ -395,6 +397,8 @@ def main():
     person = np.array([g.split(":", 1)[1] if g.startswith("dd:") else "" for g in tb.group.astype(str)])
     dd_test = np.flatnonzero((tb.domain == "dd") & np.isin(person, list(DD_HELDOUT)))
     dd_train_mask = (tb.domain == "dd") & ~np.isin(person, list(DD_HELDOUT)) & usable
+    if args.dd_static:
+        dd_train_mask &= tb.move != "1"
 
     if args.folds > 0:
         fold, groups = own_folds(tb, args.folds, args.seed)
@@ -448,7 +452,7 @@ def main():
         results["own_oof"] = metrics(all_res, args.thr)
         results["own_res"] = all_res
         thr_grid = {}
-        for thr in (-0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5):
+        for thr in (-0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8):
             m = metrics(all_res, thr)
             fa = [false_alarms(s, args, thr)["alarms"] for s in all_streams]
             mins = sum(len(s) for s in all_streams) / 6000

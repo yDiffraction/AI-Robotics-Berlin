@@ -87,7 +87,8 @@ def dd_rows(dd: Path):
     for r in csv.DictReader(open(dd / "manifest.csv")):
         kind = {"throw": "throw", "toss": "toss", "arm_no_release": "arm", "idle": "idle"}[r["group"]]
         rows.append(dict(path=dd / r["group"] / r["file"], kind=kind, domain="dd", group=f"dd:{r['person']}",
-                         parent=r["parent"], start_s="", src=f"dd:{r['action_name']}",
+                         parent=r["parent"], start_s="", src=f"dd:{r['action_name']}", move=r["camera_move"],
+                         view=r["perspective"],
                          anchor=int(r["release_us"]) // BIN_US if r["release_us"] else -1))
     return rows
 
@@ -111,12 +112,12 @@ def main():
     rows = keep
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    col = lambda k: np.array([str(r[k]) for r in rows])
+    col = lambda k: np.array([str(r.get(k, "")) for r in rows])
     np.savez(out, codes=np.concatenate(codes), offsets=np.array(offsets, np.int64),
              y=np.array([int(r["kind"] in POS) for r in rows], np.int64),
              anchor=np.array([int(r["anchor"]) for r in rows], np.int64),
              kind=col("kind"), domain=col("domain"), group=col("group"), parent=col("parent"),
-             src=col("src"), start_s=col("start_s"), fname=np.array([r["path"].name for r in rows]))
+             src=col("src"), start_s=col("start_s"), move=col("move"), view=col("view"), fname=np.array([r["path"].name for r in rows]))
     cells = np.diff(np.array(offsets)) / T
     print(f"{out}: {len(rows)} clips")
     dom = col("domain"); kind = col("kind")
