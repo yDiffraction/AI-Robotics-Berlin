@@ -1,0 +1,496 @@
+
+== scenario 0
+      | [modes] DDS domain 77, interface lo
+      | 1795295583.433952 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295586.958305 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11309: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295588.427725 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons A
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge left started  ([controller] DODGE: trotting in place, kick to the LEFT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 3.5 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.30 m to the LEFT  (max 0.53 m, end +0.52 m, x drift +0.28 m)
+   [PASS] 30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)  (0.58 s)
+   [PASS] tilt stayed below 0.4 rad  (max 0.21 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y -> lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8196, 'remote': 820, 'cmd': 6951, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] supervisor: controller finished, dog lying
+   [PASS] sport mode restored  (robot mode 'normal')
+   [PASS] last commands before sport mode were the supervisor's damping
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+   [PASS] Ctrl+C in sport mode quits go2_modes
+== remote: enter, A = dodge left, back (hold): PASS (21 s)
+
+== scenario 1
+      | [modes] DDS domain 77, interface lo
+      | 1795295605.001718 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295608.585672 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11399: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 23 ms, now 0.3 ms (max 0.5 ms)
+      | 1795295609.987693 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons A
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge left started  ([controller] DODGE: trotting in place, kick to the LEFT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 2.7 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.30 m to the LEFT  (max 0.52 m, end +0.52 m, x drift +0.29 m)
+   [PASS] 30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)  (0.58 s)
+   [PASS] tilt stayed below 0.4 rad  (max 0.21 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y -> lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8161, 'remote': 816, 'cmd': 6947, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] supervisor: controller finished, dog lying
+   [PASS] sport mode restored  (robot mode 'normal')
+   [PASS] last commands before sport mode were the supervisor's damping
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+   [PASS] Ctrl+C in sport mode quits go2_modes
+== remote: enter, A = dodge left, back (passive): PASS (21 s)
+
+== scenario 2
+      | [modes] DDS domain 77, interface lo
+      | 1795295626.557266 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+      | 1795295629.097997 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11493: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 27 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295630.513337 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] o -> standing
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge left started  ([controller] DODGE: trotting in place, kick to the LEFT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 2.6 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.30 m to the LEFT  (max 0.53 m, end +0.53 m, x drift +0.29 m)
+   [PASS] 30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)  (0.58 s)
+   [PASS] tilt stayed below 0.4 rad  (max 0.21 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 7640, 'remote': 764, 'cmd': 6420, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] s -> sport mode restored
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+   [PASS] q quits
+== keyboard: o, d, s: PASS (18 s)
+
+== scenario 3
+      | [modes] DDS domain 77, interface lo
+      | 1795295646.061319 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295649.608211 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11587: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 26 ms, now 0.2 ms (max 0.4 ms)
+      | 1795295651.025321 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons A
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge started
+      | [modes] buttons L2+B
+      | [supervisor] TRIP: e-stop (L2+B, lowstate) -> controller killed, sending DAMPING. Ctrl+C to stop sending.
+   [PASS] supervisor tripped  ([supervisor] TRIP: e-stop (L2+B, lowstate) -> controller killed, sending DAMPING. Ctrl+C to stop sending.)
+   [PASS] damping reached the robot within 60 ms  (10 ms)
+   [PASS] no controller command after the first damping  (0)
+   [PASS] dog down on its belly, not on its side  (z 0.08 m, roll +0.10 rad)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [supervisor] stopped sending damping (release requested); the robot now gets no commands.
+      | [supervisor] stats {'state': 5805, 'remote': 581, 'cmd': 3667, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events [(175.488648654, 'TRIP: e-stop (L2+B, lowstate)')]
+      | [modes] supervisor ended: damping stopped after a trip
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: False). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] Y releases the damping
+   [PASS] sport mode restored
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+      | [modes] bye
+== L2+B during the kick, then Y: PASS (16 s)
+
+== scenario 4
+      | [modes] DDS domain 77, interface lo
+      | 1795295663.079265 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295666.672684 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11677: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 25 ms, now 0.3 ms (max 0.3 ms)
+      | 1795295667.969092 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons A
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge started
+      | [modes] Ctrl+C -> E-STOP via the supervisor (Y / s afterwards gives the dog back to sport mode)
+      | [supervisor] TRIP: operator (Ctrl+C) -> controller killed, sending DAMPING. Ctrl+C to stop sending.
+   [PASS] supervisor tripped  ([supervisor] TRIP: operator (Ctrl+C) -> controller killed, sending DAMPING. Ctrl+C to stop sending.)
+   [PASS] damping reached the robot within 60 ms  (26 ms)
+   [PASS] no controller command after the first damping  (0)
+   [PASS] dog down on its belly, not on its side  (z 0.08 m, roll +0.03 rad)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [supervisor] stopped sending damping (release requested); the robot now gets no commands.
+      | [supervisor] stats {'state': 5610, 'remote': 561, 'cmd': 3667, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events [(192.434953804, 'TRIP: operator (Ctrl+C)')]
+      | [modes] supervisor ended: damping stopped after a trip
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: False). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] Y releases the damping
+   [PASS] sport mode restored
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+      | [modes] bye
+== Ctrl+C during the kick, then Y: PASS (16 s)
+
+== scenario 5
+      | [modes] DDS domain 77, interface lo
+      | 1795295679.691788 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] sport mode seen
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+      | 1795295683.251877 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11769: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 24 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295684.631267 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+   [PASS] controller standing up
+      | [modes] buttons A
+      | [controller] dodge refused: not standing still (up)
+   [PASS] A during stand-up -> refused
+   [PASS] ... and no dodge
+      | [modes] buttons A+Y
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y during stand-up -> lies down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 3210, 'remote': 321, 'cmd': 2012, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] sport service not ready yet (code 7002), retrying for up to 45 s
+   [PASS] SelectMode busy right after release -> retried
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] sport mode restored
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+== A during stand-up is refused; Y during stand-up; SelectMode busy: PASS (15 s)
+
+== scenario 6
+      | [modes] DDS domain 77, interface lo
+      | 1795295695.415253 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] sport mode seen
+      | [modes] buttons R1+L1
+   [PASS] L1+R1 for 0.6 s: nothing
+      | [modes] buttons R1+L1+A
+   [PASS] L1+R1+A for 1.5 s: nothing
+      | [modes] buttons A
+      | [modes] buttons A+Y
+      | [modes] buttons Y
+      | [modes] buttons L2+B+Y
+      | [modes] buttons L2+B
+   [PASS] A, Y, L2+B in sport mode: nothing
+   [PASS] dog still standing in sport mode  (z 0.31)
+   [PASS] nothing sent at all  (0 commands)
+      | [modes] bye
+== entry needs exactly L1+R1 for 1 s: PASS (8 s)
+
+== scenario 7
+      | [modes] DDS domain 77, interface lo
+      | 1795295704.253689 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295707.849862 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11901: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 24 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295709.265837 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] controller lies down by itself (stdin closed)
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+   [PASS] supervisor finishes cleanly
+      | [supervisor] stats {'state': 4472, 'remote': 447, 'cmd': 3258, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+   [PASS] no commands any more (robot gets nothing, lying)  (last 1.5 s ago)
+   [PASS] supervisor and controller gone
+   [PASS] dog lying, never fell (tilt < 0.3)  (z 0.08)
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+== go2_modes killed while our controller stands: PASS (15 s)
+
+== scenario 8
+      | [modes] DDS domain 77, interface lo
+      | 1795295719.891371 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295723.487436 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 11993: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 27 ms, now 0.3 ms (max 0.4 ms)
+      | 1795295724.861452 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE x0.6 (gentle) left / right, kick 0.82 m/s for 0.41 s, hold 0.31, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+   [PASS] controller runs the gentle dodge
+      | [modes] buttons A
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge left started  ([controller] DODGE: trotting in place, kick to the LEFT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 3.1 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.20 m to the LEFT  (max 0.35 m, end +0.35 m, x drift +0.29 m)
+   [PASS] tilt stayed below 0.4 rad  (max 0.19 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y -> lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8153, 'remote': 816, 'cmd': 6954, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] supervisor: controller finished, dog lying
+   [PASS] sport mode restored  (robot mode 'normal')
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+== --gentle: enter, dodge left x0.6, back: PASS (21 s)
+
+== scenario 9
+      | [modes] DDS domain 77, interface lo
+      | 1795295741.504772 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295745.077554 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 12087: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295746.415242 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons Right
+      | [controller] DODGE: trotting in place, kick to the RIGHT in 2.5 s
+   [PASS] dodge right started  ([controller] DODGE: trotting in place, kick to the RIGHT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 2.5 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.30 m to the RIGHT  (max 0.52 m, end +0.49 m, x drift +0.31 m)
+   [PASS] 30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)  (0.58 s)
+   [PASS] tilt stayed below 0.4 rad  (max 0.19 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y -> lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8137, 'remote': 814, 'cmd': 6961, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] supervisor: controller finished, dog lying
+   [PASS] sport mode restored  (robot mode 'normal')
+   [PASS] last commands before sport mode were the supervisor's damping
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+   [PASS] Ctrl+C in sport mode quits go2_modes
+== remote: enter, Right = dodge right, back (hold): PASS (21 s)
+
+== scenario 10
+      | [modes] DDS domain 77, interface lo
+      | 1795295762.978264 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] go2_modes sees sport mode
+      | [modes] buttons R1+L1
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+   [PASS] L1+R1 held 1.3 s -> sport mode released
+      | 1795295766.510319 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 12183: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 23 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295767.823895 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE left / right, kick 1.36 m/s for 0.41 s, hold 0.51, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] controller stands the dog up
+      | [modes] buttons Left
+      | [controller] DODGE: trotting in place, kick to the LEFT in 2.5 s
+   [PASS] dodge left started  ([controller] DODGE: trotting in place, kick to the LEFT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 3.0 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.30 m to the LEFT  (max 0.53 m, end +0.52 m, x drift +0.29 m)
+   [PASS] 30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)  (0.57 s)
+   [PASS] tilt stayed below 0.4 rad  (max 0.21 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] buttons Y
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+   [PASS] Y -> lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8134, 'remote': 813, 'cmd': 6960, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] supervisor: controller finished, dog lying
+   [PASS] sport mode restored  (robot mode 'normal')
+   [PASS] last commands before sport mode were the supervisor's damping
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+   [PASS] Ctrl+C in sport mode quits go2_modes
+== remote: enter, Left = dodge left, back (passive): PASS (20 s)
+
+== scenario 11
+      | [modes] DDS domain 77, interface lo
+      | 1795295784.424708 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [modes] robot connected, SPORT mode 'normal' active. Hold L1+R1 1 s (or o) for our mode, q quits.
+   [PASS] sport mode seen
+      | [modes] switching to OUR mode: sport mode 'normal' lies the dog down ...
+      | [modes] sport mode released
+      | [modes] OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, Y = back to sport mode, L2+B = E-STOP
+      | 1795295786.976031 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [supervisor] controller started, pid 12274: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
+      | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+      |   warnings.warn(
+      | [controller] policy warmed up: first call 26 ms, now 0.2 ms (max 0.3 ms)
+      | 1795295788.326176 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
+      | [controller] standing up (dodge: SAFE x0.6 (gentle) left / right, kick 0.82 m/s for 0.41 s, hold 0.31, trigger 2.5 s after the command)
+      | [controller] standing. Ready to dodge.
+   [PASS] o -> standing
+   [PASS] controller runs the gentle dodge
+      | [controller] DODGE: trotting in place, kick to the RIGHT in 2.5 s
+   [PASS] dodge right started  ([controller] DODGE: trotting in place, kick to the RIGHT in 2.5 s)
+      | [controller] dodge done, standing (longest gap between commands 2.2 ms)
+   [PASS] dodge finished, standing again
+   [PASS] dodge moved the dog >= 0.20 m to the RIGHT  (max 0.30 m, end +0.27 m, x drift +0.32 m)
+   [PASS] tilt stayed below 0.4 rad  (max 0.19 rad)
+   [PASS] standing at the end (trunk > 0.24 m)  (z 0.30 m)
+      | [modes] back to sport mode requested
+      | [controller] lie down requested
+      | [controller] lying down
+      | [controller] lying (joints folded), exiting
+      | [supervisor] controller finished, dog lying -> damping for 1 s, then done
+      | [supervisor] stats {'state': 8098, 'remote': 810, 'cmd': 6910, 'cmd_bad_crc': 0, 'state_bad_crc': 0}; events []
+      | [modes] supervisor ended: controller finished, dog lying
+      | [modes] giving the dog back to sport mode 'normal' ...
+      | [modes] SPORT mode 'normal' is back (dog lying: True). Stand it up with the remote as usual. Hold L1+R1 1 s (or o) for our mode again.
+   [PASS] s -> sport mode restored
+   [PASS] no command ever reached the robot while sport mode was active  (0 commands)
+   [PASS] dog lying (trunk < 0.16 m)  (z 0.08 m)
+      | [modes] bye
+== --gentle: enter, dodge right x0.6, back (keyboard): PASS (19 s)
+
+12/12 scenarios passed

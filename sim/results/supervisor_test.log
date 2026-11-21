@@ -1,0 +1,57 @@
+[ok ] estop_state       robot=hold    reason=e-stop (L2+B, lowstate)                                 damp after     4 ms z 0.30->0.08  
+[ok ] estop_remote      robot=hold    reason=e-stop (L2+B, wirelesscontroller)                       damp after    24 ms z 0.30->0.08  
+[ok ] child_crash       robot=hold    reason=controller exited (code 3)                              damp after     4 ms z 0.30->0.08  
+[ok ] child_kill9       robot=hold    reason=controller exited (code -9)                             damp after     2 ms z 0.30->0.08  
+[ok ] child_hang        robot=hold    reason=controller silent for 50 ms                             damp after    52 ms z 0.30->0.08  
+[ok ] child_sigstop     robot=hold    reason=controller silent for 52 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_slow        robot=hold    reason=controller silent for 51 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_nan         robot=hold    reason=controller sent a bad command: NaN/inf in command       damp after     4 ms z 0.30->0.08  
+[ok ] child_wild        robot=hold    reason=controller sent a bad command: target outside joint ran damp after     4 ms z 0.30->0.08  
+[ok ] child_badcrc      robot=hold    reason=controller silent for 51 ms                             damp after    50 ms z 0.30->0.08  
+[ok ] state_lost        robot=hold    reason=robot state (rt/lowstate) lost: 102 ms                  damp after   104 ms z 0.30->0.08  
+[ok ] tick_stuck        robot=hold    reason=robot tick stuck for 102 ms                             damp after   104 ms z 0.30->0.08  
+[ok ] remote_lost       robot=hold    reason=remote link (rt/wirelesscontroller) silent for 0.50 s   damp after   500 ms z 0.30->0.08  
+[ok ] tilt              robot=hold    reason=tilt roll +0.82 pitch -0.02 rad                         damp after    98 ms z 0.30->0.10  
+[ok ] ctrl_c            robot=hold    reason=operator (Ctrl+C)                                       damp after     2 ms z 0.30->0.08  
+[ok ] sigterm           robot=hold    reason=operator (SIGTERM)                                      damp after     4 ms z 0.30->0.08  
+[ok ] supervisor_kill9  robot=hold    reason=None                                                    damp after - z 0.30->0.30  
+[ok ] no_fault          robot=hold    reason=None                                                    damp after - z 0.30->0.30  
+[ok ] estop_state       robot=passive reason=e-stop (L2+B, lowstate)                                 damp after     4 ms z 0.30->0.08  
+[ok ] estop_remote      robot=passive reason=e-stop (L2+B, wirelesscontroller)                       damp after    12 ms z 0.30->0.08  
+[ok ] child_crash       robot=passive reason=controller exited (code 3)                              damp after     2 ms z 0.30->0.08  
+[ok ] child_kill9       robot=passive reason=controller exited (code -9)                             damp after     2 ms z 0.30->0.08  
+[ok ] child_hang        robot=passive reason=controller silent for 50 ms                             damp after    50 ms z 0.30->0.08  
+[ok ] child_sigstop     robot=passive reason=controller silent for 52 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_slow        robot=passive reason=controller silent for 51 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_nan         robot=passive reason=controller sent a bad command: NaN/inf in command       damp after     4 ms z 0.30->0.08  
+[ok ] child_wild        robot=passive reason=controller sent a bad command: target outside joint ran damp after    -0 ms z 0.30->0.08  
+[ok ] child_badcrc      robot=passive reason=controller silent for 51 ms                             damp after    52 ms z 0.30->0.08  
+[ok ] state_lost        robot=passive reason=robot state (rt/lowstate) lost: 101 ms                  damp after   104 ms z 0.30->0.08  
+[ok ] tick_stuck        robot=passive reason=robot tick stuck for 100 ms                             damp after   104 ms z 0.30->0.08  
+[ok ] remote_lost       robot=passive reason=remote link (rt/wirelesscontroller) silent for 0.50 s   damp after   504 ms z 0.30->0.08  
+[ok ] tilt              robot=passive reason=tilt roll +0.82 pitch -0.02 rad                         damp after    98 ms z 0.30->0.09  
+[ok ] ctrl_c            robot=passive reason=operator (Ctrl+C)                                       damp after     4 ms z 0.30->0.08  
+[ok ] sigterm           robot=passive reason=operator (SIGTERM)                                      damp after     2 ms z 0.30->0.08  
+[ok ] supervisor_kill9  robot=passive reason=None                                                    damp after - z 0.30->0.11  
+[ok ] no_fault          robot=passive reason=None                                                    damp after - z 0.30->0.30  
+[ok ] estop_state       robot=hold    reason=e-stop (L2+B, lowstate)                                 damp after     4 ms z 0.30->0.08  
+[ok ] estop_remote      robot=hold    reason=e-stop (L2+B, wirelesscontroller)                       damp after    16 ms z 0.30->0.08  
+[ok ] child_crash       robot=hold    reason=controller exited (code 3)                              damp after     2 ms z 0.30->0.08  
+[ok ] child_kill9       robot=hold    reason=controller exited (code -9)                             damp after     4 ms z 0.30->0.08  
+[ok ] child_hang        robot=hold    reason=controller silent for 50 ms                             damp after    52 ms z 0.30->0.08  
+[ok ] child_sigstop     robot=hold    reason=controller silent for 52 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_slow        robot=hold    reason=controller silent for 51 ms                             damp after    54 ms z 0.30->0.08  
+[ok ] child_nan         robot=hold    reason=controller sent a bad command: NaN/inf in command       damp after     2 ms z 0.30->0.08  
+[ok ] child_wild        robot=hold    reason=controller sent a bad command: target outside joint ran damp after     2 ms z 0.30->0.08  
+[ok ] child_badcrc      robot=hold    reason=controller silent for 50 ms                             damp after    50 ms z 0.30->0.08  
+[ok ] state_lost        robot=hold    reason=robot state (rt/lowstate) lost: 101 ms                  damp after   102 ms z 0.30->0.08  
+[ok ] tick_stuck        robot=hold    reason=robot tick stuck for 102 ms                             damp after   104 ms z 0.30->0.08  
+[ok ] remote_lost       robot=hold    reason=remote link (rt/wirelesscontroller) silent for 0.50 s   damp after   500 ms z 0.30->0.08  
+[ok ] tilt              robot=hold    reason=tilt roll +0.82 pitch -0.02 rad                         damp after   100 ms z 0.30->0.09  
+[ok ] ctrl_c            robot=hold    reason=operator (Ctrl+C)                                       damp after     4 ms z 0.30->0.08  
+[ok ] sigterm           robot=hold    reason=operator (SIGTERM)                                      damp after     2 ms z 0.30->0.08  
+[ok ] supervisor_kill9  robot=hold    reason=None                                                    damp after - z 0.30->0.30  
+[ok ] no_fault          robot=hold    reason=None                                                    damp after - z 0.30->0.30  
+
+54/54 passed -> /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/results/supervisor_test.json
+exit 0

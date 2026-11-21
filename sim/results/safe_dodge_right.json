@@ -1,0 +1,173 @@
+{
+ "SAFE right": {
+  "scale": -1.0,
+  "params": {
+   "kick_vy": -1.3638722326169788,
+   "kick_s": 0.4098144532334525,
+   "hold_vy": -0.5101370342198881,
+   "dodge_s": 0.47702423578419867,
+   "freq": 3.7416942663084964,
+   "stance_width": 0.3254610671869804,
+   "footswing": 0.07682755250028335,
+   "height": -0.029401725243708373,
+   "brake_vy": 0.4031163053121374,
+   "brake_s": 0.04396956305224252
+  },
+  "runs": 500,
+  "failures": 0,
+  "failure_rate_95_upper": 0.006,
+  "t30_median": 0.5967125325330234,
+  "t30_p95": 0.659908276339412,
+  "t30_worst": 0.8281779068934867,
+  "foot_force_bw_worst": 1.6768674064802327,
+  "touchdown_p95_worst": 3.16291422507504,
+  "trunk_acc_g_worst": 1.6302235274756642,
+  "torque_frac_worst": 0.8758547133795056,
+  "speed_frac_worst": 0.9820502798837567,
+  "limit_margin_worst": 0.22069195880917514,
+  "peak_tilt_deg_worst": 13.80694011654395,
+  "failure_reasons": {},
+  "all_reasons": {},
+  "fell": 0,
+  "unsettled": 0,
+  "y_final_median": 0.47657442188086774,
+  "y_final_min": 0.3364338813856268,
+  "x_drift_worst": 0.14167758371927824,
+  "yaw_drift_worst_deg": 28.712767361967817
+ },
+ "SAFE left (same seed, reference)": {
+  "scale": 1.0,
+  "params": {
+   "kick_vy": 1.3638722326169788,
+   "kick_s": 0.4098144532334525,
+   "hold_vy": 0.5101370342198881,
+   "dodge_s": 0.47702423578419867,
+   "freq": 3.7416942663084964,
+   "stance_width": 0.3254610671869804,
+   "footswing": 0.07682755250028335,
+   "height": -0.029401725243708373,
+   "brake_vy": -0.4031163053121374,
+   "brake_s": 0.04396956305224252
+  },
+  "runs": 500,
+  "failures": 0,
+  "failure_rate_95_upper": 0.006,
+  "t30_median": 0.5825710768033407,
+  "t30_p95": 0.6396018691872283,
+  "t30_worst": 0.8812059277146913,
+  "foot_force_bw_worst": 1.6208361878614996,
+  "touchdown_p95_worst": 3.2727918161022194,
+  "trunk_acc_g_worst": 1.6454529104202167,
+  "torque_frac_worst": 0.9214518075373379,
+  "speed_frac_worst": 0.9880602209184179,
+  "limit_margin_worst": 0.15162619675972877,
+  "peak_tilt_deg_worst": 16.659948484844907,
+  "failure_reasons": {},
+  "all_reasons": {},
+  "fell": 0,
+  "unsettled": 0,
+  "y_final_median": 0.5027746540293565,
+  "y_final_min": 0.30860795024041193,
+  "x_drift_worst": 0.17697797744702212,
+  "yaw_drift_worst_deg": 18.779744577024466
+ },
+ "gentle right": {
+  "scale": -0.6,
+  "params": {
+   "kick_vy": -0.8183233395701872,
+   "kick_s": 0.4098144532334525,
+   "hold_vy": -0.30608222053193285,
+   "dodge_s": 0.47702423578419867,
+   "freq": 3.7416942663084964,
+   "stance_width": 0.3254610671869804,
+   "footswing": 0.07682755250028335,
+   "height": -0.029401725243708373,
+   "brake_vy": 0.24186978318728242,
+   "brake_s": 0.04396956305224252
+  },
+  "runs": 300,
+  "failures": 253,
+  "failure_rate_95_upper": null,
+  "t30_median": 0.9658928713527084,
+  "t30_p95": 1.9924133875635783,
+  "t30_worst": 2.0675380329868935,
+  "foot_force_bw_worst": 1.4042144535469139,
+  "touchdown_p95_worst": 2.9133976930535685,
+  "trunk_acc_g_worst": 1.6357337222303778,
+  "torque_frac_worst": 0.925183316888032,
+  "speed_frac_worst": 0.9805438903025093,
+  "limit_margin_worst": 0.26553301086835823,
+  "peak_tilt_deg_worst": 9.698392416299667,
+  "failure_reasons": {
+   "0": [
+    "never reached 30 cm"
+   ],
+   "1": [
+    "never reached 30 cm"
+   ],
+   "2": [
+    "never reached 30 cm"
+   ],
+   "3": [
+    "never reached 30 cm"
+   ],
+   "4": [
+    "never reached 30 cm"
+   ],
+   "5": [
+    "never reached 30 cm"
+   ],
+   "7": [
+    "never reached 30 cm"
+   ],
+   "8": [
+    "never reached 30 cm"
+   ],
+   "9": [
+    "never reached 30 cm"
+   ],
+   "10": [
+    "never reached 30 cm"
+   ],
+   "11": [
+    "never reached 30 cm"
+   ],
+   "12": [
+    "never reached 30 cm"
+   ],
+   "13": [
+    "never reached 30 cm"
+   ],
+   "14": [
+    "never reached 30 cm"
+   ],
+   "16": [
+    "never reached 30 cm"
+   ],
+   "17": [
+    "never reached 30 cm"
+   ],
+   "18": [
+    "never reached 30 cm"
+   ],
+   "19": [
+    "never reached 30 cm"
+   ],
+   "20": [
+    "never reached 30 cm"
+   ],
+   "21": [
+    "never reached 30 cm"
+   ]
+  },
+  "all_reasons": {
+   "never reached 30 cm": 253
+  },
+  "fell": 0,
+  "unsettled": 0,
+  "y_final_median": 0.26509808716698113,
+  "y_final_min": 0.21748202957514978,
+  "x_drift_worst": 0.12551234594137356,
+  "yaw_drift_worst_deg": 20.42257540290073
+ }
+}

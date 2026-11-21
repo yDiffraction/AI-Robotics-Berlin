@@ -1,0 +1,20 @@
+  10/100
+  20/100
+  30/100
+  40/100
+  50/100
+  60/100
+  70/100
+  80/100
+  90/100
+  100/100
+
+mode        on side  trunk g p95/max foot BW max  trunk hits floor hit speed max speed at joint stop  z end
+damp          0/100    2.34/5.47           1.22        98/100           0.45 m/s           2.7 rad/s   0.09
+damp_kd2      0/100    3.70/5.02           2.06        98/100           0.75 m/s           7.0 rad/s   0.08
+damp_kd8      0/100    1.67/5.14           1.33        90/100           0.23 m/s           1.6 rad/s   0.10
+passive       0/100    9.33/10.38          3.07       100/100           1.62 m/s          15.8 rad/s   0.08
+hold         48/100    7.16/7.74           3.57        48/100           0.86 m/s          10.9 rad/s   0.15
+
+reference = 1.25 x worst normal sideways walking under harsh physics: {'foot_force_bw_max': 1.807, 'touchdown_p95_max': 3.729, 'trunk_acc_g_max': 1.934}
+-> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\stop_sim.json
