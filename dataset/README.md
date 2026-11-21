@@ -49,8 +49,8 @@ uv run tools/generate_data.py video --takes <takes.csv> --out dataset/build/vide
 uv run tools/generate_data.py synth --out dataset/build/synth_train --per-class 10000 --device cuda --batch 32
 ```
 
-In git: every folder except the `synth_train` event files (several GB; regenerate them with the
-command above, the seeds make them reproducible). The build uses no Durance data.
+Everything is in git, including `synth_train` (synth v2, `--seed 11`, 400 clips per class, ~2 GB).
+The build uses no Durance data.
 
 Every sample is a 1.2 s window in the same `.bin` format named
 `gesture_<ID>-<label>-<source>-<tag>.bin` (01 throw, 02 feint, 03 idle). Throw/feint
