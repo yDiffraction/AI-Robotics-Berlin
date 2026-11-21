@@ -26,3 +26,9 @@ recording/sessions/**/*.bin
 recording/logs/
 recording/previews/
 logs/
+
+# Noah's local layout: Durance material and upstream clones (same rule as vendor/)
+docs/riversdk/
+docs/*.pdf
+starter/
+third_party/
