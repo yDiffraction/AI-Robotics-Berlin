@@ -103,21 +103,28 @@ def own_folds(tb, k, seed=0):
 
 
 class Sampler:
-    """Draws batches with fixed shares per (domain, target) cell."""
+    """Draws batches with fixed shares per (domain, target) cell.
 
-    def __init__(self, tb, train_idx, shares, rng):
+    neg_pow > 0: inside negative cells, clips are drawn with probability ~ density**neg_pow
+    (hard negatives: people walking through the view instead of an empty scene)."""
+
+    def __init__(self, tb, train_idx, shares, rng, neg_pow=0.0):
         self.rng, self.cells = rng, []
         for (dom, y), w in shares.items():
             doms = dom.split("+")
             idx = train_idx[np.isin(tb.domain[train_idx], doms) & (tb.y[train_idx] == y)]
             if len(idx) and w > 0:
-                self.cells.append((idx, w))
-        tot = sum(w for _, w in self.cells)
-        self.p = np.array([w / tot for _, w in self.cells])
+                p = None
+                if y == 0 and neg_pow > 0:
+                    p = (tb.density[idx] + 2.0) ** neg_pow
+                    p = p / p.sum()
+                self.cells.append((idx, w, p))
+        tot = sum(c[1] for c in self.cells)
+        self.p = np.array([c[1] / tot for c in self.cells])
 
     def draw(self, n):
         which = self.rng.choice(len(self.cells), n, p=self.p)
-        return np.array([self.rng.choice(self.cells[c][0]) for c in which])
+        return np.array([self.rng.choice(self.cells[c][0], p=self.cells[c][2]) for c in which])
 
 
 def prefetch(fn, n=4):
@@ -313,7 +320,7 @@ def train_one(tb, train_idx, args, dev, rng, log):
         k, w = spec.split("=")
         dom, y = k.rsplit(":", 1)
         shares[(dom, int(y))] = float(w)
-    sampler = Sampler(tb, train_idx, shares, rng)
+    sampler = Sampler(tb, train_idx, shares, rng, args.neg_pow)
     bg_pool = train_idx[(tb.domain[train_idx] == "own") & (tb.y[train_idx] == 0)]
     gen = prefetch(lambda: (lambda i: (i, tb.dense(i)))(sampler.draw(args.batch)))
     t0 = time.time()
@@ -360,6 +367,7 @@ def main():
     ap.add_argument("--shares", default="own:1=0.2,own:0=0.2,own_aug:1=0.05,own_aug:0=0.05,"
                                          "sim:1=0.1,sim:0=0.1,dd:1=0.15,dd:0=0.15")
     ap.add_argument("--dd-kinds", default="throw,toss,arm,idle", help="DailyDVS kinds used for training")
+    ap.add_argument("--neg-pow", type=float, default=0.0, help="hard-negative sampling exponent (0 = uniform)")
     ap.add_argument("--dd-static", type=int, default=0, help="1 = only DailyDVS clips with a static camera")
     ap.add_argument("--pre", type=int, default=25, help="frames before the anchor labelled as motion")
     ap.add_argument("--post", type=int, default=30, help="frames after the anchor labelled as motion")
@@ -461,7 +469,8 @@ def main():
         results["own_thr_grid"] = thr_grid
         log(f"OWN out-of-fold: {json.dumps(results['own_oof'])}")
         log(f"threshold grid: {json.dumps(thr_grid)}")
-    json.dump(results, open(out / "result.json", "w"))
+    json.dump(results, open(out / "result.json", "w"),
+              default=lambda o: o.item() if hasattr(o, "item") else str(o))
 
 
 if __name__ == "__main__":

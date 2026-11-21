@@ -50,6 +50,11 @@ def summarise(path, max_fa, max_fpr):
     by = defaultdict(list)
     for x in res:
         by[(rec_of(x["fname"]), x["kind"])].append(x["score"])
+    curves = defaultdict(list)
+    for x in res:
+        src = "pause" if "pause" in x.get("src", "") else ("idle_rec" if x["kind"] == "idle" else x["kind"])
+        curves[src].append(x["curve"])
+    out["curves"] = {k: np.mean(np.array(v), 0).round(2).tolist() for k, v in curves.items()}
     out["by_rec"] = {f"{k[0]}/{k[1]}": (len(v), [round(float(np.mean(np.array(v) > t)), 2) for t in (0.0, 0.2, 0.4)])
                      for k, v in sorted(by.items())}
     return out
@@ -78,6 +83,9 @@ def main():
     if args.detail:
         for s in rows:
             print(f"\n## {s['tag']}\nthreshold grid: {json.dumps(s['grid'])}")
+            print("mean score every 50 ms from clip start (motion clips: peak at 700 ms = index 14):")
+            for k, v in s["curves"].items():
+                print(f"  {k:9s} " + " ".join(f"{x:+.2f}" for x in v))
             print("detection rate per recording/kind at thr 0 / 0.2 / 0.4:")
             for k, (n, v) in s["by_rec"].items():
                 print(f"  {k:24s} n={n:4d}  {v}")
