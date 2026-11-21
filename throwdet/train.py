@@ -162,7 +162,8 @@ def augment(x, tb, idx, bg_pool, args, rng):
     # spatial: mirror, scale, shift
     flip = torch.rand(B, device=dev) < 0.5
     scale = torch.exp(torch.empty(B, device=dev).uniform_(-args.scale, args.scale))
-    sh = (torch.rand(B, 2, device=dev) * 2 - 1) * (args.shift / (HW / 2))
+    sh = (torch.rand(B, 2, device=dev) * 2 - 1) * torch.tensor(
+        [args.shift_x if args.shift_x >= 0 else args.shift, args.shift], device=dev) / (HW / 2)
     theta = torch.zeros(B, 2, 3, device=dev)
     theta[:, 0, 0] = torch.where(flip, -1.0, 1.0) / scale
     theta[:, 1, 1] = 1.0 / scale
@@ -383,6 +384,7 @@ def main():
     ap.add_argument("--tshift", type=int, default=15)
     ap.add_argument("--scale", type=float, default=0.25)
     ap.add_argument("--shift", type=float, default=8)
+    ap.add_argument("--shift-x", type=float, default=-1, help="horizontal shift (px of 80); -1 = same as --shift")
     ap.add_argument("--drop", type=float, default=0.2)
     ap.add_argument("--noise", type=float, default=0.002)
     ap.add_argument("--bg", type=float, default=0.5, help="probability of OR-ing own idle background into external clips")
@@ -409,7 +411,7 @@ def main():
         dd_train_mask &= tb.move != "1"
 
     if args.folds > 0:
-        fold, groups = own_folds(tb, args.folds, args.seed)
+        fold, groups = own_folds(tb, args.folds, 0)   # fixed split for all runs
     else:
         fold, groups = np.full(tb.n, -1), tb.group
     results = {"args": vars(args), "folds": {}}

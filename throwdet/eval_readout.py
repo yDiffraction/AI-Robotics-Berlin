@@ -72,9 +72,10 @@ def main():
         first = open(run / "log.txt").readline()
         targs = argparse.Namespace(**json.loads(first.split(" ", 2)[2]))
     tb = Table(args.table)
-    fold, _ = own_folds(tb, targs.folds, targs.seed)
+    fold, _ = own_folds(tb, targs.folds, 0)
     dev = torch.device("cuda")
     clip_d, clip_y, clip_a, streams = [], [], [], []
+    clip_f, clip_k, clip_s = [], [], []
     for k in range(targs.folds):
         ck = torch.load(run / f"fold{k}.pt", map_location="cpu", weights_only=False)
         model = ThrowSNN(2, arch=ck["arch"], tau=targs.tau)
@@ -83,6 +84,7 @@ def main():
         idx = np.flatnonzero(fold == k)
         sp = run_clips(model, tb, idx, dev).float().numpy()
         clip_d.append(sp[..., 1] - sp[..., 0]); clip_y.append(tb.y[idx]); clip_a.append(tb.anchor[idx])
+        clip_f.append(tb.fname[idx]); clip_k.append(tb.kind[idx]); clip_s.append(tb.src[idx])
         st = idx[np.char.find(tb.group[idx].astype(str), "211821") >= 0]
         st = st[np.argsort(tb.start_s[st].astype(float))]
         if len(st):
@@ -133,7 +135,28 @@ def main():
     for b in rows:
         print(f"| {b['budget_fa_per_min']}, {b['budget_clip_fpr']} | {b['alpha']} | {b['hold']} | {b['thr']:.2f} | {b['recall']:.3f} | "
               f"{b['idle_clip_fpr']:.3f} | {b['stream_fa_per_min']:.2f} | {b['latency_ms_median']} ms | {b['early_frac']:.2f} |")
-    json.dump({"auc": auc, "rows": rows}, open(run / "readout_sweep.json", "w"), indent=1)
+    # per recording / kind at the 2 FA/min operating point
+    import re
+    from collections import defaultdict
+    F = np.concatenate(clip_f); Kd = np.concatenate(clip_k); S = np.concatenate(clip_s)
+    op = next((r for r in rows if r["budget_fa_per_min"] == 2.0), None)
+    by_rec = {}
+    if op:
+        sc = ema_np(D, op["alpha"])
+        hits = defaultdict(list)
+        for b in range(len(Y)):
+            m = re.search(r"-d(\d\d_\d{6})-", str(F[b]))
+            rec = (m.group(1) if m else "?") + ("/pause" if "pause" in str(S[b]) else "") + f"/{Kd[b]}"
+            if Y[b] == 1:
+                a = A[b] if A[b] >= 0 else 70
+                hits[rec].append(first_alarm(sc[b][:a + post + 1], op["thr"], op["hold"], max(a - pre, warm)) is not None)
+            else:
+                hits[rec].append(first_alarm(sc[b], op["thr"], op["hold"], warm) is not None)
+        by_rec = {k: [len(v), round(float(np.mean(v)), 2)] for k, v in sorted(hits.items())}
+        print("alarm rate per recording/kind at the 2 FA/min operating point (motion: want high, idle: want low):")
+        for k, v in by_rec.items():
+            print(f"  {k:28s} n={v[0]:4d}  {v[1]:.2f}")
+    json.dump({"auc": auc, "by_rec": by_rec, "rows": rows}, open(run / "readout_sweep.json", "w"), indent=1)
 
 
 if __name__ == "__main__":
