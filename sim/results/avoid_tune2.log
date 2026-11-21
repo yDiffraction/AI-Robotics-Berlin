@@ -1,0 +1,46 @@
+##### tbc 1.2 footprint_y 0.30
+  [FAIL] popup           popup room 0.25 at +0.14s                            side -1 lat +0.34 clear 0.139 t30 0.78 side -1 not in [1]
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat -0.06 clear -0.600 t30 0.58 FELL; CONTACT at +0.99s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat -0.55 clear -0.733 t30 0.61 FELL; CONTACT at +1.06s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat +0.36 clear -0.001 t30 0.63 CONTACT at +0.75s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.88 clear -0.539 t30 None FELL; CONTACT at +0.55s
+  [FAIL] popup           popup room 0.76 at +0.17s                            side -1 lat +0.45 clear 9.000 t30 0.62 side -1 not in [1]
+  [FAIL] popup           popup room 0.42 at +0.11s                            side +1 lat +0.45 clear -0.001 t30 0.56 CONTACT at +1.03s
+popup               13/20    -0.733 m
+forced              10/10    0.078 m
+  [FAIL] wall_one        wall left room 0.21                                  side +0 lat +0.05 clear 0.082 t30 None side +0 not in [-1]
+wall_one             9/10    0.056 m
+##### tbc 1.2 footprint_y 0.35
+  [FAIL] popup           popup room 0.25 at +0.14s                            side -1 lat +0.34 clear 0.139 t30 0.78 side -1 not in [1]
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat -0.13 clear -0.615 t30 0.58 FELL; CONTACT at +0.99s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat -0.56 clear -0.720 t30 0.61 FELL; CONTACT at +1.07s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat +0.36 clear -0.001 t30 0.65 CONTACT at +0.82s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.82 clear -0.539 t30 None FELL; CONTACT at +0.55s
+  [FAIL] popup           popup room 0.76 at +0.17s                            side -1 lat +0.45 clear 9.000 t30 0.62 side -1 not in [1]
+  [FAIL] popup           popup room 0.42 at +0.11s                            side +1 lat -0.95 clear -0.563 t30 0.56 FELL; CONTACT at +1.64s
+popup               13/20    -0.720 m
+forced              10/10    0.076 m
+  [FAIL] wall_one        wall left room 0.21                                  side +0 lat +0.05 clear 0.082 t30 None side +0 not in [-1]
+wall_one             9/10    0.056 m
+##### tbc 1.5 footprint_y 0.30
+  [FAIL] popup           popup room 0.25 at +0.14s                            side -1 lat +0.34 clear 0.139 t30 0.78 side -1 not in [1]
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat -0.15 clear -0.616 t30 0.58 FELL; CONTACT at +0.98s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat -0.57 clear -0.720 t30 0.61 FELL; CONTACT at +1.07s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat -0.88 clear -0.696 t30 0.65 FELL; CONTACT at +0.94s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.82 clear -0.539 t30 None FELL; CONTACT at +0.55s
+  [FAIL] popup           popup room 0.76 at +0.17s                            side -1 lat +0.45 clear 9.000 t30 0.62 side -1 not in [1]
+popup               14/20    -0.720 m
+forced              10/10    0.078 m
+  [FAIL] wall_one        wall left room 0.21                                  side +0 lat +0.05 clear 0.082 t30 None side +0 not in [-1]
+wall_one             9/10    0.056 m
+##### tbc 1.5 footprint_y 0.35
+  [FAIL] popup           popup room 0.25 at +0.14s                            side -1 lat +0.34 clear 0.139 t30 0.78 side -1 not in [1]
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat -0.15 clear -0.618 t30 0.6 FELL; CONTACT at +0.99s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat +0.01 clear -0.633 t30 0.61 FELL; CONTACT at +1.08s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat -0.38 clear -0.700 t30 0.65 FELL; CONTACT at +0.89s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.81 clear -0.541 t30 None FELL; CONTACT at +0.55s
+  [FAIL] popup           popup room 0.76 at +0.17s                            side -1 lat +0.45 clear 9.000 t30 0.62 side -1 not in [1]
+popup               14/20    -0.700 m
+forced              10/10    0.076 m
+  [FAIL] wall_one        wall left room 0.21                                  side +0 lat +0.05 clear 0.082 t30 None side +0 not in [-1]
+wall_one             9/10    0.056 m

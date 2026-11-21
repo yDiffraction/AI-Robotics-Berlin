@@ -1,0 +1,918 @@
+{
+ "params": "# Nav2 Collision Monitor (ros-humble-nav2-collision-monitor 1.1.x, unmodified) for the Go2 dodge.\n# Input:  /avoid/cloud_obstacles  - lidar points already in base_footprint, floor and the robot's own\n#                                   legs removed (sim/avoid/guard.py), so no TF tree is needed.\n#         /cmd_vel_raw            - the velocity our controller wants (Twist; linear.y = sideways).\n# Output: /cmd_vel                - the same velocity, reduced so the footprint does not reach an\n#                                   obstacle within time_before_collision.\ncollision_monitor:\n  ros__parameters:\n    use_sim_time: True\n    base_frame_id: \"base_footprint\"\n    odom_frame_id: \"odom\"              # unused: base_shift_correction is off\n    cmd_vel_in_topic: \"cmd_vel_raw\"\n    cmd_vel_out_topic: \"cmd_vel\"\n    transform_tolerance: 0.1\n    source_timeout: 0.3                # older lidar data is not used\n    base_shift_correction: False       # no odometry dependency (may stop with sport mode off)\n    stop_pub_timeout: 0.5\n    polygons: [\"FootprintApproach\"]\n    FootprintApproach:\n      type: \"polygon\"\n      action_type: \"approach\"\n      # Humble 1.1.x: an \"approach\" polygon with only static `points` SILENTLY NEVER TRIGGERS\n      # (measured with cm_probe.py: 1.0 m/s passed into a wall). It takes the footprint from a\n      # topic; the controller publishes the Go2 outline (incl. legs ~0.84 x 0.40 m, +5 cm) there:\n      # x +-0.47, y +-0.25, frame base_footprint. `points` stays as documentation.\n      points: [0.47, 0.25, 0.47, -0.25, -0.47, -0.25, -0.47, 0.25]\n      footprint_topic: \"/avoid/footprint\"\n      time_before_collision: 0.8       # tuned in test_avoid.py (the dog needs ~0.3 s to brake)\n      simulation_time_step: 0.02\n      max_points: 2                    # >= 3 points inside -> obstacle (same rule as guard.py)\n      visualize: False\n      enabled: True\n    observation_sources: [\"cloud\"]\n    cloud:\n      type: \"pointcloud\"\n      topic: \"/avoid/cloud_obstacles\"\n      min_height: 0.05\n      max_height: 1.0\n      enabled: True\n",
+ "need": 0.8,
+ "footprint": [
+  [
+   0.47,
+   0.25
+  ],
+  [
+   0.47,
+   -0.25
+  ],
+  [
+   -0.47,
+   -0.25
+  ],
+  [
+   -0.47,
+   0.25
+  ]
+ ],
+ "families": {
+  "forced": {
+   "runs": 15,
+   "passed": 15,
+   "rows": [
+    {
+     "scenario": "FORCED left, wall room 0.52",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.17051118892944728,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.21168488804050115,
+     "t30": null,
+     "limited_steps": 21,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.47888718207480024,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.64",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.21050028108028612,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.24553762199595244,
+     "t30": null,
+     "limited_steps": 21,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.5920591762919087,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.17",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.08516357936819399,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.0164068799014505,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.10824898822505113,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.23",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.09596400466218655,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.04537838019049274,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.1793937434486741,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.24",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.08459634458235259,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.06942991983250038,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.16228164397074002,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.38",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.13229752873145198,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.15116762901209255,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.35417234658750724,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.60",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1952698607375493,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.2338483039883901,
+     "t30": null,
+     "limited_steps": 17,
+     "watchdog_zero_steps": 5,
+     "room": [
+      0.5633391426284065,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.20",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.09452973097931495,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.025340532619626523,
+     "t30": null,
+     "limited_steps": 23,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.14690604669487906,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.63",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.23447025720453726,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.16173609151185384,
+     "t30": null,
+     "limited_steps": 16,
+     "watchdog_zero_steps": 5,
+     "room": [
+      0.5825978999480199,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.41",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1644702990585883,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.08996030073539305,
+     "t30": null,
+     "limited_steps": 19,
+     "watchdog_zero_steps": 5,
+     "room": [
+      0.3610970130662507,
+      Infinity
+     ],
+     "seen": [
+      false,
+      false
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.49",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1954032512501663,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.13945241836739303,
+     "t30": null,
+     "limited_steps": 19,
+     "watchdog_zero_steps": 5,
+     "room": [
+      0.4715187199132996,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.65",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.18681917577519858,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.28566503113892777,
+     "t30": 1.683466122693484,
+     "limited_steps": 21,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.6224262338915432,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.34",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.12812622794187958,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.08923915272485518,
+     "t30": null,
+     "limited_steps": 19,
+     "watchdog_zero_steps": 5,
+     "room": [
+      0.2902871718534899,
+      Infinity
+     ],
+     "seen": [
+      false,
+      false
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.44",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1344585059973619,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.20076847338808257,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.40121199189377904,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.39",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.152628835690234,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.09873104529420614,
+     "t30": null,
+     "limited_steps": 23,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.34647696944251033,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    }
+   ],
+   "min_clearance": 0.08459634458235259
+  },
+  "popup": {
+   "runs": 15,
+   "passed": 11,
+   "rows": [
+    {
+     "scenario": "popup room 0.27 at +0.01s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.07960551359342848,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.160943024772337,
+     "t30": null,
+     "limited_steps": 19,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.70 at +0.28s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1824765622646542,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.378784728126882,
+     "t30": 0.6480031098214982,
+     "limited_steps": 2,
+     "watchdog_zero_steps": 5,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      false
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.75 at +0.09s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.18723380512452878,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.4280305738694409,
+     "t30": 0.6247964797313013,
+     "limited_steps": 11,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.78 at +0.07s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1972134071171619,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.38457813960281906,
+     "t30": 0.7274621420772194,
+     "limited_steps": 1,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.63 at +0.16s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.08838812635442161,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.48589653779922937,
+     "t30": 0.5484042345227742,
+     "limited_steps": 7,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.34 at +0.14s",
+     "pass": false,
+     "why": [
+      "FELL",
+      "CONTACT at +1.84s"
+     ],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": true,
+     "contact_t": 1.836531591327918,
+     "min_clearance": -0.6412958360082774,
+     "fell": true,
+     "stable_end": false,
+     "lateral": -0.5591427463063332,
+     "t30": 0.834531591328028,
+     "limited_steps": 9,
+     "watchdog_zero_steps": 5,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.50 at +0.16s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.0969693204609855,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.34844548435629674,
+     "t30": 0.6794767470592369,
+     "limited_steps": 5,
+     "watchdog_zero_steps": 5,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.34 at +0.22s",
+     "pass": false,
+     "why": [
+      "CONTACT at +0.61s"
+     ],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": true,
+     "contact_t": 0.6129442160162597,
+     "min_clearance": -0.008177546496318966,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.2949550203931654,
+     "t30": 0.5989442160162612,
+     "limited_steps": 7,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.66 at +0.09s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.13167271558147667,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.40320854503868,
+     "t30": 0.602218819684881,
+     "limited_steps": 10,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.76 at +0.19s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.2104355165967939,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.38313141447254456,
+     "t30": 0.755753514196321,
+     "limited_steps": 4,
+     "watchdog_zero_steps": 4,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.39 at +0.24s",
+     "pass": false,
+     "why": [
+      "CONTACT at +1.49s"
+     ],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": true,
+     "contact_t": 1.490857900000687,
+     "min_clearance": -0.0011086475633897488,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.4126544934524808,
+     "t30": 0.6128579000007837,
+     "limited_steps": 7,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.71 at +0.07s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.12818396266915796,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.44270024231497174,
+     "t30": 0.6091569771920011,
+     "limited_steps": 9,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.35 at +0.03s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.05137596728201147,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.2576637491023074,
+     "t30": null,
+     "limited_steps": 14,
+     "watchdog_zero_steps": 4,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.53 at +0.05s",
+     "pass": false,
+     "why": [
+      "FELL",
+      "CONTACT at +0.77s"
+     ],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": true,
+     "contact_t": 0.7727836514614008,
+     "min_clearance": -0.6336008361746417,
+     "fell": true,
+     "stable_end": false,
+     "lateral": 0.07697768302795784,
+     "t30": 0.6767836514614114,
+     "limited_steps": 15,
+     "watchdog_zero_steps": 0,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "popup room 0.53 at +0.14s",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.07107257679878679,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.4076716462415937,
+     "t30": 0.6561348314998465,
+     "limited_steps": 10,
+     "watchdog_zero_steps": 2,
+     "room": [
+      Infinity,
+      Infinity
+     ],
+     "seen": [
+      true,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    }
+   ],
+   "min_clearance": -0.6412958360082774
+  }
+ }
+}

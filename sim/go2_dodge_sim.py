@@ -126,6 +126,10 @@ class Physics:
     latency: float = 0.0           # s, delay between joint target and the motor seeing it
     torque_speed: bool = True      # torque falls off above half of max joint speed
     timestep: float = 0.002
+    obs_noise: float = 0.0         # 1.0 = legged_gym noise: joint pos 0.01 rad, joint vel 1.5 rad/s, gravity 0.05
+    target_margin: float = 0.0     # clamp joint targets this far inside the joint range [rad] (deploy safety)
+    pre_offset: float = 0.0        # shifts the trigger time -> random gait phase at the trigger
+    seed: int = 0                  # for the observation noise
 
 
 def flat_scene_spec(scene: Path = SCENE) -> mujoco.MjSpec:
@@ -155,6 +159,9 @@ class Go2Robot:
         for gid in (*self.feet, self.floor):
             m.geom_friction[gid, 0] = phys.friction
         self.delay = deque(maxlen=max(1, round(phys.latency / m.opt.timestep) + 1))
+        jr = m.jnt_range[[m.joint(p + n).id for n in JOINTS]]
+        self.q_lo, self.q_hi = jr[:, 0].copy(), jr[:, 1].copy()
+        self.rng = np.random.default_rng(phys.seed)
 
     def reset(self) -> None:
         self.d.qpos[self.bq:self.bq + 3] = [*self.home_xy, 0.30]
@@ -189,6 +196,16 @@ class Go2Robot:
     def gravity(self) -> np.ndarray:
         return self.rot().T @ np.array([0.0, 0.0, -1.0])
 
+    def observe(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """What the policy sees: gravity, q, dq, with sensor noise if phys.obs_noise > 0."""
+        grav, q, dq = self.gravity(), self.q, self.dq
+        k = self.phys.obs_noise
+        if k > 0:
+            grav = grav + self.rng.uniform(-1, 1, 3) * 0.05 * k
+            q = q + self.rng.uniform(-1, 1, 12) * 0.01 * k
+            dq = dq + self.rng.uniform(-1, 1, 12) * 1.5 * k
+        return grav, q, dq
+
     def rpy(self) -> np.ndarray:
         r = self.rot()
         return np.array([math.atan2(r[2, 1], r[2, 2]), -math.asin(np.clip(r[2, 0], -1, 1)), math.atan2(r[1, 0], r[0, 0])])
@@ -213,6 +230,8 @@ class Go2Robot:
     # ---- control -----------------------------------------------------------------------------
     def apply_pd(self, q_target: np.ndarray, kp: float, kd: float) -> None:
         """Joint PD for one sim step (the motor driver does this on the dog)."""
+        if self.phys.target_margin > 0:
+            q_target = np.clip(q_target, self.q_lo + self.phys.target_margin, self.q_hi - self.phys.target_margin)
         self.delay.append(q_target)
         tgt = self.delay[0]
         q, dq = self.q, self.dq
@@ -303,7 +322,7 @@ class DodgeController:
                 cmd = replace(cmd, vy=d.kick_vy)
             if phase == "brake" and d.brake_vy is not None and t - t1 < d.brake_s:
                 cmd = replace(cmd, vy=d.brake_vy)
-            return self.pol.targets(r.gravity(), r.q, r.dq, cmd), KP, KD, phase
+            return self.pol.targets(*r.observe(), cmd), KP, KD, phase
         if self.stand_from is None:
             self.stand_from = r.q
         a = min(1.0, (t - t2) / d.stand_ramp)
@@ -331,14 +350,91 @@ class DodgeController:
                 "fell": bool(self.fell)}
 
 
-def run(dodge: Dodge, phys: Physics = Physics(), policy: WTWPolicy | None = None) -> dict:
+class LoadMeter:
+    """Mechanical load per sim step: foot forces, touchdown speed, torque, joint speed/limits, trunk accel."""
+
+    def __init__(self, robot: Go2Robot):
+        r, m = robot, robot.m
+        self.r = r
+        self.weight = 9.81 * float(sum(m.body_mass[b] for b in range(m.nbody)
+                                       if b == r.trunk or _below(m, b, r.trunk)))
+        imu = m.site(r.prefix + "imu").id
+        sid = [k for k in range(m.nsensor)
+               if m.sensor_type[k] == mujoco.mjtSensor.mjSENS_ACCELEROMETER and m.sensor_objid[k] == imu][0]
+        self.acc_adr = m.sensor_adr[sid]
+        self.f6, self.v6 = np.zeros(6), np.zeros(6)
+        self.in_contact = np.ones(4, bool)
+        self.foot_of = {int(gid): j for j, gid in enumerate(r.feet)}
+        self.foot, self.tau, self.speed, self.margin, self.acc, self.touch = [], [], [], [], [], []
+
+    def sample(self) -> None:
+        r, m, d = self.r, self.r.m, self.r.d
+        f = np.zeros(4)
+        if d.ncon:
+            geoms = d.contact.geom[:d.ncon]                       # vectorised contact filter
+            for k in np.nonzero((geoms == r.floor).any(1))[0]:
+                g1, g2 = geoms[k]
+                j = self.foot_of.get(int(g2 if g1 == r.floor else g1))
+                if j is not None:
+                    mujoco.mj_contactForce(m, d, int(k), self.f6)
+                    f[j] += self.f6[0]
+        now = f > 1.0
+        if (now & ~self.in_contact).any():
+            for j in np.nonzero(now & ~self.in_contact)[0]:
+                mujoco.mj_objectVelocity(m, d, mujoco.mjtObj.mjOBJ_GEOM, r.feet[j], self.v6, 0)
+                self.touch.append(max(0.0, -self.v6[5]))
+        self.in_contact = now
+        q, dq = d.qpos[r.qadr], d.qvel[r.vadr]
+        self.foot.append(f.max() / self.weight)
+        self.tau.append((np.abs(d.actuator_force[r.act]) / r.tau_max).max())
+        self.speed.append((np.abs(dq) / MAX_SPEED).max())
+        self.margin.append(min((q - r.q_lo).min(), (r.q_hi - q).min()))
+        a = d.xmat[r.trunk].reshape(3, 3) @ d.sensordata[self.acc_adr:self.acc_adr + 3]
+        a[2] -= 9.81
+        self.acc.append(math.sqrt(a @ a) / 9.81)
+
+    def summary(self) -> dict:
+        def peak(x, n=5):          # 10 ms moving average drops single-step contact spikes
+            x = np.asarray(x)
+            return float(np.convolve(x, np.ones(n) / n, mode="same").max()) if len(x) >= n else float(np.max(x))
+        tv = np.array(self.touch) if self.touch else np.zeros(1)
+        return {"foot_force_bw": peak(self.foot), "touchdown_p95": float(np.percentile(tv, 95)),
+                "torque_frac": peak(self.tau), "speed_frac": peak(self.speed),
+                "trunk_acc_g": peak(self.acc), "limit_margin": float(np.min(self.margin))}
+
+
+def _below(m, b, root) -> bool:
+    while b > 0:
+        b = m.body_parentid[b]
+        if b == root:
+            return True
+    return False
+
+
+def run(dodge: Dodge, phys: Physics = Physics(), policy: WTWPolicy | None = None, loads: bool = False) -> dict:
+    """One dodge. phys.pre_offset shifts the trigger (gait phase); loads=True also measures the
+    mechanical load from 0.2 s before the trigger to the end (slower)."""
+    if phys.pre_offset:
+        dodge = replace(dodge, pre=dodge.pre + phys.pre_offset)
     sim = Go2Sim(phys)
     ctl = DodgeController(dodge, sim, policy or WTWPolicy())
+    meter = LoadMeter(sim) if loads else None
+    start = dodge.t0 - 0.2
     while sim.t < dodge.total - 1e-9:
         q_target, kp, kd, phase = ctl.targets(sim.t)
-        sim.step(q_target, kp, kd)
+        if meter is None or sim.t + POLICY_DT < start:
+            sim.step(q_target, kp, kd)
+        else:
+            for _ in range(sim.substeps):
+                sim.apply_pd(q_target, kp, kd)
+                mujoco.mj_step(sim.m, sim.d)
+                meter.sample()
+            sim.t += POLICY_DT
         ctl.record(sim.t, phase)
-    return ctl.result(phys)
+    res = ctl.result(phys)
+    if meter is not None:
+        res["loads"] = meter.summary()
+    return res
 
 
 def metrics(res: dict) -> dict:
@@ -370,6 +466,7 @@ def metrics(res: dict) -> dict:
         "final_pitch_deg": float(np.degrees(np.abs(L["pitch"][last]).max())),
         "final_speed": float(np.abs(np.gradient(L["y"][last], POLICY_DT)).max()),
         "final_feet_down": int(L["contacts"][last].min()),
+        **res.get("loads", {}),
         "stable_end": bool(not res["fell"] and L["contacts"][last].min() == 4
                            and np.degrees(np.abs(L["roll"][last]).max()) < 5
                            and np.degrees(np.abs(L["pitch"][last]).max()) < 5
@@ -402,6 +499,15 @@ def sweep_variants() -> list[Dodge]:
         Dodge("trot 4Hz kick 3.0 for 0.3s, then 1.0", Command(vy=1.0, freq=4.0), kick_vy=3.0, kick_s=0.3),
         RECOMMENDED,
     ]
+
+
+def harsh_physics(rng: np.random.Generator) -> Physics:
+    """Deployment-like worst cases: sensor noise, joint-target clamp (as the deploy script will do),
+    random gait phase at the trigger, payload up to +3 kg, weak motors, up to 30 ms latency."""
+    return Physics(friction=rng.uniform(0.35, 1.1), mass_add=rng.uniform(-1.0, 3.0),
+                   motor_strength=rng.uniform(0.8, 1.0), latency=rng.uniform(0.0, 0.03),
+                   obs_noise=1.0, target_margin=0.1, pre_offset=rng.uniform(-0.3, 0.3),
+                   seed=int(rng.integers(1 << 30)))
 
 
 def random_physics(rng: np.random.Generator, base: Physics) -> Physics:

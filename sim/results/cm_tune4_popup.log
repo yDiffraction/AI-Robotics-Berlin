@@ -1,0 +1,69 @@
+1795281437.017288 [77] collision_: selected interface "lo" is not multicast-capable: disabling multicast
+[INFO] [1795281437.143187132] [collision_monitor]: 
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1795281437.273298537] [collision_monitor]: Configuring
+[INFO] [1795281437.286307242] [collision_monitor]: [FootprintApproach]: Creating Polygon
+[INFO] [1795281437.289757102] [collision_monitor]: [cloud]: Creating PointCloud
+[INFO] [1795281437.299535263] [collision_monitor]: Activating
+[INFO] [1795281437.301604465] [collision_monitor]: Creating bond (collision_monitor) to lifecycle manager.
+[INFO] [1795281440.386238171] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281440.665364143] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281443.226742556] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281443.326547758] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281443.506737235] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281443.706638513] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281446.195333067] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281446.295212197] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281446.374303323] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281446.434542549] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281448.937007923] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281449.076860794] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281451.432848540] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281451.732690943] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281454.037589062] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281454.397668865] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281456.646944077] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281456.927466299] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281459.413160049] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281459.593158232] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281461.853082570] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281464.332751726] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281464.713379484] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281464.813420969] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281467.129406541] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281469.357612399] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281469.558057739] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281469.838137641] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281472.107542081] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281472.186793104] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281472.286938662] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281472.346116949] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281474.678654694] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281474.739790511] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281474.759317869] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281474.819298556] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281477.190663494] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281477.350296372] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281479.884442890] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281480.145022360] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281482.344926721] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281482.644849318] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281484.995305528] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281485.156033689] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281485.175189494] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281487.261021340] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281487.559776103] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281487.660562120] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281490.038458128] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795281490.239394226] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795281491.431335280] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1795281491.432432175] [collision_monitor]: Running Nav2 LifecycleNode rcl preshutdown (collision_monitor)
+[INFO] [1795281491.433100242] [collision_monitor]: Deactivating
+[INFO] [1795281491.433647765] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795281491.444364128] [collision_monitor]: Cleaning up
+[INFO] [1795281491.445160802] [collision_monitor]: [FootprintApproach]: Destroying Polygon
+[INFO] [1795281491.445778156] [collision_monitor]: [cloud]: Destroying PointCloud
+[INFO] [1795281491.448050383] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795281491.452731004] [collision_monitor]: Destroying

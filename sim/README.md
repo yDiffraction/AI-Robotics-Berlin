@@ -42,6 +42,30 @@ Scenario: settle → trot in place (or `--from-stand`) → **dodge** (lateral co
 
 [show_dodges.py](show_dodges.py) puts the dogs in a grid, one dodge each, all triggered at the same moment. Each dog has a coloured ball. Each lane has a white start line and a red 30 cm line. The overlay shows each dog's time to 30 cm, or FELL. The line-up: trained limit, sustained 1.5, sustained 2.5 (falls), hand-tuned, and the two optimizer finalists, which are read from `results/optimize.json`.
 
+## SAFE dodge: the one to put on the robot
+
+`results/safe_dodge.json`, shown in white in the viewer. It is chosen for low crash risk, not top speed:
+
+1. **Harsh, deployment-like runs** (`go2_dodge_sim.harsh_physics`): sensor noise at legged_gym levels, joint targets clamped 0.1 rad inside each joint range (the deploy script must do the same), the trigger at a random gait phase, trunk mass −1…+3 kg, motors at 80–100 %, 0–30 ms latency, friction 0.35–1.1.
+2. **Hard load limits**, set at 1.25× the worst of normal sideways walking (0.6 m/s) under the same conditions (`validate_dodge.py --reference`, written to `results/safety_reference.json`): joint ≥ 0.05 rad from its stop, foot force ≤ 1.81 body weights, touchdown p95 ≤ 3.73 m/s, trunk ≤ 1.93 g, torque ≤ 97 % of the motor limit, tilt ≤ 20°. A run also fails if the dog falls or does not end standing still.
+3. **`optimize_dodge.py --safe`** searched with these limits. The best finalists still failed 1–3 % of runs, by small limit overshoots, not falls. So **`validate_dodge.py --scale-sweep`** scales their speed commands down until a version passes every run, and the 80 % version was taken for extra margin.
+
+| 500 fresh harsh runs (same set for all) | Failures | 30 cm median / p95 | Worst knee margin | Worst torque | Worst tilt |
+|---|---|---|---|---|---|
+| **SAFE** (kick 1.36 m/s for 0.41 s, hold 0.51, 0.48 s, trot 3.74 Hz) | **0/500** (95 % upper bound 0.6 %) | 0.58 / 0.64 s | 0.15 rad | 0.88 | 17.4° |
+| same base at 90 % speed | 0/500 | 0.55 / 0.62 s | 0.09 rad | 0.94 | 18.2° |
+| purple (previous recommendation) | 21/500 (limit overshoots; none of the listed ones fell) | 0.51 / 0.61 s | 0.05 rad | 1.00 | 20.9° |
+| green (hand-tuned) | 34/500 | 0.52 / 0.65 s | 0.05 rad | 1.00 | 23.6° |
+
+```bash
+python validate_dodge.py --reference --runs 80     # load limits from normal walking
+python optimize_dodge.py --safe                    # ~20 min
+python validate_dodge.py --scale-sweep --runs 200  # -> results/safe_dodge.json
+python validate_dodge.py --dodges safe,purple --runs 500
+```
+
+0/500 is a statement about this simulator, not a guarantee for the real dog. Physical tests still go harness → low gains → floor.
+
 ## Optimization ([optimize_dodge.py](optimize_dodge.py))
 
 Knobs searched together: kick vy and duration, hold vy, total dodge time, step frequency, stance width, footswing, body height, and a counter-command at the start of braking. Stage 1 is 500 random candidates. Stage 2 is 360 local refinements. Every candidate runs on the same 13 physics settings: nominal plus 12 randomized (friction 0.4–1.0, trunk mass −1…+2 kg, motor strength 85–100 %, latency 0–20 ms), and only candidates stable in all 13 count. Stage 3 validates the 8 finalists on 40 fresh, harsher settings (friction 0.35–1.1, mass −1.5…+3 kg, motors 80–100 %, latency 0–30 ms) and on 20 copies of their own settings perturbed by about ±10 %.

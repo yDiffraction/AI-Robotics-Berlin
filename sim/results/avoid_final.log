@@ -1,0 +1,287 @@
+  [ok ] free            free                                                 side +1 lat +0.43 clear 9.000 t30 0.63 
+  [ok ] free            free                                                 side +1 lat +0.45 clear 9.000 t30 0.63 
+  [ok ] free            free                                                 side +1 lat +0.56 clear 9.000 t30 0.55 
+  [ok ] free            free                                                 side +1 lat +0.53 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.51 clear 9.000 t30 0.59 
+  [ok ] free            free                                                 side +1 lat +0.51 clear 9.000 t30 0.59 
+  [ok ] free            free                                                 side +1 lat +0.48 clear 9.000 t30 0.59 
+  [ok ] free            free                                                 side +1 lat +0.50 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.54 clear 9.000 t30 0.58 
+  [ok ] free            free                                                 side +1 lat +0.50 clear 9.000 t30 0.55 
+  [ok ] free            free                                                 side +1 lat +0.53 clear 9.000 t30 0.6 
+  [ok ] free            free                                                 side +1 lat +0.50 clear 9.000 t30 0.59 
+  [ok ] free            free                                                 side +1 lat +0.57 clear 9.000 t30 0.56 
+  [ok ] free            free                                                 side +1 lat +0.50 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.52 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.53 clear 9.000 t30 0.58 
+  [ok ] free            free                                                 side +1 lat +0.51 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.40 clear 9.000 t30 0.66 
+  [ok ] free            free                                                 side +1 lat +0.53 clear 9.000 t30 0.57 
+  [ok ] free            free                                                 side +1 lat +0.50 clear 9.000 t30 0.58 
+  [ok ] free            free                                                 side +1 lat +0.53 clear 9.000 t30 0.54 
+  [ok ] free            free                                                 side +1 lat +0.48 clear 9.000 t30 0.58 
+  [ok ] free            free                                                 side +1 lat +0.46 clear 9.000 t30 0.62 
+  [ok ] free            free                                                 side +1 lat +0.45 clear 9.000 t30 0.66 
+  [ok ] free            free                                                 side +1 lat +0.47 clear 9.000 t30 0.6 
+== free: 25/25 passed
+  [ok ] wall_one        wall left room 0.91                                  side +1 lat +0.33 clear 9.000 t30 0.84 
+  [ok ] wall_one        wall left room 1.37                                  side +1 lat +0.52 clear 9.000 t30 0.55 
+  [ok ] wall_one        wall left room 0.60                                  side -1 lat +0.46 clear 9.000 t30 0.62 
+  [ok ] wall_one        wall left room 1.34                                  side +1 lat +0.53 clear 9.000 t30 0.55 
+  [ok ] wall_one        wall left room 0.06                                  side -1 lat -0.01 clear 0.036 t30 None 
+  [FAIL] wall_one        wall left room 0.12                                  side +0 lat -0.01 clear 0.067 t30 None side +0 not in [-1]
+  [ok ] wall_one        wall left room 0.93                                  side +1 lat +0.33 clear 9.000 t30 0.78 
+  [ok ] wall_one        wall left room 0.26                                  side -1 lat +0.48 clear 0.139 t30 0.6 
+  [ok ] wall_one        wall left room 0.45                                  side -1 lat +0.52 clear 0.228 t30 0.59 
+  [ok ] wall_one        wall left room 0.06                                  side -1 lat -0.01 clear 0.030 t30 None 
+  [ok ] wall_one        wall left room 0.82                                  side -1 lat +0.51 clear 9.000 t30 0.57 
+  [ok ] wall_one        wall left room 1.46                                  side +1 lat +0.53 clear 9.000 t30 0.56 
+  [ok ] wall_one        wall left room 0.23                                  side -1 lat +0.51 clear 0.117 t30 0.61 
+  [ok ] wall_one        wall left room 1.50                                  side +1 lat +0.52 clear 9.000 t30 0.6 
+  [ok ] wall_one        wall left room 0.84                                  side -1 lat +0.46 clear 9.000 t30 0.58 
+  [FAIL] wall_one        wall left room 0.26                                  side +0 lat +0.05 clear 0.104 t30 None side +0 not in [-1]
+  [ok ] wall_one        wall left room 0.85                                  side +1 lat +0.29 clear 9.000 t30 1.99 
+  [ok ] wall_one        wall left room 1.50                                  side +1 lat +0.53 clear 9.000 t30 0.56 
+  [ok ] wall_one        wall left room 1.54                                  side +1 lat +0.44 clear 9.000 t30 0.61 
+  [ok ] wall_one        wall left room 1.16                                  side +1 lat +0.47 clear 9.000 t30 0.59 
+  [ok ] wall_one        wall left room 1.17                                  side +1 lat +0.48 clear 9.000 t30 0.58 
+  [ok ] wall_one        wall left room 0.20                                  side -1 lat +0.47 clear 0.108 t30 0.59 
+  [ok ] wall_one        wall left room 0.36                                  side -1 lat +0.45 clear 0.185 t30 0.61 
+  [ok ] wall_one        wall left room 0.36                                  side -1 lat +0.44 clear 0.182 t30 0.62 
+  [ok ] wall_one        wall left room 0.60                                  side -1 lat +0.49 clear 9.000 t30 0.57 
+  [ok ] wall_one        wall left room 1.00                                  side +1 lat +0.36 clear 9.000 t30 0.73 
+  [ok ] wall_one        wall left room 0.83                                  side -1 lat +0.45 clear 9.000 t30 0.62 
+  [ok ] wall_one        wall left room 0.07                                  side -1 lat -0.02 clear 0.034 t30 None 
+  [ok ] wall_one        wall left room 1.40                                  side +1 lat +0.51 clear 9.000 t30 0.58 
+  [ok ] wall_one        wall left room 1.11                                  side +1 lat +0.53 clear 9.000 t30 0.57 
+== wall_one: 28/30 passed, closest approach 0.030 m
+  [ok ] walls_both      walls L 0.21 R 0.74                                  side +0 lat +0.02 clear 0.109 t30 None 
+  [ok ] walls_both      walls L 1.25 R 0.08                                  side +1 lat +0.03 clear 0.046 t30 None 
+  [ok ] walls_both      walls L 1.21 R 0.68                                  side +1 lat +0.50 clear 9.000 t30 0.57 
+  [ok ] walls_both      walls L 0.26 R 1.12                                  side -1 lat +0.42 clear 0.136 t30 0.59 
+  [ok ] walls_both      walls L 0.27 R 0.56                                  side +0 lat +0.01 clear 0.130 t30 None 
+  [ok ] walls_both      walls L 0.33 R 0.98                                  side -1 lat +0.38 clear 0.172 t30 0.71 
+  [ok ] walls_both      walls L 0.91 R 0.07                                  side +1 lat +0.05 clear 0.043 t30 None 
+  [ok ] walls_both      walls L 0.85 R 0.83                                  side +1 lat +0.36 clear 0.488 t30 0.75 
+  [ok ] walls_both      walls L 1.02 R 0.37                                  side +1 lat +0.36 clear 0.191 t30 0.68 
+  [FAIL] walls_both      walls L 0.24 R 0.94                                  side +0 lat -0.00 clear 0.124 t30 None side +0 not in [-1]
+  [ok ] walls_both      walls L 0.77 R 0.66                                  side +0 lat +0.03 clear 9.000 t30 None 
+  [ok ] walls_both      walls L 0.78 R 0.45                                  side +0 lat +0.02 clear 0.209 t30 None 
+  [ok ] walls_both      walls L 0.17 R 0.91                                  side -1 lat +0.35 clear 0.095 t30 0.76 
+  [ok ] walls_both      walls L 1.11 R 0.82                                  side +1 lat +0.48 clear 9.000 t30 0.63 
+  [ok ] walls_both      walls L 1.06 R 0.31                                  side +1 lat +0.38 clear 0.156 t30 0.67 
+  [ok ] walls_both      walls L 1.28 R 1.13                                  side +1 lat +0.56 clear 9.000 t30 0.56 
+  [ok ] walls_both      walls L 0.27 R 0.50                                  side +0 lat +0.03 clear 0.138 t30 None 
+  [ok ] walls_both      walls L 0.55 R 0.41                                  side +0 lat +0.03 clear 0.211 t30 None 
+  [ok ] walls_both      walls L 0.09 R 0.54                                  side +0 lat +0.01 clear 0.054 t30 None 
+  [ok ] walls_both      walls L 0.57 R 0.42                                  side +0 lat +0.02 clear 0.212 t30 None 
+  [ok ] walls_both      walls L 0.59 R 0.59                                  side +0 lat +0.02 clear 9.000 t30 None 
+  [ok ] walls_both      walls L 0.47 R 1.12                                  side -1 lat +0.45 clear 0.239 t30 0.62 
+  [ok ] walls_both      walls L 0.09 R 0.48                                  side +0 lat +0.05 clear 0.002 t30 None 
+  [ok ] walls_both      walls L 1.01 R 0.26                                  side +1 lat +0.44 clear 0.141 t30 0.65 
+  [ok ] walls_both      walls L 0.19 R 0.24                                  side +0 lat +0.02 clear 0.095 t30 None 
+  [ok ] walls_both      walls L 0.48 R 0.97                                  side -1 lat +0.35 clear 0.246 t30 0.71 
+  [ok ] walls_both      walls L 0.93 R 0.39                                  side +1 lat +0.39 clear 0.201 t30 0.72 
+  [ok ] walls_both      walls L 0.12 R 0.56                                  side +0 lat +0.02 clear 0.060 t30 None 
+  [ok ] walls_both      walls L 0.89 R 1.11                                  side +1 lat +0.32 clear 9.000 t30 0.76 
+  [ok ] walls_both      walls L 0.66 R 0.64                                  side +0 lat +0.03 clear 9.000 t30 None 
+== walls_both: 29/30 passed, closest approach 0.002 m
+  [ok ] forced          FORCED left, wall room 0.18                          side +1 lat -0.14 clear 0.095 t30 None 
+  [ok ] forced          FORCED left, wall room 0.79                          side +1 lat +0.28 clear 9.000 t30 None 
+  [ok ] forced          FORCED left, wall room 0.71                          side +1 lat +0.29 clear 0.218 t30 None 
+  [ok ] forced          FORCED left, wall room 0.46                          side +1 lat +0.12 clear 0.182 t30 None 
+  [ok ] forced          FORCED left, wall room 0.74                          side +1 lat +0.23 clear 0.249 t30 None 
+  [ok ] forced          FORCED left, wall room 0.19                          side +1 lat -0.14 clear 0.102 t30 None 
+  [ok ] forced          FORCED left, wall room 0.24                          side +1 lat -0.16 clear 0.113 t30 None 
+  [ok ] forced          FORCED left, wall room 0.77                          side +1 lat +0.29 clear 9.000 t30 None 
+  [ok ] forced          FORCED left, wall room 0.77                          side +1 lat +0.30 clear 0.238 t30 1.41 
+  [ok ] forced          FORCED left, wall room 0.27                          side +1 lat -0.06 clear 0.130 t30 None 
+  [ok ] forced          FORCED left, wall room 0.25                          side +1 lat -0.07 clear 0.117 t30 None 
+  [ok ] forced          FORCED left, wall room 0.54                          side +1 lat +0.16 clear 0.192 t30 None 
+  [ok ] forced          FORCED left, wall room 0.60                          side +1 lat +0.21 clear 0.206 t30 None 
+  [ok ] forced          FORCED left, wall room 0.74                          side +1 lat +0.25 clear 0.498 t30 None 
+  [ok ] forced          FORCED left, wall room 0.79                          side +1 lat +0.32 clear 0.236 t30 0.91 
+  [ok ] forced          FORCED left, wall room 0.45                          side +1 lat +0.13 clear 0.158 t30 None 
+  [ok ] forced          FORCED left, wall room 0.74                          side +1 lat +0.24 clear 9.000 t30 None 
+  [ok ] forced          FORCED left, wall room 0.47                          side +1 lat +0.13 clear 0.174 t30 None 
+  [ok ] forced          FORCED left, wall room 0.44                          side +1 lat +0.11 clear 0.180 t30 None 
+  [ok ] forced          FORCED left, wall room 0.21                          side +1 lat -0.12 clear 0.112 t30 None 
+  [ok ] forced          FORCED left, wall room 0.34                          side +1 lat +0.09 clear 0.129 t30 None 
+  [ok ] forced          FORCED left, wall room 0.69                          side +1 lat +0.21 clear 0.233 t30 None 
+  [ok ] forced          FORCED left, wall room 0.54                          side +1 lat +0.17 clear 0.196 t30 None 
+  [ok ] forced          FORCED left, wall room 0.27                          side +1 lat -0.05 clear 0.129 t30 None 
+  [ok ] forced          FORCED left, wall room 0.32                          side +1 lat +0.06 clear 0.143 t30 None 
+  [ok ] forced          FORCED left, wall room 0.21                          side +1 lat -0.11 clear 0.109 t30 None 
+  [ok ] forced          FORCED left, wall room 0.39                          side +1 lat +0.09 clear 0.165 t30 None 
+  [ok ] forced          FORCED left, wall room 0.29                          side +1 lat +0.01 clear 0.145 t30 None 
+  [ok ] forced          FORCED left, wall room 0.56                          side +1 lat +0.16 clear 0.201 t30 None 
+  [ok ] forced          FORCED left, wall room 0.50                          side +1 lat +0.16 clear 0.187 t30 None 
+== forced: 30/30 passed, closest approach 0.095 m
+  [ok ] popup           popup room 0.31 at +0.15s                            side +1 lat +0.12 clear 0.048 t30 None 
+  [ok ] popup           popup room 0.72 at +0.23s                            side +1 lat +0.46 clear 0.139 t30 0.62 
+  [ok ] popup           popup room 0.41 at +0.24s                            side +1 lat +0.29 clear 0.051 t30 0.6 
+  [ok ] popup           popup room 0.60 at +0.22s                            side +1 lat +0.36 clear 0.119 t30 0.64 
+  [ok ] popup           popup room 0.64 at +0.17s                            side +1 lat +0.40 clear 0.123 t30 0.58 
+  [ok ] popup           popup room 0.61 at +0.16s                            side +1 lat +0.48 clear 0.065 t30 0.57 
+  [FAIL] popup           popup room 0.77 at +0.16s                            side +1 lat +0.46 clear -0.679 t30 0.55 CONTACT at +1.70s
+  [ok ] popup           popup room 0.75 at +0.17s                            side +1 lat +0.41 clear 0.177 t30 0.63 
+  [FAIL] popup           popup room 0.29 at +0.19s                            side +1 lat -0.73 clear -0.577 t30 None FELL; CONTACT at +0.61s
+  [ok ] popup           popup room 0.40 at +0.01s                            side +1 lat +0.17 clear 0.134 t30 None 
+  [ok ] popup           popup room 0.45 at +0.17s                            side +1 lat +0.22 clear 0.072 t30 0.64 
+  [ok ] popup           popup room 0.68 at +0.10s                            side +1 lat +0.33 clear 0.191 t30 0.76 
+  [FAIL] popup           popup room 0.52 at +0.16s                            side -1 lat +0.48 clear 9.000 t30 0.61 side -1 not in [1]
+  [ok ] popup           popup room 0.50 at +0.12s                            side +1 lat +0.32 clear 0.115 t30 1.0 
+  [FAIL] popup           popup room 0.49 at +0.26s                            side +1 lat -0.18 clear -0.369 t30 0.55 CONTACT at +0.98s
+  [FAIL] popup           popup room 0.53 at +0.12s                            side +1 lat -0.42 clear -0.614 t30 0.65 FELL; CONTACT at +1.80s
+  [ok ] popup           popup room 0.69 at +0.09s                            side +1 lat +0.33 clear 0.200 t30 0.81 
+  [ok ] popup           popup room 0.34 at +0.22s                            side +1 lat +0.26 clear 0.001 t30 0.61 
+  [ok ] popup           popup room 0.52 at +0.10s                            side +1 lat +0.28 clear 0.129 t30 1.09 
+  [ok ] popup           popup room 0.78 at +0.25s                            side +1 lat +0.38 clear 0.221 t30 0.69 
+  [ok ] popup           popup room 0.46 at +0.04s                            side +1 lat +0.18 clear 0.109 t30 None 
+  [ok ] popup           popup room 0.76 at +0.26s                            side +1 lat +0.50 clear 0.127 t30 0.55 
+  [ok ] popup           popup room 0.75 at +0.02s                            side +1 lat +0.44 clear 0.158 t30 0.6 
+  [ok ] popup           popup room 0.78 at +0.02s                            side +1 lat +0.42 clear 0.188 t30 0.7 
+  [ok ] popup           popup room 0.51 at +0.25s                            side +1 lat +0.34 clear 0.055 t30 0.6 
+  [ok ] popup           popup room 0.66 at +0.09s                            side +1 lat +0.40 clear 0.162 t30 0.61 
+  [ok ] popup           popup room 0.41 at +0.14s                            side +1 lat +0.15 clear 0.095 t30 None 
+  [ok ] popup           popup room 0.46 at +0.03s                            side +1 lat +0.17 clear 0.127 t30 None 
+  [ok ] popup           popup room 0.77 at +0.06s                            side +1 lat +0.40 clear 0.211 t30 0.65 
+  [ok ] popup           popup room 0.77 at +0.20s                            side +1 lat +0.53 clear 0.132 t30 0.52 
+  [ok ] popup           popup room 0.63 at +0.01s                            side +1 lat +0.31 clear 0.169 t30 0.87 
+  [ok ] popup           popup room 0.53 at +0.05s                            side +1 lat +0.28 clear 0.119 t30 0.78 
+  [FAIL] popup           popup room 0.41 at +0.29s                            side +1 lat +0.25 clear -0.247 t30 0.58 CONTACT at +0.68s
+  [ok ] popup           popup room 0.48 at +0.06s                            side +1 lat +0.35 clear 0.072 t30 0.71 
+  [ok ] popup           popup room 0.58 at +0.24s                            side +1 lat +0.31 clear 0.104 t30 0.58 
+  [ok ] popup           popup room 0.66 at +0.29s                            side +1 lat +0.41 clear 0.131 t30 0.62 
+  [ok ] popup           popup room 0.40 at +0.06s                            side +1 lat +0.17 clear 0.083 t30 None 
+  [ok ] popup           popup room 0.68 at +0.30s                            side +1 lat +0.48 clear 0.079 t30 0.56 
+  [FAIL] popup           popup room 0.28 at +0.24s                            side +1 lat +0.08 clear -0.254 t30 0.68 CONTACT at +0.60s
+  [FAIL] popup           popup room 0.26 at +0.14s                            side +1 lat -0.30 clear -0.645 t30 None FELL; CONTACT at +0.47s
+== popup: 32/40 passed, closest approach -0.679 m
+  [ok ] popup_nokeepoff popup room 0.45 at +0.20s (no keep-off)              side +1 lat +0.45 clear 0.013 t30 0.64 
+  [info] popup_nokeepoff popup room 0.39 at +0.28s (no keep-off)              side +1 lat -0.80 clear -0.755 t30 0.58 FELL; CONTACT at +0.57s
+  [info] popup_nokeepoff popup room 0.33 at +0.17s (no keep-off)              side +1 lat +0.36 clear -0.001 t30 0.68 CONTACT at +1.38s
+  [ok ] popup_nokeepoff popup room 0.74 at +0.13s (no keep-off)              side +1 lat +0.42 clear 0.168 t30 0.61 
+  [ok ] popup_nokeepoff popup room 0.44 at +0.14s (no keep-off)              side +1 lat +0.34 clear 0.070 t30 0.78 
+  [ok ] popup_nokeepoff popup room 0.67 at +0.07s (no keep-off)              side +1 lat +0.39 clear 0.153 t30 0.66 
+  [ok ] popup_nokeepoff popup room 0.60 at +0.06s (no keep-off)              side +1 lat +0.34 clear 0.145 t30 0.94 
+  [ok ] popup_nokeepoff popup room 0.54 at +0.14s (no keep-off)              side +1 lat +0.36 clear 0.104 t30 0.66 
+  [ok ] popup_nokeepoff popup room 0.45 at +0.02s (no keep-off)              side +1 lat +0.21 clear 0.135 t30 None 
+  [info] popup_nokeepoff popup room 0.25 at +0.28s (no keep-off)              side -1 lat +0.48 clear 0.174 t30 0.59 side -1 not in [1]
+  [ok ] popup_nokeepoff popup room 0.38 at +0.16s (no keep-off)              side +1 lat +0.35 clear 0.035 t30 0.77 
+  [ok ] popup_nokeepoff popup room 0.75 at +0.24s (no keep-off)              side +1 lat +0.47 clear 0.147 t30 0.59 
+  [ok ] popup_nokeepoff popup room 0.59 at +0.06s (no keep-off)              side +1 lat +0.35 clear 0.137 t30 0.85 
+  [ok ] popup_nokeepoff popup room 0.60 at +0.15s (no keep-off)              side +1 lat +0.29 clear 0.151 t30 1.92 
+  [ok ] popup_nokeepoff popup room 0.31 at +0.05s (no keep-off)              side +1 lat +0.22 clear 0.065 t30 None 
+  [ok ] popup_nokeepoff popup room 0.35 at +0.01s (no keep-off)              side +1 lat +0.22 clear 0.092 t30 None 
+  [ok ] popup_nokeepoff popup room 0.67 at +0.19s (no keep-off)              side +1 lat +0.40 clear 0.150 t30 0.63 
+  [ok ] popup_nokeepoff popup room 0.40 at +0.14s (no keep-off)              side +1 lat +0.29 clear 0.078 t30 None 
+  [ok ] popup_nokeepoff popup room 0.78 at +0.27s (no keep-off)              side +1 lat +0.46 clear 0.171 t30 0.63 
+  [info] popup_nokeepoff popup room 0.61 at +0.15s (no keep-off)              side +1 lat +0.34 clear -0.625 t30 0.67 CONTACT at +1.70s
+== popup_nokeepoff: 16/20 passed, closest approach -0.755 m
+  [ok ] dropout         lidar off +0.15s, FORCED, wall 0.70                  side +1 lat +0.27 clear 0.224 t30 None 
+  [ok ] dropout         lidar off +0.11s, FORCED, wall 0.54                  side +1 lat +0.13 clear 0.215 t30 None 
+  [ok ] dropout         lidar off +0.21s, FORCED, wall 0.54                  side +1 lat +0.22 clear 0.173 t30 None 
+  [ok ] dropout         lidar off +0.09s, FORCED, wall 0.69                  side +1 lat +0.21 clear 0.242 t30 None 
+  [ok ] dropout         lidar off +0.07s, FORCED, wall 0.78                  side +1 lat +0.20 clear 9.000 t30 None 
+  [ok ] dropout         lidar off +0.12s, FORCED, wall 0.40                  side +1 lat +0.09 clear 0.161 t30 None 
+  [ok ] dropout         lidar off +0.25s, FORCED, wall 0.35                  side +1 lat +0.08 clear 0.153 t30 None 
+  [ok ] dropout         lidar off +0.13s, FORCED, wall 0.31                  side +1 lat +0.09 clear 0.114 t30 None 
+  [ok ] dropout         lidar off +0.24s, FORCED, wall 0.54                  side +1 lat +0.17 clear 0.201 t30 None 
+  [ok ] dropout         lidar off +0.00s, FORCED, wall 0.44                  side +1 lat +0.08 clear 0.188 t30 None 
+  [ok ] dropout         lidar off +0.18s, FORCED, wall 0.77                  side +1 lat +0.27 clear 0.250 t30 None 
+  [ok ] dropout         lidar off +0.16s, FORCED, wall 0.45                  side +1 lat +0.15 clear 0.150 t30 None 
+  [ok ] dropout         lidar off +0.14s, FORCED, wall 0.52                  side +1 lat +0.19 clear 0.175 t30 None 
+  [ok ] dropout         lidar off +0.13s, FORCED, wall 0.57                  side +1 lat +0.22 clear 0.181 t30 None 
+  [ok ] dropout         lidar off +0.20s, FORCED, wall 0.59                  side +1 lat +0.20 clear 0.208 t30 None 
+== dropout: 15/15 passed, closest approach 0.114 m
+  [ok ] dropout_nowatch lidar off +0.05s, NO lidar watchdog, FORCED, wall 0.54 side +1 lat +0.31 clear 0.132 t30 1.92 
+  [ok ] dropout_nowatch lidar off +0.07s, NO lidar watchdog, FORCED, wall 0.61 side +1 lat +0.27 clear 0.162 t30 None 
+  [ok ] dropout_nowatch lidar off +0.09s, NO lidar watchdog, FORCED, wall 0.74 side +1 lat +0.33 clear 0.204 t30 0.81 
+  [ok ] dropout_nowatch lidar off +0.18s, NO lidar watchdog, FORCED, wall 0.64 side +1 lat +0.23 clear 0.206 t30 None 
+  [ok ] dropout_nowatch lidar off +0.04s, NO lidar watchdog, FORCED, wall 0.30 side +1 lat +0.13 clear 0.089 t30 None 
+  [ok ] dropout_nowatch lidar off +0.05s, NO lidar watchdog, FORCED, wall 0.65 side +1 lat +0.27 clear 0.186 t30 None 
+  [ok ] dropout_nowatch lidar off +0.04s, NO lidar watchdog, FORCED, wall 0.37 side +1 lat +0.21 clear 0.092 t30 None 
+  [ok ] dropout_nowatch lidar off +0.02s, NO lidar watchdog, FORCED, wall 0.53 side +1 lat +0.27 clear 0.117 t30 None 
+  [ok ] dropout_nowatch lidar off +0.09s, NO lidar watchdog, FORCED, wall 0.48 side +1 lat +0.18 clear 0.156 t30 None 
+  [ok ] dropout_nowatch lidar off +0.11s, NO lidar watchdog, FORCED, wall 0.51 side +1 lat +0.19 clear 0.170 t30 None 
+== dropout_nowatch: 10/10 passed, closest approach 0.089 m
+  [ok ] monitor_down    monitor not answering                                side +1 lat +0.02 clear 9.000 t30 None 
+  [FAIL] monitor_down    monitor not answering                                side -1 lat +0.00 clear 9.000 t30 None side -1 not in [1]
+  [ok ] monitor_down    monitor not answering                                side +1 lat +0.00 clear 9.000 t30 None 
+  [ok ] monitor_down    monitor not answering                                side +1 lat +0.02 clear 9.000 t30 None 
+  [ok ] monitor_down    monitor not answering                                side +1 lat +0.03 clear 9.000 t30 None 
+== monitor_down: 4/5 passed
+  [FAIL] pole            pole (5 cm) room 0.35 x -0.22                        side +1 lat +0.46 clear -0.004 t30 0.59 CONTACT at +0.73s; side +1 not in [-1]
+  [ok ] pole            pole (5 cm) room 0.69 x +0.31                        side -1 lat +0.45 clear 9.000 t30 0.61 
+  [ok ] pole            pole (5 cm) room 0.44 x +0.13                        side -1 lat +0.44 clear 0.445 t30 0.69 
+  [FAIL] pole            pole (5 cm) room 0.70 x -0.30                        side +1 lat +0.41 clear 0.312 t30 0.71 side +1 not in [-1]
+  [ok ] pole            pole (5 cm) room 0.27 x -0.23                        side -1 lat +0.49 clear 0.279 t30 0.61 
+  [ok ] pole            pole (5 cm) room 0.62 x +0.23                        side -1 lat +0.46 clear 9.000 t30 0.63 
+  [ok ] pole            pole (5 cm) room 0.77 x -0.36                        side +1 lat +0.48 clear 0.340 t30 0.57 
+  [ok ] pole            pole (5 cm) room 0.98 x -0.05                        side +1 lat +0.49 clear 9.000 t30 0.59 
+  [ok ] pole            pole (5 cm) room 1.16 x +0.03                        side +1 lat +0.55 clear 9.000 t30 0.57 
+  [ok ] pole            pole (5 cm) room 0.69 x +0.37                        side -1 lat +0.50 clear 9.000 t30 0.58 
+  [ok ] pole            pole (5 cm) room 0.90 x +0.04                        side +1 lat +0.49 clear 0.428 t30 0.62 
+  [FAIL] pole            pole (5 cm) room 0.74 x +0.32                        side +1 lat +0.40 clear 0.352 t30 0.67 side +1 not in [-1]
+  [ok ] pole            pole (5 cm) room 0.20 x -0.12                        side -1 lat +0.49 clear 0.234 t30 0.59 
+  [ok ] pole            pole (5 cm) room 0.69 x -0.01                        side -1 lat +0.49 clear 9.000 t30 0.63 
+  [ok ] pole            pole (5 cm) room 0.70 x -0.15                        side -1 lat +0.44 clear 9.000 t30 0.63 
+  [FAIL] pole            pole (5 cm) room 0.50 x -0.13                        side +1 lat +0.50 clear 0.008 t30 0.55 side +1 not in [-1]
+  [ok ] pole            pole (5 cm) room 0.65 x +0.12                        side -1 lat +0.49 clear 9.000 t30 0.57 
+  [ok ] pole            pole (5 cm) room 1.19 x +0.06                        side +1 lat +0.54 clear 9.000 t30 0.55 
+  [ok ] pole            pole (5 cm) room 0.58 x +0.24                        side -1 lat +0.49 clear 9.000 t30 0.59 
+  [ok ] pole            pole (5 cm) room 0.62 x +0.35                        side -1 lat +0.48 clear 9.000 t30 0.57 
+== pole: 16/20 passed, closest approach -0.004 m
+  [ok ] low_box         low box (12 cm) room 0.85                            side +1 lat +0.33 clear 9.000 t30 0.76 
+  [ok ] low_box         low box (12 cm) room 0.16                            side -1 lat +0.48 clear 0.085 t30 0.61 
+  [ok ] low_box         low box (12 cm) room 1.07                            side +1 lat +0.46 clear 9.000 t30 0.58 
+  [ok ] low_box         low box (12 cm) room 0.74                            side -1 lat +0.50 clear 9.000 t30 0.6 
+  [ok ] low_box         low box (12 cm) room 0.65                            side -1 lat +0.48 clear 9.000 t30 0.61 
+  [ok ] low_box         low box (12 cm) room 0.26                            side -1 lat +0.41 clear 0.134 t30 0.68 
+  [ok ] low_box         low box (12 cm) room 0.46                            side -1 lat +0.50 clear 0.237 t30 0.57 
+  [ok ] low_box         low box (12 cm) room 0.51                            side -1 lat +0.48 clear 9.000 t30 0.6 
+  [ok ] low_box         low box (12 cm) room 0.34                            side -1 lat +0.49 clear 0.174 t30 0.59 
+  [ok ] low_box         low box (12 cm) room 0.28                            side -1 lat +0.44 clear 0.147 t30 0.62 
+  [ok ] low_box         low box (12 cm) room 0.34                            side -1 lat +0.48 clear 0.175 t30 0.61 
+  [ok ] low_box         low box (12 cm) room 1.19                            side +1 lat +0.55 clear 9.000 t30 0.56 
+  [ok ] low_box         low box (12 cm) room 0.74                            side -1 lat +0.47 clear 9.000 t30 0.62 
+  [ok ] low_box         low box (12 cm) room 0.71                            side -1 lat +0.45 clear 9.000 t30 0.59 
+  [ok ] low_box         low box (12 cm) room 0.26                            side -1 lat +0.43 clear 0.135 t30 0.62 
+== low_box: 15/15 passed, closest approach 0.085 m
+  [FAIL] rear_box        box beside hind legs room 0.71                       side +1 lat +0.47 clear 0.116 t30 0.59 side +1 not in [-1]
+  [ok ] rear_box        box beside hind legs room 0.75                       side +1 lat +0.49 clear 0.127 t30 0.56 
+  [FAIL] rear_box        box beside hind legs room 0.54                       side +1 lat +0.51 clear 0.054 t30 0.59 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.20                       side +1 lat +0.53 clear 0.082 t30 0.57 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.12                       side +1 lat +0.53 clear 0.048 t30 0.57 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.50                       side +1 lat +0.51 clear 0.077 t30 0.56 side +1 not in [-1]
+  [ok ] rear_box        box beside hind legs room 0.76                       side +1 lat +0.56 clear 0.125 t30 0.56 
+  [FAIL] rear_box        box beside hind legs room 0.67                       side +1 lat +0.55 clear 0.074 t30 0.56 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.31                       side +1 lat +0.59 clear 0.070 t30 0.56 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.63                       side +1 lat +0.53 clear 0.077 t30 0.56 side +1 not in [-1]
+  [ok ] rear_box        box beside hind legs room 0.56                       side -1 lat +0.46 clear 9.000 t30 0.58 
+  [FAIL] rear_box        box beside hind legs room 0.31                       side +1 lat +0.51 clear 0.077 t30 0.6 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.31                       side +1 lat +0.57 clear 0.074 t30 0.54 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.50                       side +1 lat +0.51 clear 0.065 t30 0.56 side +1 not in [-1]
+  [ok ] rear_box        box beside hind legs room 0.21                       side -1 lat +0.47 clear 0.123 t30 0.61 
+  [FAIL] rear_box        box beside hind legs room 0.53                       side +1 lat +0.48 clear 0.131 t30 0.57 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.23                       side +1 lat +0.52 clear 0.037 t30 0.58 side +1 not in [-1]
+  [FAIL] rear_box        box beside hind legs room 0.18                       side +1 lat +0.53 clear 0.047 t30 0.58 side +1 not in [-1]
+  [ok ] rear_box        box beside hind legs room 0.56                       side -1 lat +0.47 clear 9.000 t30 0.59 
+  [ok ] rear_box        box beside hind legs room 0.59                       side -1 lat +0.46 clear 9.000 t30 0.59 
+== rear_box: 6/20 passed, closest approach 0.037 m
+
+family               passed  closest approach
+free                25/25    -
+wall_one            28/30    0.030 m
+walls_both          29/30    0.002 m
+forced              30/30    0.095 m
+popup               32/40    -0.679 m
+popup_nokeepoff     16/20    -0.755 m (informational)
+dropout             15/15    0.114 m
+dropout_nowatch     10/10    0.089 m (informational)
+monitor_down         4/5     -
+pole                16/20    -0.004 m
+low_box             15/15    0.085 m
+rear_box             6/20    0.037 m
+-> /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/results/avoid_final.json   (11.6 min)

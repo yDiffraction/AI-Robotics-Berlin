@@ -1,0 +1,89 @@
+{
+ "params": "# Nav2 Collision Monitor (ros-humble-nav2-collision-monitor 1.1.x, unmodified) for the Go2 dodge.\n# Input:  /avoid/cloud_obstacles  - lidar points already in base_footprint, floor and the robot's own\n#                                   legs removed (sim/avoid/guard.py), so no TF tree is needed.\n#         /cmd_vel_raw            - the velocity our controller wants (Twist; linear.y = sideways).\n# Output: /cmd_vel                - the same velocity, reduced so the footprint does not reach an\n#                                   obstacle within time_before_collision.\ncollision_monitor:\n  ros__parameters:\n    use_sim_time: True\n    base_frame_id: \"base_footprint\"\n    odom_frame_id: \"odom\"              # unused: base_shift_correction is off\n    cmd_vel_in_topic: \"cmd_vel_raw\"\n    cmd_vel_out_topic: \"cmd_vel\"\n    transform_tolerance: 0.1\n    source_timeout: 0.3                # older lidar data is not used\n    base_shift_correction: False       # no odometry dependency (may stop with sport mode off)\n    stop_pub_timeout: 0.5\n    polygons: [\"FootprintApproach\"]\n    FootprintApproach:\n      type: \"polygon\"\n      action_type: \"approach\"\n      # Humble 1.1.x: an \"approach\" polygon with only static `points` SILENTLY NEVER TRIGGERS\n      # (measured with cm_probe.py: 1.0 m/s passed into a wall). It takes the footprint from a\n      # topic; the controller publishes the Go2 outline (incl. legs ~0.84 x 0.40 m, +5 cm) there:\n      # x +-0.47, y +-0.25, frame base_footprint. `points` stays as documentation.\n      points: [0.47, 0.25, 0.47, -0.25, -0.47, -0.25, -0.47, 0.25]\n      footprint_topic: \"/avoid/footprint\"\n      time_before_collision: 0.8       # tuned in test_avoid.py (the dog needs ~0.3 s to brake)\n      simulation_time_step: 0.02\n      max_points: 2                    # >= 3 points inside -> obstacle (same rule as guard.py)\n      visualize: False\n      enabled: True\n    observation_sources: [\"cloud\"]\n    cloud:\n      type: \"pointcloud\"\n      topic: \"/avoid/cloud_obstacles\"\n      min_height: 0.05\n      max_height: 1.0\n      enabled: True\n",
+ "need": 0.8,
+ "footprint": [
+  [
+   0.47,
+   0.3
+  ],
+  [
+   0.47,
+   -0.3
+  ],
+  [
+   -0.47,
+   -0.3
+  ],
+  [
+   -0.47,
+   0.3
+  ]
+ ],
+ "families": {
+  "forced": {
+   "runs": 2,
+   "passed": 2,
+   "rows": [
+    {
+     "scenario": "FORCED left, wall room 0.52",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.1857638714762524,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.18080698525668498,
+     "t30": null,
+     "limited_steps": 24,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.47888718207480024,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    },
+    {
+     "scenario": "FORCED left, wall room 0.64",
+     "pass": true,
+     "why": [],
+     "exp_sides": [
+      1
+     ],
+     "ref_t30": null,
+     "side": 1,
+     "contact": false,
+     "contact_t": null,
+     "min_clearance": 0.22308778577745486,
+     "fell": false,
+     "stable_end": true,
+     "lateral": 0.2193089794084142,
+     "t30": null,
+     "limited_steps": 21,
+     "watchdog_zero_steps": 0,
+     "room": [
+      0.5920591762919087,
+      Infinity
+     ],
+     "seen": [
+      false,
+      true
+     ],
+     "notes": [],
+     "informational": false
+    }
+   ],
+   "min_clearance": 0.1857638714762524
+  }
+ }
+}

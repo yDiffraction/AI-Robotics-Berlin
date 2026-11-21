@@ -1,0 +1,230 @@
+{
+ "chosen": {
+  "scale": 0.8,
+  "params": {
+   "kick_vy": 1.3638722326169788,
+   "kick_s": 0.4098144532334525,
+   "hold_vy": 0.5101370342198881,
+   "dodge_s": 0.47702423578419867,
+   "freq": 3.7416942663084964,
+   "stance_width": 0.3254610671869804,
+   "footswing": 0.07682755250028335,
+   "height": -0.029401725243708373,
+   "brake_vy": -0.4031163053121374,
+   "brake_s": 0.04396956305224252
+  },
+  "runs": 500,
+  "failures": 0,
+  "failure_rate_95_upper": 0.006,
+  "t30_median": 0.5802052196423735,
+  "t30_p95": 0.6436284446153111,
+  "t30_worst": 0.789913550759227,
+  "foot_force_bw_worst": 1.557960326128362,
+  "touchdown_p95_worst": 3.2309031837500566,
+  "trunk_acc_g_worst": 1.649685215900576,
+  "torque_frac_worst": 0.884026628184704,
+  "speed_frac_worst": 0.9892004038148641,
+  "limit_margin_worst": 0.14831238545685466,
+  "peak_tilt_deg_worst": 17.394549566269276,
+  "failure_reasons": {}
+ },
+ "sweep": [
+  {
+   "base": 1,
+   "scale": 1.0,
+   "params": {
+    "kick_vy": 1.7048402907712235,
+    "kick_s": 0.4098144532334525,
+    "hold_vy": 0.6376712927748601,
+    "dodge_s": 0.47702423578419867,
+    "freq": 3.7416942663084964,
+    "stance_width": 0.3254610671869804,
+    "footswing": 0.07682755250028335,
+    "height": -0.029401725243708373,
+    "brake_vy": -0.5038953816401717,
+    "brake_s": 0.04396956305224252
+   },
+   "runs": 200,
+   "failures": 1,
+   "failure_rate_95_upper": null,
+   "t30_median": 0.5291463925767965,
+   "t30_p95": 0.5984327591649589,
+   "t30_worst": 0.7523195251610368,
+   "foot_force_bw_worst": 1.7731337332021844,
+   "touchdown_p95_worst": 3.5195643716106297,
+   "trunk_acc_g_worst": 1.6862290127855637,
+   "torque_frac_worst": 1.0,
+   "speed_frac_worst": 0.9926270776712138,
+   "limit_margin_worst": 0.0678008000760566,
+   "peak_tilt_deg_worst": 18.668592967087772,
+   "failure_reasons": {
+    "97": [
+     "torque_frac 1.00"
+    ]
+   }
+  },
+  {
+   "base": 1,
+   "scale": 0.9,
+   "params": {
+    "kick_vy": 1.534356261694101,
+    "kick_s": 0.4098144532334525,
+    "hold_vy": 0.5739041634973742,
+    "dodge_s": 0.47702423578419867,
+    "freq": 3.7416942663084964,
+    "stance_width": 0.3254610671869804,
+    "footswing": 0.07682755250028335,
+    "height": -0.029401725243708373,
+    "brake_vy": -0.4535058434761545,
+    "brake_s": 0.04396956305224252
+   },
+   "runs": 200,
+   "failures": 0,
+   "failure_rate_95_upper": 0.015,
+   "t30_median": 0.5506274477241282,
+   "t30_p95": 0.6168097799788654,
+   "t30_worst": 0.7993047994347919,
+   "foot_force_bw_worst": 1.6472664005938877,
+   "touchdown_p95_worst": 3.3777973784203663,
+   "trunk_acc_g_worst": 1.4999602460829105,
+   "torque_frac_worst": 0.9652155621440881,
+   "speed_frac_worst": 0.989077825687451,
+   "limit_margin_worst": 0.105241474469294,
+   "peak_tilt_deg_worst": 16.408395752607635,
+   "failure_reasons": {}
+  },
+  {
+   "base": 2,
+   "scale": 1.0,
+   "params": {
+    "kick_vy": 1.6594134272580061,
+    "kick_s": 0.2993130685677546,
+    "hold_vy": 1.3790834976313264,
+    "dodge_s": 0.494632824853407,
+    "freq": 3.7446347076906474,
+    "stance_width": 0.2815036544827549,
+    "footswing": 0.13791870800084616,
+    "height": -0.08510722510871276,
+    "brake_vy": -0.76577759686383,
+    "brake_s": 0.22259863810413666
+   },
+   "runs": 200,
+   "failures": 1,
+   "failure_rate_95_upper": null,
+   "t30_median": 0.5369730172208655,
+   "t30_p95": 0.5981031378575806,
+   "t30_worst": 0.7523195251610368,
+   "foot_force_bw_worst": 1.7874324936913601,
+   "touchdown_p95_worst": 3.681311837044645,
+   "trunk_acc_g_worst": 1.8412584254570314,
+   "torque_frac_worst": 1.0,
+   "speed_frac_worst": 0.992612409411379,
+   "limit_margin_worst": 0.05642251376962859,
+   "peak_tilt_deg_worst": 19.081742541740777,
+   "failure_reasons": {
+    "97": [
+     "torque_frac 1.00"
+    ]
+   }
+  },
+  {
+   "base": 2,
+   "scale": 0.9,
+   "params": {
+    "kick_vy": 1.4934720845322056,
+    "kick_s": 0.2993130685677546,
+    "hold_vy": 1.2411751478681938,
+    "dodge_s": 0.494632824853407,
+    "freq": 3.7446347076906474,
+    "stance_width": 0.2815036544827549,
+    "footswing": 0.13791870800084616,
+    "height": -0.08510722510871276,
+    "brake_vy": -0.6891998371774469,
+    "brake_s": 0.22259863810413666
+   },
+   "runs": 200,
+   "failures": 0,
+   "failure_rate_95_upper": 0.015,
+   "t30_median": 0.5634943054133481,
+   "t30_p95": 0.6200716722572461,
+   "t30_worst": 0.8123195251610369,
+   "foot_force_bw_worst": 1.6718401501690499,
+   "touchdown_p95_worst": 3.576848862406422,
+   "trunk_acc_g_worst": 1.7011049823276079,
+   "torque_frac_worst": 0.9394997104807337,
+   "speed_frac_worst": 0.9899496264456492,
+   "limit_margin_worst": 0.07398975188734713,
+   "peak_tilt_deg_worst": 16.89451587451172,
+   "failure_reasons": {}
+  }
+ ],
+ "limits": {
+  "limit_margin_min": 0.05,
+  "torque_frac_max": 0.97,
+  "peak_tilt_deg_max": 20.0,
+  "foot_force_bw_max": 1.807,
+  "touchdown_p95_max": 3.729,
+  "trunk_acc_g_max": 1.934
+ },
+ "validation_500": {
+  "0.9": {
+   "scale": 0.9,
+   "params": {
+    "kick_vy": 1.534356261694101,
+    "kick_s": 0.4098144532334525,
+    "hold_vy": 0.5739041634973742,
+    "dodge_s": 0.47702423578419867,
+    "freq": 3.7416942663084964,
+    "stance_width": 0.3254610671869804,
+    "footswing": 0.07682755250028335,
+    "height": -0.029401725243708373,
+    "brake_vy": -0.4535058434761545,
+    "brake_s": 0.04396956305224252
+   },
+   "runs": 500,
+   "failures": 0,
+   "failure_rate_95_upper": 0.006,
+   "t30_median": 0.5496863039550932,
+   "t30_p95": 0.6185247623137368,
+   "t30_worst": 0.7499135507592269,
+   "foot_force_bw_worst": 1.6861675334955768,
+   "touchdown_p95_worst": 3.3786728349862307,
+   "trunk_acc_g_worst": 1.6419251135399031,
+   "torque_frac_worst": 0.9388516448604403,
+   "speed_frac_worst": 0.9903738040609501,
+   "limit_margin_worst": 0.09457757796437605,
+   "peak_tilt_deg_worst": 18.225841167843285,
+   "failure_reasons": {}
+  },
+  "0.8": {
+   "scale": 0.8,
+   "params": {
+    "kick_vy": 1.3638722326169788,
+    "kick_s": 0.4098144532334525,
+    "hold_vy": 0.5101370342198881,
+    "dodge_s": 0.47702423578419867,
+    "freq": 3.7416942663084964,
+    "stance_width": 0.3254610671869804,
+    "footswing": 0.07682755250028335,
+    "height": -0.029401725243708373,
+    "brake_vy": -0.4031163053121374,
+    "brake_s": 0.04396956305224252
+   },
+   "runs": 500,
+   "failures": 0,
+   "failure_rate_95_upper": 0.006,
+   "t30_median": 0.5802052196423735,
+   "t30_p95": 0.6436284446153111,
+   "t30_worst": 0.789913550759227,
+   "foot_force_bw_worst": 1.557960326128362,
+   "touchdown_p95_worst": 3.2309031837500566,
+   "trunk_acc_g_worst": 1.649685215900576,
+   "torque_frac_worst": 0.884026628184704,
+   "speed_frac_worst": 0.9892004038148641,
+   "limit_margin_worst": 0.14831238545685466,
+   "peak_tilt_deg_worst": 17.394549566269276,
+   "failure_reasons": {}
+  }
+ },
+ "chosen_reason": "x0.8: 0/500 like x0.9, but clearly more margin (knee 0.15 vs 0.09 rad, torque 0.88 vs 0.94) for +0.03 s"
+}

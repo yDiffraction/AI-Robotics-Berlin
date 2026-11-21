@@ -1,0 +1,14 @@
+1795278875.738904 [77] collision_: selected interface "lo" is not multicast-capable: disabling multicast
+[INFO] [1795278875.795547703] [collision_monitor]: 
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1795278875.990140550] [collision_monitor]: Configuring
+[INFO] [1795278875.995080078] [collision_monitor]: [FootprintApproach]: Creating Polygon
+[INFO] [1795278875.995756676] [collision_monitor]: [cloud]: Creating PointCloud
+[INFO] [1795278875.998791534] [collision_monitor]: Activating
+[INFO] [1795278876.000026808] [collision_monitor]: Creating bond (collision_monitor) to lifecycle manager.
+[INFO] [1795278877.536206483] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795278878.016549517] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795278879.993821242] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795278880.414603241] [collision_monitor]: Robot to continue normal operation

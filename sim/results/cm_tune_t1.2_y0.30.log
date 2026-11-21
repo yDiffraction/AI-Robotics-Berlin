@@ -1,0 +1,5 @@
+1795278772.606767 [77] collision_: selected interface "lo" is not multicast-capable: disabling multicast
+[INFO] [1795278772.690430983] [collision_monitor]: 
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.

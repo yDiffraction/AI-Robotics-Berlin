@@ -1,0 +1,502 @@
+1795282646.180396 [77] collision_: selected interface "lo" is not multicast-capable: disabling multicast
+[INFO] [1795282646.230744353] [collision_monitor]: 
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1795282646.474305788] [collision_monitor]: Configuring
+[INFO] [1795282646.481106734] [collision_monitor]: [FootprintApproach]: Creating Polygon
+[INFO] [1795282646.482537948] [collision_monitor]: [cloud]: Creating PointCloud
+[INFO] [1795282646.485141965] [collision_monitor]: Activating
+[INFO] [1795282646.485680792] [collision_monitor]: Creating bond (collision_monitor) to lifecycle manager.
+[INFO] [1795282765.931951703] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282766.332383016] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282775.529372620] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282780.960660597] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282783.490671561] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282785.430027056] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282787.956105810] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282790.397812870] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282795.834906453] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282797.689982736] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282804.878490195] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282805.198115475] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282812.081268206] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282812.480491712] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282814.497066421] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282814.897596795] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282817.429046852] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282819.359933938] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282819.840202125] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282821.809207310] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282822.267936839] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282822.308775437] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282826.597553654] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282826.996120481] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282831.467128761] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282833.954301525] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282836.278752740] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282836.697831074] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282841.298303884] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282843.741664681] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282843.920968004] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282844.141605438] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282846.165998453] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282846.565250398] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282846.644801478] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282851.584513187] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282851.645045175] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282856.527817041] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282858.610655214] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282858.890541672] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282858.990464489] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282859.029866142] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282868.479638290] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282868.880000120] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282868.939886337] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282871.274471171] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282873.334066985] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282873.733136460] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282890.382289113] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282890.801203751] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282895.414942343] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282895.813523544] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282895.894456755] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282895.914330849] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282900.452443858] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282900.852081911] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282902.906163442] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282903.305229152] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282907.875450390] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282908.274940252] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282912.650613815] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282913.130710873] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282915.077936686] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282915.497274542] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282917.449302676] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282917.848542476] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282919.907068209] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282920.366156685] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282922.343982911] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282922.744214804] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282924.790768391] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282925.270982440] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282927.348660080] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282927.828202138] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282929.779221793] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282930.179478659] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282932.185948486] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282932.604986798] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282934.688925680] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282935.169002087] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282937.219968941] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282937.698351685] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282939.627281373] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282940.106016875] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282942.054033467] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282942.453694832] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282944.468807391] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282944.868957620] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282946.835239067] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282947.253963665] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282949.339161909] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282949.818849643] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282951.759892204] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282952.158933911] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282954.212546760] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282954.691481633] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282956.734842263] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282957.193577881] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282959.252035292] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282959.732267306] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282961.772735828] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282962.251196852] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282964.234524611] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282964.633892511] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282966.656385885] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282967.116096943] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282969.157674942] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282969.637918814] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282971.713021235] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282972.172205324] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282974.254913440] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282974.734483647] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282976.720714240] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282977.201075614] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282979.257938263] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282979.737389989] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282981.746882217] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282982.226184097] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282984.193216903] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282984.671994625] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282986.853803525] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282987.093871415] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282989.415235677] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282989.494511185] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282991.818568133] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282991.998160596] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282994.283781367] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282994.443132833] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282996.713355837] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282996.854150810] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282996.894369301] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282996.914363321] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795282999.335406692] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795282999.414494543] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283004.143986222] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283004.304131428] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283006.707231525] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283006.847127027] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283008.899436785] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283009.279921296] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283011.574343244] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283011.734894756] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283013.999514126] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283014.160510321] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283018.724913749] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283019.003812176] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283023.938812907] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283023.959132089] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283026.114610027] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283026.334725041] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283028.720053590] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283028.860021302] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283031.104529282] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283031.184788548] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283031.284823149] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283031.344297588] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283031.384683903] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283031.403496373] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283033.698945582] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283033.779401443] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283036.027396100] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283036.306682076] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283038.689349464] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283038.749532218] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283040.908115548] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283041.008041962] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283041.088420479] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283041.188766063] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283043.313365919] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283043.613566173] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283046.075057939] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283046.155345462] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283048.410121889] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283048.529926966] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283050.796786966] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283051.036534696] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283053.103160069] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283053.463226695] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283055.664149166] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283055.904996454] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283058.279563908] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283058.360065092] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283060.515699684] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283060.836114219] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283060.875375530] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283060.895330866] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283063.060208889] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283063.360875891] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283065.742794968] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283065.822749119] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283068.150082891] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283068.249722691] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283070.650334582] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283070.809730114] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283073.132992684] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283073.172724239] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283073.212734379] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283073.253198954] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283075.380234491] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283075.719736575] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283080.499214545] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283080.619944413] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283082.885758247] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283083.086045714] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283085.326545918] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283085.466095665] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283087.948353172] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283087.988676953] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283090.187625382] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283090.348360262] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283092.645351469] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283092.825048648] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283095.169021151] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283095.368211394] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283097.621999969] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283097.821231853] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283097.881419837] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283097.901359225] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283100.031021591] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283100.370819780] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283102.690499659] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283102.871561397] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283104.983201487] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283105.364007114] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283107.846135191] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283109.717848562] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283110.018163754] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283110.198076580] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283112.549537936] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283112.649226082] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283114.820623099] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283115.160594074] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283117.363363256] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283117.604286373] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283119.790896010] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283120.070933723] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283122.252943239] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283122.614003718] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283124.951541657] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283125.071971939] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283125.132774120] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283125.151618626] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283127.359487528] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283127.620265015] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283132.530149930] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283132.591076251] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283134.596226784] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283134.995701994] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.310000 seconds. Ignoring the source.
+[INFO] [1795283134.997629517] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283135.016656853] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.330000 seconds. Ignoring the source.
+[WARN] [1795283135.035968964] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283135.055774945] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.370000 seconds. Ignoring the source.
+[WARN] [1795283135.076155339] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.390000 seconds. Ignoring the source.
+[WARN] [1795283135.096790628] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.410000 seconds. Ignoring the source.
+[INFO] [1795283136.978103210] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283137.357129028] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.318000 seconds. Ignoring the source.
+[INFO] [1795283137.359394067] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283137.377963377] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.338000 seconds. Ignoring the source.
+[WARN] [1795283137.397804271] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.358000 seconds. Ignoring the source.
+[WARN] [1795283137.417306568] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.378000 seconds. Ignoring the source.
+[WARN] [1795283137.437396955] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.398000 seconds. Ignoring the source.
+[WARN] [1795283137.457686453] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.418000 seconds. Ignoring the source.
+[WARN] [1795283137.477125835] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.438000 seconds. Ignoring the source.
+[INFO] [1795283139.330829727] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283139.810108084] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283139.829633851] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.314000 seconds. Ignoring the source.
+[INFO] [1795283141.786012847] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283142.126159276] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.310000 seconds. Ignoring the source.
+[INFO] [1795283142.128126405] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283142.145676696] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.330000 seconds. Ignoring the source.
+[WARN] [1795283142.164992414] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283142.185710630] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.370000 seconds. Ignoring the source.
+[WARN] [1795283142.205881648] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.390000 seconds. Ignoring the source.
+[WARN] [1795283142.225759344] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.410000 seconds. Ignoring the source.
+[WARN] [1795283142.245466706] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.430000 seconds. Ignoring the source.
+[WARN] [1795283142.264949610] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.450000 seconds. Ignoring the source.
+[WARN] [1795283142.285825548] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.470000 seconds. Ignoring the source.
+[WARN] [1795283142.305884215] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.490000 seconds. Ignoring the source.
+[INFO] [1795283144.203967773] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283144.562943028] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.338000 seconds. Ignoring the source.
+[INFO] [1795283144.564019655] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283144.583952075] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.358000 seconds. Ignoring the source.
+[WARN] [1795283144.603364365] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.378000 seconds. Ignoring the source.
+[WARN] [1795283144.623116678] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.398000 seconds. Ignoring the source.
+[WARN] [1795283144.643103126] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.418000 seconds. Ignoring the source.
+[WARN] [1795283144.663442117] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.438000 seconds. Ignoring the source.
+[WARN] [1795283144.682788564] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.458000 seconds. Ignoring the source.
+[WARN] [1795283144.703271163] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.458000 seconds. Ignoring the source.
+[INFO] [1795283146.646769332] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283147.086683240] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.322000 seconds. Ignoring the source.
+[INFO] [1795283147.087932202] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283147.107022818] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.342000 seconds. Ignoring the source.
+[WARN] [1795283147.126814377] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.362000 seconds. Ignoring the source.
+[WARN] [1795283147.146439811] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.382000 seconds. Ignoring the source.
+[INFO] [1795283149.089574260] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283149.549183778] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283149.589112287] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[INFO] [1795283151.548965270] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283151.948000275] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.318000 seconds. Ignoring the source.
+[INFO] [1795283151.949298136] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283151.967749684] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.338000 seconds. Ignoring the source.
+[WARN] [1795283151.988716549] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.358000 seconds. Ignoring the source.
+[WARN] [1795283152.007808719] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.378000 seconds. Ignoring the source.
+[WARN] [1795283152.028429144] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.398000 seconds. Ignoring the source.
+[WARN] [1795283152.047502159] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.418000 seconds. Ignoring the source.
+[INFO] [1795283153.922309760] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283154.402526911] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.314000 seconds. Ignoring the source.
+[INFO] [1795283154.403768267] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283154.422512032] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.334000 seconds. Ignoring the source.
+[INFO] [1795283156.388912181] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283156.687618915] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283156.688710850] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283156.708155943] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283156.728010494] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283156.747388790] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283156.767700565] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283156.788145077] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.406000 seconds. Ignoring the source.
+[WARN] [1795283156.808204818] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.406000 seconds. Ignoring the source.
+[WARN] [1795283156.827195929] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.446000 seconds. Ignoring the source.
+[WARN] [1795283156.847554731] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.446000 seconds. Ignoring the source.
+[WARN] [1795283156.867769402] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.486000 seconds. Ignoring the source.
+[WARN] [1795283156.888401405] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.486000 seconds. Ignoring the source.
+[INFO] [1795283158.804049147] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283159.202466083] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283159.243056524] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.302000 seconds. Ignoring the source.
+[WARN] [1795283159.262757909] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.322000 seconds. Ignoring the source.
+[WARN] [1795283159.282433743] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.342000 seconds. Ignoring the source.
+[WARN] [1795283159.303484789] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.362000 seconds. Ignoring the source.
+[INFO] [1795283161.187703902] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283161.606912773] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283161.608119968] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283161.626958335] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283161.646768765] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283161.666892360] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283161.686371691] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[INFO] [1795283163.601593465] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283164.041495786] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.314000 seconds. Ignoring the source.
+[INFO] [1795283164.042683577] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283164.061766518] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.334000 seconds. Ignoring the source.
+[WARN] [1795283164.081563265] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.354000 seconds. Ignoring the source.
+[WARN] [1795283164.101565201] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.374000 seconds. Ignoring the source.
+[WARN] [1795283164.121335560] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.394000 seconds. Ignoring the source.
+[INFO] [1795283166.028732912] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283166.448579011] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283166.449824081] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283166.468480924] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283166.488344362] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283166.508553657] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283166.528848115] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[INFO] [1795283168.483915185] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283168.902906157] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283168.982564885] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.314000 seconds. Ignoring the source.
+[INFO] [1795283170.871774228] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283171.171596893] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.318000 seconds. Ignoring the source.
+[INFO] [1795283171.173364897] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283171.190660813] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.338000 seconds. Ignoring the source.
+[WARN] [1795283171.211469804] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.358000 seconds. Ignoring the source.
+[WARN] [1795283171.231691097] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.378000 seconds. Ignoring the source.
+[WARN] [1795283171.250430896] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.398000 seconds. Ignoring the source.
+[WARN] [1795283171.270625319] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.418000 seconds. Ignoring the source.
+[WARN] [1795283171.291408553] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.438000 seconds. Ignoring the source.
+[WARN] [1795283171.310122174] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.458000 seconds. Ignoring the source.
+[WARN] [1795283171.331274177] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.478000 seconds. Ignoring the source.
+[WARN] [1795283171.350896351] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.498000 seconds. Ignoring the source.
+[WARN] [1795283171.371091044] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.518000 seconds. Ignoring the source.
+[WARN] [1795283171.390625043] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.538000 seconds. Ignoring the source.
+[INFO] [1795283173.300596656] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283173.599417587] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283173.600503557] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283173.619128254] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283173.639042187] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283173.659295380] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283173.680132840] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283173.699930125] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.406000 seconds. Ignoring the source.
+[WARN] [1795283173.719307864] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.426000 seconds. Ignoring the source.
+[WARN] [1795283173.739598526] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.446000 seconds. Ignoring the source.
+[WARN] [1795283173.759066491] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.466000 seconds. Ignoring the source.
+[WARN] [1795283173.779568730] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.486000 seconds. Ignoring the source.
+[WARN] [1795283173.799542170] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.506000 seconds. Ignoring the source.
+[INFO] [1795283175.741721345] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283176.100820972] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.310000 seconds. Ignoring the source.
+[INFO] [1795283176.102356975] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283176.120395044] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.310000 seconds. Ignoring the source.
+[WARN] [1795283176.140239978] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283176.160862655] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283176.180457869] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.390000 seconds. Ignoring the source.
+[WARN] [1795283176.201257737] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.410000 seconds. Ignoring the source.
+[WARN] [1795283176.219835938] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.430000 seconds. Ignoring the source.
+[WARN] [1795283176.241026447] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.450000 seconds. Ignoring the source.
+[INFO] [1795283178.151356546] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283178.570937714] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283178.591336880] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.330000 seconds. Ignoring the source.
+[WARN] [1795283178.611170572] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283178.631217258] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.370000 seconds. Ignoring the source.
+[WARN] [1795283178.651304389] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.390000 seconds. Ignoring the source.
+[INFO] [1795283180.699358993] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283181.019997672] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.310000 seconds. Ignoring the source.
+[INFO] [1795283181.020778269] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283181.038912490] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.330000 seconds. Ignoring the source.
+[WARN] [1795283181.059818690] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.350000 seconds. Ignoring the source.
+[WARN] [1795283181.079489107] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.370000 seconds. Ignoring the source.
+[WARN] [1795283181.098678405] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.390000 seconds. Ignoring the source.
+[WARN] [1795283181.119450585] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.410000 seconds. Ignoring the source.
+[WARN] [1795283181.139299330] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.430000 seconds. Ignoring the source.
+[WARN] [1795283181.159099178] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.450000 seconds. Ignoring the source.
+[WARN] [1795283181.179815431] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.470000 seconds. Ignoring the source.
+[WARN] [1795283181.199489024] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.490000 seconds. Ignoring the source.
+[INFO] [1795283183.138868259] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283183.498162053] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283183.499323410] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283183.519313914] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283183.538641179] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283183.559175167] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283183.579032743] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283183.598072998] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283183.619108344] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.426000 seconds. Ignoring the source.
+[WARN] [1795283183.638478693] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.446000 seconds. Ignoring the source.
+[INFO] [1795283185.592396572] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283185.911137239] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.318000 seconds. Ignoring the source.
+[INFO] [1795283185.911859508] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283185.931983855] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.338000 seconds. Ignoring the source.
+[WARN] [1795283185.951423900] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.358000 seconds. Ignoring the source.
+[WARN] [1795283185.971405368] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.378000 seconds. Ignoring the source.
+[WARN] [1795283185.991887129] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.398000 seconds. Ignoring the source.
+[WARN] [1795283186.012257797] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.418000 seconds. Ignoring the source.
+[WARN] [1795283186.032209212] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.438000 seconds. Ignoring the source.
+[WARN] [1795283186.052463420] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.458000 seconds. Ignoring the source.
+[WARN] [1795283186.072245607] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.478000 seconds. Ignoring the source.
+[WARN] [1795283186.092177923] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.498000 seconds. Ignoring the source.
+[INFO] [1795283188.056474418] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283188.337179664] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283188.338429192] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283188.356036918] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283188.375528996] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283188.396147906] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283188.416199679] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283188.436616639] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.406000 seconds. Ignoring the source.
+[WARN] [1795283188.456203226] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.426000 seconds. Ignoring the source.
+[WARN] [1795283188.476592343] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.446000 seconds. Ignoring the source.
+[WARN] [1795283188.496838572] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.466000 seconds. Ignoring the source.
+[WARN] [1795283188.516658306] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.486000 seconds. Ignoring the source.
+[WARN] [1795283188.536179549] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.506000 seconds. Ignoring the source.
+[WARN] [1795283188.555733753] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.526000 seconds. Ignoring the source.
+[INFO] [1795283190.478953460] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283190.878892750] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.306000 seconds. Ignoring the source.
+[INFO] [1795283190.880208906] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283190.898320541] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.326000 seconds. Ignoring the source.
+[WARN] [1795283190.918284217] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.346000 seconds. Ignoring the source.
+[WARN] [1795283190.938231784] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.366000 seconds. Ignoring the source.
+[WARN] [1795283190.958730897] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.386000 seconds. Ignoring the source.
+[WARN] [1795283190.979039973] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.406000 seconds. Ignoring the source.
+[INFO] [1795283192.933071385] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[WARN] [1795283193.332055499] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.302000 seconds. Ignoring the source.
+[INFO] [1795283193.332712614] [collision_monitor]: Robot to continue normal operation
+[WARN] [1795283193.352372179] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.322000 seconds. Ignoring the source.
+[WARN] [1795283193.371876008] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.342000 seconds. Ignoring the source.
+[WARN] [1795283193.391930339] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.362000 seconds. Ignoring the source.
+[WARN] [1795283193.411840810] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.382000 seconds. Ignoring the source.
+[WARN] [1795283193.432375754] [collision_monitor]: [cloud]: Latest source and current collision monitor node timestamps differ on 0.402000 seconds. Ignoring the source.
+[INFO] [1795283233.724592383] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283233.823676839] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283234.004341702] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283234.103960604] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283255.258213253] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283255.377447037] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283255.477016900] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283255.677307061] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283258.316843633] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283260.266138951] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283260.346396886] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283260.666599808] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283268.048776102] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283269.996824110] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283277.747756198] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283277.767467652] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283282.215361544] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283282.415093039] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283282.495513487] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283282.554541618] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283289.993850900] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283292.014319397] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283296.934474727] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795283297.014272225] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795283340.580318841] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1795283340.582237672] [collision_monitor]: Running Nav2 LifecycleNode rcl preshutdown (collision_monitor)
+[INFO] [1795283340.583501149] [collision_monitor]: Deactivating
+[INFO] [1795283340.584602406] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795283340.595845185] [collision_monitor]: Cleaning up
+[INFO] [1795283340.597099598] [collision_monitor]: [FootprintApproach]: Destroying Polygon
+[INFO] [1795283340.598000132] [collision_monitor]: [cloud]: Destroying PointCloud
+[INFO] [1795283340.600964087] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795283340.605162996] [collision_monitor]: Destroying

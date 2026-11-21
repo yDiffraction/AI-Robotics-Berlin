@@ -1,0 +1,172 @@
+{
+ "limits": {
+  "limit_margin_min": 0.05,
+  "torque_frac_max": 0.97,
+  "peak_tilt_deg_max": 20.0,
+  "foot_force_bw_max": 1.807,
+  "touchdown_p95_max": 3.729,
+  "trunk_acc_g_max": 1.934
+ },
+ "purple": {
+  "runs": 500,
+  "failures": 21,
+  "failure_rate_95_upper": null,
+  "t30_median": 0.513668111638552,
+  "t30_p95": 0.6098321102462733,
+  "t30_worst": 0.7399599672249382,
+  "foot_force_bw_worst": 2.038574226705287,
+  "touchdown_p95_worst": 3.801784781297991,
+  "trunk_acc_g_worst": 2.0969426764323473,
+  "torque_frac_worst": 1.0,
+  "speed_frac_worst": 1.015838881301802,
+  "limit_margin_worst": 0.04799838910757659,
+  "peak_tilt_deg_worst": 20.849276885338803,
+  "failure_reasons": {
+   "28": [
+    "joint margin 0.048"
+   ],
+   "37": [
+    "foot_force_bw 1.82",
+    "trunk_acc_g 1.94",
+    "peak_tilt_deg 20.10"
+   ],
+   "43": [
+    "trunk_acc_g 1.98",
+    "peak_tilt_deg 20.43"
+   ],
+   "60": [
+    "foot_force_bw 1.83"
+   ],
+   "150": [
+    "touchdown_p95 3.80"
+   ],
+   "159": [
+    "touchdown_p95 3.79"
+   ],
+   "168": [
+    "trunk_acc_g 1.98"
+   ],
+   "190": [
+    "torque_frac 0.99"
+   ],
+   "201": [
+    "touchdown_p95 3.74"
+   ],
+   "241": [
+    "foot_force_bw 2.04",
+    "trunk_acc_g 2.10",
+    "peak_tilt_deg 20.49"
+   ],
+   "259": [
+    "peak_tilt_deg 20.85"
+   ],
+   "264": [
+    "torque_frac 0.98"
+   ],
+   "266": [
+    "touchdown_p95 3.73"
+   ],
+   "307": [
+    "torque_frac 0.97",
+    "peak_tilt_deg 20.10"
+   ],
+   "308": [
+    "trunk_acc_g 1.98"
+   ],
+   "347": [
+    "touchdown_p95 3.80"
+   ],
+   "398": [
+    "touchdown_p95 3.80"
+   ],
+   "433": [
+    "peak_tilt_deg 20.28"
+   ],
+   "435": [
+    "touchdown_p95 3.74"
+   ],
+   "436": [
+    "torque_frac 1.00"
+   ]
+  }
+ },
+ "green": {
+  "runs": 500,
+  "failures": 34,
+  "failure_rate_95_upper": null,
+  "t30_median": 0.5165065365609074,
+  "t30_p95": 0.6545347411759198,
+  "t30_worst": 0.833112896107973,
+  "foot_force_bw_worst": 2.022668863724586,
+  "touchdown_p95_worst": 3.933429318505282,
+  "trunk_acc_g_worst": 2.162160208640848,
+  "torque_frac_worst": 1.0,
+  "speed_frac_worst": 1.0753298082033886,
+  "limit_margin_worst": 0.05011679025780058,
+  "peak_tilt_deg_worst": 23.550397818269587,
+  "failure_reasons": {
+   "42": [
+    "peak_tilt_deg 21.00"
+   ],
+   "43": [
+    "peak_tilt_deg 21.14"
+   ],
+   "50": [
+    "touchdown_p95 3.73"
+   ],
+   "67": [
+    "peak_tilt_deg 20.26"
+   ],
+   "72": [
+    "peak_tilt_deg 23.19"
+   ],
+   "78": [
+    "peak_tilt_deg 21.47"
+   ],
+   "107": [
+    "peak_tilt_deg 22.28"
+   ],
+   "127": [
+    "peak_tilt_deg 20.95"
+   ],
+   "134": [
+    "touchdown_p95 3.90"
+   ],
+   "159": [
+    "touchdown_p95 3.82"
+   ],
+   "168": [
+    "peak_tilt_deg 22.47"
+   ],
+   "173": [
+    "peak_tilt_deg 20.88"
+   ],
+   "177": [
+    "touchdown_p95 3.79"
+   ],
+   "201": [
+    "touchdown_p95 3.88"
+   ],
+   "203": [
+    "peak_tilt_deg 20.03"
+   ],
+   "241": [
+    "foot_force_bw 2.02",
+    "trunk_acc_g 2.16",
+    "peak_tilt_deg 23.42"
+   ],
+   "242": [
+    "touchdown_p95 3.78"
+   ],
+   "256": [
+    "peak_tilt_deg 21.10"
+   ],
+   "259": [
+    "peak_tilt_deg 23.49"
+   ],
+   "287": [
+    "peak_tilt_deg 20.18"
+   ]
+  }
+ }
+}

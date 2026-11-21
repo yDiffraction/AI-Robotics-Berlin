@@ -1,0 +1,1990 @@
+{
+ "tag": "final_s1050_realall",
+ "args": {
+  "init": "../runs/sweep_hires/best.pt",
+  "arch": "hires",
+  "synth_n": 1050,
+  "real": "all",
+  "folds": 5,
+  "fold": 0,
+  "real_frac": 0.25,
+  "steps": 2000,
+  "bs": 16,
+  "T": 120,
+  "lr": 0.001,
+  "head_lr": 0.003,
+  "wd": 0.0001,
+  "flip": 0.5,
+  "scale": 0.15,
+  "shift": 8,
+  "tshift": 8,
+  "drop": 0.1,
+  "noise": 0.0005,
+  "save_steps": "0,300",
+  "data": "/home/team-1-user/snn_pretrain/data",
+  "out": "/home/team-1-user/snn_pretrain/runs_throw",
+  "tag": "final_s1050_realall",
+  "seed": 0,
+  "amp": 0
+ },
+ "train_log": [
+  {
+   "step": 100,
+   "loss": 0.2165,
+   "train_acc": 0.492,
+   "min": 1.5
+  },
+  {
+   "step": 200,
+   "loss": 0.1519,
+   "train_acc": 0.66,
+   "min": 2.9
+  },
+  {
+   "step": 300,
+   "loss": 0.1388,
+   "train_acc": 0.708,
+   "min": 4.3
+  },
+  {
+   "step": 400,
+   "loss": 0.1332,
+   "train_acc": 0.752,
+   "min": 5.8
+  },
+  {
+   "step": 500,
+   "loss": 0.1168,
+   "train_acc": 0.809,
+   "min": 7.2
+  },
+  {
+   "step": 600,
+   "loss": 0.1099,
+   "train_acc": 0.824,
+   "min": 8.9
+  },
+  {
+   "step": 700,
+   "loss": 0.1047,
+   "train_acc": 0.844,
+   "min": 10.6
+  },
+  {
+   "step": 800,
+   "loss": 0.0996,
+   "train_acc": 0.858,
+   "min": 12.3
+  },
+  {
+   "step": 900,
+   "loss": 0.0957,
+   "train_acc": 0.885,
+   "min": 13.9
+  },
+  {
+   "step": 1000,
+   "loss": 0.0872,
+   "train_acc": 0.9,
+   "min": 15.6
+  },
+  {
+   "step": 1100,
+   "loss": 0.0824,
+   "train_acc": 0.911,
+   "min": 17.2
+  },
+  {
+   "step": 1200,
+   "loss": 0.078,
+   "train_acc": 0.934,
+   "min": 19.0
+  },
+  {
+   "step": 1300,
+   "loss": 0.076,
+   "train_acc": 0.943,
+   "min": 20.4
+  },
+  {
+   "step": 1400,
+   "loss": 0.0756,
+   "train_acc": 0.939,
+   "min": 22.1
+  },
+  {
+   "step": 1500,
+   "loss": 0.0724,
+   "train_acc": 0.951,
+   "min": 23.7
+  },
+  {
+   "step": 1600,
+   "loss": 0.0719,
+   "train_acc": 0.949,
+   "min": 25.1
+  },
+  {
+   "step": 1700,
+   "loss": 0.0672,
+   "train_acc": 0.959,
+   "min": 26.5
+  },
+  {
+   "step": 1800,
+   "loss": 0.0666,
+   "train_acc": 0.964,
+   "min": 27.9
+  },
+  {
+   "step": 1900,
+   "loss": 0.0657,
+   "train_acc": 0.954,
+   "min": 29.3
+  },
+  {
+   "step": 2000,
+   "loss": 0.068,
+   "train_acc": 0.958,
+   "min": 30.7
+  }
+ ],
+ "minutes": 30.7,
+ "real_test": {
+  "n": 0
+ },
+ "real_test_windows": [],
+ "synth_test": {
+  "n": 150,
+  "acc_end": 0.95333331823349,
+  "acc_end_throw_feint": 0.949999988079071,
+  "acc_rel+0ms": 0.6733333468437195,
+  "acc_rel+0ms_throw_feint": 0.5299999713897705,
+  "acc_rel+100ms": 0.7599999904632568,
+  "acc_rel+100ms_throw_feint": 0.6600000262260437,
+  "acc_rel+200ms": 0.8399999737739563,
+  "acc_rel+200ms_throw_feint": 0.7799999713897705,
+  "acc_rel+300ms": 0.9133333563804626,
+  "acc_rel+300ms_throw_feint": 0.8899999856948853,
+  "confusion_end": [
+   [
+    49,
+    1,
+    0
+   ],
+   [
+    4,
+    46,
+    0
+   ],
+   [
+    1,
+    1,
+    48
+   ]
+  ],
+  "silent_frac": 0.0
+ },
+ "synth_test_windows": [
+  {
+   "i": 3,
+   "file": "gesture_03-idle-synth-frontal-000002.bin",
+   "parent": "gesture_03-idle-synth-frontal-000002.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    16.0,
+    0.0,
+    95.0
+   ]
+  },
+  {
+   "i": 6,
+   "file": "gesture_03-idle-synth-frontal-000020.bin",
+   "parent": "gesture_03-idle-synth-frontal-000020.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    18.0,
+    10.0,
+    89.0
+   ]
+  },
+  {
+   "i": 7,
+   "file": "gesture_03-idle-synth-frontal-000008.bin",
+   "parent": "gesture_03-idle-synth-frontal-000008.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    5.0,
+    107.0
+   ]
+  },
+  {
+   "i": 11,
+   "file": "gesture_02-feint-synth-frontal-000007.bin",
+   "parent": "gesture_02-feint-synth-frontal-000007.bin",
+   "y": 1,
+   "release_frame": 67,
+   "counts": [
+    45.0,
+    65.0,
+    11.0
+   ]
+  },
+  {
+   "i": 12,
+   "file": "gesture_01-throw-synth-frontal-000012.bin",
+   "parent": "gesture_01-throw-synth-frontal-000012.bin",
+   "y": 0,
+   "release_frame": 69,
+   "counts": [
+    83.0,
+    31.0,
+    10.0
+   ]
+  },
+  {
+   "i": 16,
+   "file": "gesture_02-feint-synth-frontal-000004.bin",
+   "parent": "gesture_02-feint-synth-frontal-000004.bin",
+   "y": 1,
+   "release_frame": 78,
+   "counts": [
+    45.0,
+    65.0,
+    25.0
+   ]
+  },
+  {
+   "i": 43,
+   "file": "gesture_03-idle-synth-profile-000083.bin",
+   "parent": "gesture_03-idle-synth-profile-000083.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    13.0,
+    27.0,
+    79.0
+   ]
+  },
+  {
+   "i": 48,
+   "file": "gesture_03-idle-synth-frontal-000077.bin",
+   "parent": "gesture_03-idle-synth-frontal-000077.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    4.0,
+    14.0,
+    100.0
+   ]
+  },
+  {
+   "i": 55,
+   "file": "gesture_01-throw-synth-frontal-000087.bin",
+   "parent": "gesture_01-throw-synth-frontal-000087.bin",
+   "y": 0,
+   "release_frame": 79,
+   "counts": [
+    52.0,
+    45.0,
+    23.0
+   ]
+  },
+  {
+   "i": 58,
+   "file": "gesture_01-throw-synth-frontal-000090.bin",
+   "parent": "gesture_01-throw-synth-frontal-000090.bin",
+   "y": 0,
+   "release_frame": 69,
+   "counts": [
+    92.0,
+    38.0,
+    7.0
+   ]
+  },
+  {
+   "i": 61,
+   "file": "gesture_03-idle-synth-frontal-000092.bin",
+   "parent": "gesture_03-idle-synth-frontal-000092.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    3.0,
+    0.0,
+    117.0
+   ]
+  },
+  {
+   "i": 69,
+   "file": "gesture_02-feint-synth-frontal-000037.bin",
+   "parent": "gesture_02-feint-synth-frontal-000037.bin",
+   "y": 1,
+   "release_frame": 69,
+   "counts": [
+    32.0,
+    97.0,
+    1.0
+   ]
+  },
+  {
+   "i": 78,
+   "file": "gesture_02-feint-synth-profile-000046.bin",
+   "parent": "gesture_02-feint-synth-profile-000046.bin",
+   "y": 1,
+   "release_frame": 63,
+   "counts": [
+    52.0,
+    44.0,
+    15.0
+   ]
+  },
+  {
+   "i": 91,
+   "file": "gesture_03-idle-synth-profile-000059.bin",
+   "parent": "gesture_03-idle-synth-profile-000059.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    4.0,
+    3.0,
+    113.0
+   ]
+  },
+  {
+   "i": 108,
+   "file": "gesture_01-throw-synth-frontal-000108.bin",
+   "parent": "gesture_01-throw-synth-frontal-000108.bin",
+   "y": 0,
+   "release_frame": 61,
+   "counts": [
+    87.0,
+    27.0,
+    19.0
+   ]
+  },
+  {
+   "i": 109,
+   "file": "gesture_02-feint-synth-frontal-000109.bin",
+   "parent": "gesture_02-feint-synth-frontal-000109.bin",
+   "y": 1,
+   "release_frame": 76,
+   "counts": [
+    60.0,
+    81.0,
+    6.0
+   ]
+  },
+  {
+   "i": 114,
+   "file": "gesture_01-throw-synth-frontal-000114.bin",
+   "parent": "gesture_01-throw-synth-frontal-000114.bin",
+   "y": 0,
+   "release_frame": 77,
+   "counts": [
+    69.0,
+    49.0,
+    7.0
+   ]
+  },
+  {
+   "i": 117,
+   "file": "gesture_01-throw-synth-profile-000117.bin",
+   "parent": "gesture_01-throw-synth-profile-000117.bin",
+   "y": 0,
+   "release_frame": 75,
+   "counts": [
+    75.0,
+    26.0,
+    11.0
+   ]
+  },
+  {
+   "i": 148,
+   "file": "gesture_02-feint-synth-frontal-000148.bin",
+   "parent": "gesture_02-feint-synth-frontal-000148.bin",
+   "y": 1,
+   "release_frame": 65,
+   "counts": [
+    13.0,
+    57.0,
+    46.0
+   ]
+  },
+  {
+   "i": 149,
+   "file": "gesture_03-idle-synth-frontal-000149.bin",
+   "parent": "gesture_03-idle-synth-frontal-000149.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    16.0,
+    30.0,
+    79.0
+   ]
+  },
+  {
+   "i": 154,
+   "file": "gesture_02-feint-synth-profile-000154.bin",
+   "parent": "gesture_02-feint-synth-profile-000154.bin",
+   "y": 1,
+   "release_frame": 47,
+   "counts": [
+    51.0,
+    51.0,
+    16.0
+   ]
+  },
+  {
+   "i": 160,
+   "file": "gesture_02-feint-synth-frontal-000160.bin",
+   "parent": "gesture_02-feint-synth-frontal-000160.bin",
+   "y": 1,
+   "release_frame": 67,
+   "counts": [
+    46.0,
+    90.0,
+    9.0
+   ]
+  },
+  {
+   "i": 165,
+   "file": "gesture_01-throw-synth-profile-000165.bin",
+   "parent": "gesture_01-throw-synth-profile-000165.bin",
+   "y": 0,
+   "release_frame": 65,
+   "counts": [
+    81.0,
+    34.0,
+    13.0
+   ]
+  },
+  {
+   "i": 170,
+   "file": "gesture_03-idle-synth-frontal-000170.bin",
+   "parent": "gesture_03-idle-synth-frontal-000170.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    21.0,
+    106.0
+   ]
+  },
+  {
+   "i": 176,
+   "file": "gesture_03-idle-synth-frontal-000176.bin",
+   "parent": "gesture_03-idle-synth-frontal-000176.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    8.0,
+    4.0,
+    109.0
+   ]
+  },
+  {
+   "i": 179,
+   "file": "gesture_03-idle-synth-profile-000179.bin",
+   "parent": "gesture_03-idle-synth-profile-000179.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    9.0,
+    103.0
+   ]
+  },
+  {
+   "i": 185,
+   "file": "gesture_03-idle-synth-frontal-000185.bin",
+   "parent": "gesture_03-idle-synth-frontal-000185.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    9.0,
+    47.0,
+    72.0
+   ]
+  },
+  {
+   "i": 188,
+   "file": "gesture_03-idle-synth-frontal-000188.bin",
+   "parent": "gesture_03-idle-synth-frontal-000188.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    12.0,
+    3.0,
+    103.0
+   ]
+  },
+  {
+   "i": 208,
+   "file": "gesture_02-feint-synth-frontal-000208.bin",
+   "parent": "gesture_02-feint-synth-frontal-000208.bin",
+   "y": 1,
+   "release_frame": 73,
+   "counts": [
+    32.0,
+    76.0,
+    22.0
+   ]
+  },
+  {
+   "i": 213,
+   "file": "gesture_01-throw-synth-profile-000213.bin",
+   "parent": "gesture_01-throw-synth-profile-000213.bin",
+   "y": 0,
+   "release_frame": 74,
+   "counts": [
+    46.0,
+    51.0,
+    25.0
+   ]
+  },
+  {
+   "i": 220,
+   "file": "gesture_02-feint-synth-frontal-000220.bin",
+   "parent": "gesture_02-feint-synth-frontal-000220.bin",
+   "y": 1,
+   "release_frame": 72,
+   "counts": [
+    21.0,
+    52.0,
+    42.0
+   ]
+  },
+  {
+   "i": 223,
+   "file": "gesture_02-feint-synth-frontal-000223.bin",
+   "parent": "gesture_02-feint-synth-frontal-000223.bin",
+   "y": 1,
+   "release_frame": 67,
+   "counts": [
+    35.0,
+    96.0,
+    2.0
+   ]
+  },
+  {
+   "i": 227,
+   "file": "gesture_03-idle-synth-profile-000227.bin",
+   "parent": "gesture_03-idle-synth-profile-000227.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    24.0,
+    18.0,
+    71.0
+   ]
+  },
+  {
+   "i": 233,
+   "file": "gesture_03-idle-synth-frontal-000233.bin",
+   "parent": "gesture_03-idle-synth-frontal-000233.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    3.0,
+    12.0,
+    106.0
+   ]
+  },
+  {
+   "i": 235,
+   "file": "gesture_02-feint-synth-frontal-000235.bin",
+   "parent": "gesture_02-feint-synth-frontal-000235.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    29.0,
+    75.0,
+    18.0
+   ]
+  },
+  {
+   "i": 249,
+   "file": "gesture_01-throw-synth-profile-000249.bin",
+   "parent": "gesture_01-throw-synth-profile-000249.bin",
+   "y": 0,
+   "release_frame": 61,
+   "counts": [
+    74.0,
+    16.0,
+    25.0
+   ]
+  },
+  {
+   "i": 252,
+   "file": "gesture_01-throw-synth-frontal-000252.bin",
+   "parent": "gesture_01-throw-synth-frontal-000252.bin",
+   "y": 0,
+   "release_frame": 76,
+   "counts": [
+    59.0,
+    31.0,
+    28.0
+   ]
+  },
+  {
+   "i": 255,
+   "file": "gesture_01-throw-synth-frontal-000255.bin",
+   "parent": "gesture_01-throw-synth-frontal-000255.bin",
+   "y": 0,
+   "release_frame": 73,
+   "counts": [
+    63.0,
+    50.0,
+    11.0
+   ]
+  },
+  {
+   "i": 257,
+   "file": "gesture_03-idle-synth-frontal-000257.bin",
+   "parent": "gesture_03-idle-synth-frontal-000257.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    10.0,
+    92.0
+   ]
+  },
+  {
+   "i": 264,
+   "file": "gesture_01-throw-synth-frontal-000264.bin",
+   "parent": "gesture_01-throw-synth-frontal-000264.bin",
+   "y": 0,
+   "release_frame": 67,
+   "counts": [
+    101.0,
+    30.0,
+    3.0
+   ]
+  },
+  {
+   "i": 268,
+   "file": "gesture_02-feint-synth-frontal-000268.bin",
+   "parent": "gesture_02-feint-synth-frontal-000268.bin",
+   "y": 1,
+   "release_frame": 68,
+   "counts": [
+    31.0,
+    80.0,
+    13.0
+   ]
+  },
+  {
+   "i": 283,
+   "file": "gesture_02-feint-synth-frontal-000283.bin",
+   "parent": "gesture_02-feint-synth-frontal-000283.bin",
+   "y": 1,
+   "release_frame": 60,
+   "counts": [
+    33.0,
+    88.0,
+    23.0
+   ]
+  },
+  {
+   "i": 287,
+   "file": "gesture_03-idle-synth-profile-000287.bin",
+   "parent": "gesture_03-idle-synth-profile-000287.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    4.0,
+    100.0
+   ]
+  },
+  {
+   "i": 301,
+   "file": "gesture_02-feint-synth-frontal-000301.bin",
+   "parent": "gesture_02-feint-synth-frontal-000301.bin",
+   "y": 1,
+   "release_frame": 69,
+   "counts": [
+    43.0,
+    84.0,
+    15.0
+   ]
+  },
+  {
+   "i": 337,
+   "file": "gesture_02-feint-synth-frontal-000337.bin",
+   "parent": "gesture_02-feint-synth-frontal-000337.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    36.0,
+    87.0,
+    13.0
+   ]
+  },
+  {
+   "i": 352,
+   "file": "gesture_02-feint-synth-frontal-000352.bin",
+   "parent": "gesture_02-feint-synth-frontal-000352.bin",
+   "y": 1,
+   "release_frame": 71,
+   "counts": [
+    22.0,
+    95.0,
+    13.0
+   ]
+  },
+  {
+   "i": 357,
+   "file": "gesture_01-throw-synth-profile-000357.bin",
+   "parent": "gesture_01-throw-synth-profile-000357.bin",
+   "y": 0,
+   "release_frame": 66,
+   "counts": [
+    86.0,
+    31.0,
+    8.0
+   ]
+  },
+  {
+   "i": 371,
+   "file": "gesture_03-idle-synth-profile-000371.bin",
+   "parent": "gesture_03-idle-synth-profile-000371.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    24.0,
+    18.0,
+    74.0
+   ]
+  },
+  {
+   "i": 372,
+   "file": "gesture_01-throw-synth-frontal-000372.bin",
+   "parent": "gesture_01-throw-synth-frontal-000372.bin",
+   "y": 0,
+   "release_frame": 77,
+   "counts": [
+    70.0,
+    32.0,
+    18.0
+   ]
+  },
+  {
+   "i": 379,
+   "file": "gesture_02-feint-synth-frontal-000379.bin",
+   "parent": "gesture_02-feint-synth-frontal-000379.bin",
+   "y": 1,
+   "release_frame": 62,
+   "counts": [
+    22.0,
+    84.0,
+    20.0
+   ]
+  },
+  {
+   "i": 380,
+   "file": "gesture_03-idle-synth-frontal-000380.bin",
+   "parent": "gesture_03-idle-synth-frontal-000380.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    7.0,
+    0.0,
+    108.0
+   ]
+  },
+  {
+   "i": 384,
+   "file": "gesture_01-throw-synth-frontal-000384.bin",
+   "parent": "gesture_01-throw-synth-frontal-000384.bin",
+   "y": 0,
+   "release_frame": 70,
+   "counts": [
+    96.0,
+    30.0,
+    7.0
+   ]
+  },
+  {
+   "i": 391,
+   "file": "gesture_02-feint-synth-frontal-000391.bin",
+   "parent": "gesture_02-feint-synth-frontal-000391.bin",
+   "y": 1,
+   "release_frame": 64,
+   "counts": [
+    16.0,
+    84.0,
+    19.0
+   ]
+  },
+  {
+   "i": 392,
+   "file": "gesture_03-idle-synth-frontal-000392.bin",
+   "parent": "gesture_03-idle-synth-frontal-000392.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    13.0,
+    3.0,
+    97.0
+   ]
+  },
+  {
+   "i": 399,
+   "file": "gesture_01-throw-synth-frontal-000399.bin",
+   "parent": "gesture_01-throw-synth-frontal-000399.bin",
+   "y": 0,
+   "release_frame": 63,
+   "counts": [
+    75.0,
+    42.0,
+    7.0
+   ]
+  },
+  {
+   "i": 407,
+   "file": "gesture_03-idle-synth-profile-000407.bin",
+   "parent": "gesture_03-idle-synth-profile-000407.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    4.0,
+    12.0,
+    107.0
+   ]
+  },
+  {
+   "i": 408,
+   "file": "gesture_01-throw-synth-frontal-000408.bin",
+   "parent": "gesture_01-throw-synth-frontal-000408.bin",
+   "y": 0,
+   "release_frame": 65,
+   "counts": [
+    102.0,
+    30.0,
+    7.0
+   ]
+  },
+  {
+   "i": 423,
+   "file": "gesture_01-throw-synth-frontal-000423.bin",
+   "parent": "gesture_01-throw-synth-frontal-000423.bin",
+   "y": 0,
+   "release_frame": 74,
+   "counts": [
+    86.0,
+    35.0,
+    14.0
+   ]
+  },
+  {
+   "i": 433,
+   "file": "gesture_02-feint-synth-frontal-000433.bin",
+   "parent": "gesture_02-feint-synth-frontal-000433.bin",
+   "y": 1,
+   "release_frame": 71,
+   "counts": [
+    18.0,
+    75.0,
+    25.0
+   ]
+  },
+  {
+   "i": 439,
+   "file": "gesture_02-feint-synth-frontal-000439.bin",
+   "parent": "gesture_02-feint-synth-frontal-000439.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    32.0,
+    71.0,
+    19.0
+   ]
+  },
+  {
+   "i": 441,
+   "file": "gesture_01-throw-synth-profile-000441.bin",
+   "parent": "gesture_01-throw-synth-profile-000441.bin",
+   "y": 0,
+   "release_frame": 78,
+   "counts": [
+    72.0,
+    40.0,
+    18.0
+   ]
+  },
+  {
+   "i": 465,
+   "file": "gesture_01-throw-synth-profile-000465.bin",
+   "parent": "gesture_01-throw-synth-profile-000465.bin",
+   "y": 0,
+   "release_frame": 76,
+   "counts": [
+    77.0,
+    43.0,
+    15.0
+   ]
+  },
+  {
+   "i": 467,
+   "file": "gesture_03-idle-synth-profile-000467.bin",
+   "parent": "gesture_03-idle-synth-profile-000467.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    0.0,
+    109.0
+   ]
+  },
+  {
+   "i": 477,
+   "file": "gesture_01-throw-synth-profile-000477.bin",
+   "parent": "gesture_01-throw-synth-profile-000477.bin",
+   "y": 0,
+   "release_frame": 60,
+   "counts": [
+    80.0,
+    28.0,
+    17.0
+   ]
+  },
+  {
+   "i": 487,
+   "file": "gesture_02-feint-synth-frontal-000487.bin",
+   "parent": "gesture_02-feint-synth-frontal-000487.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    47.0,
+    77.0,
+    6.0
+   ]
+  },
+  {
+   "i": 492,
+   "file": "gesture_01-throw-synth-frontal-000492.bin",
+   "parent": "gesture_01-throw-synth-frontal-000492.bin",
+   "y": 0,
+   "release_frame": 63,
+   "counts": [
+    84.0,
+    27.0,
+    12.0
+   ]
+  },
+  {
+   "i": 493,
+   "file": "gesture_02-feint-synth-frontal-000493.bin",
+   "parent": "gesture_02-feint-synth-frontal-000493.bin",
+   "y": 1,
+   "release_frame": 60,
+   "counts": [
+    29.0,
+    71.0,
+    32.0
+   ]
+  },
+  {
+   "i": 500,
+   "file": "gesture_03-idle-synth-frontal-000500.bin",
+   "parent": "gesture_03-idle-synth-frontal-000500.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    0.0,
+    99.0
+   ]
+  },
+  {
+   "i": 530,
+   "file": "gesture_03-idle-synth-frontal-000530.bin",
+   "parent": "gesture_03-idle-synth-frontal-000530.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    8.0,
+    5.0,
+    104.0
+   ]
+  },
+  {
+   "i": 542,
+   "file": "gesture_03-idle-synth-frontal-000542.bin",
+   "parent": "gesture_03-idle-synth-frontal-000542.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    5.0,
+    1.0,
+    109.0
+   ]
+  },
+  {
+   "i": 563,
+   "file": "gesture_03-idle-synth-profile-000563.bin",
+   "parent": "gesture_03-idle-synth-profile-000563.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    1.0,
+    105.0
+   ]
+  },
+  {
+   "i": 565,
+   "file": "gesture_02-feint-synth-frontal-000565.bin",
+   "parent": "gesture_02-feint-synth-frontal-000565.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    42.0,
+    65.0,
+    7.0
+   ]
+  },
+  {
+   "i": 567,
+   "file": "gesture_01-throw-synth-frontal-000567.bin",
+   "parent": "gesture_01-throw-synth-frontal-000567.bin",
+   "y": 0,
+   "release_frame": 67,
+   "counts": [
+    66.0,
+    42.0,
+    17.0
+   ]
+  },
+  {
+   "i": 572,
+   "file": "gesture_03-idle-synth-frontal-000572.bin",
+   "parent": "gesture_03-idle-synth-frontal-000572.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    7.0,
+    0.0,
+    103.0
+   ]
+  },
+  {
+   "i": 575,
+   "file": "gesture_03-idle-synth-profile-000575.bin",
+   "parent": "gesture_03-idle-synth-profile-000575.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    17.0,
+    2.0,
+    91.0
+   ]
+  },
+  {
+   "i": 577,
+   "file": "gesture_02-feint-synth-frontal-000577.bin",
+   "parent": "gesture_02-feint-synth-frontal-000577.bin",
+   "y": 1,
+   "release_frame": 69,
+   "counts": [
+    18.0,
+    70.0,
+    27.0
+   ]
+  },
+  {
+   "i": 586,
+   "file": "gesture_02-feint-synth-profile-000586.bin",
+   "parent": "gesture_02-feint-synth-profile-000586.bin",
+   "y": 1,
+   "release_frame": 61,
+   "counts": [
+    38.0,
+    39.0,
+    38.0
+   ]
+  },
+  {
+   "i": 599,
+   "file": "gesture_03-idle-synth-profile-000599.bin",
+   "parent": "gesture_03-idle-synth-profile-000599.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    41.0,
+    0.0,
+    81.0
+   ]
+  },
+  {
+   "i": 606,
+   "file": "gesture_01-throw-synth-frontal-000606.bin",
+   "parent": "gesture_01-throw-synth-frontal-000606.bin",
+   "y": 0,
+   "release_frame": 71,
+   "counts": [
+    71.0,
+    34.0,
+    19.0
+   ]
+  },
+  {
+   "i": 610,
+   "file": "gesture_02-feint-synth-profile-000610.bin",
+   "parent": "gesture_02-feint-synth-profile-000610.bin",
+   "y": 1,
+   "release_frame": 67,
+   "counts": [
+    47.0,
+    39.0,
+    15.0
+   ]
+  },
+  {
+   "i": 612,
+   "file": "gesture_01-throw-synth-frontal-000612.bin",
+   "parent": "gesture_01-throw-synth-frontal-000612.bin",
+   "y": 0,
+   "release_frame": 66,
+   "counts": [
+    68.0,
+    27.0,
+    22.0
+   ]
+  },
+  {
+   "i": 620,
+   "file": "gesture_03-idle-synth-frontal-000620.bin",
+   "parent": "gesture_03-idle-synth-frontal-000620.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    8.0,
+    21.0,
+    91.0
+   ]
+  },
+  {
+   "i": 625,
+   "file": "gesture_02-feint-synth-frontal-000625.bin",
+   "parent": "gesture_02-feint-synth-frontal-000625.bin",
+   "y": 1,
+   "release_frame": 60,
+   "counts": [
+    41.0,
+    102.0,
+    1.0
+   ]
+  },
+  {
+   "i": 626,
+   "file": "gesture_03-idle-synth-frontal-000626.bin",
+   "parent": "gesture_03-idle-synth-frontal-000626.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    9.0,
+    8.0,
+    95.0
+   ]
+  },
+  {
+   "i": 629,
+   "file": "gesture_03-idle-synth-frontal-000629.bin",
+   "parent": "gesture_03-idle-synth-frontal-000629.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    17.0,
+    0.0,
+    96.0
+   ]
+  },
+  {
+   "i": 638,
+   "file": "gesture_03-idle-synth-frontal-000638.bin",
+   "parent": "gesture_03-idle-synth-frontal-000638.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    5.0,
+    1.0,
+    107.0
+   ]
+  },
+  {
+   "i": 639,
+   "file": "gesture_01-throw-synth-frontal-000639.bin",
+   "parent": "gesture_01-throw-synth-frontal-000639.bin",
+   "y": 0,
+   "release_frame": 73,
+   "counts": [
+    82.0,
+    28.0,
+    18.0
+   ]
+  },
+  {
+   "i": 660,
+   "file": "gesture_01-throw-synth-frontal-000660.bin",
+   "parent": "gesture_01-throw-synth-frontal-000660.bin",
+   "y": 0,
+   "release_frame": 70,
+   "counts": [
+    57.0,
+    15.0,
+    29.0
+   ]
+  },
+  {
+   "i": 661,
+   "file": "gesture_02-feint-synth-frontal-000661.bin",
+   "parent": "gesture_02-feint-synth-frontal-000661.bin",
+   "y": 1,
+   "release_frame": 77,
+   "counts": [
+    29.0,
+    79.0,
+    16.0
+   ]
+  },
+  {
+   "i": 670,
+   "file": "gesture_02-feint-synth-profile-000670.bin",
+   "parent": "gesture_02-feint-synth-profile-000670.bin",
+   "y": 1,
+   "release_frame": 41,
+   "counts": [
+    49.0,
+    57.0,
+    13.0
+   ]
+  },
+  {
+   "i": 683,
+   "file": "gesture_03-idle-synth-profile-000683.bin",
+   "parent": "gesture_03-idle-synth-profile-000683.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    5.0,
+    6.0,
+    101.0
+   ]
+  },
+  {
+   "i": 692,
+   "file": "gesture_03-idle-synth-frontal-000692.bin",
+   "parent": "gesture_03-idle-synth-frontal-000692.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    14.0,
+    2.0,
+    94.0
+   ]
+  },
+  {
+   "i": 696,
+   "file": "gesture_01-throw-synth-frontal-000696.bin",
+   "parent": "gesture_01-throw-synth-frontal-000696.bin",
+   "y": 0,
+   "release_frame": 62,
+   "counts": [
+    99.0,
+    35.0,
+    3.0
+   ]
+  },
+  {
+   "i": 709,
+   "file": "gesture_02-feint-synth-frontal-000709.bin",
+   "parent": "gesture_02-feint-synth-frontal-000709.bin",
+   "y": 1,
+   "release_frame": 72,
+   "counts": [
+    31.0,
+    84.0,
+    17.0
+   ]
+  },
+  {
+   "i": 713,
+   "file": "gesture_03-idle-synth-frontal-000713.bin",
+   "parent": "gesture_03-idle-synth-frontal-000713.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    15.0,
+    6.0,
+    76.0
+   ]
+  },
+  {
+   "i": 725,
+   "file": "gesture_03-idle-synth-frontal-000725.bin",
+   "parent": "gesture_03-idle-synth-frontal-000725.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    52.0,
+    31.0,
+    46.0
+   ]
+  },
+  {
+   "i": 730,
+   "file": "gesture_02-feint-synth-profile-000730.bin",
+   "parent": "gesture_02-feint-synth-profile-000730.bin",
+   "y": 1,
+   "release_frame": 47,
+   "counts": [
+    49.0,
+    60.0,
+    9.0
+   ]
+  },
+  {
+   "i": 732,
+   "file": "gesture_01-throw-synth-frontal-000732.bin",
+   "parent": "gesture_01-throw-synth-frontal-000732.bin",
+   "y": 0,
+   "release_frame": 73,
+   "counts": [
+    73.0,
+    30.0,
+    17.0
+   ]
+  },
+  {
+   "i": 736,
+   "file": "gesture_02-feint-synth-frontal-000736.bin",
+   "parent": "gesture_02-feint-synth-frontal-000736.bin",
+   "y": 1,
+   "release_frame": 71,
+   "counts": [
+    14.0,
+    86.0,
+    11.0
+   ]
+  },
+  {
+   "i": 744,
+   "file": "gesture_01-throw-synth-frontal-000744.bin",
+   "parent": "gesture_01-throw-synth-frontal-000744.bin",
+   "y": 0,
+   "release_frame": 64,
+   "counts": [
+    76.0,
+    37.0,
+    7.0
+   ]
+  },
+  {
+   "i": 766,
+   "file": "gesture_02-feint-synth-profile-000766.bin",
+   "parent": "gesture_02-feint-synth-profile-000766.bin",
+   "y": 1,
+   "release_frame": 71,
+   "counts": [
+    43.0,
+    54.0,
+    21.0
+   ]
+  },
+  {
+   "i": 782,
+   "file": "gesture_03-idle-synth-frontal-000782.bin",
+   "parent": "gesture_03-idle-synth-frontal-000782.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    7.0,
+    0.0,
+    110.0
+   ]
+  },
+  {
+   "i": 793,
+   "file": "gesture_02-feint-synth-frontal-000793.bin",
+   "parent": "gesture_02-feint-synth-frontal-000793.bin",
+   "y": 1,
+   "release_frame": 62,
+   "counts": [
+    54.0,
+    88.0,
+    5.0
+   ]
+  },
+  {
+   "i": 794,
+   "file": "gesture_03-idle-synth-frontal-000794.bin",
+   "parent": "gesture_03-idle-synth-frontal-000794.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    10.0,
+    17.0,
+    85.0
+   ]
+  },
+  {
+   "i": 798,
+   "file": "gesture_01-throw-synth-frontal-000798.bin",
+   "parent": "gesture_01-throw-synth-frontal-000798.bin",
+   "y": 0,
+   "release_frame": 68,
+   "counts": [
+    94.0,
+    28.0,
+    3.0
+   ]
+  },
+  {
+   "i": 807,
+   "file": "gesture_01-throw-synth-frontal-000807.bin",
+   "parent": "gesture_01-throw-synth-frontal-000807.bin",
+   "y": 0,
+   "release_frame": 65,
+   "counts": [
+    72.0,
+    44.0,
+    12.0
+   ]
+  },
+  {
+   "i": 808,
+   "file": "gesture_02-feint-synth-frontal-000808.bin",
+   "parent": "gesture_02-feint-synth-frontal-000808.bin",
+   "y": 1,
+   "release_frame": 59,
+   "counts": [
+    34.0,
+    75.0,
+    22.0
+   ]
+  },
+  {
+   "i": 820,
+   "file": "gesture_02-feint-synth-frontal-000820.bin",
+   "parent": "gesture_02-feint-synth-frontal-000820.bin",
+   "y": 1,
+   "release_frame": 71,
+   "counts": [
+    20.0,
+    82.0,
+    27.0
+   ]
+  },
+  {
+   "i": 821,
+   "file": "gesture_03-idle-synth-frontal-000821.bin",
+   "parent": "gesture_03-idle-synth-frontal-000821.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    14.0,
+    2.0,
+    102.0
+   ]
+  },
+  {
+   "i": 824,
+   "file": "gesture_03-idle-synth-frontal-000824.bin",
+   "parent": "gesture_03-idle-synth-frontal-000824.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    7.0,
+    29.0,
+    82.0
+   ]
+  },
+  {
+   "i": 831,
+   "file": "gesture_01-throw-synth-frontal-000831.bin",
+   "parent": "gesture_01-throw-synth-frontal-000831.bin",
+   "y": 0,
+   "release_frame": 60,
+   "counts": [
+    88.0,
+    22.0,
+    6.0
+   ]
+  },
+  {
+   "i": 850,
+   "file": "gesture_02-feint-synth-profile-000850.bin",
+   "parent": "gesture_02-feint-synth-profile-000850.bin",
+   "y": 1,
+   "release_frame": 70,
+   "counts": [
+    40.0,
+    71.0,
+    16.0
+   ]
+  },
+  {
+   "i": 852,
+   "file": "gesture_01-throw-synth-frontal-000852.bin",
+   "parent": "gesture_01-throw-synth-frontal-000852.bin",
+   "y": 0,
+   "release_frame": 69,
+   "counts": [
+    60.0,
+    39.0,
+    24.0
+   ]
+  },
+  {
+   "i": 862,
+   "file": "gesture_02-feint-synth-profile-000862.bin",
+   "parent": "gesture_02-feint-synth-profile-000862.bin",
+   "y": 1,
+   "release_frame": 59,
+   "counts": [
+    24.0,
+    71.0,
+    31.0
+   ]
+  },
+  {
+   "i": 868,
+   "file": "gesture_02-feint-synth-frontal-000868.bin",
+   "parent": "gesture_02-feint-synth-frontal-000868.bin",
+   "y": 1,
+   "release_frame": 69,
+   "counts": [
+    45.0,
+    69.0,
+    13.0
+   ]
+  },
+  {
+   "i": 871,
+   "file": "gesture_02-feint-synth-frontal-000871.bin",
+   "parent": "gesture_02-feint-synth-frontal-000871.bin",
+   "y": 1,
+   "release_frame": 63,
+   "counts": [
+    22.0,
+    96.0,
+    5.0
+   ]
+  },
+  {
+   "i": 879,
+   "file": "gesture_01-throw-synth-frontal-000879.bin",
+   "parent": "gesture_01-throw-synth-frontal-000879.bin",
+   "y": 0,
+   "release_frame": 69,
+   "counts": [
+    90.0,
+    30.0,
+    17.0
+   ]
+  },
+  {
+   "i": 897,
+   "file": "gesture_01-throw-synth-profile-000897.bin",
+   "parent": "gesture_01-throw-synth-profile-000897.bin",
+   "y": 0,
+   "release_frame": 62,
+   "counts": [
+    80.0,
+    23.0,
+    20.0
+   ]
+  },
+  {
+   "i": 923,
+   "file": "gesture_03-idle-synth-profile-000923.bin",
+   "parent": "gesture_03-idle-synth-profile-000923.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    11.0,
+    6.0,
+    96.0
+   ]
+  },
+  {
+   "i": 946,
+   "file": "gesture_02-feint-synth-profile-000946.bin",
+   "parent": "gesture_02-feint-synth-profile-000946.bin",
+   "y": 1,
+   "release_frame": 35,
+   "counts": [
+    34.0,
+    63.0,
+    29.0
+   ]
+  },
+  {
+   "i": 960,
+   "file": "gesture_01-throw-synth-frontal-000960.bin",
+   "parent": "gesture_01-throw-synth-frontal-000960.bin",
+   "y": 0,
+   "release_frame": 63,
+   "counts": [
+    111.0,
+    30.0,
+    9.0
+   ]
+  },
+  {
+   "i": 962,
+   "file": "gesture_03-idle-synth-frontal-000962.bin",
+   "parent": "gesture_03-idle-synth-frontal-000962.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    11.0,
+    43.0,
+    67.0
+   ]
+  },
+  {
+   "i": 963,
+   "file": "gesture_01-throw-synth-frontal-000963.bin",
+   "parent": "gesture_01-throw-synth-frontal-000963.bin",
+   "y": 0,
+   "release_frame": 67,
+   "counts": [
+    84.0,
+    23.0,
+    14.0
+   ]
+  },
+  {
+   "i": 964,
+   "file": "gesture_02-feint-synth-frontal-000964.bin",
+   "parent": "gesture_02-feint-synth-frontal-000964.bin",
+   "y": 1,
+   "release_frame": 73,
+   "counts": [
+    13.0,
+    94.0,
+    8.0
+   ]
+  },
+  {
+   "i": 987,
+   "file": "gesture_01-throw-synth-frontal-000987.bin",
+   "parent": "gesture_01-throw-synth-frontal-000987.bin",
+   "y": 0,
+   "release_frame": 62,
+   "counts": [
+    83.0,
+    27.0,
+    17.0
+   ]
+  },
+  {
+   "i": 988,
+   "file": "gesture_02-feint-synth-frontal-000988.bin",
+   "parent": "gesture_02-feint-synth-frontal-000988.bin",
+   "y": 1,
+   "release_frame": 64,
+   "counts": [
+    34.0,
+    86.0,
+    10.0
+   ]
+  },
+  {
+   "i": 992,
+   "file": "gesture_03-idle-synth-frontal-000992.bin",
+   "parent": "gesture_03-idle-synth-frontal-000992.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    18.0,
+    3.0,
+    108.0
+   ]
+  },
+  {
+   "i": 998,
+   "file": "gesture_03-idle-synth-frontal-000998.bin",
+   "parent": "gesture_03-idle-synth-frontal-000998.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    6.0,
+    0.0,
+    114.0
+   ]
+  },
+  {
+   "i": 1000,
+   "file": "gesture_02-feint-synth-frontal-001000.bin",
+   "parent": "gesture_02-feint-synth-frontal-001000.bin",
+   "y": 1,
+   "release_frame": 69,
+   "counts": [
+    32.0,
+    92.0,
+    15.0
+   ]
+  },
+  {
+   "i": 1006,
+   "file": "gesture_02-feint-synth-profile-001006.bin",
+   "parent": "gesture_02-feint-synth-profile-001006.bin",
+   "y": 1,
+   "release_frame": 79,
+   "counts": [
+    44.0,
+    53.0,
+    20.0
+   ]
+  },
+  {
+   "i": 1017,
+   "file": "gesture_01-throw-synth-profile-001017.bin",
+   "parent": "gesture_01-throw-synth-profile-001017.bin",
+   "y": 0,
+   "release_frame": 71,
+   "counts": [
+    78.0,
+    44.0,
+    4.0
+   ]
+  },
+  {
+   "i": 1022,
+   "file": "gesture_03-idle-synth-frontal-001022.bin",
+   "parent": "gesture_03-idle-synth-frontal-001022.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    25.0,
+    57.0,
+    46.0
+   ]
+  },
+  {
+   "i": 1033,
+   "file": "gesture_02-feint-synth-frontal-001033.bin",
+   "parent": "gesture_02-feint-synth-frontal-001033.bin",
+   "y": 1,
+   "release_frame": 64,
+   "counts": [
+    16.0,
+    60.0,
+    37.0
+   ]
+  },
+  {
+   "i": 1041,
+   "file": "gesture_01-throw-synth-profile-001041.bin",
+   "parent": "gesture_01-throw-synth-profile-001041.bin",
+   "y": 0,
+   "release_frame": 76,
+   "counts": [
+    53.0,
+    24.0,
+    39.0
+   ]
+  },
+  {
+   "i": 1050,
+   "file": "gesture_01-throw-synth-frontal-001050.bin",
+   "parent": "gesture_01-throw-synth-frontal-001050.bin",
+   "y": 0,
+   "release_frame": 63,
+   "counts": [
+    93.0,
+    11.0,
+    10.0
+   ]
+  },
+  {
+   "i": 1062,
+   "file": "gesture_01-throw-synth-frontal-001062.bin",
+   "parent": "gesture_01-throw-synth-frontal-001062.bin",
+   "y": 0,
+   "release_frame": 67,
+   "counts": [
+    76.0,
+    35.0,
+    9.0
+   ]
+  },
+  {
+   "i": 1066,
+   "file": "gesture_02-feint-synth-profile-001066.bin",
+   "parent": "gesture_02-feint-synth-profile-001066.bin",
+   "y": 1,
+   "release_frame": 65,
+   "counts": [
+    58.0,
+    51.0,
+    13.0
+   ]
+  },
+  {
+   "i": 1080,
+   "file": "gesture_01-throw-synth-frontal-001080.bin",
+   "parent": "gesture_01-throw-synth-frontal-001080.bin",
+   "y": 0,
+   "release_frame": 64,
+   "counts": [
+    85.0,
+    11.0,
+    26.0
+   ]
+  },
+  {
+   "i": 1110,
+   "file": "gesture_01-throw-synth-frontal-001110.bin",
+   "parent": "gesture_01-throw-synth-frontal-001110.bin",
+   "y": 0,
+   "release_frame": 65,
+   "counts": [
+    79.0,
+    38.0,
+    5.0
+   ]
+  },
+  {
+   "i": 1112,
+   "file": "gesture_03-idle-synth-frontal-001112.bin",
+   "parent": "gesture_03-idle-synth-frontal-001112.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    5.0,
+    0.0,
+    106.0
+   ]
+  },
+  {
+   "i": 1114,
+   "file": "gesture_02-feint-synth-profile-001114.bin",
+   "parent": "gesture_02-feint-synth-profile-001114.bin",
+   "y": 1,
+   "release_frame": 37,
+   "counts": [
+    37.0,
+    69.0,
+    17.0
+   ]
+  },
+  {
+   "i": 1122,
+   "file": "gesture_01-throw-synth-frontal-001122.bin",
+   "parent": "gesture_01-throw-synth-frontal-001122.bin",
+   "y": 0,
+   "release_frame": 73,
+   "counts": [
+    66.0,
+    44.0,
+    10.0
+   ]
+  },
+  {
+   "i": 1128,
+   "file": "gesture_01-throw-synth-frontal-001128.bin",
+   "parent": "gesture_01-throw-synth-frontal-001128.bin",
+   "y": 0,
+   "release_frame": 72,
+   "counts": [
+    77.0,
+    34.0,
+    11.0
+   ]
+  },
+  {
+   "i": 1145,
+   "file": "gesture_03-idle-synth-frontal-001145.bin",
+   "parent": "gesture_03-idle-synth-frontal-001145.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    8.0,
+    4.0,
+    99.0
+   ]
+  },
+  {
+   "i": 1161,
+   "file": "gesture_01-throw-synth-profile-001161.bin",
+   "parent": "gesture_01-throw-synth-profile-001161.bin",
+   "y": 0,
+   "release_frame": 70,
+   "counts": [
+    68.0,
+    46.0,
+    13.0
+   ]
+  },
+  {
+   "i": 1164,
+   "file": "gesture_01-throw-synth-frontal-001164.bin",
+   "parent": "gesture_01-throw-synth-frontal-001164.bin",
+   "y": 0,
+   "release_frame": 69,
+   "counts": [
+    83.0,
+    42.0,
+    7.0
+   ]
+  },
+  {
+   "i": 1175,
+   "file": "gesture_03-idle-synth-profile-001175.bin",
+   "parent": "gesture_03-idle-synth-profile-001175.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    23.0,
+    0.0,
+    103.0
+   ]
+  },
+  {
+   "i": 1178,
+   "file": "gesture_03-idle-synth-frontal-001178.bin",
+   "parent": "gesture_03-idle-synth-frontal-001178.bin",
+   "y": 2,
+   "release_frame": -1,
+   "counts": [
+    13.0,
+    4.0,
+    93.0
+   ]
+  },
+  {
+   "i": 1189,
+   "file": "gesture_02-feint-synth-frontal-001189.bin",
+   "parent": "gesture_02-feint-synth-frontal-001189.bin",
+   "y": 1,
+   "release_frame": 55,
+   "counts": [
+    25.0,
+    91.0,
+    14.0
+   ]
+  },
+  {
+   "i": 1194,
+   "file": "gesture_01-throw-synth-frontal-001194.bin",
+   "parent": "gesture_01-throw-synth-frontal-001194.bin",
+   "y": 0,
+   "release_frame": 65,
+   "counts": [
+    81.0,
+    38.0,
+    5.0
+   ]
+  }
+ ]
+}

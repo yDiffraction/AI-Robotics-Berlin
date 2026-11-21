@@ -61,13 +61,37 @@ def optimized_dodges() -> list[g.Dodge]:
     return out
 
 
+SAFE_NAME = "SAFE (load-limited, 0.1 rad joint clamp)"
+SAFE_PHYS = g.Physics(target_margin=0.1)     # the SAFE dodge runs with the deploy-script joint clamp
+
+
+def safe_dodge() -> g.Dodge | None:
+    """The SAFE dodge: chosen by `validate_dodge.py --scale-sweep` (results/safe_dodge.json), else the best
+    finalist of `optimize_dodge.py --safe` that had no failure at all."""
+    import optimize_dodge as o
+    chosen = HERE / "results/safe_dodge.json"
+    if chosen.exists():
+        return o.to_dodge(json.loads(chosen.read_text())["chosen"]["params"], SAFE_NAME)
+    path = HERE / "results/optimize_safe.json"
+    if not path.exists():
+        return None
+    final = json.loads(path.read_text())["final"]
+    ok = [f for f in final if f["validation"]["ok"] == f["validation"]["n"] and f["neighbours_ok"] == f["neighbours_n"]]
+    if not ok:
+        return None
+    best = min(ok, key=lambda f: (f["validation"]["t30_worst"], f["validation"]["tilt_worst"]))
+    return o.to_dodge(best["search"]["params"], SAFE_NAME)
+
+
 def lineup() -> list[g.Dodge]:
+    safe = safe_dodge()
     return [
         g.Dodge("trained limit: vy 0.6, from standstill", g.Command(vy=0.6), from_stand=True),
         g.Dodge("sustained vy 1.5", g.Command(vy=1.5, freq=4.0)),
         g.Dodge("sustained vy 2.5 (falls)", g.Command(vy=2.5, freq=4.0)),
         replace(g.RECOMMENDED, name="hand-tuned: kick 2.0/0.3s, 1.0, 0.5s"),
         *optimized_dodges(),
+        *([safe] if safe is not None else []),
     ]
 
 
@@ -171,8 +195,9 @@ class Show:
         self.m.opt.timestep = phys.timestep
         self.d = mujoco.MjData(self.m)
         self.substeps = round(g.POLICY_DT / phys.timestep)
-        self.robots = [g.Go2Robot(self.m, self.d, phys, "" if i == 0 else f"d{i}_", home_xy=pos[i])
-                       for i in range(len(dodges))]
+        self.robots = [g.Go2Robot(self.m, self.d, SAFE_PHYS if dg.name == SAFE_NAME else phys,
+                                  "" if i == 0 else f"d{i}_", home_xy=pos[i])
+                       for i, dg in enumerate(dodges)]
         self.ctls = [g.DodgeController(dg, r, g.WTWPolicy()) for dg, r in zip(dodges, self.robots)]
         self.t0 = dodges[0].t0
         assert all(abs(dg.t0 - self.t0) < 1e-9 for dg in dodges), "all dodges must trigger at the same time"

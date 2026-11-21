@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test bench only (WSL): keep every UDP datagram below the MTU so CycloneDDS fragments large
+     samples itself. With the default 14720-byte messages, WSL's mirrored-network loopback drops IP
+     fragments and best-effort point clouds above ~1.5 kB never arrive (measured: 0 of 55). -->
+<CycloneDDS xmlns="https://cdds.io/config">
+  <Domain id="any">
+    <General>
+      <MaxMessageSize>1400B</MaxMessageSize>
+      <FragmentSize>1300B</FragmentSize>
+    </General>
+  </Domain>
+</CycloneDDS>

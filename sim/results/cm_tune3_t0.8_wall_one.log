@@ -1,0 +1,30 @@
+1795280951.953557 [77] collision_: selected interface "lo" is not multicast-capable: disabling multicast
+[INFO] [1795280952.016273438] [collision_monitor]: 
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1795280952.108573981] [collision_monitor]: Configuring
+[INFO] [1795280952.111848786] [collision_monitor]: [FootprintApproach]: Creating Polygon
+[INFO] [1795280952.113148487] [collision_monitor]: [cloud]: Creating PointCloud
+[INFO] [1795280952.115478768] [collision_monitor]: Activating
+[INFO] [1795280952.117143945] [collision_monitor]: Creating bond (collision_monitor) to lifecycle manager.
+[INFO] [1795280953.968741554] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280954.068526561] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795280954.149994118] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280954.349606082] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795280954.428373009] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280956.730251683] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795280957.209412196] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280959.373853481] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795280975.051808057] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280975.091097134] [collision_monitor]: Robot to continue normal operation
+[INFO] [1795280977.402973212] [collision_monitor]: Robot to approach for 0.800000 seconds away from collision
+[INFO] [1795280992.910915925] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1795280992.912738675] [collision_monitor]: Running Nav2 LifecycleNode rcl preshutdown (collision_monitor)
+[INFO] [1795280992.913725029] [collision_monitor]: Deactivating
+[INFO] [1795280992.914752895] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795280992.925569079] [collision_monitor]: Cleaning up
+[INFO] [1795280992.926720364] [collision_monitor]: [FootprintApproach]: Destroying Polygon
+[INFO] [1795280992.927636854] [collision_monitor]: [cloud]: Destroying PointCloud
+[INFO] [1795280992.931388978] [collision_monitor]: Destroying bond (collision_monitor) to lifecycle manager.
+[INFO] [1795280992.936443032] [collision_monitor]: Destroying

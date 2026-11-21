@@ -1,0 +1,27 @@
+##### tbc 0.8 footprint_y 0.30, keep-off on
+  [FAIL] popup           popup room 0.25 at +0.14s                            side +1 lat +0.24 clear -0.001 t30 None CONTACT at +2.10s
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat +0.17 clear -0.586 t30 0.58 FELL; CONTACT at +0.98s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat -1.31 clear -0.740 t30 0.61 FELL; CONTACT at +1.04s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat +0.37 clear -0.004 t30 0.61 CONTACT at +0.70s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.20 clear -0.537 t30 None FELL; CONTACT at +0.56s
+  [FAIL] popup           popup room 0.42 at +0.11s                            side +1 lat +0.45 clear -0.004 t30 0.54 CONTACT at +0.99s
+popup               14/20    -0.740 m
+forced              10/10    0.089 m
+wall_one            10/10    0.056 m
+##### tbc 1.2 footprint_y 0.30, keep-off on
+  [FAIL] popup           popup room 0.40 at +0.27s                            side +1 lat -0.02 clear -0.598 t30 0.58 FELL; CONTACT at +1.00s
+  [FAIL] popup           popup room 0.48 at +0.17s                            side +1 lat -0.55 clear -0.733 t30 0.61 FELL; CONTACT at +1.06s
+  [FAIL] popup           popup room 0.32 at +0.16s                            side +1 lat +0.36 clear -0.001 t30 0.63 CONTACT at +0.75s
+  [FAIL] popup           popup room 0.39 at +0.15s                            side +1 lat -0.88 clear -0.539 t30 None FELL; CONTACT at +0.55s
+  [FAIL] popup           popup room 0.42 at +0.11s                            side +1 lat +0.45 clear -0.001 t30 0.56 CONTACT at +1.03s
+popup               15/20    -0.733 m
+forced              10/10    0.086 m
+wall_one            10/10    0.056 m
+##### popup WITHOUT keep-off, tbc 1.2
+  [info] popup_nokeepoff popup room 0.40 at +0.24s (no keep-off)              side +1 lat +0.46 clear -0.002 t30 0.59 CONTACT at +0.78s
+  [info] popup_nokeepoff popup room 0.29 at +0.07s (no keep-off)              side +1 lat +0.32 clear -0.536 t30 1.14 FELL; CONTACT at +0.52s
+  [info] popup_nokeepoff popup room 0.40 at +0.29s (no keep-off)              side +1 lat -1.14 clear -0.616 t30 0.53 FELL; CONTACT at +0.60s
+  [info] popup_nokeepoff popup room 0.32 at +0.22s (no keep-off)              side +1 lat -0.76 clear -0.892 t30 None FELL; CONTACT at +0.52s
+  [info] popup_nokeepoff popup room 0.39 at +0.26s (no keep-off)              side +1 lat +0.09 clear -0.657 t30 0.64 FELL; CONTACT at +0.85s
+  [info] popup_nokeepoff popup room 0.40 at +0.16s (no keep-off)              side +1 lat +0.45 clear -0.003 t30 0.58 CONTACT at +0.76s
+popup_nokeepoff     14/20    -0.892 m

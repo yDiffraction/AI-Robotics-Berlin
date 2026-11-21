@@ -1,0 +1,103 @@
+{
+ "headroom": 1.25,
+ "limits": {
+  "foot_force_bw_max": 1.807,
+  "touchdown_p95_max": 3.729,
+  "trunk_acc_g_max": 1.934
+ },
+ "reference": {
+  "trot in place": {
+   "runs": 80,
+   "failures": 80,
+   "failure_rate_95_upper": null,
+   "t30_median": NaN,
+   "t30_p95": NaN,
+   "t30_worst": NaN,
+   "foot_force_bw_worst": 1.4376442396694844,
+   "touchdown_p95_worst": 2.8616897575982025,
+   "trunk_acc_g_worst": 1.5373503222294493,
+   "torque_frac_worst": 0.9157337494443929,
+   "speed_frac_worst": 0.9722317574888775,
+   "limit_margin_worst": 0.24476084547626886,
+   "peak_tilt_deg_worst": 9.06385317078003,
+   "failure_reasons": {
+    "0": [
+     "never reached 30 cm"
+    ],
+    "1": [
+     "never reached 30 cm"
+    ],
+    "2": [
+     "never reached 30 cm"
+    ],
+    "3": [
+     "never reached 30 cm"
+    ],
+    "4": [
+     "never reached 30 cm"
+    ],
+    "5": [
+     "never reached 30 cm"
+    ],
+    "6": [
+     "never reached 30 cm"
+    ],
+    "7": [
+     "never reached 30 cm"
+    ],
+    "8": [
+     "never reached 30 cm"
+    ],
+    "9": [
+     "never reached 30 cm"
+    ],
+    "10": [
+     "never reached 30 cm"
+    ],
+    "11": [
+     "never reached 30 cm"
+    ],
+    "12": [
+     "never reached 30 cm"
+    ],
+    "13": [
+     "never reached 30 cm"
+    ],
+    "14": [
+     "never reached 30 cm"
+    ],
+    "15": [
+     "never reached 30 cm"
+    ],
+    "16": [
+     "never reached 30 cm"
+    ],
+    "17": [
+     "never reached 30 cm"
+    ],
+    "18": [
+     "never reached 30 cm"
+    ],
+    "19": [
+     "never reached 30 cm"
+    ]
+   }
+  },
+  "walk sideways 0.6 (trained)": {
+   "runs": 80,
+   "failures": 0,
+   "failure_rate_95_upper": 0.0375,
+   "t30_median": 0.8836036723135949,
+   "t30_p95": 0.9710778326699654,
+   "t30_worst": 0.9896935393671482,
+   "foot_force_bw_worst": 1.4457403270779117,
+   "touchdown_p95_worst": 2.983119736156271,
+   "trunk_acc_g_worst": 1.5472442232067447,
+   "torque_frac_worst": 0.9060511154257574,
+   "speed_frac_worst": 0.9768867747008869,
+   "limit_margin_worst": 0.20097281358048846,
+   "peak_tilt_deg_worst": 9.773751322263424,
+   "failure_reasons": {}
+  }
+ }
+}

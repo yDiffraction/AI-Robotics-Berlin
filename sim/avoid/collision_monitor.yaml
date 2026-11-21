@@ -1,0 +1,41 @@
+# Nav2 Collision Monitor (ros-humble-nav2-collision-monitor 1.1.x, unmodified) for the Go2 dodge.
+# Input:  /avoid/cloud_obstacles  - lidar points already in base_footprint, floor and the robot's own
+#                                   legs removed (sim/avoid/guard.py), so no TF tree is needed.
+#         /cmd_vel_raw            - the velocity our controller wants (Twist; linear.y = sideways).
+# Output: /cmd_vel                - the same velocity, reduced so the footprint does not reach an
+#                                   obstacle within time_before_collision.
+collision_monitor:
+  ros__parameters:
+    use_sim_time: True
+    base_frame_id: "base_footprint"
+    odom_frame_id: "odom"              # unused: base_shift_correction is off
+    cmd_vel_in_topic: "cmd_vel_raw"
+    cmd_vel_out_topic: "cmd_vel"
+    transform_tolerance: 0.1
+    source_timeout: 0.3                # older lidar data is not used
+    base_shift_correction: False       # no odometry dependency (may stop with sport mode off)
+    stop_pub_timeout: 0.5
+    polygons: ["FootprintApproach"]
+    FootprintApproach:
+      type: "polygon"
+      action_type: "approach"
+      # Humble 1.1.x: an "approach" polygon with only static `points` SILENTLY NEVER TRIGGERS
+      # (measured with cm_probe.py: 1.0 m/s passed into a wall). It takes the footprint from a
+      # topic; the controller publishes the Go2 outline there (incl. legs ~0.84 x 0.40 m, plus
+      # 5 cm front/back and 10 cm each side): x +-0.47, y +-0.30, frame base_footprint.
+      # `points` below only documents it.
+      points: [0.47, 0.30, 0.47, -0.30, -0.47, -0.30, -0.47, 0.30]
+      footprint_topic: "/avoid/footprint"
+      time_before_collision: 0.8       # tuned: 1.2/1.5 s gave no fewer pop-up contacts but slowed
+                                       # dodges next to walls (median 30 cm: 0.58 -> 0.68 / 0.89 s)
+      simulation_time_step: 0.02
+      max_points: 2                    # >= 3 points inside -> obstacle (same rule as guard.py)
+      visualize: False
+      enabled: True
+    observation_sources: ["cloud"]
+    cloud:
+      type: "pointcloud"
+      topic: "/avoid/cloud_obstacles"
+      min_height: 0.05
+      max_height: 1.0
+      enabled: True

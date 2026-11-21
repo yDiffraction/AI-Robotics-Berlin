@@ -10,6 +10,13 @@ Stage 3  validation of the finalists on fresh, harsher randomization and on pert
 
   cd sim && python optimize_dodge.py            # ~3-5 min on 14 cores
   -> results/optimize.json, and the finalists printed as Dodge(...) lines
+
+--safe: every run uses deployment-like harsh physics (sensor noise, joint-target clamp, random gait
+phase at the trigger, +3 kg, weak motors, 30 ms latency) and also measures mechanical load; a run
+only counts if it passes ALL safety limits of validate_dodge.py (joint margin, foot force, touchdown
+speed, trunk acceleration, torque, tilt) on top of not falling and ending still.
+  cd sim && python validate_dodge.py --reference     # once: sets the load limits
+  cd sim && python optimize_dodge.py --safe          # -> results/optimize_safe.json
 """
 from __future__ import annotations
 
@@ -41,12 +48,13 @@ SPACE = {
 
 _POLICY = None
 _PHYS: list[g.Physics] = []
+_LIM: dict | None = None        # safety limits (safe mode) or None
 
 
-def _init(phys):
-    global _POLICY, _PHYS
+def _init(phys, lim=None):
+    global _POLICY, _PHYS, _LIM
     torch.set_num_threads(1)
-    _POLICY, _PHYS = g.WTWPolicy(), phys
+    _POLICY, _PHYS, _LIM = g.WTWPolicy(), phys, lim
 
 
 def to_dodge(p: dict, name: str = "candidate") -> g.Dodge:
@@ -59,10 +67,22 @@ def to_dodge(p: dict, name: str = "candidate") -> g.Dodge:
 
 def evaluate(p: dict) -> dict:
     d = to_dodge(p)
-    ms = [g.metrics(g.run(d, ph, _POLICY)) for ph in _PHYS]
+    safe = _LIM is not None
+    ms = [g.metrics(g.run(d, ph, _POLICY, loads=safe)) for ph in _PHYS]
     t30 = [m["t_30cm"] for m in ms]
-    ok = sum(m["stable_end"] for m in ms)
-    return {
+    if safe:
+        import validate_dodge as v
+        viol = [v.violations(m, _LIM) for m in ms]
+        ok = sum(not x for x in viol)
+        extra = {"margin_worst": float(min(m["limit_margin"] for m in ms)),
+                 "foot_worst": float(max(m["foot_force_bw"] for m in ms)),
+                 "touch_worst": float(max(m["touchdown_p95"] for m in ms)),
+                 "acc_worst": float(max(m["trunk_acc_g"] for m in ms)),
+                 "why": sorted({w.split(" ")[0] for x in viol for w in x})}
+    else:
+        ok = sum(m["stable_end"] for m in ms)
+        extra = {}
+    return {**extra,
         "params": p, "ok": ok, "n": len(ms),
         "t30_worst": float(max(9.0 if math.isnan(t) else t for t in t30)),
         "t30_nominal": float(9.0 if math.isnan(t30[0]) else t30[0]),
@@ -88,8 +108,11 @@ def perturb(p: dict, rng, scale: float) -> dict:
     return q
 
 
-def physics_set(rng, n: int, harsh: bool = False) -> list[g.Physics]:
+def physics_set(rng, n: int, harsh: bool = False, safe: bool = False) -> list[g.Physics]:
     base = g.Physics()
+    if safe:
+        lead = [] if harsh else [g.Physics(obs_noise=1.0, target_margin=0.1)]
+        return lead + [g.harsh_physics(rng) for _ in range(n)]
     if not harsh:
         return [base] + [g.random_physics(rng, base) for _ in range(n)]
     return [replace(base, friction=rng.uniform(0.35, 1.1), mass_add=rng.uniform(-1.5, 3.0),
@@ -104,11 +127,13 @@ def table(rows: list[dict], k: int) -> None:
               f"{r['yaw_worst']:5.0f} {r['y_final_med']:5.2f}  "
               f"kick {p['kick_vy']:.2f}/{p['kick_s']:.2f}s hold {p['hold_vy']:.2f} to {max(p['dodge_s'], p['kick_s']):.2f}s "
               f"f{p['freq']:.1f} w{p['stance_width']:.2f} sw{p['footswing']:.2f} h{p['height']:+.2f} "
-              f"brake {p['brake_vy']:.2f}/{p['brake_s']:.2f}s")
+              f"brake {p['brake_vy']:.2f}/{p['brake_s']:.2f}s"
+              + (f"  | margin {r['margin_worst']:.3f} foot {r['foot_worst']:.2f} touch {r['touch_worst']:.2f} "
+                 f"acc {r['acc_worst']:.2f} {','.join(r['why'])}" if "margin_worst" in r else ""))
 
 
-def run_pool(phys, params, workers):
-    with Pool(workers, initializer=_init, initargs=(phys,)) as pool:
+def run_pool(phys, params, workers, lim=None):
+    with Pool(workers, initializer=_init, initargs=(phys, lim)) as pool:
         return pool.map(evaluate, params, chunksize=2)
 
 
@@ -121,10 +146,19 @@ def main() -> None:
     ap.add_argument("--final", type=int, default=8)
     ap.add_argument("--workers", type=int, default=14)
     ap.add_argument("--seed", type=int, default=3)
-    ap.add_argument("--out", default="results/optimize.json")
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--safe", action="store_true", help="harsh physics + hard load limits (see module doc)")
+    ap.add_argument("--val-n", type=int, default=None, help="validation runs per finalist (default 40, safe 60)")
     args = ap.parse_args()
+    args.out = args.out or ("results/optimize_safe.json" if args.safe else "results/optimize.json")
+    lim = None
+    if args.safe:
+        import validate_dodge as v
+        lim = v.limits()
+        print(f"safe mode, limits: {lim}")
+    val_n = args.val_n or (60 if args.safe else 40)
     rng = np.random.default_rng(args.seed)
-    search_phys = physics_set(rng, args.rand)
+    search_phys = physics_set(rng, args.rand, safe=args.safe)
 
     # anchors: the earlier hand-tuned dodge and the trained-limit baseline
     anchors = [dict(kick_vy=2.0, kick_s=0.3, hold_vy=1.0, dodge_s=0.5, freq=3.0, stance_width=0.33,
@@ -133,19 +167,19 @@ def main() -> None:
                     footswing=0.08, height=0.0, brake_vy=0.0, brake_s=0.0)]
 
     print(f"stage 1: {args.samples} random candidates x {len(search_phys)} physics")
-    rows = run_pool(search_phys, anchors + [sample(rng) for _ in range(args.samples)], args.workers)
+    rows = run_pool(search_phys, anchors + [sample(rng) for _ in range(args.samples)], args.workers, lim)
     rows.sort(key=score)
     table(rows, 10)
 
     print(f"\nstage 2: refine top {args.refine} x {args.refine_n}")
     seeds = [r["params"] for r in rows[:args.refine]]
     cand = [perturb(p, rng, s) for p in seeds for s in np.linspace(0.02, 0.12, args.refine_n)]
-    rows2 = run_pool(search_phys, cand, args.workers)
+    rows2 = run_pool(search_phys, cand, args.workers, lim)
     allrows = sorted(rows + rows2, key=score)
     table(allrows, 10)
 
-    print(f"\nstage 3: validate top {args.final}: 40 fresh harsher physics + 20 perturbed (+-10%) settings each")
-    val_phys = physics_set(np.random.default_rng(args.seed + 100), 40, harsh=True)
+    print(f"\nstage 3: validate top {args.final}: {val_n} fresh harsh physics + 20 perturbed (+-10%) settings each")
+    val_phys = physics_set(np.random.default_rng(args.seed + 100), val_n, harsh=True, safe=args.safe)
     finalists = []
     seen = set()
     for r in allrows:
@@ -155,10 +189,10 @@ def main() -> None:
             finalists.append(r)
         if len(finalists) == args.final:
             break
-    val = run_pool(val_phys, [f["params"] for f in finalists], args.workers)
+    val = run_pool(val_phys, [f["params"] for f in finalists], args.workers, lim)
     prng = np.random.default_rng(args.seed + 200)
     neigh_params = [perturb(f["params"], prng, 0.05) for f in finalists for _ in range(20)]
-    neigh = run_pool(search_phys, neigh_params, args.workers)
+    neigh = run_pool(search_phys, neigh_params, args.workers, lim)
     report = []
     for i, (f, v) in enumerate(zip(finalists, val)):
         nb = neigh[i * 20:(i + 1) * 20]
