@@ -1,0 +1,373 @@
+file,folder,label,class_id,dataset,source,parent,start_s,decision_s,release_us,events,verified,note
+gesture_01-throw-d01_130951-t00139.bin,throw,throw,01,01,sample_20261121_130951_085863.bin,sample_20261121_130951_085863.bin#swing00139,0.690,1.390,700000,263551,1,"recording block (feint by motion, feint by neighbours)"
+gesture_01-throw-d01_131057-t00115.bin,throw,throw,01,01,sample_20261121_131057_343639.bin,sample_20261121_131057_343639.bin#swing00115,0.450,1.150,700000,89852,1,activity continues after the swing
+gesture_01-throw-d01_131325-t00143.bin,throw,throw,01,01,sample_20261121_131325_769327.bin,sample_20261121_131325_769327.bin#swing00143,0.730,1.430,700000,130614,1,activity continues after the swing
+gesture_01-throw-d01_131331-t00089.bin,throw,throw,01,01,sample_20261121_131331_174843.bin,sample_20261121_131331_174843.bin#swing00089,0.190,0.890,700000,301689,1,activity continues after the swing
+gesture_01-throw-d01_131417-t00189.bin,throw,throw,01,01,sample_20261121_131417_679046.bin,sample_20261121_131417_679046.bin#swing00189,1.190,1.890,700000,157234,1,activity continues after the swing
+gesture_01-throw-d01_131429-t00081.bin,throw,throw,01,01,sample_20261121_131429_174908.bin,sample_20261121_131429_174908.bin#swing00081,0.110,0.810,700000,55196,1,activity continues after the swing
+gesture_01-throw-d01_131509-t00073.bin,throw,throw,01,01,sample_20261121_131509_256520.bin,sample_20261121_131509_256520.bin#swing00073,0.030,0.730,700000,580959,1,"sharp swing, quiet afterwards"
+gesture_01-throw-d02_170441-t01580.bin,throw,throw,01,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing01580,15.100,15.800,700000,73927,claude,ball hits the camera at 16.5 s (shake)
+gesture_01-throw-d02_170441-t02839.bin,throw,throw,01,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing02839,27.690,28.390,700000,42243,claude,
+gesture_01-throw-d02_170441-t03225.bin,throw,throw,01,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing03225,31.550,32.250,700000,48335,claude,
+gesture_01-throw-d02_170441-t04821.bin,throw,throw,01,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing04821,47.510,48.210,700000,31302,claude,
+gesture_01-throw-d02_170441-t05488.bin,throw,throw,01,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing05488,54.180,54.880,700000,31749,claude,second person visible on the right
+gesture_01-throw-d03_195808-t00346.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing00346,2.760,3.460,700000,19989,claude,ball visible
+gesture_01-throw-d03_195808-t01086.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing01086,10.160,10.860,700000,25595,claude,ball visible
+gesture_01-throw-d03_195808-t01832.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing01832,17.620,18.320,700000,30332,claude,ball visible
+gesture_01-throw-d03_195808-t02392.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing02392,23.220,23.920,700000,24085,claude,ball visible
+gesture_01-throw-d03_195808-t03224.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing03224,31.540,32.240,700000,24003,claude,ball visible
+gesture_01-throw-d03_195808-t03938.bin,throw,throw,01,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing03938,38.680,39.380,700000,26402,claude,ball visible
+gesture_01-throw-d03_200001-t00370.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing00370,3.000,3.700,700000,23197,claude,ball visible
+gesture_01-throw-d03_200001-t04312.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing04312,42.420,43.120,700000,38620,claude,ball visible
+gesture_01-throw-d03_200001-t06294.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing06294,62.240,62.940,700000,40706,claude,"ball visible, underhand"
+gesture_01-throw-d03_200001-t07366.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing07366,72.960,73.660,700000,43005,claude,"ball visible, underhand"
+gesture_01-throw-d03_200001-t08478.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing08478,84.080,84.780,700000,50945,claude,"ball visible, underhand"
+gesture_01-throw-d03_200001-t10444.bin,throw,throw,01,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing10444,103.740,104.440,700000,40405,claude,"ball visible, underhand"
+gesture_01-throw-d03_200828-t03222.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing03222,31.520,32.220,700000,51006,1,"model: throw 86, feint 63, idle 7 spikes"
+gesture_01-throw-d03_200828-t04668.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing04668,45.980,46.680,700000,43282,1,"model: throw 75, feint 63, idle 11 spikes"
+gesture_01-throw-d03_200828-t05390.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing05390,53.200,53.900,700000,23714,1,"model: throw 62, feint 24, idle 35 spikes"
+gesture_01-throw-d03_200828-t07036.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing07036,69.660,70.360,700000,35461,1,"model: throw 67, feint 60, idle 7 spikes"
+gesture_01-throw-d03_200828-t10718.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing10718,106.480,107.180,700000,36553,1,"model: throw 78, feint 41, idle 18 spikes"
+gesture_01-throw-d03_200828-t15808.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing15808,157.380,158.080,700000,62332,1,"model: throw 114, feint 2, idle 4 spikes"
+gesture_01-throw-d03_200828-t19272.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing19272,192.020,192.720,700000,62487,1,"model: throw 79, feint 27, idle 5 spikes"
+gesture_01-throw-d03_200828-t22622.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing22622,225.520,226.220,700000,70142,1,"model: throw 91, feint 8, idle 10 spikes"
+gesture_01-throw-d03_200828-t23772.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing23772,237.020,237.720,700000,13592,1,"model: throw 89, feint 48, idle 7 spikes"
+gesture_01-throw-d03_200828-t25802.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing25802,257.320,258.020,700000,22023,1,"model: throw 83, feint 40, idle 20 spikes"
+gesture_01-throw-d03_200828-t26720.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing26720,266.500,267.200,700000,18512,1,"model: throw 72, feint 40, idle 29 spikes"
+gesture_01-throw-d03_200828-t27714.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing27714,276.440,277.140,700000,21606,1,"model: throw 64, feint 35, idle 26 spikes"
+gesture_01-throw-d03_200828-t28198.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing28198,281.280,281.980,700000,23054,1,"model: throw 65, feint 57, idle 23 spikes"
+gesture_01-throw-d03_200828-t28786.bin,throw,throw,01,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing28786,287.160,287.860,700000,15702,1,"model: throw 53, feint 18, idle 55 spikes"
+gesture_01-throw-d03_201452-t00672.bin,throw,throw,01,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#swing00672,6.020,6.720,700000,16773,1,"model: throw 68, feint 11, idle 43 spikes"
+gesture_01-throw-d03_201452-t02896.bin,throw,throw,01,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#swing02896,28.260,28.960,700000,20509,1,"model: throw 71, feint 13, idle 40 spikes"
+gesture_01-throw-d03_201452-t03484.bin,throw,throw,01,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#swing03484,34.140,34.840,700000,15270,1,"model: throw 69, feint 23, idle 33 spikes"
+gesture_01-throw-d03_201452-t04036.bin,throw,throw,01,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#swing04036,39.660,40.360,700000,16763,1,"model: throw 48, feint 19, idle 60 spikes"
+gesture_01-throw-d03_201452-t05404.bin,throw,throw,01,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#swing05404,53.340,54.040,700000,25112,1,"model: throw 76, feint 47, idle 15 spikes"
+gesture_01-throw-d03_201622-t00558.bin,throw,throw,01,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#swing00558,4.880,5.580,700000,14848,1,"model: throw 90, feint 22, idle 27 spikes"
+gesture_01-throw-d03_201622-t01362.bin,throw,throw,01,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#swing01362,12.920,13.620,700000,19675,1,"model: throw 90, feint 43, idle 9 spikes"
+gesture_01-throw-d03_201622-t02262.bin,throw,throw,01,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#swing02262,21.920,22.620,700000,22188,1,"model: throw 88, feint 30, idle 21 spikes"
+gesture_01-throw-d03_201622-t02668.bin,throw,throw,01,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#swing02668,25.980,26.680,700000,20465,1,"model: throw 93, feint 31, idle 13 spikes"
+gesture_01-throw-d03_201703-t00200.bin,throw,throw,01,03,sample_20261121_201703_662612.bin,sample_20261121_201703_662612.bin#swing00200,1.300,2.000,700000,24095,1,"model: throw 84, feint 28, idle 20 spikes"
+gesture_01-throw-d03_201703-t00702.bin,throw,throw,01,03,sample_20261121_201703_662612.bin,sample_20261121_201703_662612.bin#swing00702,6.320,7.020,700000,25825,1,"model: throw 76, feint 53, idle 10 spikes"
+gesture_02-feint-d01_131312-t00087.bin,feint,feint,02,01,sample_20261121_131312_206025.bin,sample_20261121_131312_206025.bin#swing00087,0.170,0.870,700000,106637,1,activity continues after the swing
+gesture_02-feint-d01_131316-t00095.bin,feint,feint,02,01,sample_20261121_131316_597440.bin,sample_20261121_131316_597440.bin#swing00095,0.250,0.950,700000,163337,1,activity continues after the swing
+gesture_02-feint-d01_131321-t00075.bin,feint,feint,02,01,sample_20261121_131321_230396.bin,sample_20261121_131321_230396.bin#swing00075,0.050,0.750,700000,196325,1,"recording block (feint by motion, feint by neighbours)"
+gesture_02-feint-d02_170441-t01108.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing01108,10.380,11.080,700000,131971,claude,second person walks past on the right
+gesture_02-feint-d02_170441-t01351.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing01351,12.810,13.510,700000,68794,claude,
+gesture_02-feint-d02_170441-t02058.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing02058,19.880,20.580,700000,32493,claude,
+gesture_02-feint-d02_170441-t02293.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing02293,22.230,22.930,700000,44643,claude,
+gesture_02-feint-d02_170441-t02539.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing02539,24.690,25.390,700000,44435,claude,
+gesture_02-feint-d02_170441-t03850.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing03850,37.800,38.500,700000,16675,claude,
+gesture_02-feint-d02_170441-t04074.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing04074,40.040,40.740,700000,20922,claude,
+gesture_02-feint-d02_170441-t04320.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing04320,42.500,43.200,700000,19004,claude,
+gesture_02-feint-d02_170441-t04573.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing04573,45.030,45.730,700000,40417,claude,second person visible on the right
+gesture_02-feint-d02_170441-t05265.bin,feint,feint,02,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#swing05265,51.950,52.650,700000,18372,claude,
+gesture_02-feint-d03_195808-t00750.bin,feint,feint,02,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing00750,6.800,7.500,700000,19353,claude,no ball
+gesture_02-feint-d03_195808-t01478.bin,feint,feint,02,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing01478,14.080,14.780,700000,18299,claude,no ball
+gesture_02-feint-d03_195808-t02850.bin,feint,feint,02,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing02850,27.800,28.500,700000,17030,claude,no ball
+gesture_02-feint-d03_195808-t03696.bin,feint,feint,02,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing03696,36.260,36.960,700000,16652,claude,no ball
+gesture_02-feint-d03_200001-t00744.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing00744,6.740,7.440,700000,25416,claude,no ball
+gesture_02-feint-d03_200001-t01016.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing01016,9.460,10.160,700000,21307,claude,no ball
+gesture_02-feint-d03_200001-t01398.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing01398,13.280,13.980,700000,25966,claude,no ball
+gesture_02-feint-d03_200001-t01758.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing01758,16.880,17.580,700000,28691,claude,no ball
+gesture_02-feint-d03_200001-t02124.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing02124,20.540,21.240,700000,26009,claude,no ball
+gesture_02-feint-d03_200001-t02466.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing02466,23.960,24.660,700000,20960,claude,no ball
+gesture_02-feint-d03_200001-t02816.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing02816,27.460,28.160,700000,25729,claude,no ball
+gesture_02-feint-d03_200001-t03238.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing03238,31.680,32.380,700000,18902,claude,no ball
+gesture_02-feint-d03_200001-t03596.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing03596,35.260,35.960,700000,24484,claude,no ball
+gesture_02-feint-d03_200001-t03970.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing03970,39.000,39.700,700000,25046,claude,no ball
+gesture_02-feint-d03_200001-t04880.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing04880,48.100,48.800,700000,32317,claude,no ball
+gesture_02-feint-d03_200001-t05200.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing05200,51.300,52.000,700000,33136,claude,no ball
+gesture_02-feint-d03_200001-t05504.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing05504,54.340,55.040,700000,36830,claude,no ball
+gesture_02-feint-d03_200001-t06836.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing06836,67.660,68.360,700000,24876,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200001-t08062.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing08062,79.920,80.620,700000,26427,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200001-t08986.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing08986,89.160,89.860,700000,20371,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200001-t09350.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing09350,92.800,93.500,700000,23398,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200001-t09711.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing09711,96.410,97.110,700000,27363,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200001-t10065.bin,feint,feint,02,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing10065,99.950,100.650,700000,22595,1,underhand swing without a ball? please check
+gesture_02-feint-d03_200828-t01016.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing01016,9.460,10.160,700000,14884,1,"model: throw 43, feint 28, idle 52 spikes"
+gesture_02-feint-d03_200828-t01356.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing01356,12.860,13.560,700000,14834,1,"model: throw 41, feint 39, idle 40 spikes"
+gesture_02-feint-d03_200828-t01718.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing01718,16.480,17.180,700000,28900,1,"model: throw 60, feint 67, idle 19 spikes"
+gesture_02-feint-d03_200828-t02008.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing02008,19.380,20.080,700000,13965,1,"model: throw 60, feint 48, idle 35 spikes"
+gesture_02-feint-d03_200828-t02304.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing02304,22.340,23.040,700000,15731,1,"model: throw 52, feint 53, idle 31 spikes"
+gesture_02-feint-d03_200828-t02584.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing02584,25.140,25.840,700000,18708,1,"model: throw 44, feint 74, idle 17 spikes"
+gesture_02-feint-d03_200828-t04066.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing04066,39.960,40.660,700000,19560,1,"model: throw 71, feint 72, idle 15 spikes"
+gesture_02-feint-d03_200828-t04358.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing04358,42.880,43.580,700000,21921,1,"model: throw 62, feint 61, idle 18 spikes"
+gesture_02-feint-d03_200828-t05106.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing05106,50.360,51.060,700000,21877,1,"model: throw 55, feint 76, idle 8 spikes"
+gesture_02-feint-d03_200828-t05872.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing05872,58.020,58.720,700000,13737,1,"model: throw 63, feint 18, idle 43 spikes"
+gesture_02-feint-d03_200828-t06276.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing06276,62.060,62.760,700000,14341,1,"model: throw 60, feint 43, idle 26 spikes"
+gesture_02-feint-d03_200828-t06672.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing06672,66.020,66.720,700000,18115,1,"model: throw 63, feint 59, idle 21 spikes"
+gesture_02-feint-d03_200828-t10426.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing10426,103.560,104.260,700000,20489,1,"model: throw 66, feint 69, idle 25 spikes"
+gesture_02-feint-d03_200828-t11388.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing11388,113.180,113.880,700000,18834,1,"model: throw 54, feint 50, idle 23 spikes"
+gesture_02-feint-d03_200828-t14418.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing14418,143.480,144.180,700000,19648,1,"model: throw 69, feint 49, idle 19 spikes"
+gesture_02-feint-d03_200828-t14686.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing14686,146.160,146.860,700000,20231,1,"model: throw 72, feint 46, idle 19 spikes"
+gesture_02-feint-d03_200828-t14980.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing14980,149.100,149.800,700000,36656,1,"model: throw 60, feint 71, idle 12 spikes"
+gesture_02-feint-d03_200828-t15254.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing15254,151.840,152.540,700000,57287,1,"model: throw 93, feint 38, idle 0 spikes"
+gesture_02-feint-d03_200828-t15538.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing15538,154.680,155.380,700000,53575,1,"model: throw 105, feint 1, idle 2 spikes"
+gesture_02-feint-d03_200828-t16854.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing16854,167.840,168.540,700000,42807,1,"model: throw 63, feint 17, idle 21 spikes"
+gesture_02-feint-d03_200828-t17474.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing17474,174.040,174.740,700000,33708,1,"model: throw 66, feint 14, idle 31 spikes"
+gesture_02-feint-d03_200828-t18454.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing18454,183.840,184.540,700000,46251,1,"model: throw 66, feint 30, idle 20 spikes"
+gesture_02-feint-d03_200828-t18746.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing18746,186.760,187.460,700000,43525,1,"model: throw 84, feint 22, idle 11 spikes"
+gesture_02-feint-d03_200828-t19016.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing19016,189.460,190.160,700000,50765,1,"model: throw 74, feint 59, idle 1 spikes"
+gesture_02-feint-d03_200828-t21136.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing21136,210.660,211.360,700000,63802,1,"model: throw 107, feint 19, idle 0 spikes"
+gesture_02-feint-d03_200828-t21676.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing21676,216.060,216.760,700000,62011,1,"model: throw 93, feint 39, idle 4 spikes"
+gesture_02-feint-d03_200828-t22034.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing22034,219.640,220.340,700000,53070,1,"model: throw 81, feint 28, idle 4 spikes"
+gesture_02-feint-d03_200828-t22388.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing22388,223.180,223.880,700000,65426,1,"model: throw 107, feint 13, idle 1 spikes"
+gesture_02-feint-d03_200828-t24956.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing24956,248.860,249.560,700000,11066,1,"model: throw 57, feint 20, idle 43 spikes"
+gesture_02-feint-d03_200828-t25552.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing25552,254.820,255.520,700000,13217,1,"model: throw 70, feint 46, idle 27 spikes"
+gesture_02-feint-d03_200828-t26242.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing26242,261.720,262.420,700000,11832,1,"model: throw 59, feint 40, idle 34 spikes"
+gesture_02-feint-d03_200828-t27442.bin,feint,feint,02,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#swing27442,273.720,274.420,700000,13086,1,"model: throw 63, feint 35, idle 42 spikes"
+gesture_03-idle-d01_130521-g00028.bin,idle,idle,03,01,sample_20261121_130521_708090.bin,sample_20261121_130521_708090.bin#gap00028,0.275,,,7326,auto,between the swings
+gesture_03-idle-d01_130743-g00010.bin,idle,idle,03,01,sample_20261121_130743_033563.bin,sample_20261121_130743_033563.bin#gap00010,0.105,,,34600,auto,between the swings
+gesture_03-idle-d01_130809-g00001.bin,idle,idle,03,01,sample_20261121_130809_906353.bin,sample_20261121_130809_906353.bin#gap00001,0.005,,,94579,auto,between the swings
+gesture_03-idle-d01_130855-g00168.bin,idle,idle,03,01,sample_20261121_130855_383327.bin,sample_20261121_130855_383327.bin#gap00168,1.685,,,25457,auto,between the swings
+gesture_03-idle-d01_131417-g00005.bin,idle,idle,03,01,sample_20261121_131417_679046.bin,sample_20261121_131417_679046.bin#gap00005,0.045,,,11445,auto,between the swings
+gesture_03-idle-d02_170441-g00044.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00044,0.440,,,642,auto,between the swings
+gesture_03-idle-d02_170441-g00164.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00164,1.640,,,584,auto,between the swings
+gesture_03-idle-d02_170441-g00284.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00284,2.840,,,175755,auto,between the swings
+gesture_03-idle-d02_170441-g00404.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00404,4.040,,,195531,auto,between the swings
+gesture_03-idle-d02_170441-g00524.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00524,5.240,,,27851,auto,between the swings
+gesture_03-idle-d02_170441-g00644.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00644,6.440,,,36021,auto,between the swings
+gesture_03-idle-d02_170441-g00764.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00764,7.640,,,13076,auto,between the swings
+gesture_03-idle-d02_170441-g00884.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap00884,8.840,,,90925,auto,between the swings
+gesture_03-idle-d02_170441-g01164.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap01164,11.645,,,59811,auto,between the swings
+gesture_03-idle-d02_170441-g01634.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap01634,16.340,,,32921,auto,between the swings
+gesture_03-idle-d02_170441-g01754.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap01754,17.540,,,54951,auto,between the swings
+gesture_03-idle-d02_170441-g01874.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap01874,18.740,,,23885,auto,between the swings
+gesture_03-idle-d02_170441-g02110.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap02110,21.105,,,38130,auto,between the swings
+gesture_03-idle-d02_170441-g02351.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap02351,23.510,,,33315,auto,between the swings
+gesture_03-idle-d02_170441-g02624.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap02624,26.240,,,35881,auto,between the swings
+gesture_03-idle-d02_170441-g02907.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap02907,29.070,,,10583,auto,between the swings
+gesture_03-idle-d02_170441-g03027.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap03027,30.270,,,18463,auto,between the swings
+gesture_03-idle-d02_170441-g03292.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap03292,32.925,,,6622,auto,between the swings
+gesture_03-idle-d02_170441-g03412.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap03412,34.125,,,18335,auto,between the swings
+gesture_03-idle-d02_170441-g03532.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap03532,35.325,,,11503,auto,between the swings
+gesture_03-idle-d02_170441-g03652.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap03652,36.525,,,6039,auto,between the swings
+gesture_03-idle-d02_170441-g04132.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap04132,41.320,,,13004,auto,between the swings
+gesture_03-idle-d02_170441-g04382.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap04382,43.815,,,15101,auto,between the swings
+gesture_03-idle-d02_170441-g04632.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap04632,46.320,,,14177,auto,between the swings
+gesture_03-idle-d02_170441-g04918.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap04918,49.180,,,5430,auto,between the swings
+gesture_03-idle-d02_170441-g05038.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap05038,50.380,,,7334,auto,between the swings
+gesture_03-idle-d02_170441-g05589.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap05589,55.890,,,7219,auto,between the swings
+gesture_03-idle-d02_170441-g05709.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap05709,57.090,,,2868,auto,between the swings
+gesture_03-idle-d02_170441-g05829.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap05829,58.290,,,5152,auto,between the swings
+gesture_03-idle-d02_170441-g05949.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap05949,59.490,,,12065,auto,between the swings
+gesture_03-idle-d02_170441-g06069.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap06069,60.690,,,60812,auto,between the swings
+gesture_03-idle-d02_170441-g06189.bin,idle,idle,03,02,sample_20261121_170441_403603.bin,sample_20261121_170441_403603.bin#gap06189,61.890,,,28632,auto,between the swings
+gesture_03-idle-d03_195808-g00023.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap00023,0.230,,,193,auto,between the swings
+gesture_03-idle-d03_195808-g00143.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap00143,1.430,,,2147,auto,between the swings
+gesture_03-idle-d03_195808-g00423.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap00423,4.230,,,12752,auto,between the swings
+gesture_03-idle-d03_195808-g00543.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap00543,5.430,,,8128,auto,between the swings
+gesture_03-idle-d03_195808-g00853.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap00853,8.530,,,6053,auto,between the swings
+gesture_03-idle-d03_195808-g01157.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap01157,11.570,,,6207,auto,between the swings
+gesture_03-idle-d03_195808-g01277.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap01277,12.770,,,9629,auto,between the swings
+gesture_03-idle-d03_195808-g01530.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap01530,15.300,,,4342,auto,between the swings
+gesture_03-idle-d03_195808-g01650.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap01650,16.500,,,2588,auto,between the swings
+gesture_03-idle-d03_195808-g01927.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap01927,19.270,,,6256,auto,between the swings
+gesture_03-idle-d03_195808-g02047.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap02047,20.470,,,4175,auto,between the swings
+gesture_03-idle-d03_195808-g02167.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap02167,21.670,,,6168,auto,between the swings
+gesture_03-idle-d03_195808-g02496.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap02496,24.960,,,8458,auto,between the swings
+gesture_03-idle-d03_195808-g02616.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap02616,26.160,,,9785,auto,between the swings
+gesture_03-idle-d03_195808-g02912.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap02912,29.120,,,3920,auto,between the swings
+gesture_03-idle-d03_195808-g03032.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap03032,30.320,,,2059,auto,between the swings
+gesture_03-idle-d03_195808-g03752.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap03752,37.520,,,4576,auto,between the swings
+gesture_03-idle-d03_195808-g04024.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap04024,40.240,,,8316,auto,between the swings
+gesture_03-idle-d03_195808-g04144.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#gap04144,41.440,,,4471,auto,between the swings
+gesture_03-idle-d03_195808-t03426.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing03426,33.560,34.260,,18528,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_195808-t03504.bin,idle,idle,03,03,sample_20261121_195808_507547.bin,sample_20261121_195808_507547.bin#swing03504,34.340,35.040,,23718,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-g00035.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap00035,0.350,,,357,auto,between the swings
+gesture_03-idle-d03_200001-g00155.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap00155,1.550,,,2614,auto,between the swings
+gesture_03-idle-d03_200001-g00564.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap00564,5.640,,,15359,auto,between the swings
+gesture_03-idle-d03_200001-g00815.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap00815,8.150,,,7545,auto,between the swings
+gesture_03-idle-d03_200001-g01082.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01082,10.820,,,7024,auto,between the swings
+gesture_03-idle-d03_200001-g01202.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01202,12.020,,,2153,auto,between the swings
+gesture_03-idle-d03_200001-g01453.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01453,14.530,,,9829,auto,between the swings
+gesture_03-idle-d03_200001-g01573.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01573,15.730,,,4361,auto,between the swings
+gesture_03-idle-d03_200001-g01816.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01816,18.160,,,8572,auto,between the swings
+gesture_03-idle-d03_200001-g01936.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap01936,19.360,,,2787,auto,between the swings
+gesture_03-idle-d03_200001-g02230.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap02230,22.300,,,4487,auto,between the swings
+gesture_03-idle-d03_200001-g02516.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap02516,25.160,,,9020,auto,between the swings
+gesture_03-idle-d03_200001-g02636.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap02636,26.360,,,4295,auto,between the swings
+gesture_03-idle-d03_200001-g02902.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap02902,29.020,,,11136,auto,between the swings
+gesture_03-idle-d03_200001-g03022.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap03022,30.220,,,3810,auto,between the swings
+gesture_03-idle-d03_200001-g03292.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap03292,32.920,,,10883,auto,between the swings
+gesture_03-idle-d03_200001-g03412.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap03412,34.120,,,4331,auto,between the swings
+gesture_03-idle-d03_200001-g03658.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap03658,36.580,,,12330,auto,between the swings
+gesture_03-idle-d03_200001-g03778.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap03778,37.780,,,5199,auto,between the swings
+gesture_03-idle-d03_200001-g04125.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap04125,41.250,,,3228,auto,between the swings
+gesture_03-idle-d03_200001-g04689.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap04689,46.890,,,4151,auto,between the swings
+gesture_03-idle-d03_200001-g04975.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap04975,49.750,,,8429,auto,between the swings
+gesture_03-idle-d03_200001-g05287.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap05287,52.870,,,7362,auto,between the swings
+gesture_03-idle-d03_200001-g05700.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap05700,57.000,,,3543,auto,between the swings
+gesture_03-idle-d03_200001-g05820.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap05820,58.200,,,2967,auto,between the swings
+gesture_03-idle-d03_200001-g05940.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap05940,59.400,,,8958,auto,between the swings
+gesture_03-idle-d03_200001-g06060.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap06060,60.600,,,11666,auto,between the swings
+gesture_03-idle-d03_200001-g06916.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap06916,69.160,,,10187,auto,between the swings
+gesture_03-idle-d03_200001-g07036.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap07036,70.360,,,3701,auto,between the swings
+gesture_03-idle-d03_200001-g07156.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap07156,71.560,,,3620,auto,between the swings
+gesture_03-idle-d03_200001-g07832.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap07832,78.320,,,6861,auto,between the swings
+gesture_03-idle-d03_200001-g08145.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap08145,81.450,,,8669,auto,between the swings
+gesture_03-idle-d03_200001-g08265.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap08265,82.650,,,6968,auto,between the swings
+gesture_03-idle-d03_200001-g09155.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap09155,91.550,,,5366,auto,between the swings
+gesture_03-idle-d03_200001-g09510.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap09510,95.105,,,4547,auto,between the swings
+gesture_03-idle-d03_200001-g09876.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap09876,98.755,,,4253,auto,between the swings
+gesture_03-idle-d03_200001-g10244.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#gap10244,102.440,,,3826,auto,between the swings
+gesture_03-idle-d03_200001-t00514.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing00514,4.440,5.140,,15125,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t04068.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing04068,39.980,40.680,,12897,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t04476.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing04476,44.060,44.760,,22883,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t04628.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing04628,45.580,46.280,,16012,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t05596.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing05596,55.260,55.960,,22382,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t06460.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing06460,63.900,64.600,,33650,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t06614.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing06614,65.440,66.140,,21403,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t07586.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing07586,75.160,75.860,,28800,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t07732.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing07732,76.620,77.320,,16551,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t08642.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing08642,85.720,86.420,,37439,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200001-t08788.bin,idle,idle,03,03,sample_20261121_200001_461331.bin,sample_20261121_200001_461331.bin#swing08788,87.180,87.880,,21158,claude,walking / picking up a ball / arm coming down
+gesture_03-idle-d03_200828-g00150.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap00150,1.500,,,16939,auto,between the swings
+gesture_03-idle-d03_200828-g00270.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap00270,2.700,,,5388,auto,between the swings
+gesture_03-idle-d03_200828-g00390.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap00390,3.900,,,5227,auto,between the swings
+gesture_03-idle-d03_200828-g01121.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap01121,11.210,,,3185,auto,between the swings
+gesture_03-idle-d03_200828-g01412.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap01412,14.120,,,6240,auto,between the swings
+gesture_03-idle-d03_200828-g01532.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap01532,15.320,,,4226,auto,between the swings
+gesture_03-idle-d03_200828-g02091.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap02091,20.910,,,4941,auto,between the swings
+gesture_03-idle-d03_200828-g02379.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap02379,23.790,,,5713,auto,between the swings
+gesture_03-idle-d03_200828-g02731.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap02731,27.310,,,8222,auto,between the swings
+gesture_03-idle-d03_200828-g03754.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap03754,37.540,,,15173,auto,between the swings
+gesture_03-idle-d03_200828-g03874.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap03874,38.740,,,8807,auto,between the swings
+gesture_03-idle-d03_200828-g04147.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap04147,41.470,,,6459,auto,between the swings
+gesture_03-idle-d03_200828-g04448.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap04448,44.480,,,5995,auto,between the swings
+gesture_03-idle-d03_200828-g05183.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap05183,51.830,,,6517,auto,between the swings
+gesture_03-idle-d03_200828-g05670.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap05670,56.700,,,15724,auto,between the swings
+gesture_03-idle-d03_200828-g05949.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap05949,59.490,,,4023,auto,between the swings
+gesture_03-idle-d03_200828-g06069.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap06069,60.690,,,1471,auto,between the swings
+gesture_03-idle-d03_200828-g06349.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap06349,63.490,,,5432,auto,between the swings
+gesture_03-idle-d03_200828-g06469.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap06469,64.690,,,2374,auto,between the swings
+gesture_03-idle-d03_200828-g06729.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap06729,67.290,,,6210,auto,between the swings
+gesture_03-idle-d03_200828-g06849.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap06849,68.490,,,7444,auto,between the swings
+gesture_03-idle-d03_200828-g07106.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07106,71.060,,,9890,auto,between the swings
+gesture_03-idle-d03_200828-g07226.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07226,72.260,,,12143,auto,between the swings
+gesture_03-idle-d03_200828-g07346.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07346,73.460,,,1472,auto,between the swings
+gesture_03-idle-d03_200828-g07466.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07466,74.660,,,7678,auto,between the swings
+gesture_03-idle-d03_200828-g07586.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07586,75.860,,,8693,auto,between the swings
+gesture_03-idle-d03_200828-g07706.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07706,77.060,,,788,auto,between the swings
+gesture_03-idle-d03_200828-g07826.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07826,78.260,,,1154,auto,between the swings
+gesture_03-idle-d03_200828-g07946.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap07946,79.460,,,1435,auto,between the swings
+gesture_03-idle-d03_200828-g08066.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08066,80.660,,,288,auto,between the swings
+gesture_03-idle-d03_200828-g08186.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08186,81.860,,,164,auto,between the swings
+gesture_03-idle-d03_200828-g08306.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08306,83.060,,,288,auto,between the swings
+gesture_03-idle-d03_200828-g08426.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08426,84.260,,,880,auto,between the swings
+gesture_03-idle-d03_200828-g08546.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08546,85.460,,,1424,auto,between the swings
+gesture_03-idle-d03_200828-g08666.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08666,86.660,,,1988,auto,between the swings
+gesture_03-idle-d03_200828-g08786.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08786,87.860,,,445,auto,between the swings
+gesture_03-idle-d03_200828-g08906.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap08906,89.060,,,244,auto,between the swings
+gesture_03-idle-d03_200828-g09026.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09026,90.260,,,704,auto,between the swings
+gesture_03-idle-d03_200828-g09146.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09146,91.460,,,373,auto,between the swings
+gesture_03-idle-d03_200828-g09266.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09266,92.660,,,1335,auto,between the swings
+gesture_03-idle-d03_200828-g09386.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09386,93.860,,,888,auto,between the swings
+gesture_03-idle-d03_200828-g09506.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09506,95.060,,,2958,auto,between the swings
+gesture_03-idle-d03_200828-g09626.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09626,96.260,,,1056,auto,between the swings
+gesture_03-idle-d03_200828-g09746.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09746,97.460,,,359,auto,between the swings
+gesture_03-idle-d03_200828-g09866.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09866,98.660,,,588,auto,between the swings
+gesture_03-idle-d03_200828-g09986.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap09986,99.860,,,1259,auto,between the swings
+gesture_03-idle-d03_200828-g10106.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap10106,101.060,,,1383,auto,between the swings
+gesture_03-idle-d03_200828-g10226.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap10226,102.260,,,3848,auto,between the swings
+gesture_03-idle-d03_200828-g10507.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap10507,105.070,,,4249,auto,between the swings
+gesture_03-idle-d03_200828-g11037.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11037,110.370,,,8651,auto,between the swings
+gesture_03-idle-d03_200828-g11157.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11157,111.570,,,11181,auto,between the swings
+gesture_03-idle-d03_200828-g11458.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11458,114.580,,,3865,auto,between the swings
+gesture_03-idle-d03_200828-g11578.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11578,115.780,,,2318,auto,between the swings
+gesture_03-idle-d03_200828-g11698.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11698,116.980,,,469,auto,between the swings
+gesture_03-idle-d03_200828-g11818.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11818,118.180,,,234,auto,between the swings
+gesture_03-idle-d03_200828-g11938.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap11938,119.380,,,234,auto,between the swings
+gesture_03-idle-d03_200828-g12058.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12058,120.580,,,190,auto,between the swings
+gesture_03-idle-d03_200828-g12178.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12178,121.780,,,217,auto,between the swings
+gesture_03-idle-d03_200828-g12298.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12298,122.980,,,114,auto,between the swings
+gesture_03-idle-d03_200828-g12418.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12418,124.180,,,151,auto,between the swings
+gesture_03-idle-d03_200828-g12538.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12538,125.380,,,196,auto,between the swings
+gesture_03-idle-d03_200828-g12658.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12658,126.580,,,118,auto,between the swings
+gesture_03-idle-d03_200828-g12778.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12778,127.780,,,776,auto,between the swings
+gesture_03-idle-d03_200828-g12898.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap12898,128.980,,,1180,auto,between the swings
+gesture_03-idle-d03_200828-g13018.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13018,130.180,,,323,auto,between the swings
+gesture_03-idle-d03_200828-g13138.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13138,131.380,,,354,auto,between the swings
+gesture_03-idle-d03_200828-g13258.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13258,132.580,,,1125,auto,between the swings
+gesture_03-idle-d03_200828-g13378.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13378,133.780,,,823,auto,between the swings
+gesture_03-idle-d03_200828-g13498.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13498,134.980,,,1177,auto,between the swings
+gesture_03-idle-d03_200828-g13618.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13618,136.180,,,1791,auto,between the swings
+gesture_03-idle-d03_200828-g13738.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13738,137.380,,,2352,auto,between the swings
+gesture_03-idle-d03_200828-g13858.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13858,138.580,,,2651,auto,between the swings
+gesture_03-idle-d03_200828-g13978.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap13978,139.780,,,1708,auto,between the swings
+gesture_03-idle-d03_200828-g14098.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap14098,140.980,,,474,auto,between the swings
+gesture_03-idle-d03_200828-g14218.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap14218,142.180,,,1312,auto,between the swings
+gesture_03-idle-d03_200828-g14487.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap14487,144.870,,,4143,auto,between the swings
+gesture_03-idle-d03_200828-g14768.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap14768,147.680,,,4669,auto,between the swings
+gesture_03-idle-d03_200828-g16919.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap16919,169.190,,,1845,auto,between the swings
+gesture_03-idle-d03_200828-g17039.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17039,170.390,,,2551,auto,between the swings
+gesture_03-idle-d03_200828-g17289.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17289,172.890,,,8760,auto,between the swings
+gesture_03-idle-d03_200828-g17539.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17539,175.390,,,5110,auto,between the swings
+gesture_03-idle-d03_200828-g17659.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17659,176.590,,,6939,auto,between the swings
+gesture_03-idle-d03_200828-g17779.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17779,177.790,,,7582,auto,between the swings
+gesture_03-idle-d03_200828-g17899.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap17899,178.990,,,3167,auto,between the swings
+gesture_03-idle-d03_200828-g18019.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap18019,180.190,,,2726,auto,between the swings
+gesture_03-idle-d03_200828-g18139.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap18139,181.390,,,241,auto,between the swings
+gesture_03-idle-d03_200828-g18259.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap18259,182.590,,,3201,auto,between the swings
+gesture_03-idle-d03_200828-g19730.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap19730,197.300,,,1533,auto,between the swings
+gesture_03-idle-d03_200828-g19850.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap19850,198.500,,,4039,auto,between the swings
+gesture_03-idle-d03_200828-g19970.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap19970,199.700,,,1884,auto,between the swings
+gesture_03-idle-d03_200828-g21481.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap21481,214.810,,,7663,auto,between the swings
+gesture_03-idle-d03_200828-g21852.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap21852,218.520,,,14993,auto,between the swings
+gesture_03-idle-d03_200828-g22207.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap22207,222.070,,,14361,auto,between the swings
+gesture_03-idle-d03_200828-g22977.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap22977,229.770,,,4891,auto,between the swings
+gesture_03-idle-d03_200828-g23097.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23097,230.970,,,7915,auto,between the swings
+gesture_03-idle-d03_200828-g23217.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23217,232.170,,,5765,auto,between the swings
+gesture_03-idle-d03_200828-g23337.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23337,233.370,,,8315,auto,between the swings
+gesture_03-idle-d03_200828-g23457.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23457,234.570,,,6545,auto,between the swings
+gesture_03-idle-d03_200828-g23577.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23577,235.770,,,4122,auto,between the swings
+gesture_03-idle-d03_200828-g23972.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap23972,239.720,,,3902,auto,between the swings
+gesture_03-idle-d03_200828-g24411.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap24411,244.110,,,7222,auto,between the swings
+gesture_03-idle-d03_200828-g24531.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap24531,245.310,,,1873,auto,between the swings
+gesture_03-idle-d03_200828-g24651.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap24651,246.510,,,1244,auto,between the swings
+gesture_03-idle-d03_200828-g24771.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap24771,247.710,,,2654,auto,between the swings
+gesture_03-idle-d03_200828-g25009.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap25009,250.090,,,4186,auto,between the swings
+gesture_03-idle-d03_200828-g25129.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap25129,251.290,,,7671,auto,between the swings
+gesture_03-idle-d03_200828-g25249.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap25249,252.490,,,5818,auto,between the swings
+gesture_03-idle-d03_200828-g25369.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap25369,253.690,,,4948,auto,between the swings
+gesture_03-idle-d03_200828-g25612.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap25612,256.120,,,5140,auto,between the swings
+gesture_03-idle-d03_200828-g26296.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap26296,262.960,,,4764,auto,between the swings
+gesture_03-idle-d03_200828-g26416.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap26416,264.160,,,13122,auto,between the swings
+gesture_03-idle-d03_200828-g26536.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap26536,265.360,,,5661,auto,between the swings
+gesture_03-idle-d03_200828-g27101.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap27101,271.010,,,12548,auto,between the swings
+gesture_03-idle-d03_200828-g27221.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap27221,272.210,,,4861,auto,between the swings
+gesture_03-idle-d03_200828-g27513.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap27513,275.130,,,4282,auto,between the swings
+gesture_03-idle-d03_200828-g28583.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap28583,285.830,,,2606,auto,between the swings
+gesture_03-idle-d03_200828-g28878.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap28878,288.780,,,1191,auto,between the swings
+gesture_03-idle-d03_200828-g28998.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap28998,289.980,,,8866,auto,between the swings
+gesture_03-idle-d03_200828-g29118.bin,idle,idle,03,03,sample_20261121_200828_124951.bin,sample_20261121_200828_124951.bin#gap29118,291.180,,,7377,auto,between the swings
+gesture_03-idle-d03_201452-g00433.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap00433,4.330,,,4180,auto,between the swings
+gesture_03-idle-d03_201452-g00724.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap00724,7.240,,,7701,auto,between the swings
+gesture_03-idle-d03_201452-g01877.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap01877,18.770,,,1283,auto,between the swings
+gesture_03-idle-d03_201452-g02190.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap02190,21.900,,,4539,auto,between the swings
+gesture_03-idle-d03_201452-g02310.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap02310,23.100,,,959,auto,between the swings
+gesture_03-idle-d03_201452-g02430.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap02430,24.300,,,1244,auto,between the swings
+gesture_03-idle-d03_201452-g02550.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap02550,25.500,,,563,auto,between the swings
+gesture_03-idle-d03_201452-g02670.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap02670,26.700,,,1758,auto,between the swings
+gesture_03-idle-d03_201452-g03575.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap03575,35.750,,,1970,auto,between the swings
+gesture_03-idle-d03_201452-g03695.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap03695,36.950,,,6739,auto,between the swings
+gesture_03-idle-d03_201452-g03815.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap03815,38.150,,,3269,auto,between the swings
+gesture_03-idle-d03_201452-g04102.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap04102,41.020,,,5593,auto,between the swings
+gesture_03-idle-d03_201452-g04222.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap04222,42.220,,,4399,auto,between the swings
+gesture_03-idle-d03_201452-g04663.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap04663,46.630,,,171,auto,between the swings
+gesture_03-idle-d03_201452-g05220.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap05220,52.200,,,7195,auto,between the swings
+gesture_03-idle-d03_201452-g05658.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap05658,56.580,,,13180,auto,between the swings
+gesture_03-idle-d03_201452-g05778.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap05778,57.780,,,3525,auto,between the swings
+gesture_03-idle-d03_201452-g05898.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap05898,58.980,,,2062,auto,between the swings
+gesture_03-idle-d03_201452-g06018.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06018,60.180,,,2284,auto,between the swings
+gesture_03-idle-d03_201452-g06138.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06138,61.380,,,612,auto,between the swings
+gesture_03-idle-d03_201452-g06258.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06258,62.580,,,340,auto,between the swings
+gesture_03-idle-d03_201452-g06378.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06378,63.780,,,951,auto,between the swings
+gesture_03-idle-d03_201452-g06498.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06498,64.980,,,2818,auto,between the swings
+gesture_03-idle-d03_201452-g06618.bin,idle,idle,03,03,sample_20261121_201452_881893.bin,sample_20261121_201452_881893.bin#gap06618,66.180,,,7123,auto,between the swings
+gesture_03-idle-d03_201622-g00343.bin,idle,idle,03,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#gap00343,3.430,,,2713,auto,between the swings
+gesture_03-idle-d03_201622-g01156.bin,idle,idle,03,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#gap01156,11.560,,,2924,auto,between the swings
+gesture_03-idle-d03_201622-g02734.bin,idle,idle,03,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#gap02734,27.340,,,4687,auto,between the swings
+gesture_03-idle-d03_201622-g02854.bin,idle,idle,03,03,sample_20261121_201622_818200.bin,sample_20261121_201622_818200.bin#gap02854,28.540,,,12749,auto,between the swings
+gesture_03-idle-d03_201703-g00519.bin,idle,idle,03,03,sample_20261121_201703_662612.bin,sample_20261121_201703_662612.bin#gap00519,5.190,,,8736,auto,between the swings
+gesture_03-idle-d03_201703-g00768.bin,idle,idle,03,03,sample_20261121_201703_662612.bin,sample_20261121_201703_662612.bin#gap00768,7.680,,,9549,auto,between the swings

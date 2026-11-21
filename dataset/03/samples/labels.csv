@@ -1,0 +1,232 @@
+file,label,decision_s,verified,note
+sample_20261121_195808_507547.bin,throw,3.46,claude,ball visible
+sample_20261121_195808_507547.bin,feint,7.50,claude,no ball
+sample_20261121_195808_507547.bin,throw,10.86,claude,ball visible
+sample_20261121_195808_507547.bin,feint,14.78,claude,no ball
+sample_20261121_195808_507547.bin,throw,18.32,claude,ball visible
+sample_20261121_195808_507547.bin,throw,23.92,claude,ball visible
+sample_20261121_195808_507547.bin,feint,28.50,claude,no ball
+sample_20261121_195808_507547.bin,throw,32.24,claude,ball visible
+sample_20261121_195808_507547.bin,idle,34.26,claude,walking / picking up a ball / arm coming down
+sample_20261121_195808_507547.bin,idle,35.04,claude,walking / picking up a ball / arm coming down
+sample_20261121_195808_507547.bin,feint,36.96,claude,no ball
+sample_20261121_195808_507547.bin,throw,39.38,claude,ball visible
+sample_20261121_195808_507547.bin,end,43.00,claude,camera is handled from here on
+sample_20261121_200001_461331.bin,throw,3.70,claude,ball visible
+sample_20261121_200001_461331.bin,idle,5.14,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,feint,7.44,claude,no ball
+sample_20261121_200001_461331.bin,feint,10.16,claude,no ball
+sample_20261121_200001_461331.bin,feint,13.98,claude,no ball
+sample_20261121_200001_461331.bin,feint,17.58,claude,no ball
+sample_20261121_200001_461331.bin,feint,21.24,claude,no ball
+sample_20261121_200001_461331.bin,feint,24.66,claude,no ball
+sample_20261121_200001_461331.bin,feint,28.16,claude,no ball
+sample_20261121_200001_461331.bin,feint,32.38,claude,no ball
+sample_20261121_200001_461331.bin,feint,35.96,claude,no ball
+sample_20261121_200001_461331.bin,feint,39.70,claude,no ball
+sample_20261121_200001_461331.bin,idle,40.68,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,throw,43.12,claude,ball visible
+sample_20261121_200001_461331.bin,idle,44.76,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,idle,46.28,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,feint,48.80,claude,no ball
+sample_20261121_200001_461331.bin,feint,52.00,claude,no ball
+sample_20261121_200001_461331.bin,feint,55.04,claude,no ball
+sample_20261121_200001_461331.bin,idle,55.96,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,throw,62.94,claude,"ball visible, underhand"
+sample_20261121_200001_461331.bin,idle,64.60,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,idle,66.14,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,feint,68.36,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,throw,73.66,claude,"ball visible, underhand"
+sample_20261121_200001_461331.bin,idle,75.86,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,idle,77.32,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,feint,80.62,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,throw,84.78,claude,"ball visible, underhand"
+sample_20261121_200001_461331.bin,invalid,85.52,1,arm coming down after a swing? please check
+sample_20261121_200001_461331.bin,idle,86.42,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,idle,87.88,claude,walking / picking up a ball / arm coming down
+sample_20261121_200001_461331.bin,feint,89.86,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,invalid,90.90,1,arm coming down after a swing? please check
+sample_20261121_200001_461331.bin,feint,93.50,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,invalid,94.40,1,arm coming down after a swing? please check
+sample_20261121_200001_461331.bin,feint,97.11,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,invalid,98.16,1,arm coming down after a swing? please check
+sample_20261121_200001_461331.bin,feint,100.65,1,underhand swing without a ball? please check
+sample_20261121_200001_461331.bin,invalid,101.74,1,arm coming down after a swing? please check
+sample_20261121_200001_461331.bin,throw,104.44,claude,"ball visible, underhand"
+sample_20261121_200001_461331.bin,end,105.60,claude,camera is handled from here on
+sample_20261121_200828_124951.bin,invalid,0.10,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,0.84,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,5.86,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,7.30,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,8.30,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,9.06,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,feint,10.16,1,"model: throw 43, feint 28, idle 52 spikes"
+sample_20261121_200828_124951.bin,feint,13.56,1,"model: throw 41, feint 39, idle 40 spikes"
+sample_20261121_200828_124951.bin,feint,17.18,1,"model: throw 60, feint 67, idle 19 spikes"
+sample_20261121_200828_124951.bin,invalid,18.16,1,"model: throw 21, feint 54, idle 47 spikes"
+sample_20261121_200828_124951.bin,feint,20.08,1,"model: throw 60, feint 48, idle 35 spikes"
+sample_20261121_200828_124951.bin,feint,23.04,1,"model: throw 52, feint 53, idle 31 spikes"
+sample_20261121_200828_124951.bin,feint,25.84,1,"model: throw 44, feint 74, idle 17 spikes"
+sample_20261121_200828_124951.bin,invalid,26.76,1,"model: throw 27, feint 43, idle 53 spikes"
+sample_20261121_200828_124951.bin,invalid,29.16,1,"model: throw 46, feint 59, idle 26 spikes"
+sample_20261121_200828_124951.bin,invalid,30.06,1,"model: throw 11, feint 63, idle 43 spikes"
+sample_20261121_200828_124951.bin,throw,32.22,1,"model: throw 86, feint 63, idle 7 spikes"
+sample_20261121_200828_124951.bin,invalid,33.06,1,"model: throw 50, feint 54, idle 27 spikes"
+sample_20261121_200828_124951.bin,invalid,33.92,1,"model: throw 25, feint 31, idle 59 spikes"
+sample_20261121_200828_124951.bin,invalid,35.76,1,"model: throw 20, feint 53, idle 47 spikes"
+sample_20261121_200828_124951.bin,invalid,36.92,1,"model: throw 39, feint 40, idle 35 spikes"
+sample_20261121_200828_124951.bin,feint,40.66,1,"model: throw 71, feint 72, idle 15 spikes"
+sample_20261121_200828_124951.bin,feint,43.58,1,"model: throw 62, feint 61, idle 18 spikes"
+sample_20261121_200828_124951.bin,throw,46.68,1,"model: throw 75, feint 63, idle 11 spikes"
+sample_20261121_200828_124951.bin,invalid,48.40,1,"model: throw 47, feint 73, idle 26 spikes"
+sample_20261121_200828_124951.bin,invalid,49.16,1,"model: throw 54, feint 101, idle 3 spikes"
+sample_20261121_200828_124951.bin,feint,51.06,1,"model: throw 55, feint 76, idle 8 spikes"
+sample_20261121_200828_124951.bin,throw,53.90,1,"model: throw 62, feint 24, idle 35 spikes"
+sample_20261121_200828_124951.bin,invalid,55.98,1,"model: throw 22, feint 35, idle 64 spikes"
+sample_20261121_200828_124951.bin,feint,58.72,1,"model: throw 63, feint 18, idle 43 spikes"
+sample_20261121_200828_124951.bin,feint,62.76,1,"model: throw 60, feint 43, idle 26 spikes"
+sample_20261121_200828_124951.bin,feint,66.72,1,"model: throw 63, feint 59, idle 21 spikes"
+sample_20261121_200828_124951.bin,throw,70.36,1,"model: throw 67, feint 60, idle 7 spikes"
+sample_20261121_200828_124951.bin,feint,104.26,1,"model: throw 66, feint 69, idle 25 spikes"
+sample_20261121_200828_124951.bin,throw,107.18,1,"model: throw 78, feint 41, idle 18 spikes"
+sample_20261121_200828_124951.bin,invalid,109.36,1,"model: throw 26, feint 29, idle 70 spikes"
+sample_20261121_200828_124951.bin,feint,113.88,1,"model: throw 54, feint 50, idle 23 spikes"
+sample_20261121_200828_124951.bin,feint,144.18,1,"model: throw 69, feint 49, idle 19 spikes"
+sample_20261121_200828_124951.bin,feint,146.86,1,"model: throw 72, feint 46, idle 19 spikes"
+sample_20261121_200828_124951.bin,feint,149.80,1,"model: throw 60, feint 71, idle 12 spikes"
+sample_20261121_200828_124951.bin,invalid,150.56,1,"model: throw 67, feint 63, idle 13 spikes"
+sample_20261121_200828_124951.bin,invalid,151.46,1,"model: throw 71, feint 43, idle 17 spikes"
+sample_20261121_200828_124951.bin,feint,152.54,1,"model: throw 93, feint 38, idle 0 spikes"
+sample_20261121_200828_124951.bin,invalid,154.42,1,"model: throw 58, feint 20, idle 33 spikes"
+sample_20261121_200828_124951.bin,feint,155.38,1,"model: throw 105, feint 1, idle 2 spikes"
+sample_20261121_200828_124951.bin,invalid,156.30,1,"model: throw 76, feint 49, idle 4 spikes"
+sample_20261121_200828_124951.bin,invalid,157.12,1,"model: throw 54, feint 47, idle 12 spikes"
+sample_20261121_200828_124951.bin,throw,158.08,1,"model: throw 114, feint 2, idle 4 spikes"
+sample_20261121_200828_124951.bin,invalid,159.84,1,"model: throw 93, feint 9, idle 26 spikes"
+sample_20261121_200828_124951.bin,invalid,160.80,1,"model: throw 46, feint 42, idle 43 spikes"
+sample_20261121_200828_124951.bin,invalid,162.28,1,"model: throw 32, feint 74, idle 31 spikes"
+sample_20261121_200828_124951.bin,invalid,163.20,1,"model: throw 7, feint 34, idle 82 spikes"
+sample_20261121_200828_124951.bin,invalid,163.94,1,"model: throw 24, feint 29, idle 64 spikes"
+sample_20261121_200828_124951.bin,invalid,165.04,1,"model: throw 9, feint 92, idle 26 spikes"
+sample_20261121_200828_124951.bin,invalid,165.78,1,"model: throw 35, feint 85, idle 8 spikes"
+sample_20261121_200828_124951.bin,invalid,166.64,1,"model: throw 16, feint 70, idle 26 spikes"
+sample_20261121_200828_124951.bin,feint,168.54,1,"model: throw 63, feint 17, idle 21 spikes"
+sample_20261121_200828_124951.bin,invalid,172.34,1,"model: throw 23, feint 53, idle 40 spikes"
+sample_20261121_200828_124951.bin,feint,174.74,1,"model: throw 66, feint 14, idle 31 spikes"
+sample_20261121_200828_124951.bin,feint,184.54,1,"model: throw 66, feint 30, idle 20 spikes"
+sample_20261121_200828_124951.bin,invalid,186.06,1,"model: throw 28, feint 32, idle 52 spikes"
+sample_20261121_200828_124951.bin,feint,187.46,1,"model: throw 84, feint 22, idle 11 spikes"
+sample_20261121_200828_124951.bin,invalid,189.12,1,"model: throw 19, feint 88, idle 6 spikes"
+sample_20261121_200828_124951.bin,feint,190.16,1,"model: throw 74, feint 59, idle 1 spikes"
+sample_20261121_200828_124951.bin,invalid,191.72,1,"model: throw 22, feint 69, idle 28 spikes"
+sample_20261121_200828_124951.bin,throw,192.72,1,"model: throw 79, feint 27, idle 5 spikes"
+sample_20261121_200828_124951.bin,invalid,194.24,1,"model: throw 26, feint 55, idle 55 spikes"
+sample_20261121_200828_124951.bin,invalid,195.22,1,"model: throw 63, feint 24, idle 30 spikes"
+sample_20261121_200828_124951.bin,invalid,196.68,1,"model: throw 62, feint 8, idle 48 spikes"
+sample_20261121_200828_124951.bin,invalid,201.62,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,202.40,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,203.46,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,204.24,claude,camera is handled / person right in front of the camera
+sample_20261121_200828_124951.bin,invalid,206.30,1,"model: throw 44, feint 16, idle 47 spikes"
+sample_20261121_200828_124951.bin,invalid,207.04,1,"model: throw 66, feint 16, idle 34 spikes"
+sample_20261121_200828_124951.bin,invalid,208.06,1,"model: throw 80, feint 29, idle 10 spikes"
+sample_20261121_200828_124951.bin,invalid,209.76,1,"model: throw 43, feint 35, idle 56 spikes"
+sample_20261121_200828_124951.bin,invalid,210.62,1,"model: throw 50, feint 68, idle 9 spikes"
+sample_20261121_200828_124951.bin,feint,211.36,1,"model: throw 107, feint 19, idle 0 spikes"
+sample_20261121_200828_124951.bin,invalid,212.64,1,"model: throw 42, feint 23, idle 48 spikes"
+sample_20261121_200828_124951.bin,invalid,214.16,1,"model: throw 24, feint 78, idle 23 spikes"
+sample_20261121_200828_124951.bin,feint,216.76,1,"model: throw 93, feint 39, idle 4 spikes"
+sample_20261121_200828_124951.bin,invalid,218.00,1,"model: throw 74, feint 27, idle 24 spikes"
+sample_20261121_200828_124951.bin,feint,220.34,1,"model: throw 81, feint 28, idle 4 spikes"
+sample_20261121_200828_124951.bin,invalid,221.56,1,"model: throw 37, feint 9, idle 70 spikes"
+sample_20261121_200828_124951.bin,feint,223.88,1,"model: throw 107, feint 13, idle 1 spikes"
+sample_20261121_200828_124951.bin,invalid,225.22,1,"model: throw 105, feint 3, idle 19 spikes"
+sample_20261121_200828_124951.bin,throw,226.22,1,"model: throw 91, feint 8, idle 10 spikes"
+sample_20261121_200828_124951.bin,invalid,226.98,1,"model: throw 94, feint 9, idle 8 spikes"
+sample_20261121_200828_124951.bin,invalid,227.90,1,"model: throw 83, feint 14, idle 25 spikes"
+sample_20261121_200828_124951.bin,invalid,229.12,1,"model: throw 21, feint 44, idle 55 spikes"
+sample_20261121_200828_124951.bin,throw,237.72,1,"model: throw 89, feint 48, idle 7 spikes"
+sample_20261121_200828_124951.bin,invalid,238.66,1,"model: throw 44, feint 24, idle 57 spikes"
+sample_20261121_200828_124951.bin,invalid,242.08,1,"model: throw 23, feint 62, idle 38 spikes"
+sample_20261121_200828_124951.bin,invalid,242.80,1,"model: throw 47, feint 107, idle 0 spikes"
+sample_20261121_200828_124951.bin,invalid,243.56,1,"model: throw 23, feint 86, idle 24 spikes"
+sample_20261121_200828_124951.bin,feint,249.56,1,"model: throw 57, feint 20, idle 43 spikes"
+sample_20261121_200828_124951.bin,feint,255.52,1,"model: throw 70, feint 46, idle 27 spikes"
+sample_20261121_200828_124951.bin,throw,258.02,1,"model: throw 83, feint 40, idle 20 spikes"
+sample_20261121_200828_124951.bin,invalid,259.46,1,"model: throw 17, feint 31, idle 75 spikes"
+sample_20261121_200828_124951.bin,invalid,260.42,1,"model: throw 16, feint 51, idle 53 spikes"
+sample_20261121_200828_124951.bin,feint,262.42,1,"model: throw 59, feint 40, idle 34 spikes"
+sample_20261121_200828_124951.bin,throw,267.20,1,"model: throw 72, feint 40, idle 29 spikes"
+sample_20261121_200828_124951.bin,invalid,268.68,1,"model: throw 19, feint 42, idle 63 spikes"
+sample_20261121_200828_124951.bin,invalid,270.10,1,"model: throw 27, feint 46, idle 45 spikes"
+sample_20261121_200828_124951.bin,feint,274.42,1,"model: throw 63, feint 35, idle 42 spikes"
+sample_20261121_200828_124951.bin,throw,277.14,1,"model: throw 64, feint 35, idle 26 spikes"
+sample_20261121_200828_124951.bin,invalid,278.74,1,"model: throw 37, feint 50, idle 43 spikes"
+sample_20261121_200828_124951.bin,invalid,280.06,1,"model: throw 28, feint 56, idle 48 spikes"
+sample_20261121_200828_124951.bin,throw,281.98,1,"model: throw 65, feint 57, idle 23 spikes"
+sample_20261121_200828_124951.bin,invalid,283.86,1,"model: throw 28, feint 42, idle 55 spikes"
+sample_20261121_200828_124951.bin,invalid,285.10,1,"model: throw 25, feint 66, idle 38 spikes"
+sample_20261121_200828_124951.bin,throw,287.86,1,"model: throw 53, feint 18, idle 55 spikes"
+sample_20261121_200828_124951.bin,end,292.80,claude,people walk to the camera from here on
+sample_20261121_201452_881893.bin,invalid,0.38,claude,too close to the start of the recording
+sample_20261121_201452_881893.bin,invalid,2.00,1,"model: throw 19, feint 50, idle 47 spikes"
+sample_20261121_201452_881893.bin,invalid,3.24,1,"model: throw 41, feint 66, idle 33 spikes"
+sample_20261121_201452_881893.bin,throw,6.72,1,"model: throw 68, feint 11, idle 43 spikes"
+sample_20261121_201452_881893.bin,invalid,9.06,1,"model: throw 3, feint 90, idle 33 spikes"
+sample_20261121_201452_881893.bin,invalid,9.94,1,"model: throw 6, feint 85, idle 27 spikes"
+sample_20261121_201452_881893.bin,invalid,10.70,1,"model: throw 15, feint 104, idle 14 spikes"
+sample_20261121_201452_881893.bin,invalid,11.56,1,"model: throw 4, feint 83, idle 43 spikes"
+sample_20261121_201452_881893.bin,invalid,12.30,1,"model: throw 11, feint 52, idle 59 spikes"
+sample_20261121_201452_881893.bin,invalid,13.26,1,"model: throw 46, feint 38, idle 41 spikes"
+sample_20261121_201452_881893.bin,invalid,14.62,1,"model: throw 61, feint 94, idle 13 spikes"
+sample_20261121_201452_881893.bin,invalid,16.36,1,"model: throw 65, feint 67, idle 1 spikes"
+sample_20261121_201452_881893.bin,invalid,17.90,1,"model: throw 16, feint 52, idle 42 spikes"
+sample_20261121_201452_881893.bin,invalid,20.94,1,"model: throw 28, feint 56, idle 33 spikes"
+sample_20261121_201452_881893.bin,throw,28.96,1,"model: throw 71, feint 13, idle 40 spikes"
+sample_20261121_201452_881893.bin,invalid,30.54,1,"model: throw 36, feint 61, idle 32 spikes"
+sample_20261121_201452_881893.bin,invalid,32.68,1,"model: throw 36, feint 71, idle 30 spikes"
+sample_20261121_201452_881893.bin,throw,34.84,1,"model: throw 69, feint 23, idle 33 spikes"
+sample_20261121_201452_881893.bin,throw,40.36,1,"model: throw 48, feint 19, idle 60 spikes"
+sample_20261121_201452_881893.bin,invalid,44.18,1,"model: throw 57, feint 82, idle 13 spikes"
+sample_20261121_201452_881893.bin,invalid,45.10,1,"model: throw 110, feint 3, idle 0 spikes"
+sample_20261121_201452_881893.bin,invalid,45.86,1,"model: throw 75, feint 1, idle 18 spikes"
+sample_20261121_201452_881893.bin,invalid,48.70,1,"model: throw 81, feint 0, idle 17 spikes"
+sample_20261121_201452_881893.bin,invalid,49.76,1,"model: throw 39, feint 59, idle 5 spikes"
+sample_20261121_201452_881893.bin,invalid,50.94,1,"model: throw 31, feint 44, idle 63 spikes"
+sample_20261121_201452_881893.bin,invalid,51.66,1,"model: throw 30, feint 55, idle 42 spikes"
+sample_20261121_201452_881893.bin,throw,54.04,1,"model: throw 76, feint 47, idle 15 spikes"
+sample_20261121_201452_881893.bin,invalid,55.56,1,"model: throw 10, feint 28, idle 71 spikes"
+sample_20261121_201452_881893.bin,end,67.90,claude,camera gets handled
+sample_20261121_201452_881893.bin,invalid,68.40,claude,camera gets handled
+sample_20261121_201452_881893.bin,invalid,69.24,claude,camera gets handled
+sample_20261121_201452_881893.bin,invalid,69.98,claude,camera gets handled
+sample_20261121_201622_818200.bin,invalid,0.90,1,"model: throw 30, feint 51, idle 42 spikes"
+sample_20261121_201622_818200.bin,invalid,2.58,1,"model: throw 25, feint 84, idle 19 spikes"
+sample_20261121_201622_818200.bin,throw,5.58,1,"model: throw 90, feint 22, idle 27 spikes"
+sample_20261121_201622_818200.bin,invalid,6.62,1,"model: throw 26, feint 3, idle 78 spikes"
+sample_20261121_201622_818200.bin,invalid,8.60,1,"model: throw 19, feint 47, idle 53 spikes"
+sample_20261121_201622_818200.bin,invalid,10.80,1,"model: throw 15, feint 67, idle 37 spikes"
+sample_20261121_201622_818200.bin,throw,13.62,1,"model: throw 90, feint 43, idle 9 spikes"
+sample_20261121_201622_818200.bin,invalid,14.72,1,"model: throw 58, feint 37, idle 39 spikes"
+sample_20261121_201622_818200.bin,invalid,15.70,1,"model: throw 59, feint 83, idle 3 spikes"
+sample_20261121_201622_818200.bin,invalid,16.70,1,"model: throw 108, feint 6, idle 5 spikes"
+sample_20261121_201622_818200.bin,invalid,17.44,1,"model: throw 120, feint 6, idle 0 spikes"
+sample_20261121_201622_818200.bin,invalid,18.38,1,"model: throw 93, feint 10, idle 25 spikes"
+sample_20261121_201622_818200.bin,invalid,19.66,1,"model: throw 28, feint 35, idle 63 spikes"
+sample_20261121_201622_818200.bin,invalid,20.42,1,"model: throw 29, feint 65, idle 45 spikes"
+sample_20261121_201622_818200.bin,throw,22.62,1,"model: throw 88, feint 30, idle 21 spikes"
+sample_20261121_201622_818200.bin,invalid,23.90,1,"model: throw 19, feint 53, idle 39 spikes"
+sample_20261121_201622_818200.bin,invalid,25.08,1,"model: throw 23, feint 65, idle 39 spikes"
+sample_20261121_201622_818200.bin,throw,26.68,1,"model: throw 93, feint 31, idle 13 spikes"
+sample_20261121_201622_818200.bin,end,29.90,claude,camera gets handled
+sample_20261121_201622_818200.bin,invalid,30.40,claude,camera gets handled
+sample_20261121_201622_818200.bin,invalid,31.32,claude,camera gets handled
+sample_20261121_201703_662612.bin,invalid,0.08,claude,too close to the start of the recording
+sample_20261121_201703_662612.bin,throw,2.00,1,"model: throw 84, feint 28, idle 20 spikes"
+sample_20261121_201703_662612.bin,invalid,3.72,1,"model: throw 28, feint 47, idle 42 spikes"
+sample_20261121_201703_662612.bin,invalid,4.66,1,"model: throw 19, feint 46, idle 54 spikes"
+sample_20261121_201703_662612.bin,throw,7.02,1,"model: throw 76, feint 53, idle 10 spikes"
+sample_20261121_201703_662612.bin,invalid,9.64,1,"model: throw 51, feint 69, idle 12 spikes"
+sample_20261121_201703_662612.bin,end,10.20,claude,camera gets handled
+sample_20261121_201703_662612.bin,invalid,10.72,claude,camera gets handled
+sample_20261121_201703_662612.bin,invalid,11.66,1,camera gets handled

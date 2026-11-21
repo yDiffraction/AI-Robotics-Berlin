@@ -1,0 +1,26 @@
+file,label,confidence,status,reason,peak_s,windup_s,duration_s,peak_rate,width_ms,post_pre,verified
+sample_20261121_130517_978615.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",1.03,0.54,1.95,13355,180,0.177,1
+sample_20261121_130521_708090.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",2.35,1.94,2.858,11239,140,0.282,1
+sample_20261121_130733_157671.bin,invalid,0.5,auto,ambiguous,1.59,0.74,2.37,6130,740,0.4,1
+sample_20261121_130737_311944.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",0.91,0.58,1.83,18453,120,0.312,1
+sample_20261121_130740_310991.bin,invalid,0.7,auto,"sharp swing, quiet afterwards",0.87,0.54,1.74,10400,160,0.509,1
+sample_20261121_130743_033563.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",2.01,1.46,2.84,15312,140,0.324,1
+sample_20261121_130747_890474.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",1.39,1.06,2.38,20235,100,0.243,1
+sample_20261121_130751_611874.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",1.21,0.58,1.73,18552,160,0.288,1
+sample_20261121_130755_523351.bin,invalid,0.7,auto,"recording block (feint by motion, throw by neighbours)",0.71,0.54,1.51,38798,120,0.738,1
+sample_20261121_130758_852428.bin,invalid,0.7,auto,"sharp swing, quiet afterwards",1.21,1.08,1.88,36956,100,0.45,1
+sample_20261121_130802_569735.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",1.27,1.14,2.15,34920,80,0.298,1
+sample_20261121_130806_243926.bin,invalid,0.9,auto,"sharp swing, quiet afterwards",0.87,0.58,2.08,20302,120,0.318,1
+sample_20261121_130809_906353.bin,invalid,1.0,auto,peak at clip end (cut off),1.81,1.66,1.82,14475,60,0.0,1
+sample_20261121_130817_480233.bin,invalid,0.85,auto,activity continues after the swing,1.25,0.92,2.458,11254,160,1.258,1
+sample_20261121_130855_383327.bin,invalid,0.85,auto,activity continues after the swing,1.05,0.52,3.02,6016,160,1.859,1
+sample_20261121_130951_085863.bin,throw,0.7,auto,"recording block (feint by motion, feint by neighbours)",1.39,0.64,1.98,12208,200,0.721,1
+sample_20261121_131057_343639.bin,throw,0.85,auto,activity continues after the swing,1.15,0.9,2.398,5342,280,1.937,1
+sample_20261121_131312_206025.bin,feint,0.85,auto,activity continues after the swing,0.87,0.66,2.079,7757,240,1.119,1
+sample_20261121_131316_597440.bin,feint,0.85,auto,activity continues after the swing,0.95,0.7,1.889,11554,220,1.84,1
+sample_20261121_131321_230396.bin,feint,0.7,auto,"recording block (feint by motion, feint by neighbours)",0.75,0.42,2.25,16763,160,0.698,1
+sample_20261121_131325_769327.bin,throw,0.85,auto,activity continues after the swing,1.43,1.18,2.609,8676,240,1.74,1
+sample_20261121_131331_174843.bin,throw,0.85,auto,activity continues after the swing,0.89,0.7,1.96,18308,220,1.61,1
+sample_20261121_131417_679046.bin,throw,0.85,auto,activity continues after the swing,1.89,1.72,2.88,14954,160,1.402,1
+sample_20261121_131429_174908.bin,throw,0.85,auto,activity continues after the swing,0.81,0.3,1.929,2918,280,1.061,1
+sample_20261121_131509_256520.bin,throw,0.7,auto,"sharp swing, quiet afterwards",0.73,0.2,2.0,23580,200,0.415,1
