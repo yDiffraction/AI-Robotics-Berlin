@@ -1,0 +1,4 @@
+# binary throw / no-throw on _dataset01_01020304, session CV (4 folds), iteration 1 from the x-shift config
+b_x          --bank bank04.pt --steps 1000 --cv-seeds 0 --folds 4 --group session --init ../snn_pretrain/runs/sweep_v1/best.pt --loss ts --gen thin,swap,overlay --sym 0.5 --shift-x 25 --shift-y 2 --scale 0.03 --thin-min 0.6
+b_x_symwin   --bank bank04.pt --steps 1000 --cv-seeds 0 --folds 4 --group session --init ../snn_pretrain/runs/sweep_v1/best.pt --loss ts --gen thin,swap,overlay --sym 0.5 --shift-x 25 --shift-y 2 --scale 0.03 --thin-min 0.6 --sym-win 30
+b_x_pre30    --bank bank04.pt --steps 1000 --cv-seeds 0 --folds 4 --group session --init ../snn_pretrain/runs/sweep_v1/best.pt --loss ts --gen thin,swap,overlay --sym 0.5 --shift-x 25 --shift-y 2 --scale 0.03 --thin-min 0.6 --pre 30 --T 80

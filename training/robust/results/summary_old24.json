@@ -1,0 +1,242 @@
+{
+ "h_base_rate": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.75,
+  "prefix_tf@-600ms": 0.6667,
+  "prefix_tf@-400ms": 0.6667,
+  "prefix_tf@-200ms": 0.7083,
+  "acc_tf@+0ms": 0.7083,
+  "acc_tf@+100ms": 0.7083,
+  "acc_tf@+200ms": 0.7083,
+  "swap_tf": 0.599,
+  "acc3": 0.5,
+  "idle_recall": 0.3571,
+  "tf_as_idle": 0.0,
+  "ci": [
+   0.5416666666666666,
+   0.875
+  ],
+  "seeds": [
+   0.75,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_extra": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.7917,
+  "prefix_tf@-600ms": 0.5833,
+  "prefix_tf@-400ms": 0.5625,
+  "prefix_tf@-200ms": 0.6667,
+  "acc_tf@+0ms": 0.7292,
+  "acc_tf@+100ms": 0.7083,
+  "acc_tf@+200ms": 0.75,
+  "swap_tf": 0.6354,
+  "acc3": 0.7273,
+  "idle_recall": 0.9524,
+  "tf_as_idle": 0.5833,
+  "ci": [
+   0.5833333333333334,
+   0.9583333333333334
+  ],
+  "seeds": [
+   0.7917,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_pool2": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.7292,
+  "prefix_tf@-600ms": 0.5417,
+  "prefix_tf@-400ms": 0.5625,
+  "prefix_tf@-200ms": 0.6667,
+  "acc_tf@+0ms": 0.6667,
+  "acc_tf@+100ms": 0.6458,
+  "acc_tf@+200ms": 0.7083,
+  "swap_tf": 0.7188,
+  "acc3": 0.7879,
+  "idle_recall": 0.8571,
+  "tf_as_idle": 0.0833,
+  "ci": [
+   0.5416666666666666,
+   0.8958333333333334
+  ],
+  "seeds": [
+   0.7292,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_pre30": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.8125,
+  "prefix_tf@-600ms": 0.7708,
+  "prefix_tf@-400ms": 0.7917,
+  "prefix_tf@-200ms": 0.4792,
+  "acc_tf@+0ms": 0.5625,
+  "acc_tf@+100ms": 0.7083,
+  "acc_tf@+200ms": 0.7708,
+  "swap_tf": 0.8125,
+  "acc3": 0.8182,
+  "idle_recall": 1.0,
+  "tf_as_idle": 0.3333,
+  "ci": [
+   0.6458333333333334,
+   0.9375
+  ],
+  "seeds": [
+   0.8125,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_thin_swap": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.8333,
+  "prefix_tf@-600ms": 0.5417,
+  "prefix_tf@-400ms": 0.6042,
+  "prefix_tf@-200ms": 0.7083,
+  "acc_tf@+0ms": 0.75,
+  "acc_tf@+100ms": 0.8333,
+  "acc_tf@+200ms": 0.8333,
+  "swap_tf": 0.7344,
+  "acc3": 0.7879,
+  "idle_recall": 0.9762,
+  "tf_as_idle": 0.4167,
+  "ci": [
+   0.6666666666666666,
+   0.9583333333333334
+  ],
+  "seeds": [
+   0.8333,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_thin_swap_sym": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.8333,
+  "prefix_tf@-600ms": 0.5,
+  "prefix_tf@-400ms": 0.5625,
+  "prefix_tf@-200ms": 0.5417,
+  "acc_tf@+0ms": 0.75,
+  "acc_tf@+100ms": 0.7083,
+  "acc_tf@+200ms": 0.7708,
+  "swap_tf": 0.7552,
+  "acc3": 0.7424,
+  "idle_recall": 1.0,
+  "tf_as_idle": 0.6667,
+  "ci": [
+   0.6666666666666666,
+   0.9583333333333334
+  ],
+  "seeds": [
+   0.8333,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_tiny": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.6875,
+  "prefix_tf@-600ms": 0.4792,
+  "prefix_tf@-400ms": 0.625,
+  "prefix_tf@-200ms": 0.5625,
+  "acc_tf@+0ms": 0.625,
+  "acc_tf@+100ms": 0.6458,
+  "acc_tf@+200ms": 0.6667,
+  "swap_tf": 0.6042,
+  "acc3": 0.7879,
+  "idle_recall": 0.9048,
+  "tf_as_idle": 0.2083,
+  "ci": [
+   0.48906250000000007,
+   0.8541666666666666
+  ],
+  "seeds": [
+   0.6875,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_ts_sym": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.7083,
+  "prefix_tf@-600ms": 0.5208,
+  "prefix_tf@-400ms": 0.5208,
+  "prefix_tf@-200ms": 0.5417,
+  "acc_tf@+0ms": 0.7708,
+  "acc_tf@+100ms": 0.7083,
+  "acc_tf@+200ms": 0.6667,
+  "swap_tf": 0.6823,
+  "acc3": 0.803,
+  "idle_recall": 0.9762,
+  "tf_as_idle": 0.4167,
+  "ci": [
+   0.5197916666666667,
+   0.875
+  ],
+  "seeds": [
+   0.7083,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_tso_sym": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.8542,
+  "prefix_tf@-600ms": 0.5208,
+  "prefix_tf@-400ms": 0.5208,
+  "prefix_tf@-200ms": 0.5625,
+  "acc_tf@+0ms": 0.6875,
+  "acc_tf@+100ms": 0.75,
+  "acc_tf@+200ms": 0.7917,
+  "swap_tf": 0.849,
+  "acc3": 0.8182,
+  "idle_recall": 0.9524,
+  "tf_as_idle": 0.3333,
+  "ci": [
+   0.7083333333333334,
+   0.9791666666666666
+  ],
+  "seeds": [
+   0.8542,
+   NaN
+  ],
+  "folds": 4
+ },
+ "h_tsom_sym": {
+  "n_tf": 24,
+  "n_idle": 42,
+  "acc_tf": 0.8125,
+  "prefix_tf@-600ms": 0.5208,
+  "prefix_tf@-400ms": 0.5833,
+  "prefix_tf@-200ms": 0.625,
+  "acc_tf@+0ms": 0.7083,
+  "acc_tf@+100ms": 0.7292,
+  "acc_tf@+200ms": 0.7708,
+  "swap_tf": 0.8073,
+  "acc3": 0.8333,
+  "idle_recall": 0.9524,
+  "tf_as_idle": 0.2083,
+  "ci": [
+   0.6348958333333333,
+   0.9375
+  ],
+  "seeds": [
+   0.8125,
+   NaN
+  ],
+  "folds": 4
+ }
+}
