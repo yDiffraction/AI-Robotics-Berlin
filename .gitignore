@@ -20,3 +20,9 @@ log/
 kria-runtime.tar.gz
 
 .DS_Store
+
+# Our own recordings: event files are large, keep them out of git (share via drive)
+recording/sessions/**/*.bin
+recording/logs/
+recording/previews/
+logs/

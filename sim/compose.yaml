@@ -1,0 +1,36 @@
+# Desk simulation for the Go2 + RiverFPGA pipeline. Use ./sim.sh rather than calling this directly.
+name: go2-sim
+
+x-common: &common
+  volumes:
+    - ../vendor/go2-kria/go2-kria/src:/ws/src/durance:ro
+    - ./ros_ws/src:/ws/src/sim:ro
+    - ./tools:/ws/tools:ro
+    - ../vendor/go2-kria/go2-kria/scripts:/ws/durance-scripts:ro
+    - ws-out:/ws/out
+  environment:
+    - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    - ROS_DOMAIN_ID=0
+  stdin_open: true
+  tty: true
+  ipc: host
+
+services:
+  sil:
+    <<: *common
+    image: go2-sim:sil
+    build: {context: docker, target: sil}
+    container_name: go2-sim-sil
+    command: sleep infinity
+
+  gazebo:
+    <<: *common
+    image: go2-sim:gazebo
+    build: {context: docker, target: gazebo}
+    container_name: go2-sim-gazebo
+    shm_size: 2gb
+    ports: ["6080:6080"]
+    command: bash -c "desktop.sh && sleep infinity"
+
+volumes:
+  ws-out:
