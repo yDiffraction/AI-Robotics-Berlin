@@ -53,19 +53,26 @@ class Scene:
         self.person_level = float(np.clip(self.background + sign * r(0.25, 0.45), 0.05, 0.98))
         self.stripe_level = float(np.clip(self.person_level + rng.choice([-1, 1]) * r(0.1, 0.3), 0.03, 1.0))
         self.ball_level = r(0.05, 0.95)
+        # the yarn ball of the real takes is invisible to the sensor: show it only sometimes
+        self.ball_visible = rng.random() < 0.3
         self.ball_radius = r(0.022, 0.04) * self.height
-        self.limb = r(0.045, 0.07) * self.height
-        self.sway = r(1.0, 8.0)
+        self.limb = r(0.06, 0.095) * self.height           # sleeves: real arms are thick in the events
+        self.sway = r(0.3, 2.5)
         self.sway_hz = r(0.3, 1.2)
         self.lean_amount = r(0.05, 0.25)
-        self.camera_shake = r(0.0, 1.5) if rng.random() < 0.4 else 0.0
+        self.camera_shake = r(0.0, 1.0) if rng.random() < 0.15 else 0.0
         # timeline (seconds)
         self.t_start = r(0.15, 0.35)                      # wind-up starts
         self.windup = r(0.25, 0.45)
         self.hold = r(0.0, 0.18)
-        self.forward = r(0.09, 0.17)                      # forward swing to release
+        self.forward = r(0.08, 0.16)                      # forward swing to release
+        self.follow = r(0.12, 0.25)                       # follow-through after release
+        self.start_ready = rng.random() < 0.65            # real takes often start with the hand already up
+        self.twist = r(0.03, 0.09)                        # torso rotation (throwing shoulder comes forward)
+        self.dist_h = r(1.3, 2.6)                         # camera distance in body heights (perspective)
+        self.feint_hold = r(0.0, 0.12)
         self.t_release = self.t_start + self.windup + self.hold + self.forward
-        self.feint_fraction = r(0.0, 0.6)                 # feint: how far the forward swing goes
+        self.feint_fraction = r(0.25, 0.75)                # feint: how far the forward swing goes
         self.feint_return = r(0.3, 0.6)
         self.ball_speed = r(4.0, 9.0)                     # m/s (frontal looming)
         self.distance_m = r(2.0, 4.5)
@@ -155,6 +162,121 @@ class Scene:
             self._walk = self.rng.choice([-1, 1]) * self.rng.uniform(0.25, 0.6)
         return self._walk
 
+    # --- frontal view: 3-D arm keyframes with perspective ----------------------
+    # (elbow, hand) relative to the throwing shoulder, in body heights; x = towards the throwing
+    # side, y = up, z = towards the camera
+    POSES = {
+        "rest":    ((0.02, -0.19, 0.0), (0.03, -0.36, 0.03)),
+        "ready":   ((0.12, -0.07, 0.02), (0.09, 0.08, 0.04)),      # ball held next to the head
+        "cocked":  ((0.14, 0.03, -0.07), (0.07, 0.15, -0.13)),     # hand up behind the head
+        "release": ((0.03, 0.12, 0.14), (-0.01, 0.17, 0.32)),      # arm forward and high, near the camera
+        "follow":  ((-0.06, -0.07, 0.15), (-0.17, -0.24, 0.24)),   # down across the body
+        "reach":   ((0.04, -0.06, 0.15), (0.03, -0.05, 0.33)),
+        "wave":    ((0.16, 0.0, 0.0), (0.18, 0.17, 0.0)),
+    }
+
+    def _mix(self, a, b, u):
+        pa, pb = self.POSES[a], self.POSES[b]
+        return tuple(tuple(x + (y - x) * u for x, y in zip(ja, jb)) for ja, jb in zip(pa, pb))
+
+    def arm3d(self, t):
+        """(elbow, hand) 3-D positions of the throwing arm and the torso twist (0..1) at time t."""
+        start = "ready" if self.start_ready else "rest"
+        t1 = self.t_start + self.windup
+        t2 = t1 + self.hold
+        t3 = t2 + self.forward
+        if self.label == "idle":
+            k = self.idle_kind
+            if k == "wave":
+                e, h = self.POSES["wave"]
+                return e, (h[0] + 0.05 * math.sin(2 * math.pi * 2.2 * t), h[1], h[2]), 0.0
+            if k in ("raise", "reach"):
+                u = smoothstep((t - self.t_start) / 0.45) - smoothstep((t - self.t_start - 0.8) / 0.45)
+                return (*self._mix(start, "ready" if k == "raise" else "reach", u), 0.0)
+            return (*self._mix(start, start, 0), 0.0)
+        if t < self.t_start:
+            return (*self._mix(start, start, 0), 0.0)
+        if t < t1:
+            return (*self._mix(start, "cocked", smoothstep((t - self.t_start) / self.windup)), 0.0)
+        if t < t2:
+            return (*self._mix("cocked", "cocked", 0), 0.0)
+        if self.label == "throw":
+            if t < t3:
+                u = ((t - t2) / self.forward) ** 1.6                  # accelerating swing
+                return (*self._mix("cocked", "release", u), u)
+            u = 1 - (1 - min((t - t3) / self.follow, 1.0)) ** 2       # decelerating follow-through
+            e, h = self._mix("release", "follow", u)
+            return e, h, 1.0
+        # feint: the forward swing starts, brakes hard at feint_fraction, then the arm goes back
+        f = self.feint_fraction
+        t_stop = t2 + self.forward * (0.6 + f)
+        if t < t_stop:
+            u = smoothstep((t - t2) / (t_stop - t2))
+            return (*self._mix("cocked", "release", f * u), f * u)
+        if t < t_stop + self.feint_hold:
+            return (*self._mix("cocked", "release", f), f)
+        u = smoothstep((t - t_stop - self.feint_hold) / self.feint_return)
+        e1, h1 = self._mix("cocked", "release", f)
+        e2, h2 = self.POSES["ready" if self.start_ready else "cocked"]
+        mix = lambda a, b: tuple(x + (y - x) * u for x, y in zip(a, b))
+        return mix(e1, e2), mix(h1, h2), f * (1 - u)
+
+    def draw_frontal(self, img, t):
+        d = ImageDraw.Draw(img)
+        H = self.height * SS
+        side = self.facing                                  # +1: right-handed seen from the camera
+        cx = (self.cx + self.body_offset(t)) * SS
+        gy = self.ground * SS
+        col = int(self.person_level * 255)
+        stripe = int(self.stripe_level * 255)
+        w = max(2, int(self.limb * SS))
+        elbow3, hand3, twist = self.arm3d(t)
+        lean = self.lean(t)
+        def proj(x, y, z, ox=cx, oy=gy):
+            k = 1.0 / max(1.0 - z / self.dist_h, 0.3)
+            return ox + side * x * H * k, oy - y * H * k, k
+        hip_y = 0.5
+        bend = 0.04 * lean / max(self.lean_amount, 1e-3)    # forward lean: shoulders drop a little
+        sh_y = 0.80 - abs(bend) * 0.5
+        tw = self.twist * twist
+        sh_t = (0.12 - tw * 0.6, sh_y, tw)                   # throwing shoulder comes forward/inwards
+        sh_o = (-0.12 - tw * 0.3, sh_y + tw * 0.2, -tw)
+        hip_t, hip_o = (0.08, hip_y, 0.0), (-0.08, hip_y, 0.0)
+        # legs
+        for hx in (0.06, -0.06):
+            hp = proj(hx, hip_y, 0)
+            ft = proj(hx * 1.4 + (0.03 * math.sin(2 * math.pi * 1.6 * t) if self.idle_kind == "walk"
+                                   and self.label == "idle" else 0), 0.0, 0)
+            d.line([hp[:2], ft[:2]], fill=col, width=int(w * 1.4))
+        # torso as a filled quad with clothing stripes
+        quad = [proj(*sh_t)[:2], proj(*sh_o)[:2], proj(*hip_o)[:2], proj(*hip_t)[:2]]
+        d.polygon(quad, fill=col)
+        for k in (0.25, 0.5, 0.75):
+            a = [quad[0][i] + (quad[3][i] - quad[0][i]) * k for i in (0, 1)]
+            b = [quad[1][i] + (quad[2][i] - quad[1][i]) * k for i in (0, 1)]
+            d.line([tuple(a), tuple(b)], fill=stripe, width=max(1, w // 3))
+        # head
+        hc = proj(-tw * 0.3, sh_y + 0.11, tw * 0.5)
+        r_head = 0.065 * H * hc[2]
+        d.ellipse([hc[0] - r_head, hc[1] - r_head, hc[0] + r_head, hc[1] + r_head], fill=col)
+        # passive arm hangs (slightly out)
+        po = proj(*sh_o)
+        d.line([po[:2], proj(sh_o[0] - 0.04, sh_y - 0.33, 0.02)[:2]], fill=col, width=w)
+        # throwing arm: limb width grows with closeness to the camera
+        st = proj(*sh_t)
+        el = proj(sh_t[0] + elbow3[0], sh_t[1] + elbow3[1], sh_t[2] + elbow3[2])
+        ha = proj(sh_t[0] + hand3[0], sh_t[1] + hand3[1], sh_t[2] + hand3[2])
+        d.line([st[:2], el[:2]], fill=col, width=int(w * el[2]))
+        d.line([el[:2], ha[:2]], fill=col, width=int(w * ha[2]))
+        rh = w * 0.7 * ha[2]
+        d.ellipse([ha[0] - rh, ha[1] - rh, ha[0] + rh, ha[1] + rh], fill=col)
+        ball = self.ball_position(t, ha[:2]) if self.ball_visible else None
+        if ball is not None:
+            bx, by, br = ball
+            d.ellipse([bx - br, by - br, bx + br, by + br], fill=int(self.ball_level * 255))
+        small = img.resize((SENSOR, SENSOR), Image.BOX)
+        return np.asarray(small, np.float32) / 255.0
+
     # --- drawing --------------------------------------------------------------
     def draw(self, t):
         n = SENSOR * SS
@@ -163,6 +285,8 @@ class Scene:
             dx = int(self.camera_shake * SS * math.sin(2 * math.pi * 7.0 * t))
             dy = int(self.camera_shake * SS * math.cos(2 * math.pi * 5.0 * t))
             img = img.transform(img.size, Image.AFFINE, (1, 0, dx, 0, 1, dy), fillcolor=int(self.background * 255))
+        if self.view == "frontal":
+            return self.draw_frontal(img, t)
         d = ImageDraw.Draw(img)
         h = self.height * SS
         cx = (self.cx + self.body_offset(t)) * SS
@@ -205,7 +329,7 @@ class Scene:
         d.line([shoulder, (shoulder[0] - 0.05 * h * (self.facing if self.view == "profile" else 1), hip[1])],
                fill=col, width=w)
 
-        ball = self.ball_position(t, hand)
+        ball = self.ball_position(t, hand) if self.ball_visible else None
         if ball is not None:
             bx, by, br = ball
             bcol = int(self.ball_level * 255)
@@ -227,7 +351,7 @@ class Scene:
             return x, y, r
         # frontal: ball approaches the camera -> grows and moves towards the image centre
         z = self.distance_m - self.ball_speed * dt
-        if z <= 0.25:
+        if z <= 0.8:
             return None
         grow = self.distance_m / z
         hx, hy = self.hand_at_release(hand)

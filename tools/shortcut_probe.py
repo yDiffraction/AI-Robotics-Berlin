@@ -80,10 +80,9 @@ def main():
     ap.add_argument("--max-per-side", type=int, default=400)
     args = ap.parse_args()
     manifest = list(csv.DictReader(open(Path(args.data) / "manifest.csv")))
-    extra = Path(args.data) / "synth_train" / "manifest.csv"
-    if extra.exists():
+    for extra in Path(args.data).glob("*/manifest.csv"):     # generated folders keep their own manifest
         for r in csv.DictReader(open(extra)):
-            r["folder"] = "synth_train"
+            r["folder"] = extra.parent.name
             manifest.append(r)
     rng = np.random.default_rng(0)
     rng.shuffle(manifest)

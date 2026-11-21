@@ -36,8 +36,8 @@ class SensorParams:
         return SensorParams(
             c_on=c * rng.uniform(0.85, 1.15), c_off=c * rng.uniform(0.85, 1.15),
             sigma=rng.uniform(0.01, 0.05), refractory_us=rng.uniform(100, 1000),
-            cutoff_hz=rng.uniform(80, 600), leak_hz=rng.uniform(0.005, 0.05),
-            shot_hz=rng.uniform(0.01, 0.15))
+            cutoff_hz=rng.uniform(80, 600), leak_hz=rng.uniform(0.001, 0.01),
+            shot_hz=rng.uniform(0.002, 0.03))   # the Kria camera runs with a noise filter
 
     def as_dict(self):
         return {k: round(v, 4) if isinstance(v, float) else v for k, v in asdict(self).items()}

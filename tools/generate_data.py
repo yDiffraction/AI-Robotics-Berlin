@@ -52,6 +52,15 @@ def synth_finish(job, ev, frames, meta, rng):
     import synth_throw as S
     label, view = job["label"], job["view"]
     if label != "idle":
+        # decision moment = peak of the event rate near the scripted release, the same rule as the
+        # auto labels of the real recordings (tools/build_dataset.py motion_profile)
+        h = np.histogram(ev["timestamp"], np.arange(0, int(ev["timestamp"].max()) + 20_001, 20_000))[0]
+        h = np.convolve(h, np.ones(3) / 3, mode="same")
+        b0 = max(0, (meta["release_us"] - 300_000) // 20_000)
+        b1 = min(len(h), (meta["release_us"] + 150_000) // 20_000 + 1)
+        if b1 > b0:
+            meta["scripted_release_us"] = meta["release_us"]
+            meta["release_us"] = int((b0 + np.argmax(h[b0:b1])) * 20_000 + 10_000)
         t0 = max(0, meta["release_us"] - int(job["pre"] * 1e6) + int(rng.uniform(-0.1, 0.1) * 1e6))
         rel = meta["release_us"] - t0
     else:
@@ -186,7 +195,7 @@ def main():
     s.add_argument("--out", required=True)
     s.add_argument("--per-class", type=int, default=300)
     s.add_argument("--classes", default="throw,feint,idle")
-    s.add_argument("--views", default="frontal,frontal,profile")
+    s.add_argument("--views", default="frontal,frontal,frontal,profile")
     s.add_argument("--pre", type=float, default=0.7)
     s.add_argument("--post", type=float, default=0.5)
     s.add_argument("--fps", type=int, default=500)

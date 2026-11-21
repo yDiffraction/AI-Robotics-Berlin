@@ -57,11 +57,12 @@ def bin_events(path, steps, bin_us, size, start_us=0):
 def load_split(data, sessions, args, cache_dir):
     xs, ys, names = [], [], []
     for s in sessions:
-        cache = cache_dir / f"{Path(data).name}-{s}-{args.steps}-{args.bin_ms}-{args.size}.pt"
+        paths = sorted((Path(data) / s).glob("gesture_*.bin"))
+        # the file count is part of the key so a regenerated folder never reuses a stale cache
+        cache = cache_dir / f"{Path(data).name}-{s}-{len(paths)}-{args.steps}-{args.bin_ms}-{args.size}.pt"
         if cache.exists():
             x, y, n = torch.load(cache)
         else:
-            paths = sorted((Path(data) / s).glob("gesture_*.bin"))
             x = torch.stack([bin_events(p, args.steps, int(args.bin_ms * 1000), args.size) for p in paths])
             y = torch.tensor([int(p.name.split("-")[0].split("_")[1]) - 1 for p in paths])
             n = [p.name for p in paths]

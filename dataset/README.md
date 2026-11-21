@@ -62,7 +62,7 @@ in the manifests). Each folder is one "session" for the training scripts.
 | `real_train/ real_val/ real_test/` | real | cut windows + `idle` from the quiet parts before the wind-up / after a throw |
 | `aug_train/` | real → augmented | from the full recording with a 250 ms halo (no clipping): speed 0.9–1.1×, mirror, scale 0.9–1.1, ±15 px, ±5°, event thinning 85–100 %, 20 % camera shake, 15 % distractor person, 0–500 ev/s noise + ≤ 3 hot pixels, refractory 100–500 µs, ±100 ms time jitter; idle stretches are augmented too |
 | `splice_train/` | real → synthetic feint | wind-up of a real throw cross-faded (30 ms) into the return phase of a real feint, body positions aligned (`event_aug.feint_splice`); ~10 % of training clips |
-| `synth_train/` | procedural | figure + ball rendered at 500 fps, events from `tools/event_sim.py`; frontal view by default (as the real camera), 1/3 profile |
+| `synth_train/` | procedural | figure rendered at 500 fps, events from `tools/event_sim.py`; 3/4 frontal view with 3-D arm keyframes and perspective (ready → cocked → release towards the camera → follow-through across the body), torso twist, sleeves; ball visible in 30 % only (the real yarn ball is invisible to the sensor); 1/4 profile. Decision moment = event-rate peak, the same rule as the real auto labels |
 | `video_train/` | phone video → events | `tools/video_to_events.py`: real people, clothes and backgrounds; ball visible in RGB, so labels and release times are reliable |
 
 Splits are by source recording; every variant of a recording (and every splice that uses it
@@ -78,6 +78,7 @@ data (grouped by recording). Balanced accuracy near 50 % = no obvious artefact.
 | cut-and-reverse feints vs real feints | 100 % | replaced by splice |
 | splice feints vs real feints | 95.5 % | 84.7 % (still detectable, keep the share small) |
 | aug throws / feints vs real | — | 62 % / 70 % |
+| synth throws / feints vs real | 100 % / 95.5 % (stick figure, wind-up as the main event, looming ball) | 83 % / 86 % (frontal 3-D arm model, `synth_train` v2) |
 
 Fixes came from a multi-agent review: uniform noise was ~10× too high (the Kria camera runs
 with a noise filter), time stretching clipped context, idle windows were never augmented,
