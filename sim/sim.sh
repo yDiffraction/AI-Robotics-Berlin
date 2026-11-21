@@ -21,7 +21,8 @@ case "${1:-help}" in
                      --build-base /ws/out/build --install-base /ws/out/install \
                      --cmake-args -DCMAKE_BUILD_TYPE=Release $*" ;;
     run)      shift; in_ws "ros2 launch go2_sim_tools sil.launch.py $*" ;;
-    gazebo)   shift; in_ws "ros2 launch go2_sim_tools gazebo.launch.py $*" ;;
+    gazebo)   shift; in_ws "export XDG_RUNTIME_DIR=/tmp/runtime-root DISPLAY=:1; ros2 launch go2_sim_tools gazebo.launch.py $*" ;;
+    demo)     shift; in_ws "export XDG_RUNTIME_DIR=/tmp/runtime-root DISPLAY=:1; ros2 launch go2_sim_tools throw_demo.launch.py $*" ;;
     emulator) shift; docker exec -it "$container" python3 /ws/tools/spleat_emulator.py "$@" ;;
     smoke)    in_ws "python3 /ws/durance-scripts/smoke.py" ;;
     shell)    in_ws bash ;;
@@ -34,6 +35,7 @@ Usage: ./sim.sh <command>          (SIM=gazebo ./sim.sh ... selects the Gazebo c
   run        launch pipeline + robot_sim + fake_lidar   (args: host:=... robot:=false ...)
   emulator   start the SPLEAT emulator, e.g. ./sim.sh emulator --mode manual
   gazebo     launch the Gazebo Go2 + sport API bridge (gazebo container only)
+  demo       throw-vs-feint dodge demo in Gazebo, view at http://localhost:6080/vnc.html
   shell      open a sourced shell in the container
 USAGE
     ;;

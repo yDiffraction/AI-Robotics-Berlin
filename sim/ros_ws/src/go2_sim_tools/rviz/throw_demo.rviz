@@ -1,0 +1,42 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Reference Frame: world
+      Cell Size: 1
+      Plane Cell Count: 14
+      Color: 160; 160; 164
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+    - Class: rviz_default_plugins/MarkerArray
+      Name: ThrowScene
+      Enabled: true
+      Topic:
+        Value: /throw_scene/markers
+  Global Options:
+    Fixed Frame: world
+    Background Color: 48; 48; 48
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/Interact
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 7.5
+      Focal Point: {X: 2.0, Y: 0.0, Z: 0.5}
+      Pitch: 0.45
+      Yaw: 3.6
+      Target Frame: <Fixed Frame>
+Window Geometry:
+  Width: 1600
+  Height: 900
+  Hide Left Dock: true
