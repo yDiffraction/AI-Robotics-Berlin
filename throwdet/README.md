@@ -67,4 +67,24 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 
 ## Results
 
-(filled in as runs finish)
+All numbers are out-of-fold on our own camera (724 clips, 181 with throw motion, grouped 4-fold CV by
+recording) plus the held-out idle stream (5.8 min, people walking through the view). `summary.md` on the
+A100 (`~/throwdet/summary.md`) is regenerated automatically after every finished run.
+
+**Recall at a false-alarm budget** is the number that matters for the live demo: the share of throw
+motions (throws and feints) detected between 250 ms before and 300 ms after the swing peak, using the
+best readout (alpha, hold, threshold) that stays within the budget on the idle stream (alarms per
+minute) and on the idle clips.
+
+| run | what changes | AUC own | recall @1 FA/min | recall @2 FA/min | recall @4 FA/min |
+|---|---|---|---|---|---|
+| activity baseline | logistic regression on the activity curve (not an SNN) | bal. acc 0.77 | | | |
+| e02_ownonly_v1 | own clips + own aug only | 0.845 | 0.39 | 0.62 | 0.73 |
+| e01_all_v1 | + synth, video, DailyDVS (density-matched, balanced) | 0.903 | 0.43 | 0.72 | 0.88 |
+| e05_all_v1_nodens | as e01, DailyDVS not thinned | 0.898 | | | |
+
+Findings so far:
+- **The external data helps.** DailyDVS, synth and video raise the out-of-fold AUC on new recordings from 0.845 to 0.90. The domain balancing keeps them from acting as a shortcut.
+- **Thinning DailyDVS to our density does not help our camera** (AUC 0.898 vs. 0.903). It does make DailyDVS throws unlearnable: held-out DailyDVS AUC is 0.56 thinned vs. 0.63 unthinned.
+- **Almost all false alarms come from people walking close to the camera** (legs and torso filling the view) and from a hand right in front of the lens. An empty scene and whole-image motion do not trigger alarms. Run e11 and later sample such hard negatives more often.
+- **Detection time.** At the 2 FA/min operating point, the alarm comes about 150 to 180 ms before the swing peak, i.e. during the wind-up.

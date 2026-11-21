@@ -98,15 +98,13 @@ def main():
     auc = float((pos[:, None] > neg[None, :]).mean() + 0.5 * (pos[:, None] == neg[None, :]).mean())
     minutes = sum(len(s) for s in streams) / 6000
     warm, pre, post = targs.warm, targs.pre, targs.post
-    rows = []
-    for alpha in (0.03, 0.05, 0.1, 0.2, 0.3):
+    cands = []
+    for alpha in (0.05, 0.1, 0.2, 0.3):
         sc = ema_np(D, alpha)
         ss = [ema_np(s, alpha) for s in streams]
         for hold in (1, 3, 5, 8):
-            best = None
-            for thr in np.round(np.arange(-0.2, 0.95, 0.05), 2):
-                det, lat, early = [], [], []
-                fp = []
+            for thr in np.round(np.arange(-0.1, 0.95, 0.05), 2):
+                det, lat, early, fp = [], [], [], []
                 for b in range(len(Y)):
                     if Y[b] == 1:
                         a = A[b] if A[b] >= 0 else 70
@@ -118,22 +116,23 @@ def main():
                     else:
                         fp.append(first_alarm(sc[b], thr, hold, warm) is not None)
                 fa = sum(stream_alarms(s, thr, hold) for s in ss) / max(minutes, 1e-9)
-                tpr, fpr = float(np.mean(det)), float(np.mean(fp))
-                if fa <= args.max_fa and fpr <= args.max_fpr and (best is None or tpr > best["recall"]):
-                    best = {"alpha": alpha, "hold": hold, "thr": float(thr), "recall": round(tpr, 3),
-                            "idle_clip_fpr": round(fpr, 3), "stream_fa_per_min": round(fa, 2),
-                            "latency_ms_median": float(np.median(lat)) if lat else None,
-                            "early_frac": round(float(np.mean(early)), 3)}
-            if best:
-                rows.append(best)
-    rows.sort(key=lambda b: (-b["recall"], b["stream_fa_per_min"]))
+                cands.append({"alpha": alpha, "hold": hold, "thr": float(thr), "recall": round(float(np.mean(det)), 3),
+                              "idle_clip_fpr": round(float(np.mean(fp)), 3), "stream_fa_per_min": round(fa, 2),
+                              "latency_ms_median": float(np.median(lat)) if lat else None,
+                              "early_frac": round(float(np.mean(early)), 3)})
+    rows = []
+    for budget_fa, budget_fpr in ((0.5, 0.1), (1.0, 0.15), (2.0, 0.2), (4.0, 0.3)):
+        ok = [c for c in cands if c["stream_fa_per_min"] <= budget_fa and c["idle_clip_fpr"] <= budget_fpr]
+        if ok:
+            best = max(ok, key=lambda c: (c["recall"], -c["stream_fa_per_min"]))
+            rows.append({"budget_fa_per_min": budget_fa, "budget_clip_fpr": budget_fpr, **best})
     print(f"{run.name}: {len(Y)} held-out own clips ({int(Y.sum())} motion), idle stream {minutes:.1f} min, "
           f"clip AUC {auc:.3f}")
-    print("| alpha | hold | thr | recall (motion detected in -250..+300 ms) | idle-clip FPR | FA/min stream | median detection vs peak | already on >250 ms before peak |")
-    print("|---|---|---|---|---|---|---|---|")
-    for b in rows[:10]:
-        print(f"| {b['alpha']} | {b['hold']} | {b['thr']:.2f} | {b['recall']:.3f} | {b['idle_clip_fpr']:.3f} | "
-              f"{b['stream_fa_per_min']:.2f} | {b['latency_ms_median']} ms | {b['early_frac']:.2f} |")
+    print("| FA budget (/min, clip FPR) | alpha | hold | thr | recall | idle-clip FPR | FA/min stream | median detection vs peak | on >250 ms early |")
+    print("|---|---|---|---|---|---|---|---|---|")
+    for b in rows:
+        print(f"| {b['budget_fa_per_min']}, {b['budget_clip_fpr']} | {b['alpha']} | {b['hold']} | {b['thr']:.2f} | {b['recall']:.3f} | "
+              f"{b['idle_clip_fpr']:.3f} | {b['stream_fa_per_min']:.2f} | {b['latency_ms_median']} ms | {b['early_frac']:.2f} |")
     json.dump({"auc": auc, "rows": rows}, open(run / "readout_sweep.json", "w"), indent=1)
 
 
