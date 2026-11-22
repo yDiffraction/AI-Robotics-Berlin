@@ -1,5 +1,14 @@
 # Throw-motion detector (binary SNN, board format)
 
+**TL;DR for the morning**
+1. **Models:** `throwdet/models/`, board files plus the readout. Test them in the order **D, E, A, B, C**.
+2. **Board:** flash `weights.txt`, `model.json` and `config.yaml` like the earlier SNN (`training/export_snn.py` layout). Input 2x80x80 binary at 10 ms, output 2 neurons.
+3. **Host:** run `live_readout.py` with the model's `readout.json` on the two output spike counts per frame. An alarm means a throw motion has started; trigger the dodge.
+4. **Before the demo:** record 1 to 2 minutes at the site and check them with `replay.py`.
+   - Too many false alarms (people walking close to the camera are the usual cause): switch to `readout_fa1.0.json`, or adapt with `cut_recording.py --idle` plus `adapt.sh` (about 5 to 10 min on the A100).
+   - Throws missed: use `readout_fa4.0.json`.
+5. **What to expect** (out of fold, new recordings): about 70 % of throw motions detected at about 2 false alarms per minute, the alarm about 150 ms before the release. Throws and feints both count as throw motion. A new setup, e.g. the thrower at the image edge, is the main risk.
+
 **Question the network answers, every 10 ms in the live feed: is a throw motion happening right now?**
 A real throw and a feint both count as throw motion (the arm swings like a throw). Everything
 else does not: standing, walking, waving, an empty scene. Deciding whether the ball is actually
