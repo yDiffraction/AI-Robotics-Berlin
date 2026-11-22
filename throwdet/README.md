@@ -18,7 +18,7 @@ use the board format. A, B and C are trained on all our data (all recordings, sy
 | name | training config (CV run) | why test it |
 |---|---|---|
 | `D_e10_fold3` | e10, the CV model of fold 3: trained on recordings 02, 03, 04 (incl. the setup closest to the demo), idle chunks 0 to 2 and all external data | the only candidate whose threshold was picked out of fold for exactly this network; on the unseen 01 recordings it detected 23 of 25 swings with 4 other alarms in 55 s (plot below) |
-| `E_moredd` | e26: as e10 but twice the DailyDVS share (dd 20 %/20 %, own 15 %/25 %, synth 5 %/5 %), trained on all data | the only configuration with two good seeds: AUC 0.919 / 0.914, recall at 2 FA/min 0.73 / 0.82 (e10: 0.54 to 0.79 over 4 seeds); on the 01 stream 24 of 25 swings, 3 other alarms (01 is in its training set) |
+| `E_moredd` | e26: as e10 but twice the DailyDVS share (dd 20 %/20 %, own 15 %/25 %, synth 5 %/5 %), trained on all data | over 4 seeds as good as e10 and slightly more stable: AUC 0.88 to 0.92, mean 0.90; recall at 2 FA/min 0.58 to 0.82, mean 0.71 (e10: 0.865 to 0.924, mean 0.89; recall 0.54 to 0.79, mean 0.65). On the 01 stream: 24 of 25 swings, 3 other alarms (01 is in its training set) |
 | `E2_moredd_fold3` | e26 seed 1, the CV model of fold 3 (like D) | spare; its threshold is out of fold for this network, but on the unseen 01 stream it found only 21 of 25 swings with 7 other alarms |
 | `A_neg` | e10: own negatives weighted up (own:0 = 30 %) | best out-of-fold result (AUC 0.92, 79 % recall at 2 false alarms/min), but a second seed of the same config reached only 0.87 |
 | `B_neg_shiftx` | e18: as A, plus horizontal shift ±25 px | the same recipe, more robust when the thrower stands near the image edge; AUC 0.93 on the held-out recording `04` |
@@ -171,8 +171,8 @@ All numbers are out of fold on our own camera: 724 clips, 181 of them with throw
 | configuration | runs (seeds) | AUC own | recall @1 FA/min | recall @2 FA/min | recall @4 FA/min |
 |---|---|---|---|---|---|
 | activity baseline (logistic regression on the activity curve, not an SNN) | 1 | bal. acc 0.77 | | | |
-| **e10: all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned** | 4 (+1 with 2000 steps) | **0.865 to 0.924** | 0.23 to 0.64 | **0.54 to 0.79** | 0.75 to 0.90 |
-| **e26: e10 with twice the DailyDVS share** | 2 | **0.914 to 0.919** | 0.08 to 0.58 | **0.73 to 0.82** | 0.87 to 0.90 |
+| **e10: all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned** | 4 (+1 with 2000 steps) | **0.865 to 0.924** (mean 0.89) | 0.10 to 0.64 | **0.54 to 0.79** (mean 0.65) | 0.73 to 0.90 |
+| **e26: e10 with twice the DailyDVS share** | 4 | **0.881 to 0.919** (mean 0.90) | 0.08 to 0.58 | **0.58 to 0.82** (mean 0.71) | 0.82 to 0.90 |
 | e01: all sources, balanced, DailyDVS density-matched | 2 | 0.852 to 0.903 | 0.33 to 0.42 | 0.59 to 0.72 | 0.81 to 0.88 |
 | e10 + DailyDVS static-camera clips only | 2 | 0.886 to 0.888 | 0.48 to 0.54 | 0.73 to 0.75 | 0.82 to 0.83 |
 | e10 + readout alpha 0.05 in training | 2 | 0.864 to 0.890 | 0.37 to 0.51 | 0.69 to 0.72 | 0.84 to 0.87 |
@@ -200,6 +200,7 @@ Single runs (one seed each, so only large differences count):
 | s10 | weight average of two e10 seeds | 0.865 | 0.70 |
 
 What holds up:
+- **The two best recipes are e10 and e26, and they are about equal.** e26 is a little better on average (mean recall at 2 FA/min 0.71 vs 0.65), but that is within the seed spread.
 - **External data helps on new recordings.** With own data only, the fold that holds out recording `04` drops to an AUC of 0.75; with synth, video and DailyDVS it is 0.85 to 0.94. Synth and video in particular: removing them made both seeds worse than every e10 seed.
 - **People walking close to the camera cause almost all false alarms.** So do hands right in front of the lens. An empty scene and whole-image motion do not trigger alarms.
 - **The hardest case is a new setup.** In recording `04/215305` the thrower stands at the left image edge and part of the swing leaves the view. The `03` recordings are detected 100 %; `04` only 40 to 65 % when it is held out. The final models have `04` in training.
