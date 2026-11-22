@@ -54,3 +54,23 @@ as usual; X alone does nothing in the default sport mode as far as we know, chec
 Gazebo sim (test container, `odom:=odometry -p odom_topic:=/odom/ground_truth_fast`, X pressed via a fake
 `/wirelesscontroller` message): commanded 1.1 m/s for 0.5 s gives 0.27 m back in the CHAMP model (slow
 acceleration there), the way back by odometry ended 2 cm from the start, max tilt 9 deg.
+
+## Robot launch with SNN and web UI (`robot.launch.py`)
+
+One command starts both nodes: `go2_dodge.py` (X = manual dodge) and `snn_bridge.py` (event camera -> SNN on the
+FPGA -> throw detection -> `/reflex/dash` only while **auto-dodge** is on; **Y** on the remote, the switch on the
+web page or `/snn/auto_set` toggle it; it is off at start). Web UI on port 8080: event camera, SNN spikes, readout
+with threshold (slider), THROW DETECTED banner, robot state, status pills, optional Go2 color camera (checkbox).
+
+```bash
+source /root/dodge/env.sh && ros2 launch /root/dodge/robot.launch.py              # on the Kria, open http://192.168.77.1:8080
+ros2 launch dodge/robot.launch.py dry_run:=true                                   # everything live, robot only logs
+ros2 launch dodge/robot.launch.py camera:=replay:/abs/rec.bin snn:=mock dry_run:=true   # desk test, no board
+python3 dodge/snn_bridge.py --no-ros --ros-args -p camera:=replay:rec.bin -p snn:=mock  # UI test without ROS
+```
+
+`ros2 launch dodge/robot.launch.py --show-args` lists all arguments (camera local|ssh|listen|replay:<file>, snn
+fpga|mock, spleat_host, theta, auto, web_port, color, dry_run, speed, return_speed, odom, ...). The readout of the
+current FPGA model (Tim's v3 early throw-motion detector, channel 0, y = 0.85 y + 0.15 spike, theta 0.85,
+provisional) is in `model/readout.json`. `web/?demo=1` shows the UI with synthetic data, no backend needed.
+Tests: `python3 dodge/tests/test_snn_bridge.py`.
