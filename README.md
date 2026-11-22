@@ -89,6 +89,8 @@ ros2 topic echo --once --qos-reliability best_effort /utlidar/robot_pose geometr
 ros2 launch bringup pipeline.launch.py despot:=false port:=3333
 ```
 
+Test the dodge moves on the real Go2 straight from the laptop (LAN cable, no ROS, keys a/d/s, space = stop): `tools/go2_reflex.py`, setup in its docstring.
+
 ## Submission checklist (from the track brief)
 
 - Working demo: 2-minute walkthrough showing sensor input, on-board inference, robot response; state what is new vs. the starter demo.

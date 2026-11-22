@@ -23,6 +23,10 @@ setup(
             "world_tf = go2_sim_tools.world_tf:main",
             "throw_scene = go2_sim_tools.throw_scene:main",
             "throw_reflex = go2_sim_tools.throw_reflex:main",
+            "two_stage_reflex = go2_sim_tools.two_stage_reflex:main",
+            "gesture_trigger = go2_sim_tools.gesture_trigger:main",
+            "reflex_keyboard = go2_sim_tools.reflex_keyboard:main",
+            "ball_trigger_udp = go2_sim_tools.ball_trigger_udp:main",
         ],
     },
 )

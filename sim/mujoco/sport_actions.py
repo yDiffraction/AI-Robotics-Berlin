@@ -9,7 +9,7 @@ import math
 
 import numpy as np
 
-KP, KD = 60.0, 5.0
+KP, KD = 60.0, 2.0  # kd above ~4 chatters at the 200 Hz sim step (robot skates across the floor)
 
 
 def legs(fr, fl, rr, rl):
