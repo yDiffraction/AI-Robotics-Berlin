@@ -15,6 +15,6 @@ for f in sys.argv[1:]:
                         f"{t['near_fa']} | {t['nonhit_per_min']:.2f} | {'%+d' % lr if lr is not None else '–'} (n={t['n_lead_rel']}) | "
                         f"{'%+d' % t['lead_peak_med'] if t['lead_peak_med'] is not None else '–'} | {t['pre_active']} | "
                         f"{s['all'][0]}/{s['all'][1]}, FA {s['fa_per_min']:.2f}/min |")
-print("| Modell | Readout | θ f0/f1 | Würfe | Täuschungen | gesamt | Zufall (Mittel, p95) | Pausen-FA (n/Zeit = /min, ≤ 95 %) | Hard-Neg-FA (n/Zeit = /min) | FA nahe Schwung | alle Nicht-Treffer-Alarme /min | Lead vs Release ms (median) | Lead vs Peak ms | y≥θ schon bei Fensterbeginn | 215305 (separat) |")
+print("| Model | Readout | θ f0/f1 | Throws | Feints | Total | Chance (mean, p95) | Pause FA (n/time = /min, ≤ 95 %) | Hard-neg FA (n/time = /min) | FA near swing | all non-hit alarms /min | Lead vs release ms (median) | Lead vs peak ms | y≥θ already at window start | 215305 (separate) |")
 print("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
 print("\n".join(rows))

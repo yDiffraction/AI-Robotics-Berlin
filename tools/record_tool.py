@@ -130,7 +130,7 @@ class Recorder:
             self.counted = [c for c in self.counted if self.last_wall - c[0] < 1] + [(self.last_wall, len(ev))]
             if self.take is not None:
                 if self.take.size + len(data) > MAX_BYTES:
-                    self.stop("Aufnahme beendet: die Datei hat die maximale Größe von 4 GB erreicht.")
+                    self.stop("Recording stopped: the file reached the maximum size of 4 GB.")
                 else:
                     self.take.write(data, int(ev["timestamp"][0]))
 
@@ -154,7 +154,7 @@ class Recorder:
             take.close()
             if not take.size:
                 take.path.unlink()
-                self.message = message or "Aufnahme verworfen: es kamen keine Events an."
+                self.message = message or "Recording discarded: no events arrived."
                 return
             self.message = message
             self.done.insert(0, {"file": take.path.name, "seconds": (self.last_us - take.t0) / 1e6,
@@ -238,7 +238,7 @@ def receive(args, rec, stop):
                             rec.feed(data)
                 with LOCK:
                     rec.camera = "waiting"
-                    rec.stop("Aufnahme beendet: die Verbindung zur Kamera ist abgebrochen.")
+                    rec.stop("Recording stopped: the connection to the camera was lost.")
     finally:
         rec.stop()
         if camera is not None:
@@ -285,7 +285,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 PAGE = r"""<!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>Wurf-Aufnahme</title>
+<html lang="en"><head><meta charset="utf-8"><title>Throw recording</title>
 <style>
   :root { --bg:#14161a; --panel:#1d2026; --line:#2c313a; --text:#e6e8ec; --dim:#8b93a1;
           --throw:#ff6b4a; --feint:#4aa8ff; --ok:#5fd38d; --rec:#e5484d; }
@@ -342,16 +342,16 @@ PAGE = r"""<!doctype html>
   <div id="buttons"><button id="start" disabled>Start</button><button id="stop" disabled>Stop</button></div>
   <div id="message"></div>
   <div id="counts">
-    <div class="count throw"><b id="nthrow">0</b>richtiger Wurf <kbd>Leertaste</kbd></div>
-    <div class="count feint"><b id="nfeint">0</b>Fake-Wurf <kbd>k</kbd></div>
+    <div class="count throw"><b id="nthrow">0</b>real throw <kbd>Space</kbd></div>
+    <div class="count feint"><b id="nfeint">0</b>feint <kbd>k</kbd></div>
   </div>
-  <div class="dim">Taste ungefähr in dem Moment drücken, in dem der Ball die Hand verlässt oder verlassen
-    würde. <kbd>Backspace</kbd> löscht den letzten Hinweis.</div>
-  <div><h2>Hinweise dieser Aufnahme</h2><div id="hints"></div></div>
+  <div class="dim">Press the key at roughly the moment the ball leaves the hand, or would leave it.
+    <kbd>Backspace</kbd> deletes the last hint.</div>
+  <div><h2>Hints in this recording</h2><div id="hints"></div></div>
   <div><h2>Fertige Aufnahmen</h2><div id="done"></div><div id="folder" class="dim"></div></div>
 </aside>
 <script>
-const PX = 320 * 320, LUT = [0, 150, 205, 255], NAMES = {throw: "WURF", feint: "FAKE-WURF"};
+const PX = 320 * 320, LUT = [0, 150, 205, 255], NAMES = {throw: "THROW", feint: "FEINT"};
 const KEYS = {" ": "throw", "k": "feint"};
 const $ = id => document.getElementById(id);
 const ctx = $("view").getContext("2d"), img = ctx.createImageData(320, 320), glow = new Float32Array(2 * PX);
@@ -364,20 +364,20 @@ function show(s) {
   document.body.classList.toggle("rec", s.recording);
   $("start").disabled = s.recording || s.camera !== "connected";
   $("stop").disabled = !s.recording;
-  $("cam").textContent = s.camera === "connected" ? `Kamera verbunden · ${Math.round(s.rate / 1000)} k Events/s`
-    : s.camera === "ended" ? "Die SSH-Sitzung zur Kamera ist beendet – Tool neu starten (läuft despot_send_and_forget noch?)"
-    : "Warte auf die Kamera …";
-  $("file").textContent = s.recording ? `${s.file} · ${(s.bytes / 1e6).toFixed(1)} MB` : "keine Aufnahme";
+  $("cam").textContent = s.camera === "connected" ? `Camera connected · ${Math.round(s.rate / 1000)} k Events/s`
+    : s.camera === "ended" ? "The SSH session to the camera has ended – restart the tool (is despot_send_and_forget still running?)"
+    : "Waiting for the camera …";
+  $("file").textContent = s.recording ? `${s.file} · ${(s.bytes / 1e6).toFixed(1)} MB` : "not recording";
   $("message").textContent = s.message;
   const hints = s.hints || [];
   $("nthrow").textContent = hints.filter(h => h.label === "throw").length;
   $("nfeint").textContent = hints.filter(h => h.label === "feint").length;
   $("hints").innerHTML = hints.map((h, i) => `<div class="row"><span class="t">${i + 1} · ${h.t.toFixed(2)} s</span>` +
-    `<span class="tag ${h.label}">${h.label}</span></div>`).reverse().join("") || '<span class="dim">noch keine</span>';
+    `<span class="tag ${h.label}">${h.label}</span></div>`).reverse().join("") || '<span class="dim">none yet</span>';
   $("done").innerHTML = s.done.map(d => `<div class="row"><span class="t">${d.file.slice(7, -4)} · ${clock(d.seconds)}</span>` +
     `<span class="tag throw">${d.throw}</span><span class="tag feint">${d.feint}</span></div>`).join("") ||
-    '<span class="dim">noch keine</span>';
-  $("folder").textContent = "Ordner: " + s.folder;
+    '<span class="dim">none yet</span>';
+  $("folder").textContent = "Folder: " + s.folder;
 }
 
 async function post(path, body) {
@@ -391,7 +391,7 @@ async function post(path, body) {
 
 function offline() {
   lost = true;
-  $("message").textContent = "Keine Verbindung zum Tool – läuft tools/record_tool.py noch?";
+  $("message").textContent = "No connection to the tool – is tools/record_tool.py still running?";
 }
 
 function flash(text, color) {
@@ -436,9 +436,9 @@ document.addEventListener("keydown", async e => {
   if (e.repeat) return;
   const label = KEYS[k];  // the tool decides whether a take is running, the page can be a moment behind
   if (!await post(label ? "/hint" : "/undo", {label})) return;
-  if (!st.recording) flash("Aufnahme läuft nicht", "#e6e8ec");
+  if (!st.recording) flash("Not recording", "#e6e8ec");
   else if (label) flash(NAMES[label], label === "throw" ? "#ff6b4a" : "#4aa8ff");
-  else flash("gelöscht", "#e6e8ec");
+  else flash("deleted", "#e6e8ec");
 });
 document.addEventListener("keyup", e => { if (e.key === " ") e.preventDefault(); });
 

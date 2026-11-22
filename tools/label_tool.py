@@ -123,7 +123,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 PAGE = r"""<!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>Wurf-Label-Tool</title>
+<html lang="en"><head><meta charset="utf-8"><title>Throw label tool</title>
 <style>
   :root { --bg:#14161a; --panel:#1d2026; --line:#2c313a; --text:#e6e8ec; --dim:#8b93a1;
           --throw:#ff6b4a; --feint:#4aa8ff; --idle:#9aa3b2; --invalid:#c9a227; --ok:#5fd38d; }
@@ -165,18 +165,18 @@ PAGE = r"""<!doctype html>
   <canvas id="bar" width="640" height="16"></canvas>
   <div id="info"></div><div id="error"></div>
   <div id="keys">
-    <span><kbd>1</kbd> richtiger Wurf</span><span><kbd>2</kbd> Fake-Wurf</span>
-    <span><kbd>3</kbd> keine Wurfbewegung</span><span><kbd>x</kbd> unbrauchbar</span>
-    <span><kbd>Leertaste</kbd> Vorschlag bestätigen</span><span><kbd>←</kbd> <kbd>→</kbd> blättern</span>
-    <span><kbd>a</kbd> <kbd>d</kbd> Entscheidungsmoment ∓20 ms (<kbd>Shift</kbd> 100 ms)</span>
-    <span><kbd>s</kbd> Tempo</span><span><kbd>p</kbd> Pause</span><span><kbd>q</kbd> <kbd>e</kbd> Einzelbild</span>
-    <span><kbd>c</kbd> mehr Kontext</span><span><kbd>u</kbd> wieder offen</span>
-    <span><kbd>r</kbd> Liste neu laden</span>
+    <span><kbd>1</kbd> real throw</span><span><kbd>2</kbd> feint</span>
+    <span><kbd>3</kbd> no throw motion</span><span><kbd>x</kbd> unusable</span>
+    <span><kbd>Space</kbd> confirm suggestion</span><span><kbd>←</kbd> <kbd>→</kbd> previous / next</span>
+    <span><kbd>a</kbd> <kbd>d</kbd> decision moment ∓20 ms (<kbd>Shift</kbd> 100 ms)</span>
+    <span><kbd>s</kbd> speed</span><span><kbd>p</kbd> pause</span><span><kbd>q</kbd> <kbd>e</kbd> single frame</span>
+    <span><kbd>c</kbd> more context</span><span><kbd>u</kbd> reopen</span>
+    <span><kbd>r</kbd> reload list</span>
   </div>
 </main>
 <script>
 const FRAME_MS = __FRAME_MS__, PX = 320 * 320, PRE = 0.7, POST = 0.5;
-const NAMES = {throw: "richtiger Wurf", feint: "Fake-Wurf", idle: "keine Wurfbewegung", invalid: "unbrauchbar", "?": "noch kein Label"};
+const NAMES = {throw: "real throw", feint: "feint", idle: "no throw motion", invalid: "unusable", "?": "no label yet"};
 const KEYS = {"1": "throw", "2": "feint", "3": "idle", "x": "invalid"};
 const LUT = [0, 150, 205, 255], SPEEDS = [1, 0.5, 0.25];
 const $ = id => document.getElementById(id);
@@ -209,8 +209,8 @@ function draw() {
   bar.fillStyle = "#e5484d"; bar.fillRect(x(0) - 1, 0, 3, 16);
   bar.fillStyle = "#fff"; bar.fillRect(x(t), 0, 2, 16);
   const it = items[cur];
-  $("info").innerHTML = `Datensatz ${it.set} · ${it.file} · Entscheidungsmoment ${it.decision.toFixed(2)} s · ` +
-    `Bild ${t >= 0 ? "+" : "−"}${Math.abs(t).toFixed(2)} s · Tempo ${SPEEDS[speed]}×${paused ? " · Pause" : ""}` +
+  $("info").innerHTML = `Dataset ${it.set} · ${it.file} · decision moment ${it.decision.toFixed(2)} s · ` +
+    `Frame ${t >= 0 ? "+" : "−"}${Math.abs(t).toFixed(2)} s · speed ${SPEEDS[speed]}×${paused ? " · paused" : ""}` +
     (it.note ? `<br>${it.note.replace(/</g, "&lt;")}` : "");
 }
 
@@ -225,15 +225,15 @@ function tick(now) {
 
 function list() {
   const done = items.filter(i => i.verified !== "0").length;
-  $("count").textContent = `${done} von ${items.length} geprüft`;
+  $("count").textContent = `${done} of ${items.length} checked`;
   $("rows").innerHTML = items.map((it, i) =>
     `<div class="it${i === cur ? " cur" : ""}" data-i="${i}"><span class="ok">${it.verified !== "0" ? "✓" : ""}</span>` +
     `<span class="t">${it.set} · ${it.file.split("_")[2]} · ${it.decision.toFixed(2)} s</span>` +
     `<span class="tag ${cls(it.label)}">${it.label}</span></div>`).join("");
   const it = items[cur];
   $("big").className = "tag " + cls(it.label); $("big").textContent = NAMES[it.label];
-  $("state").textContent = it.verified === "1" ? "✓ geprüft" : it.verified !== "0" ? `✓ gelabelt von ${it.verified}`
-    : it.label === "?" ? "" : "Vorschlag, noch nicht geprüft";
+  $("state").textContent = it.verified === "1" ? "✓ checked" : it.verified !== "0" ? `✓ labelled by ${it.verified}`
+    : it.label === "?" ? "" : "suggestion, not checked yet";
   $("state").style.color = it.verified !== "0" ? "var(--ok)" : "var(--dim)";
   const el = $("rows").children[cur];
   if (el) el.scrollIntoView({block: "nearest"});
@@ -248,7 +248,7 @@ function save(change, advance) {
     const r = await fetch("/label", {method: "POST", body: JSON.stringify(it)});
     if (!r.ok) throw new Error(r.status);
     it.key = (await r.json()).key;
-  }).catch(() => { $("error").textContent = "Speichern fehlgeschlagen – läuft tools/label_tool.py noch?"; });
+  }).catch(() => { $("error").textContent = "Saving failed – is tools/label_tool.py still running?"; });
   if (advance) {
     const open = items.map((x, j) => x.verified === "0" ? j : -1).filter(j => j >= 0);
     go(open.find(j => j > cur) ?? open[0] ?? cur);
@@ -280,7 +280,7 @@ $("rows").addEventListener("click", e => { const el = e.target.closest(".it"); i
 async function reload(first) {
   const id = it => it.src + "|" + it.file + "|" + it.key, old = items[cur];
   items = await (await fetch("/items")).json();
-  if (!items.length) { $("count").textContent = "keine Einträge"; return; }
+  if (!items.length) { $("count").textContent = "no entries"; return; }
   const same = old ? items.findIndex(x => id(x) === id(old)) : -1, open = items.findIndex(x => x.verified === "0");
   go(same >= 0 ? same : open >= 0 ? open : 0);
   if (first) requestAnimationFrame(t => { last = t; tick(t); });

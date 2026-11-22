@@ -1,35 +1,38 @@
 # _dataset01_010203
 
-Gelabelte, in Clips geschnittene Fassung der eigenen Aufnahmen `dataset/01`, `02` und `03` (GenX320 am Kria, 2026-11-21).
-Eigene Aufnahmen, nicht der Durance-Datensatz.
+Labelled version of our own recordings `dataset/01`, `02` and `03` (GenX320 on the Kria, 2026-11-21), cut into clips.
+Our own recordings, not the Durance dataset.
 
-| Klasse | Ordner | ID | Clips | Bedeutung |
+| Class | Folder | ID | Clips | Meaning |
 |---|---|---|---|---|
-| throw | `throw/` | 01 | 49 | richtiger Wurf, der Ball verlässt die Hand |
-| feint | `feint/` | 02 | 68 | Fake-Wurf, dieselbe Bewegung ohne Loslassen |
-| idle | `idle/` | 03 | 255 | keine Wurfbewegung (Stehen, Gehen, Ball aufheben, leere Szene) |
+| throw | `throw/` | 01 | 49 | real throw, the ball leaves the hand |
+| feint | `feint/` | 02 | 68 | fake throw, the same motion without letting go |
+| idle | `idle/` | 03 | 255 | no throw motion (standing, walking, picking up the ball, empty scene) |
 
 ## Clips
 
-- Dateiname: `gesture_<ID>-<label>-d<Datensatz>_<Uhrzeit der Aufnahme>-<tag>.bin`.
-  `t01234` = Wurfbewegung mit Entscheidungszeitpunkt bei 12,34 s der Aufnahme, `g01234` = Idle-Clip aus einer Pause, Start bei 12,34 s.
-- Jeder Clip ist 1,2 s lang, Zeitstempel ab 0. Bei throw und feint liegt der Entscheidungszeitpunkt (Maximum der Eventrate im Schwung) bei 0,7 s, also `release_us` = 700000.
-- Format wie die Aufnahmen: 4 Byte Länge, dann Events `x, y, polarity, timestamp`. Lesbar mit `tools/events_tool.py` und `river-tools play`.
-- `preview_<label>_<n>.png`: eine Zeile je Clip, 12 Bilder zu je 100 ms (ON grün, OFF magenta).
+- File name: `gesture_<ID>-<label>-d<dataset>_<time of recording>-<tag>.bin`.
+  `t01234` = throw motion with its decision time at 12.34 s of the recording, `g01234` = idle clip from a pause, starting at 12.34 s.
+- Each clip is 1.2 s long, timestamps start at 0. For throw and feint the decision time (maximum of the event rate in
+  the swing) is at 0.7 s, so `release_us` = 700000.
+- Same format as the recordings: 4-byte length, then events `x, y, polarity, timestamp`. Readable with
+  `tools/events_tool.py` and `river-tools play`.
+- `preview_<label>_<n>.png`: one row per clip, 12 frames of 100 ms each (ON green, OFF magenta).
 
 ## labels.csv
 
-Eine Zeile je Clip: `file, folder, label, class_id, dataset, source, parent, start_s, decision_s, release_us, events, verified, note`.
+One row per clip: `file, folder, label, class_id, dataset, source, parent, start_s, decision_s, release_us, events, verified, note`.
 
-- `source` ist die Aufnahme, aus der der Clip stammt, `start_s` und `decision_s` sind Sekunden in dieser Aufnahme.
-- `verified`: `1` = von Noah im Label-Tool geprüft, `claude` = von Claude anhand von Bildfolgen gelabelt, `auto` = Idle-Clip aus der Pause zwischen zwei Bewegungen.
-- Clips mit demselben `parent` stammen aus derselben Bewegung oder derselben Pause.
+- `source` is the recording the clip comes from; `start_s` and `decision_s` are seconds in that recording.
+- `verified`: `1` = checked by Noah in the label tool, `claude` = labelled by Claude from frame sequences,
+  `auto` = idle clip from the pause between two motions.
+- Clips with the same `parent` come from the same motion or the same pause.
 
-## Herkunft
+## Provenance
 
-| Datensatz | Aufnahme | throw | feint | idle |
+| Dataset | Recording | throw | feint | idle |
 |---|---|---|---|---|
-| 01 | 25 kurze Dateien, 10 Bewegungen behalten | 7 | 3 | 5 |
+| 01 | 25 short files, 10 motions kept | 7 | 3 | 5 |
 | 02 | 170441 | 5 | 10 | 32 |
 | 03 | 195808 | 6 | 4 | 21 |
 | 03 | 200001 | 6 | 19 | 48 |
@@ -38,16 +41,16 @@ Eine Zeile je Clip: `file, folder, label, class_id, dataset, source, parent, sta
 | 03 | 201622 | 4 | 0 | 4 |
 | 03 | 201703 | 2 | 0 | 2 |
 
-## Zu beachten
+## Notes
 
-- Train und Test nach `source` oder `dataset` trennen, nicht nach Clip: Clips aus derselben Aufnahme sehen sich sehr ähnlich.
-- Zwei Drittel der Clips sind idle. Beim Training Klassen ausgleichen (`training/train_throw_own.py` zieht jede Klasse gleich oft).
-- 24 Idle-Clips enthalten fast keine Events (leere Szene).
-- Als `invalid` markierte Bewegungen (15 in 01, 120 in 03) fehlen, auch als Idle-Clip. Abschnitte, in denen die Kamera bewegt wurde, sind abgeschnitten.
+- Split train and test by `source` or `dataset`, not by clip: clips from the same recording look very similar.
+- Two thirds of the clips are idle. Balance the classes in training (`training/train_throw_own.py` samples every class equally often).
+- 24 idle clips contain almost no events (empty scene).
+- Motions marked `invalid` (15 in 01, 120 in 03) are left out, also as idle clips. Stretches where the camera was moved are cut out.
 
-## Neu erzeugen
+## Rebuild
 
-Die Labels stehen in `dataset/<NN>/samples/labels.csv` und lassen sich mit `python tools/label_tool.py` ändern. Danach:
+The labels are in `dataset/<NN>/samples/labels.csv` and can be edited with `python tools/label_tool.py`. Then:
 
 ```bash
 python tools/build_dataset.py

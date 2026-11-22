@@ -1,142 +1,142 @@
-# GOAL B – Früherkennung auf ganzen Aufnahmen (experiments/early_ctx_eval)
+# GOAL B – Early detection on whole recordings (experiments/early_ctx_eval)
 
-Stand 22.11.2026, 12:10. **Gate-Urteil: NICHT BESTANDEN.** Keine Variante erreicht auf zurückgehaltenen ganzen Aufnahmen ≥ 60 % der Wurfbewegungen bei ≤ 2–3 Pausen-FA/min mit Lead ≤ −200 ms. Das gilt auch dann, wenn man nur zählt, was über der Zufallsbaseline liegt.
+Status 22 Nov 2026, 12:10. **Gate verdict: FAILED.** No variant reaches ≥ 60 % of throw motions on held-out whole recordings at ≤ 2–3 pause false alarms (FA) per minute with a lead ≤ −200 ms. That holds even when only hits above the chance baseline are counted.
 
-## 1. Was ich geändert habe und warum
+## 1. What I changed and why
 
-**Eval** (`ctx.py score`, ersetzt `tools/early_stream.py`):
-- **Zustandsbehaftet, ohne Reset.** Die ganze Aufnahme läuft als *ein* Lauf, mit Reset nur am Dateianfang (`stateful_forward`). Die Gleichheit mit dem vollen Sequenz-Forward ist geprüft: 0 abweichende Frames von 1169.
-  - Meine erste Eval nutzte noch den 30-s-Reset von `early_stream.py`. Diese Zahlen habe ich verworfen.
-- **Pausenzeit als Vereinigung von Masken** und nicht als Summe. Die Aufnahme wird beim `end`-Label abgeschnitten.
-- **Jeder Alarm landet in genau einer Kategorie:**
-  - Treffer: erster unbenutzter Alarm im Fenster [Peak − 1,0 s, Peak + 0,3 s], 1:1 zugeordnet.
-  - Hard-Neg-FA: innerhalb ±1 s um `idle`/`invalid`-Labels, also Gehen, Ball aufheben, Kamerahandling.
-  - FA nahe Schwung: ±1,5 s um einen Schwung, einschließlich Doppelalarmen.
-  - Pausen-FA: alles andere.
-- **Nur frische Alarme zählen.** Ein Alarm ist ein Aufwärtsdurchgang durch θ mit 1 s Refraktärzeit. Was schon über θ liegt, ist kein Treffer. Die Spalte „y ≥ θ bei Fensterbeginn“ zeigt, wie oft das vorkam.
-- **Zufallsbaseline:** dieselben Alarme, alle Label-Zeiten pro Aufnahme zirkulär um einen zufälligen Offset verschoben, 100 Ziehungen. Angegeben sind Mittel und 95. Perzentil der Treffer.
-- **Lead:** gegen `release_ms`, wo vorhanden (33/42 Würfe in 02/03), sonst gegen den Peak, in getrennten Spalten. Negativ heißt früh.
-- **θ wird pro Fold nur auf den Trainings-Sessions dieses Folds gewählt** (02/03, ohne 215305). Regel, vor allen Ergebnissen festgelegt: maximaler Recall unter Pausen-FA ≤ 1,0/min. Wird das nirgends erreicht, gilt das kleinste FA.
-  - Als Sensitivität, klar *post hoc*: dieselbe Regel mit ≤ 2,5/min.
-- **Ein Review hat 3 Fehler in meiner ersten Eval gefunden, alle behoben:**
-  - Alarme nahe Schwüngen wurden nirgends gezählt.
-  - Hard-Negatives neben Schwüngen wurden ausgeblendet.
-  - Ein Alarm konnte zwei Schwünge treffen.
-- **Folds unverändert** (f0 = 170441, 201703, 215305; f1 = 195808, 200001, 200828, 201452, 201622). Nur so bleiben die Baselines held-out. 211821 dient nur als Trainings-Negativ und wird nie bewertet.
+**Evaluation** (`ctx.py score`, replaces `tools/early_stream.py`):
+- **Stateful, no reset.** The whole recording runs as *one* pass, reset only at the start of the file (`stateful_forward`). Equality with the full-sequence forward is checked: 0 differing frames out of 1169.
+  - My first evaluation still used the 30 s reset of `early_stream.py`. I discarded those numbers.
+- **Pause time as the union of masks**, not as a sum. The recording is cut at the `end` label.
+- **Every alarm lands in exactly one category:**
+  - Hit: the first unused alarm in the window [peak − 1.0 s, peak + 0.3 s], matched 1:1.
+  - Hard-negative FA: within ±1 s of `idle`/`invalid` labels, i.e. walking, picking up the ball, handling the camera.
+  - FA near a swing: ±1.5 s around a swing, including double alarms.
+  - Pause FA: everything else.
+- **Only fresh alarms count.** An alarm is an upward crossing of θ with 1 s refractory time. A score already above θ is not a hit. The column "y ≥ θ at window start" shows how often that happened.
+- **Chance baseline:** the same alarms, with all label times of a recording shifted circularly by a random offset, 100 draws. Mean and 95th percentile of the hits are given.
+- **Lead:** against `release_ms` where available (33/42 throws in 02/03), otherwise against the peak, in separate columns. Negative means early.
+- **θ is chosen per fold on that fold's training sessions only** (02/03, without 215305). Rule, fixed before any results: maximum recall with pause FA ≤ 1.0/min. Where that is never reached, the smallest FA applies.
+  - As a sensitivity check, clearly *post hoc*: the same rule with ≤ 2.5/min.
+- **A review found 3 errors in my first evaluation, all fixed:**
+  - Alarms near swings were not counted anywhere.
+  - Hard negatives next to swings were masked out.
+  - One alarm could hit two swings.
+- **Folds unchanged** (f0 = 170441, 201703, 215305; f1 = 195808, 200001, 200828, 201452, 201622). Only this keeps the baselines held out. 211821 is used only as a training negative and is never scored.
 
-**Daten und Training** (`ctx.py train`, Tims v1-Architektur, 1 Ausgang, DVSG-Init, τ ≤ 8, EMA-Loss wie bei Tim):
-- Trainiert wird auf **Fenstern (3 s + 0,6 s Einschwingen) aus den ganzen Aufnahmen** der Trainings-Sessions statt auf geklebten Clips.
-  - Damit sind echte Pausen, Gehen, Aufheben und Kamerahandling der Wurfszene Negative.
-  - `idle`/`invalid` haben Gewicht 2 (bei `whneg` 4).
-  - Ziel ist 1 auf [Release − 0,5 s, Release + 0,3 s], wo kein Release bekannt ist auf den Peak.
-  - Dazu kommt 211821 als Ruhe-Negativ. Augmentiert wird leicht: Spiegeln, x-Shift, Ausdünnen, Polaritätstausch, Rauschen.
-  - Das testet Ursache 1 (fehlende Pausen-Negative) und Ursache 2 (Lernen auf geklebten Strömen).
-- Die Frames stammen aus `prep.py`, das bitgleich mit `ball_live.frames_from_file` bint.
-- **Ursache 3 (Vorverarbeitung) ist geprüft und widerlegt:** Tims Bank-Clips und das Live-Binning decken sich zu 96–99,9 % (IoU, Versatz 0, 12 Clips).
-- **Varianten**, je eine Hypothese:
-  - `whole`: nur ganze Aufnahmen. 2 Seeds (s0, s1).
-  - `whfor`: wie `whole`, aber 25 % jedes Batches sind fremde Negative aus Tims Banks (mb/dd/dvsg). Seed s0, s1 siehe unten.
-  - `whneg`: `whole_s0` weitertrainiert, 600 Schritte, stärkere Negativgewichtung (p_pos 0,3, hn_w 4, pos_w 1). Hypothese: Die Pausen sind unterangepasst, denn selbst in-sample lag Pausen-FA bei θ 0,8 noch bei 5,7/min.
-  - `_c1`: **nachträglicher Bias-Clamp gegen tonische Kanäle.** Der BN-gefaltete Bias wird auf ≤ 0,9·v_th/τ begrenzt, ohne Nachtraining. Danach ist kein Kanal mehr tonisch (Zählung `tonic_report`).
+**Data and training** (`ctx.py train`, Tim's v1 architecture, 1 output, DVS-Gesture init, τ ≤ 8, EMA loss as in Tim's runs):
+- Training uses **windows (3 s + 0.6 s warm-up) from the whole recordings** of the training sessions instead of spliced clips.
+  - That makes real pauses, walking, picking up and camera handling in the throw scene into negatives.
+  - `idle`/`invalid` get weight 2 (4 for `whneg`).
+  - The target is 1 on [release − 0.5 s, release + 0.3 s], or on the peak where no release is known.
+  - 211821 is added as a calm negative. Light augmentation: flip, x shift, thinning, polarity swap, noise.
+  - This tests cause 1 (missing pause negatives) and cause 2 (learning on spliced streams).
+- The frames come from `prep.py`, which bins bit-identically to `ball_live.frames_from_file`.
+- **Cause 3 (preprocessing) was checked and ruled out:** Tim's bank clips and the live binning agree to 96–99.9 % (IoU, offset 0, 12 clips).
+- **Variants**, one hypothesis each:
+  - `whole`: whole recordings only. 2 seeds (s0, s1).
+  - `whfor`: like `whole`, but 25 % of every batch are foreign negatives from Tim's banks (mb/dd/dvsg). Seeds s0, s1, see below.
+  - `whneg`: `whole_s0` trained on for 600 steps with stronger negative weighting (p_pos 0.3, hn_w 4, pos_w 1). Hypothesis: the pauses are underfitted, because even in-sample the pause FA at θ 0.8 was still 5.7/min.
+  - `_c1`: **post-hoc bias clamp against tonic channels.** The BN-folded bias is limited to ≤ 0.9·v_th/τ, without retraining. Afterwards no channel is tonic any more (count from `tonic_report`).
 - **Readouts:**
-  - `abs`: EMA mit α 0,85 (Tim).
-  - `slow`: EMA mit α 0,93.
-  - `rel`: y minus eigener Mittelwert über [t − 1,7 s, t − 0,2 s], also der Anstieg.
+  - `abs`: EMA with α 0.85 (Tim's).
+  - `slow`: EMA with α 0.93.
+  - `rel`: y minus its own mean over [t − 1.7 s, t − 0.2 s], i.e. the rise.
 
-## 2. Ergebnisse (zustandsbehaftet, 02/03 held-out, 107 Schwünge = 42 Würfe + 65 Täuschungen)
+## 2. Results (stateful, 02/03 held out, 107 swings = 42 throws + 65 feints)
 
-Gemeinsamkeiten aller Zeilen:
-- Echte Pausenzeit 3,02 min, Hard-Neg-Zeit 2,87 min, Gesamtdauer 10,2 min.
-- Trefferfenster [−1,0, +0,3] s um den Peak.
-- FA-Obergrenze: einseitig 95 %, Poisson.
-- 215305 steht separat, mit Fold-0-Modell, Tastendruck-Labels und unsichtbarem Ball.
+Common to all rows:
+- Real pause time 3.02 min, hard-negative time 2.87 min, total duration 10.2 min.
+- Hit window [−1.0, +0.3] s around the peak.
+- FA upper bound: one-sided 95 %, Poisson.
+- 215305 is reported separately, with the fold-0 model, key-press labels and an invisible ball.
 
-### 2a. Hauptprotokoll (θ-Regel FA ≤ 1/min auf Training, vorab festgelegt)
+### 2a. Main protocol (θ rule FA ≤ 1/min on training, fixed in advance)
 
-| Modell | Readout | θ f0/f1 | Würfe | Täusch. | gesamt | Zufall (Mittel, p95) | Pausen-FA (/min, ≤95 %) | Hard-Neg-FA /min | FA nahe Schwung | Lead vs Release (median, n) | Lead vs Peak | y≥θ bei Fensterbeginn | 215305 |
+| Model | Readout | θ f0/f1 | Throws | Feints | Total | Chance (mean, p95) | Pause FA (/min, ≤95 %) | Hard-neg FA /min | FA near swing | Lead vs release (median, n) | Lead vs peak | y≥θ at window start | 215305 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| r2_old_fa (Baseline) | abs | .99/.99 | 22/42 | 38/65 | **60/107 (56 %)** | 40 (46) | 28 → **9,27** (≤12,7) | 18,8 | 32 | −80 (13) | −475 | 17 | 5/65, 1,8 FA/min |
-| r2_ext_fa (Baseline) | abs | .99/.99 | 17/42 | 28/65 | **45/107 (42 %)** | 22 (27) | 9 → **2,98** (≤5,2) | 10,8 | 8 | **+145** (10) | +20 | 5 | 4/65, 1,1 |
-| r2_old_fa + Clamp | abs | .99/.97 | 12/42 | 29/65 | 41/107 (38 %) | 29 (35) | 14 → 4,64 | 15,3 | 31 | −365 (8) | −520 | 9 | 1/65 |
-| r2_ext_fa + Clamp | abs | .99/.99 | 18/42 | 22/65 | 40/107 (37 %) | 22 (28) | 6 → 1,99 | 11,2 | 14 | +190 (11) | +140 | 3 | 5/65 |
-| whole_s0 | abs | .99/.97 | 3/42 | 6/65 | 9/107 (8 %) | 6 (9) | 0 → 0,00 (≤1,0) | 4,2 | 3 | −515 (2) | −570 | 0 | 0/65, 0 FA |
-| whole_s1 | abs | .99/.97 | 7/42 | 11/65 | 18/107 (17 %) | 9 (13) | 1 → 0,33 | 4,5 | 4 | −470 (2) | −320 | 0 | 0/65 |
-| whole_s1 | rel | .90/.70 | 8/42 | 17/65 | 25/107 (23 %) | 7 (11) | 3 → 0,99 (≤2,6) | 1,7 | 0 | −410 (7) | −430 | 0 | 0/65 |
-| whfor_s0 | abs | .99/.90 | 11/42 | 16/65 | 27/107 (25 %) | 12 (17) | 3 → 0,99 (≤2,6) | 5,6 | 3 | −290 (7) | −160 | 0 | 0/65 |
-| whfor_s0 | slow | .99/.75 | 13/42 | 15/65 | 28/107 (26 %) | 11 (15) | 3 → 0,99 | 4,5 | 4 | +60 (7) | −285 | 0 | 0/65 |
-| whole_s0 + Clamp | abs | .99/.80 | 12/42 | 12/65 | 24/107 (22 %) | 11 (15) | 1 → 0,33 | 5,6 | 6 | −370 (7) | +20 | 1 | 0/65 |
-| whneg_s0 | abs | .99/.95 | 5/42 | 5/65 | 10/107 (9 %) | 5 (7) | 0 → 0,00 (≤1,0) | 1,7 | 2 | +45 (4) | −440 | 0 | 0/65 |
-| whneg_s0 | slow | .97/.65 | 19/42 | 16/65 | 35/107 (33 %) | 16 (21) | 3 → 0,99 (≤2,6) | 8,7 | 7 | +65 (14) | −30 | 2 | 0/65 |
-| whneg_s0 + Clamp | rel | .90/.55 | 17/42 | 17/65 | 34/107 (32 %) | 12 (16) | 5 → 1,66 (≤3,5) | 4,2 | 5 | −435 (12) | −410 | 1 | 0/65 |
-| whfor_s1 | abs | .99/.98 | 2/42 | 2/65 | 4/107 (4 %) | 3 (5) | 0 → 0,00 (≤1,0) | 1,4 | 0 | −450 (2) | −90 | 0 | 0/65 |
-| whfor_s1 | rel | .90/.70 | 2/42 | 9/65 | 11/107 (10 %) | 5 (8) | 1 → 0,33 | 2,4 | 3 | +200 (1) | −330 | 0 | 0/65 |
+| r2_old_fa (baseline) | abs | .99/.99 | 22/42 | 38/65 | **60/107 (56 %)** | 40 (46) | 28 → **9.27** (≤12.7) | 18.8 | 32 | −80 (13) | −475 | 17 | 5/65, 1.8 FA/min |
+| r2_ext_fa (baseline) | abs | .99/.99 | 17/42 | 28/65 | **45/107 (42 %)** | 22 (27) | 9 → **2.98** (≤5.2) | 10.8 | 8 | **+145** (10) | +20 | 5 | 4/65, 1.1 |
+| r2_old_fa + clamp | abs | .99/.97 | 12/42 | 29/65 | 41/107 (38 %) | 29 (35) | 14 → 4.64 | 15.3 | 31 | −365 (8) | −520 | 9 | 1/65 |
+| r2_ext_fa + clamp | abs | .99/.99 | 18/42 | 22/65 | 40/107 (37 %) | 22 (28) | 6 → 1.99 | 11.2 | 14 | +190 (11) | +140 | 3 | 5/65 |
+| whole_s0 | abs | .99/.97 | 3/42 | 6/65 | 9/107 (8 %) | 6 (9) | 0 → 0.00 (≤1.0) | 4.2 | 3 | −515 (2) | −570 | 0 | 0/65, 0 FA |
+| whole_s1 | abs | .99/.97 | 7/42 | 11/65 | 18/107 (17 %) | 9 (13) | 1 → 0.33 | 4.5 | 4 | −470 (2) | −320 | 0 | 0/65 |
+| whole_s1 | rel | .90/.70 | 8/42 | 17/65 | 25/107 (23 %) | 7 (11) | 3 → 0.99 (≤2.6) | 1.7 | 0 | −410 (7) | −430 | 0 | 0/65 |
+| whfor_s0 | abs | .99/.90 | 11/42 | 16/65 | 27/107 (25 %) | 12 (17) | 3 → 0.99 (≤2.6) | 5.6 | 3 | −290 (7) | −160 | 0 | 0/65 |
+| whfor_s0 | slow | .99/.75 | 13/42 | 15/65 | 28/107 (26 %) | 11 (15) | 3 → 0.99 | 4.5 | 4 | +60 (7) | −285 | 0 | 0/65 |
+| whole_s0 + clamp | abs | .99/.80 | 12/42 | 12/65 | 24/107 (22 %) | 11 (15) | 1 → 0.33 | 5.6 | 6 | −370 (7) | +20 | 1 | 0/65 |
+| whneg_s0 | abs | .99/.95 | 5/42 | 5/65 | 10/107 (9 %) | 5 (7) | 0 → 0.00 (≤1.0) | 1.7 | 2 | +45 (4) | −440 | 0 | 0/65 |
+| whneg_s0 | slow | .97/.65 | 19/42 | 16/65 | 35/107 (33 %) | 16 (21) | 3 → 0.99 (≤2.6) | 8.7 | 7 | +65 (14) | −30 | 2 | 0/65 |
+| whneg_s0 + clamp | rel | .90/.55 | 17/42 | 17/65 | 34/107 (32 %) | 12 (16) | 5 → 1.66 (≤3.5) | 4.2 | 5 | −435 (12) | −410 | 1 | 0/65 |
+| whfor_s1 | abs | .99/.98 | 2/42 | 2/65 | 4/107 (4 %) | 3 (5) | 0 → 0.00 (≤1.0) | 1.4 | 0 | −450 (2) | −90 | 0 | 0/65 |
+| whfor_s1 | rel | .90/.70 | 2/42 | 9/65 | 11/107 (10 %) | 5 (8) | 1 → 0.33 | 2.4 | 3 | +200 (1) | −330 | 0 | 0/65 |
 
-Der `rel`-Readout der Baselines ergibt 1/107 (θ-Wahl auf Training kollabiert).
+The `rel` readout of the baselines gives 1/107 (the θ choice on training collapses).
 
-### 2b. Sensitivität, post hoc: θ-Regel Pausen-FA ≤ 2,5/min auf Training
+### 2b. Sensitivity, post hoc: θ rule pause FA ≤ 2.5/min on training
 
-| Modell | Readout | θ f0/f1 | gesamt | Zufall (Mittel, p95) | Pausen-FA /min (≤95 %) | Hard-Neg-FA /min | Lead vs Release |
+| Model | Readout | θ f0/f1 | Total | Chance (mean, p95) | Pause FA /min (≤95 %) | Hard-neg FA /min | Lead vs release |
 |---|---|---|---|---|---|---|---|
-| r2_ext_fa | abs | .99/.97 | 57/107 (53 %) | 30 (35) | 3,64 (≤6,0) | 16,0 | +80 |
-| whole_s1 | rel | .80/.65 | 33/107 (31 %) | 11 (15) | 2,32 (≤4,4) | 3,1 | −415 |
-| whole_s1 | abs | .99/.90 | 40/107 (37 %) | 17 (23) | 0,99 (≤2,6) | 7,7 | +80 |
-| **whfor_s0** | **rel** | .80/.60 | **40/107 (37 %)** | 14 (19) | **1,66** (≤3,5) | 4,2 | **−505** (n=16) |
-| whole_s0 | abs | .99/.85 | 33/107 (31 %) | 16 (21) | 0,99 | 9,8 | +75 |
-| whfor_s1 (Seed 1) | rel | .85/.70 | 12/107 (11 %) | 6 (9) | 0,33 | 2,4 | −240 (n=2) |
-| whfor_s1 (Seed 1) | abs | .97/.90 | 19/107 (18 %) | 9 (12) | 0,00 | 3,8 | −135 |
-| whneg_s0 | slow | .80/.65 | 35/107 (33 %) | 16 (21) | 0,99 | 8,7 | +50 |
+| r2_ext_fa | abs | .99/.97 | 57/107 (53 %) | 30 (35) | 3.64 (≤6.0) | 16.0 | +80 |
+| whole_s1 | rel | .80/.65 | 33/107 (31 %) | 11 (15) | 2.32 (≤4.4) | 3.1 | −415 |
+| whole_s1 | abs | .99/.90 | 40/107 (37 %) | 17 (23) | 0.99 (≤2.6) | 7.7 | +80 |
+| **whfor_s0** | **rel** | .80/.60 | **40/107 (37 %)** | 14 (19) | **1.66** (≤3.5) | 4.2 | **−505** (n=16) |
+| whole_s0 | abs | .99/.85 | 33/107 (31 %) | 16 (21) | 0.99 | 9.8 | +75 |
+| whfor_s1 (seed 1) | rel | .85/.70 | 12/107 (11 %) | 6 (9) | 0.33 | 2.4 | −240 (n=2) |
+| whfor_s1 (seed 1) | abs | .97/.90 | 19/107 (18 %) | 9 (12) | 0.00 | 3.8 | −135 |
+| whneg_s0 | slow | .80/.65 | 35/107 (33 %) | 16 (21) | 0.99 | 8.7 | +50 |
 
-Zur Einordnung, nur berichtet und nicht zur Auswahl benutzt: Der beste Punkt mit θ auf dem *Test* gewählt (Orakel) ist whfor_s0 abs θ 0,70 mit 68/107 (64 %) bei 2,65 Pausen-FA/min und Lead −445 ms. Er hat aber 16,4 Hard-Neg-FA/min und 34 FA nahe Schwüngen, und die Zufallsbaseline liegt bei 34 (p95 42). Das sind +34 Treffer über Zufall, mehr als jede Baseline (+20 bis +23). **Seed 1 bestätigt das:** whfor_s1 abs θ 0,70 kommt auf 66/107 bei Zufall 31 (p95 37), 3,3 Pausen-FA/min, 12,6 Hard-Neg-FA/min und Lead −290 ms. Der Abstand zeigt: Die θ-Wahl auf den unruhigen Trainings-Sessions (03, viel Kamerahandling) ist hier ein Engpass. `oracle_chance.py` reproduziert die Zahl.
+For context, reported only and not used for selection: the best point with θ chosen on the *test* data (oracle) is whfor_s0 abs θ 0.70 with 68/107 (64 %) at 2.65 pause FA/min and a lead of −445 ms. But it has 16.4 hard-negative FA/min and 34 FA near swings, and the chance baseline is 34 (p95 42). That is +34 hits over chance, more than any baseline (+20 to +23). **Seed 1 confirms it:** whfor_s1 abs θ 0.70 reaches 66/107 at chance 31 (p95 37), 3.3 pause FA/min, 12.6 hard-negative FA/min and a lead of −290 ms. The gap shows that choosing θ on the noisy training sessions (03, much camera handling) is a bottleneck here. `oracle_chance.py` reproduces the number.
 
-## 3. Gate-Urteil: nicht bestanden
+## 3. Gate verdict: failed
 
-Gemessen an Treffern über dem Zufallsmittel liegen alle Varianten bei etwa +20 bis +26 von 107. Das sind 19–24 %, weit unter 60 %.
+Measured as hits above the chance mean, all variants are at about +20 to +26 out of 107. That is 19–24 %, far below 60 %.
 
 **Baselines:**
-- Zustandsbehaftet erreicht r2_old_fa zwar 56 %, aber bei 9,3 Pausen-FA/min. Davon sind 40 Treffer Zufall.
-- r2_ext_fa löst im Median nach dem Release aus (+145 ms).
+- Run statefully, r2_old_fa does reach 56 %, but at 9.3 pause FA/min. 40 of those hits are chance.
+- r2_ext_fa fires after the release in the median (+145 ms).
 
-**Neue Varianten:**
-- **Training auf ganzen Aufnahmen** senkt Pausen- und Hard-Neg-FA deutlich: 0–1,7 statt 3–9 Pausen-FA/min, 2–6 statt 11–19 Hard-Neg-FA/min.
-- Die Leads sind konsistent früh: −400 bis −500 ms mit `rel`.
-- **Der Recall bricht aber ein.** Mit der vorab festgelegten θ-Regel erreichen sie 8–26 % gegenüber 42–56 % der Baselines.
-- Bester ehrlicher Punkt (2b, post hoc): whfor_s0 rel mit 37 %, etwa 2,7× Zufall, 1,7 Pausen-FA/min und −505 ms Lead. Das besteht das Gate nicht und **repliziert mit Seed 1 nicht** (12/107). Die θ-Wahl ist über Seeds instabil.
+**New variants:**
+- **Training on whole recordings** clearly lowers pause and hard-negative FA: 0–1.7 instead of 3–9 pause FA/min, 2–6 instead of 11–19 hard-negative FA/min.
+- The leads are consistently early: −400 to −500 ms with `rel`.
+- **But recall collapses.** With the θ rule fixed in advance they reach 8–26 % against 42–56 % for the baselines.
+- Best honest point (2b, post hoc): whfor_s0 rel with 37 %, about 2.7× chance, 1.7 pause FA/min and −505 ms lead. That does not pass the gate and **does not replicate with seed 1** (12/107). The θ choice is unstable across seeds.
 
-**Weitere Beobachtungen:**
-- Der **Bias-Clamp** (tonische Kanäle → 0) senkt FA und Zufallsrate der Baselines, hebt aber den Recall über Zufall nicht.
-  - Der Drift-Test (60 s Rauschen) liefert nach dem Clamp bei r2_old_fa f1 noch 12 statt 55 Ausgangs-Spikes, bei whole_s0 f1 aber 56 statt 16. Der Clamp allein reicht also nicht.
-  - Auch die neuen Modelle haben tonische Kanäle (L2 bis 22/64), weil Tims Training sie nicht bestraft.
-- **215305** (Fold-0-Modelle, trainiert auf 03): Die neuen Modelle sind dort stumm, 0/65 bei 0 FA. Die Baselines kommen auf 4–5/65. Das passt zu „anderes Setting, Ball unsichtbar, Labels per Tastendruck“.
-- **Fold 0 hat kaum Test-Schwünge** (17 in 02/03). Die θ-Wahl für Fold 1 stützt sich auf nur 0,4 min Pause (170441 + 201703).
+**Further observations:**
+- The **bias clamp** (tonic channels → 0) lowers the FA and chance rate of the baselines, but does not raise recall over chance.
+  - The drift test (60 s of noise) still gives 12 instead of 55 output spikes after the clamp for r2_old_fa f1, but 56 instead of 16 for whole_s0 f1. So the clamp alone is not enough.
+  - The new models also have tonic channels (L2 up to 22/64), because Tim's training does not penalise them.
+- **215305** (fold-0 models, trained on 03): the new models are silent there, 0/65 at 0 FA. The baselines reach 4–5/65. That fits "different setting, ball invisible, labels by key press".
+- **Fold 0 has hardly any test swings** (17 in 02/03). The θ choice for fold 1 rests on only 0.4 min of pause (170441 + 201703).
 
-**Diagnose:**
-- Die echten Negative der Wurfszene sind der richtige Hebel gegen „Person bewegt sich“.
-- Ein Netz mit τ ≤ 80 ms und 800 Schritten trennt Ausholen und Gehen oder Aufheben aber noch nicht. Selbst in-sample bleibt die Pausen-FA hoch.
-- Einziges positives Signal, nur mit Orakel-θ und daher keine Kennzahl: whfor (ganze Aufnahmen plus fremde Negative) liegt bei festem θ 0,70 in beiden Seeds bei +34/+35 Treffern über Zufall (66–68/107, Lead −290 bis −445 ms). Die Baselines kommen auf +20 bis +23. Der Preis sind 2,7–3,3 Pausen-FA/min und 12–16 Hard-Neg-FA/min. Für einen ehrlichen Test bräuchte es eine eigene Validierungs-Session zur θ-Wahl.
+**Diagnosis:**
+- The real negatives of the throw scene are the right lever against "a person is moving".
+- But a network with τ ≤ 80 ms and 800 steps does not yet separate the wind-up from walking or picking up. Even in-sample the pause FA stays high.
+- The only positive signal, with oracle θ only and therefore not a metric: whfor (whole recordings plus foreign negatives) at a fixed θ 0.70 is at +34/+35 hits over chance in both seeds (66–68/107, lead −290 to −445 ms). The baselines reach +20 to +23. The price is 2.7–3.3 pause FA/min and 12–16 hard-negative FA/min. An honest test would need a separate validation session for choosing θ.
 
-**Nächste Schritte, nicht heute:**
-- Mehr Schritte.
-- Bias-Strafterm im Training statt nachträglichem Clamp.
-- Mehr Pausen-Clips aus 02/03, also `_dataset01_010203`.
-- Längere Zeitkonstanten, sofern exportierbar.
+**Next steps, not today:**
+- More steps.
+- A bias penalty in training instead of a post-hoc clamp.
+- More pause clips from 02/03, i.e. `_dataset01_010203`.
+- Longer time constants, if exportable.
 
-## 4. Checkpoints, θ, Readout
+## 4. Checkpoints, θ, readout
 
-- **Lokal:** `experiments/early_ctx_eval/runs/<variante>/model_f{0,1}.pt`, also whole_s0, whole_s1, whfor_s0, whfor_s1 und whneg_s0. Dazu die Trainingslogs `trainlog_f*.json`.
-- **Ausgaben:**
-  - zustandsbehaftete Streams: `experiments/early_ctx_eval/sstreams/<variante>_c{0,1}/f{fold}_{rec}.npz`, mit `info.json` (Tonik, Drift, Sanity)
-  - Scores: `score_stateful.json` (2a) und `score_stateful_fa25.json` (2b)
-- **A100:** `~/early_ctx/runs/<variante>/model_f{0,1}.pt`, Streams unter `~/early_ctx/sstreams/`, Logs unter `~/early_ctx/logs/`. Tims Dateien sind unverändert. Unter `~/early_ctx/tim/` liegen nur Kopien.
-- **Falls überhaupt etwas weiterverfolgt wird:** whfor_s0 mit Readout `rel` (Anstieg über dem Mittel von [t − 1,7, t − 0,2] s der EMA mit α 0,85), θ 0,80 (Fold-0-Modell) bzw. 0,60 (Fold-1-Modell), Refraktärzeit 1 s.
-  - Das ist **kein freigegebenes Demo-Modell.** Exportiert wurde nichts.
+- **Local:** `experiments/early_ctx_eval/runs/<variant>/model_f{0,1}.pt`, i.e. whole_s0, whole_s1, whfor_s0, whfor_s1 and whneg_s0, plus the training logs `trainlog_f*.json`.
+- **Outputs:**
+  - stateful streams: `experiments/early_ctx_eval/sstreams/<variant>_c{0,1}/f{fold}_{rec}.npz`, with `info.json` (tonic channels, drift, sanity)
+  - scores: `score_stateful.json` (2a) and `score_stateful_fa25.json` (2b)
+- **GPU machine:** `~/early_ctx/runs/<variant>/model_f{0,1}.pt`, streams under `~/early_ctx/sstreams/`, logs under `~/early_ctx/logs/`. Tim's files are unchanged; `~/early_ctx/tim/` holds copies only.
+- **If anything is followed up at all:** whfor_s0 with the `rel` readout (rise over the mean of [t − 1.7, t − 0.2] s of the EMA with α 0.85), θ 0.80 (fold-0 model) or 0.60 (fold-1 model), refractory time 1 s.
+  - This is **not a released demo model.** Nothing was exported.
 
-## 5. Reproduzieren
+## 5. Reproduce
 
 ```bash
-# lokal (Haupt-Checkout): Frames + labels.json
+# locally (main checkout): frames + labels.json
 python3 experiments/early_ctx_eval/prep.py
-rsync -az experiments/early_ctx_eval/{frames,labels.json,ctx.py,table.py} team-1-user@<A100>:early_ctx/
-# A100 (einmalig: Kopien von Tims Code, nichts verändern)
+rsync -az experiments/early_ctx_eval/{frames,labels.json,ctx.py,table.py} <user>@<gpu-host>:early_ctx/
+# GPU machine (once: copies of Tim's code, change nothing)
 mkdir -p ~/early_ctx/tim && cp ~/early/early_cv.py ~/robust/snn_model.py ~/robust/speedpatch.py ~/early_ctx/tim/
 cd ~/early_ctx; PY=~/snn_pretrain/.venv/bin/python
 for f in 0 1; do
@@ -156,14 +156,14 @@ $PY -W ignore ctx.py score --n-chance 100 --fa-target 2.5 --streams sstreams/* -
 $PY table.py score_stateful.json
 ```
 
-## 6. Grenzen
+## 6. Limitations
 
-- **Seeds:** whole hat 2 Seeds, und die streuen stark (abs 9 vs. 18 Treffer, `rel` 5 vs. 25). whfor hat 2 Seeds: s0 kommt mit gewähltem θ auf 25–37 %, s1 auf 4–18 %. Bei festem θ 0,70 sind beide ähnlich (68 bzw. 66/107, Zufall 34 bzw. 31). whneg hat nur 1 Seed.
-  - Unterschiede unter etwa 10 Treffern sind nicht belastbar.
-- **Pausenzeit:** nur 3,0 min echte Pause in 02/03. Die Poisson-Obergrenze bei 0 FA liegt deshalb schon bei 1,0/min, und die FA-Raten sind grob.
-  - Die θ-Wahl von Fold 1 beruht auf 0,4 min Pause.
-- **In-sample:** θ wird auf den Trainings-Sessions gewählt, die die Modelle gesehen haben. Das ist optimistisch für FA, und das Modell reagiert dort zu stark, weshalb θ meist 0,99 wird. Eine eigene Validierungs-Session gab es nicht, dafür sind es zu wenige Sessions.
-  - 2b ist post hoc (die FA-Schwelle wurde nach Sicht auf die Testergebnisse erhöht). Die Orakel-Zahl ist ausdrücklich keine Kennzahl.
-- **Unvollständig:** `sstreams/whfor_s0_c1` und `sstreams/whole_s1_c1` wurden aus Zeitgründen abgebrochen (je 3 Dateien) und sind nicht bewertet. Für `score` deshalb die Verzeichnisse einzeln angeben statt `sstreams/*`. `obsolete_segmented/` enthält die verworfene erste Runde mit 30-s-Reset.
-- **Labels:** 215305 hat Tastendruck-Labels. Die `idle`/`invalid`-Fenster sind ±1 s um Punktlabels und keine echten Segmente. 9 der 42 Würfe haben kein `release_ms` und gehen nur in den Peak-Lead ein.
-- **Zufallsbaseline:** nur für die gewählten θ berechnet. Die zirkuläre Verschiebung erhält die Alarmrate, aber nicht die Kopplung „Aktivität ↔ Schwung“. Sie ist also eine untere Schranke dafür, was ein reiner Bewegungsdetektor trifft.
+- **Seeds:** whole has 2 seeds, and they scatter widely (abs 9 vs. 18 hits, `rel` 5 vs. 25). whfor has 2 seeds: s0 reaches 25–37 % with the chosen θ, s1 4–18 %. At a fixed θ 0.70 both are similar (68 and 66/107, chance 34 and 31). whneg has only 1 seed.
+  - Differences below about 10 hits are not reliable.
+- **Pause time:** only 3.0 min of real pause in 02/03. The Poisson upper bound at 0 FA is therefore already 1.0/min, and the FA rates are coarse.
+  - The fold-1 θ choice rests on 0.4 min of pause.
+- **In-sample:** θ is chosen on the training sessions the models have seen. That is optimistic for FA, and the model over-reacts there, which is why θ mostly ends up at 0.99. There was no separate validation session; there are too few sessions for that.
+  - 2b is post hoc (the FA limit was raised after looking at the test results). The oracle number is explicitly not a metric.
+- **Incomplete:** `sstreams/whfor_s0_c1` and `sstreams/whole_s1_c1` were stopped for lack of time (3 files each) and are not scored. For `score`, list the directories individually instead of `sstreams/*`. `obsolete_segmented/` holds the discarded first round with the 30 s reset.
+- **Labels:** 215305 has key-press labels. The `idle`/`invalid` windows are ±1 s around point labels, not real segments. 9 of the 42 throws have no `release_ms` and only count towards the peak lead.
+- **Chance baseline:** computed only for the chosen θ. The circular shift keeps the alarm rate but not the coupling between activity and swing, so it is a lower bound for what a pure motion detector would hit.

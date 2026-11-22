@@ -1,1 +1,1 @@
-Kopien von Tims Code (unverändert), die `ctx.py` importiert: `early_cv.py` (A100 `~/early/`), `snn_model.py` und `speedpatch.py` (A100 `~/robust/`). Auf dem A100 liegen sie unter `~/early_ctx/tim/`.
+Unchanged copies of Tim's code that `ctx.py` imports: `early_cv.py` (GPU machine `~/early/`), `snn_model.py` and `speedpatch.py` (GPU machine `~/robust/`). On the GPU machine they live in `~/early_ctx/tim/`.
