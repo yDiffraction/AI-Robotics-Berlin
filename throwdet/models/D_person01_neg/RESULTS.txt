@@ -1,0 +1,35 @@
+Throw-motion detector D_person01_neg - results (22 Nov 2026)
+
+Data: manually labelled person01 session, 3 recordings (01_kamera_fest, 02_kamera_fest:
+fixed camera; 03_kamera_bewegt: moving camera), cut into 121 windows of 3 s:
+53 throw windows, 68 no-throw windows.
+Counted per window: an alarm anywhere inside the window = detected.
+Computed with the fixed-point network (Q3.5 weights, Q4.12 potentials) as it runs on the board,
+except the original D row (float network).
+
+Model                                 Throws detected      False alarms
+D (original, before fine-tuning)      42 / 53  (79 %)      24 / 68  (35 %)
+D_person01 (first fine-tune)          43 / 53  (81 %)       9 / 68  (13 %)
+D_person01_neg, readout.json          44 / 53  (83 %)       2 / 68  ( 3 %)
+D_person01_neg, readout_w1.json       46 / 53  (87 %)       4 / 68  ( 6 %)
+
+D_person01_neg per camera (threshold tuned for each camera setup on its own, so the two lines do
+not add up exactly to the main row):
+  fixed camera:   22 / 26 throws (85 %), 0 / 21 false alarms (0 %)
+  moving camera:  22 / 27 throws (81 %), 1 / 47 false alarms (2 %)
+
+Readouts (score = EMA of spike[1] - spike[0], alarm when above threshold for hold frames):
+  readout.json     alpha 0.2, threshold -0.06, hold 5 frames  (fewest false alarms)
+  readout_w1.json  alpha 0.2, threshold -0.02, hold 3 frames  (more throws, a few more false alarms)
+
+Training: model D_e10_fold3, backbone frozen, output layer fine-tuned on all 121 windows plus their
+mirror images, 6 epochs, false alarms weighted twice.
+Board: same architecture as D, runs on the 2-class firmware (riversdk job #43, Q3.5/Q4.12).
+Float vs fixed-point decision agreement: 94.4 %.
+
+Caveat: trained and evaluated on the same 3 recordings (in-sample). Expect lower numbers on new
+recordings, other people or another location; only the live test shows how much lower.
+
+Run:
+  throwdet/deploy_board.sh throwdet/models/D_person01_neg
+  .venv/bin/python throwdet/live_view.py --model throwdet/models/D_person01_neg --backend board
