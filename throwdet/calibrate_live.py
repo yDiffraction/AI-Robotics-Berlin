@@ -35,11 +35,27 @@ def frames_of(path):
     return x, t0
 
 
-def diff_of(ckpt, frames, dev):
+def diff_of(ckpt, frames, dev, fixed=False):
     ck = torch.load(ckpt, map_location="cpu", weights_only=False)
     net = ThrowSNN(2, arch=ck["arch"], tau=ck["args"]["tau"])
     net.load_state_dict(ck["model"])
-    net.eval().to(dev)
+    net.eval()
+    if fixed:  # what the board runs: BN fused, weights Q3.5, potentials Q4.12 (as export.py)
+        from riverops.nn import FixedPointFormat, QuantConfig, prepare_ptq
+        q = QuantConfig(weight_format=FixedPointFormat(total_bits=8, frac_bits=5, signed=True),
+                        potential_format=FixedPointFormat(total_bits=16, frac_bits=12, signed=True),
+                        enable_weight_quant=True, enable_potential_quant=True, qat_mode=False)
+        seq = prepare_ptq(net.export_module(), q, fuse=True).eval()
+
+        class Wrap(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.seq = seq
+
+            def forward(self, x):
+                return self.seq(x).flatten(2)
+        net = Wrap().eval()
+    net.to(dev)
     make_stateful(net, torch)
     out = []
     with torch.no_grad():
@@ -65,7 +81,7 @@ def held_above(sc, thr, hold):
     return run >= hold
 
 
-def evaluate(diffs, rows, t0s):
+def evaluate(diffs, rows, t0s, fp_weight=1.0):
     best = None
     for alpha in (0.05, 0.1, 0.2):
         scs = {s: ema(d, alpha) for s, d in diffs.items()}
@@ -84,7 +100,7 @@ def evaluate(diffs, rows, t0s):
                         nneg += 1
                         fp += hit
                 ba = (tp / npos + 1 - fp / nneg) / 2
-                key = (ba, thr)
+                key = (tp / npos - fp_weight * fp / nneg, thr)
                 if best is None or key > best[0]:
                     best = (key, dict(alpha=alpha, hold=hold, threshold=float(thr), tp=tp, fn=npos - tp,
                                       fp=fp, tn=nneg - fp, balanced_accuracy=round(ba, 3)))
@@ -98,6 +114,9 @@ def main():
     ap.add_argument("raw_dir")
     ap.add_argument("--out", required=True)
     ap.add_argument("--compare", default=None, help="another checkpoint evaluated the same way")
+    ap.add_argument("--fixed", action="store_true", help="calibrate on the fixed-point (board) network")
+    ap.add_argument("--fp-weight", type=float, default=1.0,
+                    help="cost of a false alarm relative to a missed throw (>1: fewer false alarms)")
     args = ap.parse_args()
     rows = list(csv.DictReader(open(args.labels)))
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -107,12 +126,12 @@ def main():
     res = {}
     for name, ck in (("model", args.checkpoint), ("compare", args.compare)):
         if ck:
-            diffs = {s: diff_of(ck, x, dev) for s, x in frames.items()}
-            res[name] = evaluate(diffs, rows, t0s)
+            diffs = {s: diff_of(ck, x, dev, args.fixed) for s, x in frames.items()}
+            res[name] = evaluate(diffs, rows, t0s, args.fp_weight)
             per_cam = {}
             for cam in sorted({r["camera"] for r in rows}):
                 sub = [r for r in rows if r["camera"] == cam]
-                per_cam[cam] = evaluate(diffs, sub, t0s)
+                per_cam[cam] = evaluate(diffs, sub, t0s, args.fp_weight)
             res[name + "_per_camera_best"] = per_cam
             print(name, res[name], flush=True)
     r = res["model"]
@@ -122,7 +141,8 @@ def main():
                "alpha": r["alpha"], "threshold": r["threshold"], "hold_frames": r["hold"],
                "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
                "refractory_ms": 1000,
-               "calibration": {"method": "best balanced accuracy over labelled 3 s windows of the training "
+               "calibration": {"fixed_point": args.fixed, "fp_weight": args.fp_weight,
+                                 "method": "best recall - fp_weight * false-alarm rate over labelled 3 s windows of the training "
                                          "recordings (in-sample, optimistic)", **res}}, open(args.out, "w"), indent=1)
     print("wrote", args.out)
 
