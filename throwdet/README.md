@@ -37,6 +37,24 @@ alarm when `above` holds for `hold_frames` consecutive frames, then ignore alarm
 
 Expected timing: the alarm comes during the wind-up, roughly 150 ms before the swing peak.
 
+### What it looks like live
+
+![replay](replay_01_heldout.png)
+
+The 25 short recordings of `dataset/01` were played back to back as one 55 s stream (`replay.py`) through the e10 model of the CV fold that did **not** train on them, with the default readout:
+- **23 of 25 swings** got an alarm within -0.6..+0.3 s of the swing peak.
+- 4 more alarms fired. Some come at the hard cuts between the concatenated files, some well before a swing.
+
+The three final models (trained on all data, so 01 is in their training set) with their CV-picked readouts:
+
+| model | swings detected | other alarms |
+|---|---|---|
+| A | 21 | 6 |
+| B | 21 | 10 |
+| C | 20 | 6 |
+
+The threshold picked on the CV models does not transfer exactly to a newly trained model. Check it with `replay.py` on a site recording, and move to `readout_fa1.0.json` (stricter) or `readout_fa4.0.json` (more sensitive) if needed.
+
 ### Before the demo: check and, if needed, adapt to the site (5 to 10 min)
 
 1. **Check** a recording made at the site:

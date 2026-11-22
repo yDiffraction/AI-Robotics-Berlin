@@ -30,10 +30,10 @@ def frames_of(path, hw=80, bin_us=10_000):
     raw = Path(path).read_bytes()
     n = struct.unpack("!I", raw[:4])[0]
     ev = np.frombuffer(raw, DT, offset=4, count=n // DT.itemsize)
-    t0 = int(ev["t"][0])
+    t0 = int(np.percentile(ev["t"], 0.01))          # robust against single wild timestamps
     f = (ev["t"].astype(np.int64) - t0) // bin_us
-    keep = (ev["x"] < 320) & (ev["y"] < 320) & (ev["p"] < 2)
-    F = int(f.max()) + 1
+    F = int(np.percentile(f, 99.99)) + 50
+    keep = (ev["x"] < 320) & (ev["y"] < 320) & (ev["p"] < 2) & (f >= 0) & (f < F)
     x = np.zeros((F, 2, hw, hw), np.uint8)
     x[f[keep], ev["p"][keep], ev["y"][keep] // 4, ev["x"][keep] // 4] = 1
     return torch.from_numpy(x), t0
