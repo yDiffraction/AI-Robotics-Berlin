@@ -234,7 +234,7 @@ tr.hl td:first-child { box-shadow: inset 3px 0 0 var(--off); }
    BAR CHARTS (CSS only)
    =========================================== */
 .bars { display: flex; flex-direction: column; gap: clamp(0.3rem, 1.1vh, 0.7rem); }
-.bar-row { display: grid; grid-template-columns: minmax(7rem, 15ch) 1fr 5.5ch; align-items: center; gap: 0.8em; font-size: var(--small-size); }
+.bar-row { display: grid; grid-template-columns: minmax(8rem, 21ch) 1fr 5.5ch; align-items: center; gap: 0.8em; font-size: var(--small-size); }
 .bar-row .lbl { font-family: var(--font-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bar-row .val { font-family: var(--font-mono); text-align: right; }
 .track { height: clamp(10px, 2vh, 18px); background: rgba(255,255,255,0.05); position: relative; }
@@ -356,41 +356,10 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
   </div>
 </section>
 
-<!-- === 03 IDEA === -->
-<section class="slide">
-  <div class="slide-content wide">
-    <div class="tag reveal">02 / Idea</div>
-    <h2 class="reveal">Sense change, compute in spikes</h2>
-    <div class="cards reveal stagger">
-      <div class="c cool"><span class="k">SENSOR</span><h3>Event camera</h3><p>Each of the 320×320 pixels reports only brightness changes, with microsecond timestamps. A moving arm produces a dense burst of events and a static room produces almost none.</p></div>
-      <div class="c cool"><span class="k">MODEL</span><h3>Spiking network</h3><p>Neurons carry their membrane potential from frame to frame, so the network keeps a short-term memory of the motion. We need no frame stacks and no recurrent layers.</p></div>
-      <div class="c cool"><span class="k">HARDWARE</span><h3>FPGA, not GPU</h3><p>The SNN runs on Durance's RIVER IP on a Kria KV260 next to the camera. One 10 ms frame takes a 2.3–2.6 ms round trip on the board.</p></div>
-    </div>
-    <p class="foot reveal">The task we chose: a binary <b>throw-like arm motion vs. everything else</b> detector. It deliberately does not separate real throws from feints; it is the early trigger.</p>
-  </div>
-</section>
-
-<!-- === 04 PIPELINE === -->
-<section class="slide">
-  <div class="slide-content wide">
-    <div class="tag reveal">03 / System</div>
-    <h2 class="reveal">From photons to a dodge</h2>
-    <div class="pipe reveal">
-      <div class="stage"><span class="num">01</span><h3>GenX320</h3><p>Asynchronous ON/OFF events, streamed off the board by <span class="mono">despot_debug_camera</span>.</p><div class="spec">320×320 · µs timestamps</div></div>
-      <div class="stage"><span class="num">02</span><h3>Binning</h3><p>A 10 ms window becomes a binary 4×4-block map per polarity.</p><div class="spec">2×80×80 @ 100 Hz</div></div>
-      <div class="stage fpga"><span class="num">03</span><h3>SNN on FPGA</h3><p>SPLEAT server on the Kria, CBOR over TCP. Neuron state is kept between frames.</p><div class="spec">2.3–2.6 ms / frame</div></div>
-      <div class="stage"><span class="num">04</span><h3>Readout</h3><p>EMA of spike[throw] − spike[none], threshold, hold, 1 s refractory.</p><div class="spec">alarm → /reflex/dash</div></div>
-      <div class="stage robot"><span class="num">05</span><h3>Go2</h3><p>The dodge node steps back 1.1 m/s for 0.5 s, then walks home using odometry.</p><div class="spec">Unitree sport API</div></div>
-    </div>
-    <div class="pipe-wire reveal"></div>
-    <p class="foot reveal">The Durance starter shipped the camera software, the RIVER IP and the ROS 2 overlay. Ours: the data, the models, the 2-class firmware layout, the readout, the live viewer, the deploy tooling, the dodge node and the simulations.</p>
-  </div>
-</section>
-
 <!-- === 05 NETWORK === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">04 / Model</div>
+    <div class="tag reveal">02 / Model</div>
     <h2 class="reveal">Small enough for the fabric</h2>
     <div class="cols reveal">
       <table>
@@ -402,8 +371,8 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
         <tr class="hl"><td>Spiking conv head</td><td class="mono">2</td><td class="mono">5 / 1</td><td class="n">1×1</td></tr>
       </table>
       <ul class="bullets">
-        <li><b>64,092</b> integer values in <span class="mono">weights.txt</span>, about 5.9 MMAC per frame (dense count).</li>
-        <li>Weights in <b>Q3.5</b> and membrane potentials in <b>Q4.12</b>; BatchNorm is fused into the weights before export.</li>
+        <li>Input: 10 ms of events binned to a <b>2×80×80</b> binary map, 100 frames per second.</li>
+        <li>Weights in <b>8-bit fixed point</b>, membrane potentials in Q4.12; BatchNorm is fused into the weights before export.</li>
         <li><b>Two output neurons</b> give a signed score: the network has to vote "throw" or "no throw", and silence stays neutral.</li>
         <li>With neuron state carried across calls, frame-by-frame inference is <b>bit-identical</b> to one pass over the whole stream.</li>
       </ul>
@@ -414,7 +383,7 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
 <!-- === 06 DATA === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">05 / Data</div>
+    <div class="tag reveal">03 / Data</div>
     <h2 class="reveal">A dataset built from nothing in one day</h2>
     <div class="cols reveal">
       <div class="bars">
@@ -435,92 +404,100 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
   </div>
 </section>
 
-<!-- === 07 SHORTCUTS === -->
+<!-- === 05 SHORTCUTS === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">06 / Rigour</div>
+    <div class="tag reveal">04 / Rigour</div>
     <h2 class="reveal">We hunted our own shortcuts</h2>
     <div class="cols reveal">
-      <table>
-        <tr><th>Probe: can a simple classifier tell…</th><th class="n">Before</th><th class="n">After fix</th></tr>
-        <tr><td>reversed vs. real feints</td><td class="n red">100 %</td><td class="n">dropped</td></tr>
-        <tr><td>spliced vs. real feints</td><td class="n red">95.5 %</td><td class="n">84.7 %</td></tr>
-        <tr><td>synthetic vs. real throws</td><td class="n red">100 %</td><td class="n">83 %</td></tr>
-        <tr><td>synthetic vs. real feints</td><td class="n red">95.5 %</td><td class="n">86 %</td></tr>
-        <tr><td>augmented vs. real</td><td class="n">—</td><td class="n">62–70 %</td></tr>
-      </table>
+      <div class="cards two stagger">
+        <div class="c"><span class="k">PROBE</span><h3>Reversed feints</h3><p>Playing a throw backwards looked nothing like a real feint. Dropped.</p></div>
+        <div class="c"><span class="k">PROBE</span><h3>Spliced feints</h3><p>Wind-up of a throw joined to a real retreat. Still separable, so kept but monitored.</p></div>
+        <div class="c"><span class="k">PROBE</span><h3>Synthetic clips</h3><p>Too clean and too sparse at first. A second renderer made them much closer to real events.</p></div>
+        <div class="c hot"><span class="k red">COUNTER-TEST</span><h3>Activity leak</h3><p>Early labels followed overall event activity, because the first takes were recorded class by class.</p></div>
+      </div>
       <ul class="bullets">
-        <li>A <b>shortcut probe</b> measures how easily a simple classifier separates real from generated data. A high score means the model could learn that difference instead of the arm motion.</li>
-        <li>A counter-experiment showed the early labels leaked through <b>overall event activity</b>, because the first takes were recorded in blocks of one class.</li>
-        <li>We changed how we record: throws and feints interleaved, hint markers instead of activity labels, and <b>whole sessions held out</b> for testing.</li>
+        <li>A <b>shortcut probe</b> checks how easily a simple classifier separates real from generated data. If that is easy, the network could learn the difference instead of the arm motion.</li>
+        <li>A counter-experiment checked whether the labels could be predicted from <b>overall event activity</b> alone. They could.</li>
+        <li>So we changed how we record: throws and feints interleaved, hint markers instead of activity labels, and <b>whole sessions held out</b> for testing.</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- === 08 EXPERIMENTS === -->
+<!-- === 06 TRAINING === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">07 / Training</div>
-    <h2 class="reveal">40 runs overnight on an A100</h2>
+    <div class="tag reveal">05 / Training</div>
+    <h2 class="reveal">37 runs, best recipes over 4 seeds</h2>
     <div class="cols reveal">
       <div>
-        <p class="muted" style="font-size:var(--small-size);margin-bottom:0.8em">Recall of throw-like motions at 2 false alarms/min, grouped 4-fold CV on our own recordings (out of fold)</p>
+        <p class="muted" style="font-size:var(--small-size);margin-bottom:0.8em">Mean recall of throw motions at 2 false alarms/min, grouped 4-fold CV on our own recordings (out of fold)</p>
         <div class="bars">
-          <div class="bar-row"><span class="lbl">e26 more DailyDVS</span><div class="track"><div class="fill" style="--w:82%"></div></div><span class="val">0.82</span></div>
-          <div class="bar-row"><span class="lbl">e10 more own neg.</span><div class="track"><div class="fill" style="--w:79%"></div></div><span class="val">0.79</span></div>
-          <div class="bar-row"><span class="lbl">e30 static DVS</span><div class="track"><div class="fill" style="--w:75%"></div></div><span class="val">0.75</span></div>
-          <div class="bar-row"><span class="lbl">e01 balanced</span><div class="track"><div class="fill" style="--w:72%"></div></div><span class="val">0.72</span></div>
-          <div class="bar-row"><span class="lbl">e29 no synth/video</span><div class="track"><div class="fill white" style="--w:65%"></div></div><span class="val">0.65</span></div>
-          <div class="bar-row"><span class="lbl">e02 own data only</span><div class="track"><div class="fill white" style="--w:62%"></div></div><span class="val">0.62</span></div>
-          <div class="bar-row"><span class="lbl">e28 no augment.</span><div class="track"><div class="fill red" style="--w:43%"></div></div><span class="val">0.43</span></div>
+          <div class="bar-row"><span class="lbl">e26 2× DailyDVS (4)</span><div class="track"><div class="fill" style="--w:71%"></div></div><span class="val">0.71</span></div>
+          <div class="bar-row"><span class="lbl">e10 all sources (4)</span><div class="track"><div class="fill" style="--w:65%"></div></div><span class="val">0.65</span></div>
+          <div class="bar-row"><span class="lbl">e01 balanced (2)</span><div class="track"><div class="fill" style="--w:65.5%"></div></div><span class="val">0.66</span></div>
+          <div class="bar-row"><span class="lbl">own data only (1)</span><div class="track"><div class="fill white" style="--w:62%"></div></div><span class="val">0.62</span></div>
+          <div class="bar-row"><span class="lbl">no synth/video (2)</span><div class="track"><div class="fill white" style="--w:60%"></div></div><span class="val">0.60</span></div>
+          <div class="bar-row"><span class="lbl">no augment. (2)</span><div class="track"><div class="fill red" style="--w:49.5%"></div></div><span class="val">0.50</span></div>
         </div>
       </div>
       <div class="stagger" style="display:grid;gap:clamp(0.6rem,2vh,1.4rem)">
-        <div><div class="stat blue">0.924</div><div class="stat-label">best AUC, own clips, out of fold</div></div>
-        <div><div class="stat">~150–190<small>ms</small></div><div class="stat-label">median alarm before the swing peak</div></div>
-        <div><div class="stat">0.77</div><div class="stat-label">activity-only baseline (balanced acc.)</div></div>
+        <div><div class="stat blue">0.89–0.90</div><div class="stat-label">mean AUC of the two best recipes</div></div>
+        <div><div class="stat">23/25</div><div class="stat-label">swings on the unseen recording 01, 4 other alarms in 55 s</div></div>
+        <div><div class="stat">~150<small>ms</small></div><div class="stat-label">alarm before the release, during the wind-up</div></div>
       </div>
     </div>
-    <p class="foot reveal">The ablations show the external and synthetic data and the augmentation each help. Each run is a single seed, though, and seeds vary a lot, so treat the ranking as a direction rather than a proof.</p>
+    <p class="foot reveal">Seed spread is large (recall ±0.25), so only big gaps count. External and synthetic data clearly help on new setups; bigger backbones and longer training did not.</p>
   </div>
 </section>
 
 <!-- === 09 ON THE BOARD === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">08 / Hardware</div>
+    <div class="tag reveal">06 / Hardware</div>
     <h2 class="reveal">Running live on the Kria</h2>
     <div class="cols reveal">
       <figure class="shot">
         <img src="../throwdet/live_view_replay.png" alt="Live viewer: event image, status banner and score plot with alarm threshold">
-        <figcaption>throwdet/live_view.py: events, status banner, score vs. threshold</figcaption>
+        <figcaption>Live viewer: events, status banner, score vs. threshold</figcaption>
       </figure>
       <ul class="bullets stagger">
-        <li class="good">We generated our own <b>2-class firmware</b> (riversdk job, KV260/GenX320, Q3.5/Q4.12). The bitstream depends only on the architecture, so switching models only swaps the weights.</li>
-        <li class="good"><span class="mono">deploy_board.sh</span> backs up the board first and checks that the output count and number format match the firmware. A single command restores the board.</li>
-        <li class="good">FPGA vs. float on the same stream: <b>27 vs. 27 alarms</b>, 26 of them within 0.3 s; the smoothed scores correlate at 0.985.</li>
-        <li class="good">About <b>100 frames/s with no backlog</b>. The camera sender restarts itself when it drops out.</li>
+        <li class="good">Runs on the board's <b>existing 11-output firmware</b>: our two outputs, the rest silenced. New models only swap the weights, no new bitstream.</li>
+        <li class="good">The deploy script backs up the board and checks that output count and number format match the firmware. One command restores it.</li>
+        <li class="good">Board vs. float model: <b>94.6 % frame agreement</b>, identical alarms on the test recording.</li>
+        <li class="good"><b>100 frames/s</b> from the live camera, <b>1.85 ms</b> median round trip to the FPGA.</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- === 10 LIVE TEST === -->
+<!-- === 10 RL === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">09 / Live test</div>
-    <h2 class="reveal">Then we pointed it at people</h2>
-    <div class="stats reveal stagger">
-      <div><div class="stat">6</div><div class="stat-label">models swapped live</div></div>
-      <div><div class="stat">7</div><div class="stat-label">continuous sessions</div></div>
-      <div><div class="stat">1,062<small>s</small></div><div class="stat-label">of live sensor time</div></div>
-      <div><div class="stat">47.9<small>M</small></div><div class="stat-label">events recorded for replay</div></div>
-    </div>
-    <div class="cards reveal" style="margin-top:clamp(0.8rem,3vh,2rem)">
-      <div class="c hot"><span class="k">FAILURE 1</span><h3>Walking = throwing</h3><p>Walking backwards or around behind the thrower sometimes raised an alarm.</p></div>
-      <div class="c hot"><span class="k">FAILURE 2</span><h3>Late or double</h3><p>Some throws fired late, twice, or not at all. The refractory period is time-based, not per throw.</p></div>
-      <div class="c hot"><span class="k">FAILURE 3</span><h3>Camera shake</h3><p>When the camera moves, the whole scene floods with events and detection collapses.</p></div>
+    <div class="tag reveal">07 / Reinforcement learning</div>
+    <h2 class="reveal">Teaching the SNN live with RL</h2>
+    <div class="cols reveal" style="grid-template-columns:1.6fr 1fr">
+      <div>
+        <div class="pipe" style="grid-template-columns:repeat(4,1fr);margin-top:0">
+          <div class="stage"><span class="num">1</span><h3>Run</h3><p>The current SNN runs on the FPGA on the live camera feed.</p></div>
+          <div class="stage"><span class="num">2</span><h3>Judge</h3><p>A person presses SPACE whenever it should fire. Unpressed time means: stay quiet.</p></div>
+          <div class="stage fpga"><span class="num">3</span><h3>Learn</h3><p>Every ~30 s the A100 picks up new 10 s chunks and takes REINFORCE steps.</p></div>
+          <div class="stage"><span class="num">4</span><h3>Update</h3><p>A snapshot loads onto the FPGA in ~3 s. Its false alarms become hard negatives.</p></div>
+        </div>
+        <div class="pipe-wire"></div>
+        <p class="mono blue" style="font-size:var(--small-size);margin-top:0.6em">↻ loop runs while people throw, feint, walk and pick up the ball</p>
+        <p class="foot">Pitfall: with few presses, pure RL learns to stay silent; the output rate can collapse within ~20 steps. So we watched the firing rate live and chose snapshots by A/B test on the board.</p>
+      </div>
+      <div class="c cool">
+        <span class="k">REWARD ON THE EXACT ALARM RULE</span>
+        <ul class="bullets" style="margin:0.6em 0 1em">
+          <li class="good"><b>+1</b> for the first alarm inside a press window, plus a bonus for firing early</li>
+          <li class="bad"><b>−</b> cost for every alarm outside a window</li>
+          <li class="bad"><b>−</b> cost for a press window with no alarm</li>
+        </ul>
+        <p>Why RL: threshold, hold and refractory make the alarm rule non-differentiable. Sampling 4 spike trains per window (leave-one-out baseline) optimises exactly what the robot reacts to.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -528,96 +505,40 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
 <!-- === 11 FIX === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">10 / Iterate</div>
-    <h2 class="reveal">One labelled session, false alarms cut from 35 % to 3 %</h2>
-    <div class="ba reveal">
-      <div>
-        <h3>Throws detected <span class="muted mono" style="font-size:0.6em">/ 53</span></h3>
-        <div class="bars">
-          <div class="bar-row"><span class="lbl">D original</span><div class="track"><div class="fill white" style="--w:79%"></div></div><span class="val">79 %</span></div>
-          <div class="bar-row"><span class="lbl">D person01</span><div class="track"><div class="fill white" style="--w:81%"></div></div><span class="val">81 %</span></div>
-          <div class="bar-row"><span class="lbl">D person01 neg</span><div class="track"><div class="fill" style="--w:83%"></div></div><span class="val">83 %</span></div>
-        </div>
-      </div>
-      <div>
-        <h3>False alarms <span class="muted mono" style="font-size:0.6em">/ 68 no-throw windows</span></h3>
-        <div class="bars">
-          <div class="bar-row"><span class="lbl">D original</span><div class="track"><div class="fill red" style="--w:35%"></div></div><span class="val">35 %</span></div>
-          <div class="bar-row"><span class="lbl">D person01</span><div class="track"><div class="fill red" style="--w:13%"></div></div><span class="val">13 %</span></div>
-          <div class="bar-row"><span class="lbl">D person01 neg</span><div class="track"><div class="fill" style="--w:3%"></div></div><span class="val">3 %</span></div>
-        </div>
-      </div>
+    <div class="tag reveal">08 / Iterate</div>
+    <h2 class="reveal">From 35 % false alarms to deployment</h2>
+    <p class="reveal" style="font-size:var(--small-size)"><span class="mono blue"><b>WHAT LED HERE</b></span>&nbsp; <span class="muted">Six models swapped live on the board (1,062 s, 47.9 M events) kept making the same mistakes:</span></p>
+    <div class="cards reveal" style="margin:clamp(0.4rem,1.2vh,0.8rem) 0">
+      <div class="c hot" style="padding:clamp(0.3rem,0.8vw,0.6rem) clamp(0.6rem,1.2vw,1rem)">Walking behind the thrower = alarm</div>
+      <div class="c hot" style="padding:clamp(0.3rem,0.8vw,0.6rem) clamp(0.6rem,1.2vw,1rem)">Late, double or missed alarms</div>
+      <div class="c hot" style="padding:clamp(0.3rem,0.8vw,0.6rem) clamp(0.6rem,1.2vw,1rem)">Camera shake floods the sensor</div>
     </div>
-    <ul class="bullets reveal" style="margin-top:clamp(0.8rem,3vh,2rem)">
-      <li>Three recordings, two with a fixed camera and one with a moving camera, were labelled by hand into 121 windows of 3 s. We froze the backbone, fine-tuned only the head, weighted false alarms twice, and calibrated the readout on the <b>fixed-point</b> network the board actually runs.</li>
-      <li>Moving camera: 22/27 throws detected with 1 false alarm in 47 windows. The same model is also exported for the team's shared 11-output firmware, and its two outputs are bit-identical to the 2-output version.</li>
-    </ul>
-    <p class="foot reveal">In-sample: we trained and evaluated on the same three recordings. Expect lower numbers with new people and new rooms.</p>
+    <div class="cards reveal stagger">
+      <div class="c"><span class="k">STEP 1 · SUPERVISED</span><h3>Label one session</h3><p>3 recordings (fixed and moving camera) hand-labelled into 121 windows of 3 s. Head fine-tuned, false alarms weighted ×2, readout calibrated on the fixed-point net.</p><div class="stat blue" style="font-size:clamp(1.3rem,3vw,2.4rem);margin-top:0.4em">35 % → 3 %</div><div class="stat-label">false alarms, 68 no-throw windows</div></div>
+      <div class="c"><span class="k">STEP 2 · EXPORT</span><h3>Fit the team firmware</h3><p>Same net padded to 11 outputs, weights in Q2.6: runs on the firmware already on the board. Outputs 0/1 bit-identical to the 2-class net.</p><div class="stat" style="font-size:clamp(1.3rem,3vw,2.4rem);margin-top:0.4em">45 / 53</div><div class="stat-label">throws detected (Q2.6 board net)</div></div>
+      <div class="c cool"><span class="k">STEP 3 · RL ON THE BOARD</span><h3>Human-in-the-loop RL</h3><p>Start model for the RL loop. RL snapshots 1–470 compared live (A/B) against it; snapshot 1 won and is what runs on the Go2.</p><div class="stat green" style="font-size:clamp(1.3rem,3vw,2.4rem);margin-top:0.4em">step 1</div><div class="stat-label">deployed: hitl_step1</div></div>
+    </div>
+    <p class="foot reveal">Steps 1–2 in-sample (same recordings); the A/B scores were shown live, not saved.</p>
   </div>
 </section>
 
 <!-- === 12 ROBOT === -->
 <section class="slide">
   <div class="slide-content wide">
-    <div class="tag reveal">11 / Robot</div>
+    <div class="tag reveal">09 / Robot</div>
     <h2 class="reveal">The reflex end: dodge, then come home</h2>
     <div class="cols reveal">
       <ul class="bullets">
-        <li><b>Dodge node:</b> X on the remote or <span class="mono">/reflex/dash</span> moves the Go2 back at 1.1 m/s for 0.5 s. It then returns at 0.25 m/s using odometry and stops within 5 cm of where it started.</li>
-        <li><b>SNN bridge + web UI</b> on the Kria: events, spikes, score with a threshold slider and a THROW DETECTED banner. <b>Auto-dodge</b> starts off and is switched on with Y.</li>
-        <li><b>Safety first:</b> a dry-run mode, a time limit on every phase, StopMove on Ctrl+C, and triggers ignored while a dodge is running.</li>
-        <li><b>Simulation:</b> a Gazebo throw scene with ground truth, MuJoCo with a sport-API emulator, and a software-in-the-loop SPLEAT emulator.</li>
+        <li><b>Dodge node:</b> an SNN alarm (or X on the remote) moves the Go2 back at 1.1 m/s for 0.5 s; it then returns at 0.25 m/s by odometry and stops within 5 cm of its start.</li>
+        <li><b>Everything on the Kria:</b> camera → FPGA → readout → ROS 2, with a web UI showing events, spikes, score, threshold and robot state.</li>
+        <li><b>Safe defaults:</b> auto-dodge starts off (Y turns it on); stale frames never trigger; speed and time clamped; StopMove on exit; dry-run mode.</li>
+        <li><b>Simulation:</b> Gazebo throw scene, MuJoCo with a sport-API emulator, and an optimised low-level dodge validated in harsh physics.</li>
       </ul>
       <div class="stagger" style="display:grid;gap:clamp(0.6rem,2vh,1.3rem)">
-        <div><div class="stat green">0<small>/500</small></div><div class="stat-label">failures, safe-dodge validation (sim)</div></div>
-        <div><div class="stat">54</div><div class="stat-label">supervisor scenarios, no problems (sim)</div></div>
-        <div><div class="stat">2<small>cm</small></div><div class="stat-label">return error to the start, Gazebo</div></div>
+        <div><div class="stat">0.27<small>m</small></div><div class="stat-label">deployed dodge distance, return within 2 cm (Gazebo)</div></div>
+        <div><div class="stat">27</div><div class="stat-label">unit tests for the bridge and dodge node</div></div>
+        <div><div class="stat green">0<small>/500</small></div><div class="stat-label">failures, optimised low-level dodge (MuJoCo)</div></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- === 13 HONEST STATUS === -->
-<section class="slide">
-  <div class="slide-content wide">
-    <div class="tag reveal">12 / Status</div>
-    <h2 class="reveal">What is proven, what is not yet</h2>
-    <div class="cards two reveal">
-      <div class="c cool">
-        <span class="k">DEMONSTRATED</span>
-        <ul class="bullets">
-          <li class="good">Live camera → SNN on the FPGA → overlay, at 100 Hz</li>
-          <li class="good">FPGA output matches the float model on a recorded stream</li>
-          <li class="good">Six models built, deployed and swapped on the board</li>
-          <li class="good">False alarms cut to 3 % on the labelled session</li>
-          <li class="good">Dodge and safety logic in Gazebo and MuJoCo</li>
-        </ul>
-      </div>
-      <div class="c hot">
-        <span class="k">OPEN</span>
-        <ul class="bullets">
-          <li class="bad">Accuracy on new people and new rooms (a sealed test set)</li>
-          <li class="bad">Measured sensor-to-motion latency, end to end</li>
-          <li class="bad">A sensor-triggered autonomous dodge on the real Go2</li>
-          <li class="bad">Robustness while the camera itself moves</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- === 14 NEXT === -->
-<section class="slide">
-  <div class="slide-content wide">
-    <div class="tag reveal">13 / Next</div>
-    <h2 class="reveal">The next 48 hours</h2>
-    <div class="cards reveal stagger">
-      <div class="c"><span class="k">DATA</span><h3>Sealed test</h3><p>6 people, each with 10 throws and 10 matched feints, plus walking, circling and camera-only negatives. Split by person and session, with thresholds frozen before the test.</p></div>
-      <div class="c"><span class="k">TIMING</span><h3>Real latency</h3><p>A 240 fps reference video with an LED sync pulse. Log sensor time, board reply, alarm, command and the first robot motion separately.</p></div>
-      <div class="c"><span class="k">EGO-MOTION</span><h3>Shake-proof</h3><p>Record throws and negatives with the same camera motion. Hold back the trigger on global event floods and the IMU signal, and do nothing when unsure.</p></div>
-      <div class="c"><span class="k">READOUT</span><h3>One alarm per throw</h3><p>Hysteresis with a re-arm level and a quiet dwell, instead of a fixed 1 s refractory period.</p></div>
-      <div class="c"><span class="k">MODEL</span><h3>Throw vs. feint</h3><p>A second stage after the trigger: ball release vs. feint, building on the early-detection branch.</p></div>
-      <div class="c"><span class="k">ROBOT</span><h3>Close the loop</h3><p>Auto-dodge on the Go2 in dry-run first, then live with a foam ball and a catch net. The ball is never thrown at the robot or the camera.</p></div>
     </div>
   </div>
 </section>
@@ -627,8 +548,8 @@ body.editing [contenteditable="true"] { outline: 1px dashed rgba(61,139,255,0.45
   <div class="slide-content">
     <div class="reveal" style="margin-bottom:clamp(0.8rem,3vh,2rem)"><span class="banner alarm">Throw motion</span></div>
     <h1 class="reveal">React<br><span class="thin">before release</span></h1>
-    <p class="sub reveal">Event vision, a spiking network on an FPGA, and a robot that steps aside: everything reproducible from the repo, from raw events to the dodge.</p>
-    <div class="meta reveal"><span>github.com/yDiffraction/AI-Robotics-Berlin</span><span>branches: throw-detector · Tim · noah-web · data-pipeline</span></div>
+    <p class="sub reveal">Event vision, a spiking network trained with people in the loop, and a robot that steps aside: all reproducible from the repo.</p>
+    <div class="meta reveal"><span>github.com/yDiffraction/AI-Robotics-Berlin</span></div>
   </div>
 </section>
 
@@ -767,7 +688,7 @@ new SlidePresentation();
    =========================================== */
 const editor = {
     isActive: false,
-    key: 'go2-reflex-deck-v1',
+    key: 'go2-reflex-deck-v2',
     targets() { return document.querySelectorAll('.slide h1, .slide h2, .slide h3, .slide p, .slide li, .slide td, .slide th, .stat, .stat-label, .tag, .k, .meta span, .lbl, .val'); },
     toggleEditMode() {
         this.isActive = !this.isActive;
