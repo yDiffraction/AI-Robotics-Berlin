@@ -5,7 +5,7 @@ A real throw and a feint both count as throw motion (the arm swings like a throw
 else does not: standing, walking, waving, an empty scene. Deciding whether the ball is actually
 released is a separate task (see `pretrain/` and `~/robust` on the Tim branch).
 
-Status: four candidate models are ready for the live test, see **Models to test live**.
+Status: six candidate models are ready for the live test, see **Models to test live**.
 Experiments ran overnight on 21/22 Nov; the results table is below.
 
 ## Models to test live
@@ -13,11 +13,13 @@ Experiments ran overnight on 21/22 Nov; the results table is below.
 `throwdet/models/<name>/`; the same files are on the A100 in `~/throwdet/deliver/<name>/`. All three
 use the board format. A, B and C are trained on all our data (all recordings, synth, video, DailyDVS); D on three quarters of our recordings plus all external data.
 
-**Test in this order: D, A, B, C.**
+**Test in this order: D, E, A, B, C** (E2 is a spare).
 
 | name | training config (CV run) | why test it |
 |---|---|---|
 | `D_e10_fold3` | e10, the CV model of fold 3: trained on recordings 02, 03, 04 (incl. the setup closest to the demo), idle chunks 0 to 2 and all external data | the only candidate whose threshold was picked out of fold for exactly this network; on the unseen 01 recordings it detected 23 of 25 swings with 4 other alarms in 55 s (plot below) |
+| `E_moredd` | e26: as e10 but twice the DailyDVS share (dd 20 %/20 %, own 15 %/25 %, synth 5 %/5 %), trained on all data | the only configuration with two good seeds: AUC 0.919 / 0.914, recall at 2 FA/min 0.73 / 0.82 (e10: 0.54 to 0.79 over 4 seeds); on the 01 stream 24 of 25 swings, 3 other alarms (01 is in its training set) |
+| `E2_moredd_fold3` | e26 seed 1, the CV model of fold 3 (like D) | spare; its threshold is out of fold for this network, but on the unseen 01 stream it found only 21 of 25 swings with 7 other alarms |
 | `A_neg` | e10: own negatives weighted up (own:0 = 30 %) | best out-of-fold result (AUC 0.92, 79 % recall at 2 false alarms/min), but a second seed of the same config reached only 0.87 |
 | `B_neg_shiftx` | e18: as A, plus horizontal shift ±25 px | the same recipe, more robust when the thrower stands near the image edge; AUC 0.93 on the held-out recording `04` |
 | `C_all` | e01: balanced domains, DailyDVS thinned to our density | the first, plain recipe; second-best CV (AUC 0.90) |
@@ -54,6 +56,8 @@ The three final models (trained on all data, so 01 is in their training set) wit
 | model | swings detected (-1.0..+0.3 s) | other alarms in 55 s |
 |---|---|---|
 | D (01 not in training) | 24 / 25 | 3 |
+| E | 24 / 25 | 3 |
+| E2 (01 not in training) | 21 / 25 | 7 |
 | A | 25 / 25 | 2 |
 | B | 24 / 25 | 6 |
 | C | 21 / 25 | 5 |
@@ -163,6 +167,7 @@ All numbers are out of fold on our own camera: 724 clips, 181 of them with throw
 |---|---|---|---|---|---|
 | activity baseline (logistic regression on the activity curve, not an SNN) | 1 | bal. acc 0.77 | | | |
 | **e10: all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned** | 4 (+1 with 2000 steps) | **0.865 to 0.924** | 0.23 to 0.64 | **0.54 to 0.79** | 0.75 to 0.90 |
+| **e26: e10 with twice the DailyDVS share** | 2 | **0.914 to 0.919** | 0.08 to 0.58 | **0.73 to 0.82** | 0.87 to 0.90 |
 | e01: all sources, balanced, DailyDVS density-matched | 2 | 0.852 to 0.903 | 0.33 to 0.42 | 0.59 to 0.72 | 0.81 to 0.88 |
 | e10 + DailyDVS static-camera clips only | 2 | 0.886 to 0.888 | 0.48 to 0.54 | 0.73 to 0.75 | 0.82 to 0.83 |
 | e10 + readout alpha 0.05 in training | 2 | 0.864 to 0.890 | 0.37 to 0.51 | 0.69 to 0.72 | 0.84 to 0.87 |
@@ -175,7 +180,6 @@ Single runs (one seed each, so only large differences count):
 
 | run | change | AUC own | recall @2 FA/min |
 |---|---|---|---|
-| e26 | e10 with twice the DailyDVS share | 0.919 | 0.73 (but 0.08 @1) |
 | e18 / e16 | horizontal shift ±25 px (on e10 / on e11) | 0.896 / 0.907 | 0.73 / 0.69 |
 | e11 | hard-negative sampling (dense idle clips more often) | 0.892 | 0.70 |
 | e25 | e10 without background compositing | 0.878 | 0.67 |

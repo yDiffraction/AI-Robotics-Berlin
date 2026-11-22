@@ -1,0 +1,44 @@
+e26_moredd_s1: 724 held-out own clips (181 motion), idle stream 5.8 min, clip AUC 0.914
+| FA budget (/min, clip FPR) | alpha | hold | thr | recall | idle-clip FPR | FA/min stream | median detection vs peak | on >250 ms early |
+|---|---|---|---|---|---|---|---|---|
+| 0.5, 0.1 | 0.1 | 1 | 0.65 | 0.293 | 0.007 | 0.35 | 50.0 ms | 0.01 |
+| 1.0, 0.15 | 0.1 | 3 | 0.35 | 0.580 | 0.031 | 0.69 | -20.0 ms | 0.06 |
+| 2.0, 0.2 | 0.1 | 8 | 0.05 | 0.818 | 0.087 | 1.91 | -140.0 ms | 0.28 |
+| 4.0, 0.3 | 0.2 | 1 | 0.20 | 0.867 | 0.160 | 3.47 | -210.0 ms | 0.58 |
+alarm rate per recording/kind at the 2 FA/min operating point (motion: want high, idle: want low):
+  01_130521/pause/idle         n=   1  0.00
+  01_130743/pause/idle         n=   1  1.00
+  01_130809/pause/idle         n=   1  1.00
+  01_130855/pause/idle         n=   1  1.00
+  01_130951/throw              n=   1  1.00
+  01_131057/throw              n=   1  1.00
+  01_131312/feint              n=   1  1.00
+  01_131316/feint              n=   1  1.00
+  01_131321/feint              n=   1  1.00
+  01_131325/throw              n=   1  1.00
+  01_131331/throw              n=   1  1.00
+  01_131417/pause/idle         n=   1  1.00
+  01_131417/throw              n=   1  1.00
+  01_131429/throw              n=   1  1.00
+  01_131509/throw              n=   1  1.00
+  02_170441/feint              n=  10  0.50
+  02_170441/pause/idle         n=  32  0.16
+  02_170441/throw              n=   5  0.80
+  03_195808/feint              n=   4  1.00
+  03_195808/pause/idle         n=  21  0.10
+  03_195808/throw              n=   6  1.00
+  03_200001/feint              n=  19  0.89
+  03_200001/pause/idle         n=  48  0.15
+  03_200001/throw              n=   6  1.00
+  03_200828/feint              n=  32  1.00
+  03_200828/pause/idle         n= 119  0.12
+  03_200828/throw              n=  14  1.00
+  03_201452/pause/idle         n=  24  0.00
+  03_201452/throw              n=   5  1.00
+  03_201622/pause/idle         n=   4  0.25
+  03_201622/throw              n=   4  1.00
+  03_201703/pause/idle         n=   2  0.00
+  03_201703/throw              n=   2  1.00
+  04_211821/idle               n= 288  0.05
+  04_215305/feint              n=  36  0.58
+  04_215305/throw              n=  28  0.64

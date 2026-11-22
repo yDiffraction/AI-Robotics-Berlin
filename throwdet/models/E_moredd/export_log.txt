@@ -1,0 +1,12 @@
+{
+ "weight_format": "Q2.6",
+ "max_abs_weight": 1.974709153175354,
+ "potential_format": "Q4.12",
+ "threshold": 0.15,
+ "alpha": 0.05,
+ "n_check": 160,
+ "decision_agreement": 0.975,
+ "bal_acc_float": 0.9699820788530467,
+ "bal_acc_fixed": 0.953853046594982
+}
+wrote /home/team-1-user/throwdet/deliver/E_moredd: weights.txt (64092 values), model.json, config.yaml, readout.json
