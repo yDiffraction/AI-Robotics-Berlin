@@ -1,4 +1,4 @@
-device xpu | train 1077 recs, test 264 recs | {'epochs': 30, 'T': 64, 'bs': 32, 'lr': 0.002, 'win_per_rec': 2, 'eval_every': 3, 'max_minutes': 35.0, 'shift': 6, 'drop': 0.1, 'noise': 0.0005, 'out': 'C:\\Users\\diffr\\code\\AI-Robotics-Berlin\\pretrain\\checkpoints', 'train_npz': 'C:\\Users\\diffr\\code\\AI-Robotics-Berlin\\data\\dvsg_train.npz'}
+device xpu | train 1077 recs, test 264 recs | {'epochs': 30, 'T': 64, 'bs': 32, 'lr': 0.002, 'win_per_rec': 2, 'eval_every': 3, 'max_minutes': 35.0, 'shift': 6, 'drop': 0.1, 'noise': 0.0005, 'out': '<path-to-repo>\\pretrain\\checkpoints', 'train_npz': '<path-to-repo>\\data\\dvsg_train.npz'}
 {"epoch": 1, "loss": 0.0793, "train_acc": 0.263, "epoch_s": 67.5, "elapsed_min": 1.1}
 {"epoch": 2, "loss": 0.0601, "train_acc": 0.493, "epoch_s": 63.8, "elapsed_min": 2.2}
 {"epoch": 3, "loss": 0.053, "train_acc": 0.578, "epoch_s": 63.4, "elapsed_min": 3.2, "win_acc": 0.616, "rec_acc": 0.652, "silent_frac": 0.0, "saved_best": true}

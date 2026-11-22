@@ -14,7 +14,7 @@ A fast sideways step for the Go2 under our own low-level control (joint targets 
 
 ## 3D viewer (native Windows)
 
-The WSLg window does not appear on this machine, so the viewer runs natively on Windows. For speed it plays back a pre-simulated recording, with a time slider and speed controls. It also draws decimated copies of the Go2 meshes, generated on first run into `go2/assets_lowpoly`: about 17k instead of 197k triangles per dog, which takes a frame from about 380 ms to about 21 ms. The physics never uses these meshes. It uses a Python 3.12 venv plus a copy of the Go2 model and policy in `C:\Users\diffr\go2_sim`. The sim scripts give the same numbers there as in WSL (MuJoCo 4.0.1 vs 3.17).
+The WSLg window does not appear on this machine, so the viewer runs natively on Windows. For speed it plays back a pre-simulated recording, with a time slider and speed controls. It also draws decimated copies of the Go2 meshes, generated on first run into `go2/assets_lowpoly`: about 17k instead of 197k triangles per dog, which takes a frame from about 380 ms to about 21 ms. The physics never uses these meshes. It uses a Python 3.12 venv plus a copy of the Go2 model and policy in `%USERPROFILE%\go2_sim`. The sim scripts give the same numbers there as in WSL (MuJoCo 4.0.1 vs 3.17).
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\install_go2_sim_windows.ps1   # once, after the WSL install
@@ -24,9 +24,9 @@ powershell -ExecutionPolicy Bypass -File scripts\show_dodges.ps1               #
 ## Install / run (WSL Ubuntu-22.04)
 
 ```bash
-bash /mnt/c/Users/diffr/code/AI-Robotics-Berlin/scripts/install_go2_sim.sh   # once
+bash /mnt/c/<path-to-repo>/scripts/install_go2_sim.sh   # once
 . /root/go2_sim/venv/bin/activate
-cd /mnt/c/Users/diffr/code/AI-Robotics-Berlin
+cd /mnt/c/<path-to-repo>
 
 python sim/show_dodges.py --snapshot frame.png         # viewer layout as a still frame (live window: see above)
 python sim/go2_dodge_sim.py --recommended              # hand-tuned dodge, prints metrics

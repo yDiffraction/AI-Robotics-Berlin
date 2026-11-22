@@ -5,4 +5,4 @@ F2 x0.9                      fails   1/200  t30 med 0.62/0.60 p90 0.66/0.64 wors
 SAFE params, phase 0.5 x1    fails   6/200  t30 med 0.62/0.60 p90 0.68/0.64 worst 0.92/0.72  load 0.98  tilt 16  y_end 0.33-0.55  x 0.11 yaw 22  ['short', 'yaw']
 SAFE params, phase 0.0 x1    fails  48/200  t30 med 0.62/0.60 p90 0.64/0.62 worst 0.70/0.66  load 1.02  tilt 14  y_end 0.37-0.53  x 0.11 yaw 25  ['fell', 'torque_frac', 'yaw']
 low-load (search #10) x1     fails   3/200  t30 med 0.58/0.62 p90 0.60/0.68 worst 0.66/0.76  load 0.99  tilt 17  y_end 0.34-0.58  x 0.13 yaw 16  ['end_travel', 'fell']
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_screen.json
+-> <path-to-repo>\sim\results\still_screen.json

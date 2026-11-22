@@ -284,4 +284,4 @@ monitor_down         5/5     -
 pole                16/20    -0.004 m
 low_box             15/15    0.085 m
 rear_box             7/20    0.037 m
--> /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/results/avoid_suite.json   (14.6 min)
+-> /mnt/c/<path-to-repo>/sim/results/avoid_suite.json   (14.6 min)

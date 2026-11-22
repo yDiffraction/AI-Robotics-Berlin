@@ -10,7 +10,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348333.587632 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1116: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1116: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
@@ -61,7 +61,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348352.033757 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1208: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1208: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 28 ms, now 0.3 ms (max 0.6 ms)
@@ -110,7 +110,7 @@
       | [modes] sport mode released
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
       | 1795348370.152189 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1300: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1300: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 23 ms, now 0.2 ms (max 0.3 ms)
@@ -156,7 +156,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348387.455254 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1390: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1390: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 30 ms, now 0.4 ms (max 0.6 ms)
@@ -198,7 +198,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348402.899814 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1478: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1478: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 24 ms, now 0.2 ms (max 0.2 ms)
@@ -239,7 +239,7 @@
       | [modes] sport mode released
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
       | 1795348417.155173 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1570: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1570: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 24 ms, now 0.2 ms (max 0.3 ms)
@@ -299,7 +299,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348439.920832 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1702: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1702: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
@@ -331,7 +331,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348455.531277 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1796: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
+      | [supervisor] controller started, pid 1796: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 23 ms, now 0.4 ms (max 0.8 ms)
@@ -380,7 +380,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348473.677438 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1890: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1890: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 23 ms, now 0.2 ms (max 0.3 ms)
@@ -431,7 +431,7 @@
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
    [PASS] L1+R1 held 1.3 s -> sport mode released
       | 1795348492.634032 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 1980: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 1980: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
@@ -480,7 +480,7 @@
       | [modes] sport mode released
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
       | 1795348509.705559 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 2072: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
+      | [supervisor] controller started, pid 2072: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo --gentle
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.5 ms)
@@ -523,7 +523,7 @@
       | [modes] sport mode released
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
       | 1795348527.600461 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 2162: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 2162: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 22 ms, now 0.2 ms (max 0.3 ms)
@@ -594,7 +594,7 @@
       | [modes] sport mode released
       | [modes] OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, s (Y) = back to sport mode, SPACE (L2+B) = E-STOP
       | 1795348552.207447 [77]     python: selected interface "lo" is not multicast-capable: disabling multicast
-      | [supervisor] controller started, pid 2257: /root/go2_sim/venv/bin/python -u /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/deploy/dodge_controller.py --domain 77 --iface lo
+      | [supervisor] controller started, pid 2257: /root/go2_sim/venv/bin/python -u /mnt/c/<path-to-repo>/sim/deploy/dodge_controller.py --domain 77 --iface lo
       | /root/go2_sim/venv/lib/python3.10/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
       |   warnings.warn(
       | [controller] policy warmed up: first call 23 ms, now 0.3 ms (max 0.5 ms)

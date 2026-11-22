@@ -18,6 +18,7 @@ with spike = -1.
 import argparse
 import io
 import json
+import os
 import subprocess
 import sys
 import tarfile
@@ -487,8 +488,8 @@ def main():
     ap.add_argument("--theta", type=float, default=None, help="initial theta (default: the model's readout.json)")
     ap.add_argument("--watching", action="store_true", help="start in 'just watching' mode (not training data)")
     ap.add_argument("--auto-min", type=float, default=0, help="auto-update the board every N minutes (0 = only by button)")
-    ap.add_argument("--gpu", default="team-1-user@38.128.233.249")
-    ap.add_argument("--gpu-key", default="~/.ssh/hackathon_a100")
+    ap.add_argument("--gpu", default=os.environ.get("HITL_GPU", ""), help="user@host of the GPU machine (or env HITL_GPU)")
+    ap.add_argument("--gpu-key", default=os.environ.get("HITL_GPU_KEY", "~/.ssh/id_ed25519"), help="ssh key for --gpu (or env HITL_GPU_KEY)")
     ap.add_argument("--gpu-dir", default="hitl", help="folder on the GPU machine, relative to its home")
     ap.add_argument("--gpu-python", default="~/snn_pretrain/.venv/bin/python")
     ap.add_argument("--no-gpu", action="store_true", help="collect only, no trainer")

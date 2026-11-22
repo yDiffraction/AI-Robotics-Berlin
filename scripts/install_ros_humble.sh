@@ -42,7 +42,7 @@ cd /root/go2_ws/src
 [ -d unitree-go2-ros2 ] || git clone --branch humble https://github.com/anujjain-dev/unitree-go2-ros2.git
 # Load controllers with `spawner` instead of the daemon-based CLI (avoids robot collapsing on spawn)
 python3 "$(dirname "$(readlink -f "$0")")/patch_go2_spawners.py" 2>/dev/null \
-  || python3 /mnt/c/Users/diffr/code/AI-Robotics-Berlin/scripts/patch_go2_spawners.py
+  || python3 /mnt/c/<path-to-repo>/scripts/patch_go2_spawners.py
 cd /root/go2_ws
 set +u
 source /opt/ros/humble/setup.bash

@@ -17,4 +17,4 @@ passive       0/100    9.33/10.38          3.07       100/100           1.62 m/s
 hold         48/100    7.16/7.74           3.57        48/100           0.86 m/s          10.9 rad/s   0.15
 
 reference = 1.25 x worst normal sideways walking under harsh physics: {'foot_force_bw_max': 1.807, 'touchdown_p95_max': 3.729, 'trunk_acc_g_max': 1.934}
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\stop_sim.json
+-> <path-to-repo>\sim\results\stop_sim.json

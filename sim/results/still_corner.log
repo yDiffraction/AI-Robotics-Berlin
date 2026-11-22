@@ -15,4 +15,4 @@ corner: 84 candidates x 2 sides x 24 physics (12 harsh + 12 corner)
    1/48    0.61  1.01 0.46/0.41   16 0.09  12  kick_vy 1.66 kick_s 0.42 hold_vy 0.36 dodge_s 0.31 brake_vy -1.00 brake_s 0.18 freq 3.73 stance_width 0.28 footswing 0.08 height 0.02 phase0 0.97  [torque_frac]
    1/48    0.64  0.96 0.42/0.38   19 0.10  17  kick_vy 1.71 kick_s 0.38 hold_vy 0.37 dodge_s 0.35 brake_vy -0.88 brake_s 0.18 freq 3.61 stance_width 0.28 footswing 0.08 height 0.01 phase0 0.99  [short]
    1/48    0.63  1.00 0.45/0.43   17 0.09  21  kick_vy 1.77 kick_s 0.40 hold_vy 0.43 dodge_s 0.32 brake_vy -0.90 brake_s 0.19 freq 3.61 stance_width 0.28 footswing 0.08 height 0.02 phase0 0.02  [torque_frac]
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_corner.json
+-> <path-to-repo>\sim\results\still_corner.json

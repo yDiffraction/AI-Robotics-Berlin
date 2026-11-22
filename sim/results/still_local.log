@@ -15,4 +15,4 @@ local: 100 candidates x 2 sides x 16 harsh physics
    0/32    0.61  0.89 0.45/0.41   16 0.08  17  kick_vy 1.71 kick_s 0.41 hold_vy 0.35 dodge_s 0.31 brake_vy -0.90 brake_s 0.18 freq 3.59 stance_width 0.28 footswing 0.08 height 0.02 phase0 0.01
    0/32    0.61  0.92 0.52/0.49   17 0.14  18  kick_vy 1.49 kick_s 0.40 hold_vy 0.56 dodge_s 0.51 brake_vy -0.44 brake_s 0.07 freq 3.77 stance_width 0.33 footswing 0.09 height -0.03 phase0 0.58
    0/32    0.61  0.95 0.48/0.50   16 0.09  17  kick_vy 1.46 kick_s 0.41 hold_vy 0.54 dodge_s 0.49 brake_vy -0.43 brake_s 0.06 freq 3.72 stance_width 0.32 footswing 0.08 height -0.02 phase0 0.50
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_local.json
+-> <path-to-repo>\sim\results\still_local.json

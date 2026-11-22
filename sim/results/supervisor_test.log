@@ -53,5 +53,5 @@
 [ok ] supervisor_kill9  robot=hold    reason=None                                                    damp after - z 0.30->0.30  
 [ok ] no_fault          robot=hold    reason=None                                                    damp after - z 0.30->0.30  
 
-54/54 passed -> /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/results/supervisor_test.json
+54/54 passed -> /mnt/c/<path-to-repo>/sim/results/supervisor_test.json
 exit 0

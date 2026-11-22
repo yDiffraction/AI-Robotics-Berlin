@@ -35,4 +35,4 @@ stage 3: top 6 on 40 fresh harsh physics per side
    9/80    0.58  1.03 0.46/0.43   20 0.12  18  kick_vy 2.20 kick_s 0.30 hold_vy 0.47 dodge_s 0.46 brake_vy -0.75 brake_s 0.30 freq 3.68 stance_width 0.36 footswing 0.08 height 0.00 phase0 0.01  [fell,torque_frac]
   12/80    0.56  3.37 0.42/0.37   21 0.16  23  kick_vy 2.19 kick_s 0.30 hold_vy 0.42 dodge_s 0.50 brake_vy -0.75 brake_s 0.29 freq 3.75 stance_width 0.37 footswing 0.07 height 0.00 phase0 0.92  [foot_force_bw,joint,peak_tilt_deg,short,torque_frac,x_drift,yaw]
   neighbours ok: 2/8, 7/8, 4/8, 2/8, 2/8, 4/8
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_optimize.json
+-> <path-to-repo>\sim\results\still_optimize.json

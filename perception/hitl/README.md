@@ -124,10 +124,10 @@ Linux/WSL. A full hour of sessions is ~0.6 GB of packed frames and fits on the G
 On the A100 (`~/hitl` has a copy of the trainer):
 
 ```bash
-scp -i ~/.ssh/hackathon_a100 -r perception/hitl/sessions team-1-user@38.128.233.249:hitl/
-ssh -i ~/.ssh/hackathon_a100 team-1-user@38.128.233.249 'cd ~/hitl && ~/snn_pretrain/.venv/bin/python -W ignore \
+scp -i ~/.ssh/<gpu-key> -r perception/hitl/sessions <user>@<gpu-host>:hitl/
+ssh -i ~/.ssh/<gpu-key> <user>@<gpu-host> 'cd ~/hitl && ~/snn_pretrain/.venv/bin/python -W ignore \
   perception/hitl/train.py sessions/* --ctx-frames ~/early_ctx/frames --bs 32 --minutes 30 --out runs/r1'
-scp -i ~/.ssh/hackathon_a100 -r team-1-user@38.128.233.249:hitl/runs/r1 perception/hitl/runs/
+scp -i ~/.ssh/<gpu-key> -r <user>@<gpu-host>:hitl/runs/r1 perception/hitl/runs/
 ```
 
 ## Checks done (2026-11-22)

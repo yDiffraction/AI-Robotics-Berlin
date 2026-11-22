@@ -522,8 +522,8 @@ False alarms on our idle per fold, by threshold:
 
 ## 6. Reproduce this session
 
-Paths: PC repo `C:\Users\diffr\code\AI-Robotics-Berlin`; A100 `team-1-user@38.128.233.249`
-(key `~/.ssh/hackathon_a100`), work dirs `~/extpos` and `~/early`.
+Paths: PC repo `<path-to-repo>`; A100 `<user>@<gpu-host>`
+(key `~/.ssh/<gpu-key>`), work dirs `~/extpos` and `~/early`.
 Nothing of this session is committed yet.
 
 ### Environments

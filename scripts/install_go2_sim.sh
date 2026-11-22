@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Go2 low-level simulation stack in WSL Ubuntu-22.04 (no NVIDIA GPU needed; MuJoCo on CPU).
-#   wsl -d Ubuntu-22.04 -u root -- bash /mnt/c/Users/diffr/code/AI-Robotics-Berlin/scripts/install_go2_sim.sh
+#   wsl -d Ubuntu-22.04 -u root -- bash /mnt/c/<path-to-repo>/scripts/install_go2_sim.sh
 # Installs into /root/go2_sim:
 #   venv/                  python3.10 venv: mujoco, torch (CPU), numpy, matplotlib, unitree_sdk2py
 #   walk-these-ways-go2/   public pretrained Go2 locomotion policy (gait-conditioned)

@@ -1,4 +1,4 @@
 validating still_corner.json rank 0: {'kick_vy': 1.7225638105961076, 'kick_s': 0.4053568477335363, 'hold_vy': 0.3382720344194395, 'dodge_s': 0.32381570606938875, 'brake_vy': -0.8463928461208767, 'brake_s': 0.16496811235280293, 'freq': 3.5709313436677603, 'stance_width': 0.28, 'footswing': 0.08015291994947915, 'height': 0.01614250899438938, 'phase0': 0.9997396830692352}
 x0.97: safety failures 0/1000, distance misses 6/1000 (L 4 R 2), t30 p90 0.60, load 0.99  ['far', 'short']
 gentle x0.8: safety failures 0/600, distance misses 239, t30 p90 9.00, y_final L 0.28-0.47 R 0.24-0.41, load 0.90
--> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_dodge.json
+-> <path-to-repo>\sim\results\still_dodge.json

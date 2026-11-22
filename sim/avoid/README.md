@@ -79,7 +79,7 @@ pip install "numpy<2" mujoco==3.3.7 && pip install torch --index-url https://dow
 
 # each time (private ROS domain, localhost only; avoid_sim sets CycloneDDS + its WSL config itself):
 source /opt/ros/humble/setup.bash && . /root/go2_sim/venv_ros/bin/activate
-cd /mnt/c/Users/diffr/code/AI-Robotics-Berlin/sim/avoid
+cd /mnt/c/<path-to-repo>/sim/avoid
 python test_guard.py                         # guard unit tests vs MuJoCo ground truth (also runs on Windows)
 python cm_probe.py collision_monitor.yaml 0.6 1.0     # monitor alone: wall at 0.6 m, 1 m/s request
 python test_avoid.py --tag final             # full scenario suite (~15 min)

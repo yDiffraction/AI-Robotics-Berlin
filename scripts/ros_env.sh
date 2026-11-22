@@ -1,4 +1,4 @@
-# Source in WSL Ubuntu-22.04:  source /mnt/c/Users/diffr/code/AI-Robotics-Berlin/scripts/ros_env.sh [robot|sim]
+# Source in WSL Ubuntu-22.04:  source /mnt/c/<path-to-repo>/scripts/ros_env.sh [robot|sim]
 #   robot: same DDS settings as the Kria / Go2 (domain 0, CycloneDDS, network-wide)
 #   sim:   Gazebo Go2 sim on a separate domain so it never mixes with the real robot
 set +u
