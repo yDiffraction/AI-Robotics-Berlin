@@ -5,7 +5,51 @@ A real throw and a feint both count as throw motion (the arm swings like a throw
 else does not: standing, walking, waving, an empty scene. Deciding whether the ball is actually
 released is a separate task (see `pretrain/` and `~/robust` on the Tim branch).
 
-Status: work in progress (overnight 21/22 Nov). The results table below is updated as runs finish.
+Status: three candidate models are ready for the live test, see **Models to test live**.
+Experiments ran overnight on 21/22 Nov; the results table is below.
+
+## Models to test live
+
+`throwdet/models/<name>/`; the same files are on the A100 in `~/throwdet/deliver/<name>/`. All three
+use the board format, trained on all our data (all recordings, synth, video, DailyDVS).
+
+| name | training config (CV run) | why test it |
+|---|---|---|
+| `A_neg` | e10: own negatives weighted up (own:0 = 30 %) | best out-of-fold result (AUC 0.92, 79 % recall at 2 false alarms/min), but a second seed of the same config reached only 0.87 |
+| `B_neg_shiftx` | e18: as A, plus horizontal shift ±25 px | the same recipe, more robust when the thrower stands near the image edge; AUC 0.93 on the held-out recording `04` |
+| `C_all` | e01: balanced domains, DailyDVS thinned to our density | the first, plain recipe; second-best CV (AUC 0.90) |
+
+Each folder contains:
+- **For the board:** `model.json`, `weights.txt`, `config.yaml`. Same layout as `training/export_snn.py`; confirm the weight order with Durance before flashing.
+- **`model.pt`:** float checkpoint for `replay.py` and `adapt.sh`.
+- **`readout.json`:** the live rule at the default operating point of about 2 false alarms per minute.
+- **`readout_fa1.0.json` / `readout_fa4.0.json`:** stricter (about 1 per minute) and more sensitive (about 4 per minute) variants of the same model. Only alpha, threshold and hold change, so no re-export is needed.
+- **`cv_readout.txt`:** out-of-fold numbers of the CV run behind it, per recording.
+
+### Live readout (host side, every 10 ms frame)
+
+```
+d     = spikes[1] - spikes[0]                 # output neuron 1 = throw motion, 0 = none
+score = (1 - alpha) * score + alpha * d       # never reset
+above = score > threshold
+alarm when `above` holds for `hold_frames` consecutive frames, then ignore alarms for 1 s
+```
+
+Expected timing: the alarm comes during the wind-up, roughly 150 ms before the swing peak.
+
+### Before the demo: check and, if needed, adapt to the site (5 to 10 min)
+
+1. **Check** a recording made at the site:
+   `python throwdet/replay.py throwdet/models/A_neg/model.pt rec.bin --readout throwdet/models/A_neg/readout.json`.
+   It prints the alarm times and writes a plot of event rate, score and alarms.
+2. **Too many false alarms** (people walking by, a different background)? Record 2 to 3 minutes of the site **without throws**, with people moving around. Then on the A100:
+   ```bash
+   python throwdet/cut_recording.py --idle site_idle.bin --out ~/throwdet/site
+   bash throwdet/adapt.sh ~/throwdet/deliver/A_neg ~/throwdet/site A_site
+   ```
+   That fine-tunes for about 5 minutes with the site clips as 40 % of every batch and exports to `~/throwdet/deliver/A_site/`.
+3. **Throws missed** (new thrower position or distance)? Record with `tools/record_tool.py` from the noah branch: press Space after each throw and `k` after each feint. Then add `--hints <dir>/hints.csv --pauses` to `cut_recording.py`. The swing is found automatically as the event-rate peak in the 2 s before the key press.
+
 
 ## Board format
 
