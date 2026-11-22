@@ -1,0 +1,1668 @@
+{
+ "sample_20261121_170441_403603.bin": {
+  "frames": 7023,
+  "end_s": 63.6,
+  "events": [
+   {
+    "label": "feint",
+    "t": 11.08,
+    "note": "second person walks past on the right"
+   },
+   {
+    "label": "feint",
+    "t": 13.51,
+    "note": ""
+   },
+   {
+    "label": "throw",
+    "t": 15.8,
+    "note": "ball hits the camera at 16.5 s (shake)"
+   },
+   {
+    "label": "feint",
+    "t": 20.58,
+    "note": ""
+   },
+   {
+    "label": "feint",
+    "t": 22.93,
+    "note": ""
+   },
+   {
+    "label": "feint",
+    "t": 25.39,
+    "note": ""
+   },
+   {
+    "label": "throw",
+    "t": 28.39,
+    "note": "",
+    "release_s": 28.44
+   },
+   {
+    "label": "throw",
+    "t": 32.25,
+    "note": "",
+    "release_s": 32.33
+   },
+   {
+    "label": "feint",
+    "t": 38.5,
+    "note": ""
+   },
+   {
+    "label": "feint",
+    "t": 40.74,
+    "note": ""
+   },
+   {
+    "label": "feint",
+    "t": 43.2,
+    "note": ""
+   },
+   {
+    "label": "feint",
+    "t": 45.73,
+    "note": "second person visible on the right"
+   },
+   {
+    "label": "throw",
+    "t": 48.21,
+    "note": "",
+    "release_s": 48.38
+   },
+   {
+    "label": "feint",
+    "t": 52.65,
+    "note": ""
+   },
+   {
+    "label": "throw",
+    "t": 54.88,
+    "note": "second person visible on the right",
+    "release_s": 55.04
+   },
+   {
+    "label": "end",
+    "t": 63.6,
+    "note": "camera is handled from here on"
+   }
+  ]
+ },
+ "sample_20261121_195808_507547.bin": {
+  "frames": 4594,
+  "end_s": 43.0,
+  "events": [
+   {
+    "label": "throw",
+    "t": 3.46,
+    "note": "ball visible",
+    "release_s": 3.38
+   },
+   {
+    "label": "feint",
+    "t": 7.5,
+    "note": "no ball"
+   },
+   {
+    "label": "throw",
+    "t": 10.86,
+    "note": "ball visible",
+    "release_s": 10.81
+   },
+   {
+    "label": "feint",
+    "t": 14.78,
+    "note": "no ball"
+   },
+   {
+    "label": "throw",
+    "t": 18.32,
+    "note": "ball visible",
+    "release_s": 18.26
+   },
+   {
+    "label": "throw",
+    "t": 23.92,
+    "note": "ball visible",
+    "release_s": 23.91
+   },
+   {
+    "label": "feint",
+    "t": 28.5,
+    "note": "no ball"
+   },
+   {
+    "label": "throw",
+    "t": 32.24,
+    "note": "ball visible",
+    "release_s": 32.2
+   },
+   {
+    "label": "idle",
+    "t": 34.26,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "idle",
+    "t": 35.04,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 36.96,
+    "note": "no ball"
+   },
+   {
+    "label": "throw",
+    "t": 39.38,
+    "note": "ball visible",
+    "release_s": 39.37
+   },
+   {
+    "label": "end",
+    "t": 43.0,
+    "note": "camera is handled from here on"
+   }
+  ]
+ },
+ "sample_20261121_200001_461331.bin": {
+  "frames": 10818,
+  "end_s": 105.6,
+  "events": [
+   {
+    "label": "throw",
+    "t": 3.7,
+    "note": "ball visible",
+    "release_s": 3.62
+   },
+   {
+    "label": "idle",
+    "t": 5.14,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 7.44,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 10.16,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 13.98,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 17.58,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 21.24,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 24.66,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 28.16,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 32.38,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 35.96,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 39.7,
+    "note": "no ball"
+   },
+   {
+    "label": "idle",
+    "t": 40.68,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "throw",
+    "t": 43.12,
+    "note": "ball visible",
+    "release_s": 43.11
+   },
+   {
+    "label": "idle",
+    "t": 44.76,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "idle",
+    "t": 46.28,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 48.8,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 52.0,
+    "note": "no ball"
+   },
+   {
+    "label": "feint",
+    "t": 55.04,
+    "note": "no ball"
+   },
+   {
+    "label": "idle",
+    "t": 55.96,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "throw",
+    "t": 62.94,
+    "note": "ball visible, underhand",
+    "release_s": 62.89
+   },
+   {
+    "label": "idle",
+    "t": 64.6,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "idle",
+    "t": 66.14,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 68.36,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "throw",
+    "t": 73.66,
+    "note": "ball visible, underhand"
+   },
+   {
+    "label": "idle",
+    "t": 75.86,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "idle",
+    "t": 77.32,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 80.62,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "throw",
+    "t": 84.78,
+    "note": "ball visible, underhand"
+   },
+   {
+    "label": "invalid",
+    "t": 85.52,
+    "note": "arm coming down after a swing? please check"
+   },
+   {
+    "label": "idle",
+    "t": 86.42,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "idle",
+    "t": 87.88,
+    "note": "walking / picking up a ball / arm coming down"
+   },
+   {
+    "label": "feint",
+    "t": 89.86,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "invalid",
+    "t": 90.9,
+    "note": "arm coming down after a swing? please check"
+   },
+   {
+    "label": "feint",
+    "t": 93.5,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "invalid",
+    "t": 94.4,
+    "note": "arm coming down after a swing? please check"
+   },
+   {
+    "label": "feint",
+    "t": 97.11,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "invalid",
+    "t": 98.16,
+    "note": "arm coming down after a swing? please check"
+   },
+   {
+    "label": "feint",
+    "t": 100.65,
+    "note": "underhand swing without a ball? please check"
+   },
+   {
+    "label": "invalid",
+    "t": 101.74,
+    "note": "arm coming down after a swing? please check"
+   },
+   {
+    "label": "throw",
+    "t": 104.44,
+    "note": "ball visible, underhand",
+    "release_s": 104.42
+   },
+   {
+    "label": "end",
+    "t": 105.6,
+    "note": "camera is handled from here on"
+   }
+  ]
+ },
+ "sample_20261121_200828_124951.bin": {
+  "frames": 32147,
+  "end_s": 292.8,
+  "events": [
+   {
+    "label": "invalid",
+    "t": 0.1,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 0.84,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 5.86,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 7.3,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 8.3,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 9.06,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "feint",
+    "t": 10.16,
+    "note": "model: throw 43, feint 28, idle 52 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 13.56,
+    "note": "model: throw 41, feint 39, idle 40 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 17.18,
+    "note": "model: throw 60, feint 67, idle 19 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 18.16,
+    "note": "model: throw 21, feint 54, idle 47 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 20.08,
+    "note": "model: throw 60, feint 48, idle 35 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 23.04,
+    "note": "model: throw 52, feint 53, idle 31 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 25.84,
+    "note": "model: throw 44, feint 74, idle 17 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 26.76,
+    "note": "model: throw 27, feint 43, idle 53 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 29.16,
+    "note": "model: throw 46, feint 59, idle 26 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 30.06,
+    "note": "model: throw 11, feint 63, idle 43 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 32.22,
+    "note": "model: throw 86, feint 63, idle 7 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 33.06,
+    "note": "model: throw 50, feint 54, idle 27 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 33.92,
+    "note": "model: throw 25, feint 31, idle 59 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 35.76,
+    "note": "model: throw 20, feint 53, idle 47 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 36.92,
+    "note": "model: throw 39, feint 40, idle 35 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 40.66,
+    "note": "model: throw 71, feint 72, idle 15 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 43.58,
+    "note": "model: throw 62, feint 61, idle 18 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 46.68,
+    "note": "model: throw 75, feint 63, idle 11 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 48.4,
+    "note": "model: throw 47, feint 73, idle 26 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 49.16,
+    "note": "model: throw 54, feint 101, idle 3 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 51.06,
+    "note": "model: throw 55, feint 76, idle 8 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 53.9,
+    "note": "model: throw 62, feint 24, idle 35 spikes",
+    "release_s": 53.84
+   },
+   {
+    "label": "invalid",
+    "t": 55.98,
+    "note": "model: throw 22, feint 35, idle 64 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 58.72,
+    "note": "model: throw 63, feint 18, idle 43 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 62.76,
+    "note": "model: throw 60, feint 43, idle 26 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 66.72,
+    "note": "model: throw 63, feint 59, idle 21 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 70.36,
+    "note": "model: throw 67, feint 60, idle 7 spikes",
+    "release_s": 70.33
+   },
+   {
+    "label": "feint",
+    "t": 104.26,
+    "note": "model: throw 66, feint 69, idle 25 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 107.18,
+    "note": "model: throw 78, feint 41, idle 18 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 109.36,
+    "note": "model: throw 26, feint 29, idle 70 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 113.88,
+    "note": "model: throw 54, feint 50, idle 23 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 144.18,
+    "note": "model: throw 69, feint 49, idle 19 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 146.86,
+    "note": "model: throw 72, feint 46, idle 19 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 149.8,
+    "note": "model: throw 60, feint 71, idle 12 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 150.56,
+    "note": "model: throw 67, feint 63, idle 13 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 151.46,
+    "note": "model: throw 71, feint 43, idle 17 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 152.54,
+    "note": "model: throw 93, feint 38, idle 0 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 154.42,
+    "note": "model: throw 58, feint 20, idle 33 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 155.38,
+    "note": "model: throw 105, feint 1, idle 2 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 156.3,
+    "note": "model: throw 76, feint 49, idle 4 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 157.12,
+    "note": "model: throw 54, feint 47, idle 12 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 158.08,
+    "note": "model: throw 114, feint 2, idle 4 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 159.84,
+    "note": "model: throw 93, feint 9, idle 26 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 160.8,
+    "note": "model: throw 46, feint 42, idle 43 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 162.28,
+    "note": "model: throw 32, feint 74, idle 31 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 163.2,
+    "note": "model: throw 7, feint 34, idle 82 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 163.94,
+    "note": "model: throw 24, feint 29, idle 64 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 165.04,
+    "note": "model: throw 9, feint 92, idle 26 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 165.78,
+    "note": "model: throw 35, feint 85, idle 8 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 166.64,
+    "note": "model: throw 16, feint 70, idle 26 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 168.54,
+    "note": "model: throw 63, feint 17, idle 21 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 172.34,
+    "note": "model: throw 23, feint 53, idle 40 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 174.74,
+    "note": "model: throw 66, feint 14, idle 31 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 184.54,
+    "note": "model: throw 66, feint 30, idle 20 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 186.06,
+    "note": "model: throw 28, feint 32, idle 52 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 187.46,
+    "note": "model: throw 84, feint 22, idle 11 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 189.12,
+    "note": "model: throw 19, feint 88, idle 6 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 190.16,
+    "note": "model: throw 74, feint 59, idle 1 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 191.72,
+    "note": "model: throw 22, feint 69, idle 28 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 192.72,
+    "note": "model: throw 79, feint 27, idle 5 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 194.24,
+    "note": "model: throw 26, feint 55, idle 55 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 195.22,
+    "note": "model: throw 63, feint 24, idle 30 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 196.68,
+    "note": "model: throw 62, feint 8, idle 48 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 201.62,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 202.4,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 203.46,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 204.24,
+    "note": "camera is handled / person right in front of the camera"
+   },
+   {
+    "label": "invalid",
+    "t": 206.3,
+    "note": "model: throw 44, feint 16, idle 47 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 207.04,
+    "note": "model: throw 66, feint 16, idle 34 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 208.06,
+    "note": "model: throw 80, feint 29, idle 10 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 209.76,
+    "note": "model: throw 43, feint 35, idle 56 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 210.62,
+    "note": "model: throw 50, feint 68, idle 9 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 211.36,
+    "note": "model: throw 107, feint 19, idle 0 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 212.64,
+    "note": "model: throw 42, feint 23, idle 48 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 214.16,
+    "note": "model: throw 24, feint 78, idle 23 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 216.76,
+    "note": "model: throw 93, feint 39, idle 4 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 218.0,
+    "note": "model: throw 74, feint 27, idle 24 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 220.34,
+    "note": "model: throw 81, feint 28, idle 4 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 221.56,
+    "note": "model: throw 37, feint 9, idle 70 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 223.88,
+    "note": "model: throw 107, feint 13, idle 1 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 225.22,
+    "note": "model: throw 105, feint 3, idle 19 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 226.22,
+    "note": "model: throw 91, feint 8, idle 10 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 226.98,
+    "note": "model: throw 94, feint 9, idle 8 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 227.9,
+    "note": "model: throw 83, feint 14, idle 25 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 229.12,
+    "note": "model: throw 21, feint 44, idle 55 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 237.72,
+    "note": "model: throw 89, feint 48, idle 7 spikes",
+    "release_s": 237.63
+   },
+   {
+    "label": "invalid",
+    "t": 238.66,
+    "note": "model: throw 44, feint 24, idle 57 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 242.08,
+    "note": "model: throw 23, feint 62, idle 38 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 242.8,
+    "note": "model: throw 47, feint 107, idle 0 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 243.56,
+    "note": "model: throw 23, feint 86, idle 24 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 249.56,
+    "note": "model: throw 57, feint 20, idle 43 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 255.52,
+    "note": "model: throw 70, feint 46, idle 27 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 258.02,
+    "note": "model: throw 83, feint 40, idle 20 spikes",
+    "release_s": 257.95
+   },
+   {
+    "label": "invalid",
+    "t": 259.46,
+    "note": "model: throw 17, feint 31, idle 75 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 260.42,
+    "note": "model: throw 16, feint 51, idle 53 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 262.42,
+    "note": "model: throw 59, feint 40, idle 34 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 267.2,
+    "note": "model: throw 72, feint 40, idle 29 spikes",
+    "release_s": 267.12
+   },
+   {
+    "label": "invalid",
+    "t": 268.68,
+    "note": "model: throw 19, feint 42, idle 63 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 270.1,
+    "note": "model: throw 27, feint 46, idle 45 spikes"
+   },
+   {
+    "label": "feint",
+    "t": 274.42,
+    "note": "model: throw 63, feint 35, idle 42 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 277.14,
+    "note": "model: throw 64, feint 35, idle 26 spikes",
+    "release_s": 277.05
+   },
+   {
+    "label": "invalid",
+    "t": 278.74,
+    "note": "model: throw 37, feint 50, idle 43 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 280.06,
+    "note": "model: throw 28, feint 56, idle 48 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 281.98,
+    "note": "model: throw 65, feint 57, idle 23 spikes",
+    "release_s": 281.89
+   },
+   {
+    "label": "invalid",
+    "t": 283.86,
+    "note": "model: throw 28, feint 42, idle 55 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 285.1,
+    "note": "model: throw 25, feint 66, idle 38 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 287.86,
+    "note": "model: throw 53, feint 18, idle 55 spikes",
+    "release_s": 287.78
+   },
+   {
+    "label": "end",
+    "t": 292.8,
+    "note": "people walk to the camera from here on"
+   }
+  ]
+ },
+ "sample_20261121_201452_881893.bin": {
+  "frames": 7039,
+  "end_s": 67.9,
+  "events": [
+   {
+    "label": "invalid",
+    "t": 0.38,
+    "note": "too close to the start of the recording"
+   },
+   {
+    "label": "invalid",
+    "t": 2.0,
+    "note": "model: throw 19, feint 50, idle 47 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 3.24,
+    "note": "model: throw 41, feint 66, idle 33 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 6.72,
+    "note": "model: throw 68, feint 11, idle 43 spikes",
+    "release_s": 6.7
+   },
+   {
+    "label": "invalid",
+    "t": 9.06,
+    "note": "model: throw 3, feint 90, idle 33 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 9.94,
+    "note": "model: throw 6, feint 85, idle 27 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 10.7,
+    "note": "model: throw 15, feint 104, idle 14 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 11.56,
+    "note": "model: throw 4, feint 83, idle 43 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 12.3,
+    "note": "model: throw 11, feint 52, idle 59 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 13.26,
+    "note": "model: throw 46, feint 38, idle 41 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 14.62,
+    "note": "model: throw 61, feint 94, idle 13 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 16.36,
+    "note": "model: throw 65, feint 67, idle 1 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 17.9,
+    "note": "model: throw 16, feint 52, idle 42 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 20.94,
+    "note": "model: throw 28, feint 56, idle 33 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 28.96,
+    "note": "model: throw 71, feint 13, idle 40 spikes",
+    "release_s": 28.88
+   },
+   {
+    "label": "invalid",
+    "t": 30.54,
+    "note": "model: throw 36, feint 61, idle 32 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 32.68,
+    "note": "model: throw 36, feint 71, idle 30 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 34.84,
+    "note": "model: throw 69, feint 23, idle 33 spikes",
+    "release_s": 34.75
+   },
+   {
+    "label": "throw",
+    "t": 40.36,
+    "note": "model: throw 48, feint 19, idle 60 spikes",
+    "release_s": 40.28
+   },
+   {
+    "label": "invalid",
+    "t": 44.18,
+    "note": "model: throw 57, feint 82, idle 13 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 45.1,
+    "note": "model: throw 110, feint 3, idle 0 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 45.86,
+    "note": "model: throw 75, feint 1, idle 18 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 48.7,
+    "note": "model: throw 81, feint 0, idle 17 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 49.76,
+    "note": "model: throw 39, feint 59, idle 5 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 50.94,
+    "note": "model: throw 31, feint 44, idle 63 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 51.66,
+    "note": "model: throw 30, feint 55, idle 42 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 54.04,
+    "note": "model: throw 76, feint 47, idle 15 spikes",
+    "release_s": 53.97
+   },
+   {
+    "label": "invalid",
+    "t": 55.56,
+    "note": "model: throw 10, feint 28, idle 71 spikes"
+   },
+   {
+    "label": "end",
+    "t": 67.9,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 68.4,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 69.24,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 69.98,
+    "note": "camera gets handled"
+   }
+  ]
+ },
+ "sample_20261121_201622_818200.bin": {
+  "frames": 3165,
+  "end_s": 29.9,
+  "events": [
+   {
+    "label": "invalid",
+    "t": 0.9,
+    "note": "model: throw 30, feint 51, idle 42 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 2.58,
+    "note": "model: throw 25, feint 84, idle 19 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 5.58,
+    "note": "model: throw 90, feint 22, idle 27 spikes",
+    "release_s": 5.57
+   },
+   {
+    "label": "invalid",
+    "t": 6.62,
+    "note": "model: throw 26, feint 3, idle 78 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 8.6,
+    "note": "model: throw 19, feint 47, idle 53 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 10.8,
+    "note": "model: throw 15, feint 67, idle 37 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 13.62,
+    "note": "model: throw 90, feint 43, idle 9 spikes",
+    "release_s": 13.57
+   },
+   {
+    "label": "invalid",
+    "t": 14.72,
+    "note": "model: throw 58, feint 37, idle 39 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 15.7,
+    "note": "model: throw 59, feint 83, idle 3 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 16.7,
+    "note": "model: throw 108, feint 6, idle 5 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 17.44,
+    "note": "model: throw 120, feint 6, idle 0 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 18.38,
+    "note": "model: throw 93, feint 10, idle 25 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 19.66,
+    "note": "model: throw 28, feint 35, idle 63 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 20.42,
+    "note": "model: throw 29, feint 65, idle 45 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 22.62,
+    "note": "model: throw 88, feint 30, idle 21 spikes",
+    "release_s": 22.56
+   },
+   {
+    "label": "invalid",
+    "t": 23.9,
+    "note": "model: throw 19, feint 53, idle 39 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 25.08,
+    "note": "model: throw 23, feint 65, idle 39 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 26.68,
+    "note": "model: throw 93, feint 31, idle 13 spikes",
+    "release_s": 26.63
+   },
+   {
+    "label": "end",
+    "t": 29.9,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 30.4,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 31.32,
+    "note": "camera gets handled"
+   }
+  ]
+ },
+ "sample_20261121_201703_662612.bin": {
+  "frames": 1169,
+  "end_s": 10.2,
+  "events": [
+   {
+    "label": "invalid",
+    "t": 0.08,
+    "note": "too close to the start of the recording"
+   },
+   {
+    "label": "throw",
+    "t": 2.0,
+    "note": "model: throw 84, feint 28, idle 20 spikes",
+    "release_s": 1.93
+   },
+   {
+    "label": "invalid",
+    "t": 3.72,
+    "note": "model: throw 28, feint 47, idle 42 spikes"
+   },
+   {
+    "label": "invalid",
+    "t": 4.66,
+    "note": "model: throw 19, feint 46, idle 54 spikes"
+   },
+   {
+    "label": "throw",
+    "t": 7.02,
+    "note": "model: throw 76, feint 53, idle 10 spikes",
+    "release_s": 6.94
+   },
+   {
+    "label": "invalid",
+    "t": 9.64,
+    "note": "model: throw 51, feint 69, idle 12 spikes"
+   },
+   {
+    "label": "end",
+    "t": 10.2,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 10.72,
+    "note": "camera gets handled"
+   },
+   {
+    "label": "invalid",
+    "t": 11.66,
+    "note": "camera gets handled"
+   }
+  ]
+ },
+ "sample_20261121_211821_487061.bin": {
+  "frames": 34660,
+  "end_s": 346.6,
+  "events": []
+ },
+ "sample_20261121_215305_541244.bin": {
+  "frames": 31800,
+  "end_s": 318.0,
+  "events": [
+   {
+    "label": "throw",
+    "t": 0.65,
+    "note": "hint 1.92 (throw); swing at file start (arm raised, peak 0.65); hint 1.3 s after swing; no clear ball seen"
+   },
+   {
+    "label": "throw",
+    "t": 3.12,
+    "note": "BALL-CHECK: kein Ball sichtbar (unclear): close figure cut at top; throwing arm goes up/left out of the top edge -0.14..-0.04 and returns; the round 25-30 px ON/OFF blob entering from top at -0.01..+0.1 [vorher verified=claude] | hint 3.85 (throw); big forward arm swing near camera 3.12; hint 0.7 s after; no clear separate ball; no whole-image burst"
+   },
+   {
+    "label": "throw",
+    "t": 81.74,
+    "note": "hint 82.37 (throw); arm-up swing after side wind-up (81.74); arm returns ~82.25; no clear ball"
+   },
+   {
+    "label": "feint",
+    "t": 84.26,
+    "note": "hint 85.18 (feint); arm out-and-up swing at 84.26; hint 0.9 s after; arm comes back no ball; next swing 86.2 belongs to idx 4"
+   },
+   {
+    "label": "throw",
+    "t": 86.21,
+    "note": "hint 86.72 (throw); forward swing 86.21 after wind-up 85.8; camera shake at 86.66 (0.45 s after) = impact"
+   },
+   {
+    "label": "feint",
+    "t": 88.5,
+    "note": "hint 89.36 (feint); arm-out swing 88.5; weak (57k/s); hint 0.9 s after; arm returns no ball"
+   },
+   {
+    "label": "feint",
+    "t": 90.45,
+    "note": "hint 90.99 (feint); arm-out swing 90.45 (strong); hint 0.55 s after; arm returns no ball"
+   },
+   {
+    "label": "feint",
+    "t": 92.53,
+    "note": "hint 92.73 (feint); arm swing 92.53; hint 0.2 s after; no ball; stronger swing at 94.12 has no hint in range"
+   },
+   {
+    "label": "invalid",
+    "t": 98.03,
+    "note": "hint 98.03 (throw); no swing near hint: person motionless 97.2-99.7; only weak hand motion at 96.4 (1.6 s before) and arm swing at 100.38 belongs to idx 9"
+   },
+   {
+    "label": "feint",
+    "t": 100.39,
+    "note": "hint 101.39 (feint); arm-out swing 100.39; hint 1.0 s after; arm returns no ball"
+   },
+   {
+    "label": "feint",
+    "t": 103.01,
+    "note": "hint 103.71 (feint); low confidence: small arm/hip motion 103.01 (0.7 s before hint); alternative arm-out swing at 104.4 (0.7 s after)"
+   },
+   {
+    "label": "feint",
+    "t": 105.13,
+    "note": "hint 105.32 (feint); arm swing 105.13 (hint 0.2 s after); second person visible at right edge from 104.5; alt swing 106.37"
+   },
+   {
+    "label": "invalid",
+    "t": 108.33,
+    "note": "hint 108.33 (throw); duplicate of idx 13 (same swing 109.14); only weak hand motion at 108.15 near hint"
+   },
+   {
+    "label": "throw",
+    "t": 109.14,
+    "note": "hint 109.60 (throw); arm-up swing 109.14 (short spike); hint 0.5 s after; no clear ball; no whole-image burst"
+   },
+   {
+    "label": "throw",
+    "t": 111.24,
+    "note": "hint 111.74 (throw); ball visible leaving hand upward at 111.26-111.34; whole-body walking motion at 113.2+ is not a swing"
+   },
+   {
+    "label": "throw",
+    "t": 130.98,
+    "note": "hint 131.33 (throw); ball visible flying up out of top at 131.00-131.08"
+   },
+   {
+    "label": "throw",
+    "t": 133.28,
+    "note": "hint 133.65 (throw); blob at top of frame at 133.32-133.38 after arm swing; ball less distinct than 14/15/22"
+   },
+   {
+    "label": "feint",
+    "t": 135.28,
+    "note": "hint 135.93 (feint); big arm swing 0.65 s before hint; arm returns to belly; no ball blob"
+   },
+   {
+    "label": "feint",
+    "t": 137.3,
+    "note": "hint 137.92 (feint); weak small low arm/hand motion at hip; no clear swing but only candidate within 1 s; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 139.55,
+    "note": "hint 140.43 (feint); arm up then down 139.0-139.6 (rate peak 139.57; also 139.05); no ball"
+   },
+   {
+    "label": "feint",
+    "t": 141.41,
+    "note": "hint 142.43 (feint); wide arm sweep 141.0-141.4 then hand to face 141.8-142.0; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 143.03,
+    "note": "hint 143.79 (feint); wide arm sweep to the left 142.8-143.3 then arm lowered; no ball"
+   },
+   {
+    "label": "throw",
+    "t": 144.66,
+    "note": "hint 145.15 (throw); ball clearly separates from hand and flies up out of top at 144.66-144.73"
+   },
+   {
+    "label": "feint",
+    "t": 147.43,
+    "note": "hint 148.08 (feint); arm up-down cycle 147.4-148.0 (second peak 147.95); no ball"
+   },
+   {
+    "label": "feint",
+    "t": 149.17,
+    "note": "hint 150.00 (feint); wide arm sweep 149.0-149.2 then arm up at 149.53 and again 150.05; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 151.69,
+    "note": "hint 152.08 (feint); sweep 151.27 then arm up 151.69 and down 152.13; no ball"
+   },
+   {
+    "label": "throw",
+    "t": 154.28,
+    "note": "hint 154.56 (throw); arm swings up out of top 154.2-154.3 and hand opens; small blob next to head at 154.40"
+   },
+   {
+    "label": "throw",
+    "t": 157.13,
+    "note": "hint 157.56 (throw); blob leaves hand at top 157.14-157.18 then arm stays outstretched; person whole-body motion at 159.3-159.5"
+   },
+   {
+    "label": "feint",
+    "t": 171.72,
+    "note": "hint 172.35 (feint); arm out to side and back down; no ball"
+   },
+   {
+    "label": "throw",
+    "t": 173.45,
+    "note": "hint 174.06 (throw); ball visible leaving hand to image left at 173.48"
+   },
+   {
+    "label": "feint",
+    "t": 175.45,
+    "note": "hint 176.52 (feint); arm out and lowered; no ball; key 1.07 s late (alt peak 175.80)"
+   },
+   {
+    "label": "feint",
+    "t": 179.52,
+    "note": "hint 179.16 (feint); overhead arm swing down to belly; no ball seen; key 0.36 s early"
+   },
+   {
+    "label": "feint",
+    "t": 182.12,
+    "note": "hint 182.36 (feint); person side-on; arm up and down; ball stays at belly"
+   },
+   {
+    "label": "throw",
+    "t": 184.77,
+    "note": "BALL-CHECK: Ball fliegt -1.47 s vor dem alten Entscheidungsmoment 186.28 raus -> Entscheidung auf Abwurf verschoben (-1.51 s) [vorher verified=claude] | hint 186.67 (throw); weak slow arm swing; no ball seen; ambiguous"
+   },
+   {
+    "label": "throw",
+    "t": 190.6,
+    "note": "hint 191.18 (throw); fast upward swing; hand leaves top-left; ball not separable"
+   },
+   {
+    "label": "throw",
+    "t": 194.8,
+    "note": "hint 195.34 (throw); overhead swing; ball not separable"
+   },
+   {
+    "label": "throw",
+    "t": 198.12,
+    "note": "BALL-CHECK: kein Ball sichtbar (no_ball): slow reach left -0.6..-0.3 then fast arm sweep up-left -0.12..-0.02 ending with hand at top-left x~40-55,y~8-15; 4 ms tiles -0.07..+0.07 show only hand/forearm  [vorher verified=claude] | hint 199.04 (throw); strong overhead swing; arm returns to chest; no ball seen"
+   },
+   {
+    "label": "throw",
+    "t": 203.05,
+    "note": "hint 203.58 (throw); arm overhead; person then walks toward camera 203.6-205.2 (whole-body activity not shake)"
+   },
+   {
+    "label": "throw",
+    "t": 229.95,
+    "note": "hint 230.35 (throw); arm overhead out of frame top; earlier arm-out swing at 229.55 less likely"
+   },
+   {
+    "label": "feint",
+    "t": 232.6,
+    "note": "hint 233.12 (feint); hand raised to head then down to belly; ball stays; alt 233.10"
+   },
+   {
+    "label": "feint",
+    "t": 234.48,
+    "note": "hint 235.01 (feint); arm out 234.16 then overhead; no ball seen; alt 234.16"
+   },
+   {
+    "label": "feint",
+    "t": 236.14,
+    "note": "hint 236.95 (feint); arm out then lowered; no ball; alt 236.46"
+   },
+   {
+    "label": "feint",
+    "t": 239.62,
+    "note": "hint 239.31 (feint); arm lowers from head then sweeps out (rate peak 239.65); bigger sweep at 238.39 is unclaimed by any hint; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 241.41,
+    "note": "hint 241.20 (feint); hand at head lowers to belly (wind-up raise at 240.47-240.75); no ball"
+   },
+   {
+    "label": "throw",
+    "t": 242.51,
+    "note": "BALL-CHECK: Ball fliegt -0.54 s vor dem alten Entscheidungsmoment 243.09 raus -> Entscheidung auf Abwurf verschoben (-0.58 s) [vorher verified=claude] | hint 243.11 (throw); wind-up raise at 242.45 then hand lowers with compact blob; no separate ball seen and no burst"
+   },
+   {
+    "label": "throw",
+    "t": 245.22,
+    "note": "BALL-CHECK: Ball fliegt -0.68 s vor dem alten Entscheidungsmoment 245.95 raus -> Entscheidung auf Abwurf verschoben (-0.73 s) [vorher verified=claude] | hint 245.89 (throw); raise at 245.33 hold at head then hand lowers at 245.95; no separate ball seen"
+   },
+   {
+    "label": "feint",
+    "t": 247.85,
+    "note": "hint 248.16 (feint); hand at head 247.4-247.7 then fast lowering; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 249.5,
+    "note": "hint 249.68 (feint); hand at head 249.1-249.4 then lowers to chest (weak double rate peak 249.44/249.66); no ball"
+   },
+   {
+    "label": "throw",
+    "t": 250.91,
+    "note": "BALL-CHECK: Ball fliegt -0.48 s vor dem alten Entscheidungsmoment 251.43 raus -> Entscheidung auf Abwurf verschoben (-0.52 s) [vorher verified=claude] | hint 251.46 (throw); raise at 250.97 hold then lowering at 251.43; no separate ball seen"
+   },
+   {
+    "label": "feint",
+    "t": 254.09,
+    "note": "hint 254.00 (feint); hand at head 253.85-254.0 then lowers to hip (weak peak); no ball"
+   },
+   {
+    "label": "feint",
+    "t": 256.17,
+    "note": "hint 256.52 (feint); arm raised out of frame at 255.61 then comes down at 256.17; no ball"
+   },
+   {
+    "label": "throw",
+    "t": 257.15,
+    "note": "BALL-CHECK: Ball fliegt -0.19 s vor dem alten Entscheidungsmoment 257.38 raus -> Entscheidung auf Abwurf verschoben (-0.23 s) [vorher verified=claude] | hint 257.82 (throw); hand at head lowers to belly 257.35-257.65 then arm sweeps down-left at 258.1-258.6; no clear ball; unhinted similar swing at 259.57"
+   },
+   {
+    "label": "invalid",
+    "t": 260.7,
+    "note": "hint 260.70 (feint); duplicate of idx 53"
+   },
+   {
+    "label": "throw",
+    "t": 260.79,
+    "note": "BALL-CHECK: kein Ball sichtbar (unclear): no separate blob anywhere -1.6..+0.8; arm sweeps very fast up-left (peak -0.36, 10k events) into the top-left corner and the hand is clipped by the top edge at  [vorher verified=claude] | hint 261.21 (throw); raise at 260.45 then arm lowers at 260.79; person walks toward camera from 261.4 (not shake); no separate ball seen"
+   },
+   {
+    "label": "feint",
+    "t": 277.39,
+    "note": "hint 277.17 (feint); raise at 276.7 hold then lowering at 277.39; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 280.31,
+    "note": "hint 280.42 (feint); raise at 279.87 hold at head then lowering at 280.31; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 282.68,
+    "note": "hint 282.83 (feint); arm drop from head to waist after hold; no ball; ambiguous which of raise or drop is the swing"
+   },
+   {
+    "label": "throw",
+    "t": 284.39,
+    "note": "BALL-CHECK: kein Ball sichtbar (unclear): Fast up-left sweep -0.72..-0.58; hand reaches top edge (y=0) at ~-0.575 and goes out of frame then retracts; no separate blob seen (apex -0.575 is a possible re [vorher verified=claude] | hint 284.44 (throw); arm drop from head to chest; compact hand blob but no clear separate ball; earlier fast raise at 283.79"
+   },
+   {
+    "label": "feint",
+    "t": 286.7,
+    "note": "hint 286.71 (feint); arm drop from head level to hip; no ball; bigger drop at 285.53 is 1.2 s before hint"
+   },
+   {
+    "label": "throw",
+    "t": 289.72,
+    "note": "BALL-CHECK: kein Ball sichtbar (unclear): Same gesture as 71 shifted +0.11 s: sweep -0.58..-0.47; hand reaches top edge at ~-0.465 then retracts; no separate blob (possible release at apex -0.465 above  [vorher verified=claude] | hint 289.34 (throw); drop after fast raise at 289.23; hint is 0.38 s before decision; no clear ball"
+   },
+   {
+    "label": "feint",
+    "t": 294.0,
+    "note": "hint 293.79 (feint); slow arm drop 293.6-294.2 (flat rate plateau); no ball"
+   },
+   {
+    "label": "throw",
+    "t": 294.91,
+    "note": "BALL-CHECK: Ball fliegt -0.40 s vor dem alten Entscheidungsmoment 295.35 raus -> Entscheidung auf Abwurf verschoben (-0.44 s) [vorher verified=claude] | hint 295.41 (throw); drop from head to chest after raise at 294.83; no clear ball"
+   },
+   {
+    "label": "throw",
+    "t": 297.45,
+    "note": "BALL-CHECK: Ball fliegt -0.61 s vor dem alten Entscheidungsmoment 298.11 raus -> Entscheidung auf Abwurf verschoben (-0.66 s) [vorher verified=claude] | hint 298.16 (throw); low rate drop from head to chest after raise at 297.4; no clear ball"
+   },
+   {
+    "label": "feint",
+    "t": 300.76,
+    "note": "hint 300.57 (feint); low rate drop to chest after raise at 300.1; no ball"
+   },
+   {
+    "label": "feint",
+    "t": 302.56,
+    "note": "hint 302.56 (feint); drop at hint; whole-body motion 303.3-304.0 (peak 303.87) is 1.3 s later"
+   },
+   {
+    "label": "feint",
+    "t": 304.6,
+    "note": "hint 304.57 (feint); drop to chest after whole-body arm sweep peaking at 303.87; no ball"
+   },
+   {
+    "label": "throw",
+    "t": 305.92,
+    "note": "BALL-CHECK: Ball fliegt -0.39 s vor dem alten Entscheidungsmoment 306.36 raus -> Entscheidung auf Abwurf verschoben (-0.44 s) [vorher verified=claude] | hint 306.39 (throw); drop from head to chest after raise at 305.99; no clear ball"
+   },
+   {
+    "label": "throw",
+    "t": 310.35,
+    "note": "BALL-CHECK: Ball fliegt -0.74 s vor dem alten Entscheidungsmoment 311.15 raus -> Entscheidung auf Abwurf verschoben (-0.80 s) [vorher verified=claude] | hint 311.32 (throw); drop 310.95-311.3 after raise at 310.41; person walks to camera from 311.8 (whole-image activity from 312.2 not a ball impact)"
+   },
+   {
+    "label": "invalid",
+    "t": 310.95,
+    "note": "hint 310.95 (feint); duplicate of idx 68"
+   }
+  ]
+ }
+}
