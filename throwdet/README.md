@@ -41,6 +41,10 @@ above = score > threshold
 alarm when `above` holds for `hold_frames` consecutive frames, then ignore alarms for 1 s
 ```
 
+`live_readout.py` implements exactly this rule (pure Python, no dependencies): `ThrowReadout(readout.json).update(s0, s1)` once per frame returns True when an alarm fires. On the 01 stream it gives the same alarm times as `replay.py`; the only difference is 10 ms of frame numbering.
+
+**Noise filter on the board.** despot filters noise (`noise_filtering_factor: 0.5` in `metavision_camera.json`). Our training recordings come from `river-tools capture` and are probably unfiltered, so live input has fewer isolated noise events than training. The models were trained with extra random noise cells, so this should be harmless. If live behaviour looks off, try a higher factor (less filtering) first.
+
 Expected timing: the alarm comes during the wind-up, roughly 150 ms before the swing peak.
 
 ### What it looks like live
@@ -148,6 +152,7 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 | `export.py` | `model.json`, `weights.txt`, `config.yaml`, `readout.json` for the Kria, plus the float vs fixed-point check |
 | `finalize.sh` | exports a final model with the readouts of its CV run at three false-alarm budgets |
 | `calibrate.py` | re-calibrates a final model's threshold on unseen DailyDVS persons (`readout_cal_*.json`) |
+| `live_readout.py` | host-side live rule (board spikes -> alarm), drop-in for the live pipeline |
 | `replay.py` | runs a recording of any length through a model exactly like the live loop; writes alarm times and a plot |
 | `cut_recording.py`, `adapt.sh` | cut site recordings into clips and fine-tune a delivered model on them |
 | `soup.py` | weight averaging of runs (tested, does not help) |
