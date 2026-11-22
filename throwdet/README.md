@@ -135,13 +135,21 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 
 | File | Purpose |
 |---|---|
-| `prep.py` | builds `~/throwdet/data/table.npz` from all sources |
-| `train.py` | training plus grouped CV, live-stream false-alarm test, DailyDVS person holdout |
+| `prep.py` | builds `~/throwdet/data/table.npz` from all sources (`--own-new` adds site clips) |
+| `train.py` | training plus grouped CV, live-stream false-alarm test, DailyDVS person holdout. Options: `--folds 0` for a final model, `--resume` for adaptation, `--qat-steps` for QAT |
+| `eval_readout.py` | readout sweep (alpha, hold, threshold) on the out-of-fold predictions at four false-alarm budgets, plus a per-recording breakdown |
+| `summary.py`, `auto_eval.sh` | comparison table over all runs (`results_summary.md`); evaluates every finished run automatically |
+| `analyze.py` | older per-run summary from `result.json` (score curves, per recording) |
 | `baseline.py` | non-spiking reference and domain probe |
-| `export.py` | `model.json`, `weights.txt`, `config.yaml`, `readout.json` for the Kria, plus a float vs fixed-point check |
-| `replay.py` | runs a recording (any length) through a model exactly like the live loop; writes alarm times and a plot |
+| `export.py` | `model.json`, `weights.txt`, `config.yaml`, `readout.json` for the Kria, plus the float vs fixed-point check |
+| `finalize.sh` | exports a final model with the readouts of its CV run at three false-alarm budgets |
+| `calibrate.py` | re-calibrates a final model's threshold on unseen DailyDVS persons (`readout_cal_*.json`) |
+| `replay.py` | runs a recording of any length through a model exactly like the live loop; writes alarm times and a plot |
+| `cut_recording.py`, `adapt.sh` | cut site recordings into clips and fine-tune a delivered model on them |
+| `soup.py` | weight averaging of runs (tested, does not help) |
 | `worker.sh` | job queue on the A100 (`~/throwdet/queue.txt`) |
 | `model.py`, `speedpatch.py` | copied from `pretrain/` on the Tim branch |
+| `models/` | the candidate models for the live test |
 
 ## Results
 
