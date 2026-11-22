@@ -219,6 +219,11 @@ def score_of(spikes, alpha):
 
 
 def build_model(args, dev):
+    if args.resume:    # continue from a finished detector (e.g. adapt a final model to a new site)
+        ck = torch.load(args.resume, map_location="cpu", weights_only=False)
+        model = ThrowSNN(2, arch=ck["arch"], tau=args.tau)
+        model.load_state_dict(ck["model"])
+        return model.to(dev)
     if args.init:
         ck = torch.load(args.init, map_location="cpu", weights_only=False)
         model = ThrowSNN(ck["config"]["num_classes"], arch=arch_from_config(ck["config"]), tau=args.tau)
@@ -371,6 +376,7 @@ def main():
     ap.add_argument("--tag", required=True)
     ap.add_argument("--arch", default="v1", choices=list(ARCHS))
     ap.add_argument("--init", default="", help="DVS-Gesture checkpoint (arch taken from it)")
+    ap.add_argument("--resume", default="", help="detector checkpoint to continue from (adaptation)")
     ap.add_argument("--tau", type=float, default=2.0)
     ap.add_argument("--folds", type=int, default=4, help="own-camera CV folds; 0 = train on everything")
     ap.add_argument("--only-fold", type=int, default=-1)
@@ -445,7 +451,8 @@ def main():
             test_own = np.flatnonzero(fold == k)
         own_train = (tb.domain == "own") & (fold != k) if k is not None else (tb.domain == "own")
         aug_train = (tb.domain == "own_aug") & ~np.isin(tb.group, list(set(tb.group[fold == k]) if k is not None else []))
-        train_idx = np.flatnonzero(own_train | aug_train | (tb.domain == "sim") | dd_train_mask)
+        train_idx = np.flatnonzero(own_train | aug_train | (tb.domain == "sim") | dd_train_mask
+                                   | (tb.domain == "own_new"))
         log(f"fold {k}: train {len(train_idx)} clips, held-out own {len(test_own)} "
             f"(pos {int(tb.y[test_own].sum())}), dd test {len(dd_test)}")
         model = train_one(tb, train_idx, args, dev, rng, log)

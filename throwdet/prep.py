@@ -63,6 +63,16 @@ def own_rows(noah: Path):
     return rows
 
 
+def new_rows(folder: Path):
+    """Clips from throwdet/cut_recording.py (e.g. recorded at the demo site): domain own_new."""
+    rows = []
+    for r in csv.DictReader(open(folder / "labels.csv")):
+        rows.append(dict(path=folder / r["folder"] / r["file"], kind=r["label"], domain="own_new",
+                         group=f"new:{r['source']}", parent=r["parent"], start_s=r["start_s"],
+                         anchor=70 if r["label"] != "idle" else -1, src="own_new"))
+    return rows
+
+
 def build_rows(build: Path):
     rows = []
     for folder in ("aug_train", "splice_train"):
@@ -98,9 +108,12 @@ def main():
     ap.add_argument("--noah", required=True)
     ap.add_argument("--build", required=True)
     ap.add_argument("--dd", required=True)
+    ap.add_argument("--own-new", nargs="*", default=[], help="folders from cut_recording.py (domain own_new)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
     rows = own_rows(Path(args.noah)) + build_rows(Path(args.build)) + dd_rows(Path(args.dd))
+    for d in args.own_new:
+        rows += new_rows(Path(d))
     codes, offsets, keep = [], [0], []
     for r in rows:
         if not r["path"].exists():
