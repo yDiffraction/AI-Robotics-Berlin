@@ -27,6 +27,7 @@ Stop despot_send_and_forget on the board first: both apps need the camera.
 Close the window (or press q) to stop; the camera sender on the board is stopped with it.
 """
 import argparse
+import faulthandler
 import os
 import queue
 import signal
@@ -36,6 +37,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from collections import deque
 from pathlib import Path
 
@@ -49,6 +51,14 @@ SENSOR, HW, BIN_US = 320, 80, 10_000
 BLOCK = SENSOR // HW
 HEADER = struct.Struct("!I")
 ROOT = Path(__file__).resolve().parent
+LOG_PATH = Path("/tmp/live_view.log")
+
+
+def log(msg):
+    line = f"{time.strftime('%H:%M:%S')} {msg}"
+    print(line, file=sys.stderr, flush=True)
+    with open(LOG_PATH, "a") as fh:
+        fh.write(line + "\n")
 
 
 # ------------------------------------------------------------------ event sources
@@ -90,35 +100,42 @@ def recv_exact(sock, n, stop):
 
 
 def camera_source(args, sink, state, stop):
-    proc = None
-    try:
-        with socket.create_server(("", args.listen_port)) as server:
-            server.settimeout(0.5)
+    """Receive event batches from the board. If the camera sender stops or the connection drops
+    (e.g. the camera is shaken hard, the cable is touched), the sender is restarted."""
+    with socket.create_server(("", args.listen_port)) as server:
+        server.settimeout(0.5)
+        restarts = 0
+        while not stop.is_set():
             proc = start_camera(args.host, args.listen_port)
-            state["status"] = f"waiting for the camera on {args.host}"
-            while not stop.is_set():
-                if proc.poll() is not None:
-                    state["status"] = "camera SSH session ended (is despot_send_and_forget running on the board?)"
-                    return
-                try:
-                    conn, _ = server.accept()
-                except socket.timeout:
-                    continue
-                state["status"] = "camera connected"
-                with conn:
-                    conn.settimeout(0.5)
-                    while not stop.is_set():
-                        head = recv_exact(conn, HEADER.size, stop)
-                        data = head and recv_exact(conn, HEADER.unpack(head)[0], stop)
-                        if data is None:
-                            break
-                        data = data[:len(data) // EVENT_DTYPE.itemsize * EVENT_DTYPE.itemsize]
-                        if data:
-                            sink(np.frombuffer(data, EVENT_DTYPE))
-                state["status"] = "camera disconnected, waiting"
-    finally:
-        if proc is not None:
-            stop_camera(proc)
+            state["status"] = f"waiting for the camera on {args.host}" + (f" (restart {restarts})" if restarts else "")
+            try:
+                while not stop.is_set() and proc.poll() is None:
+                    try:
+                        conn, _ = server.accept()
+                    except socket.timeout:
+                        continue
+                    state["status"] = "camera connected" + (f" (restarts: {restarts})" if restarts else "")
+                    with conn:
+                        conn.settimeout(0.5)
+                        while not stop.is_set():
+                            head = recv_exact(conn, HEADER.size, stop)
+                            data = head and recv_exact(conn, HEADER.unpack(head)[0], stop)
+                            if data is None:
+                                break
+                            data = data[:len(data) // EVENT_DTYPE.itemsize * EVENT_DTYPE.itemsize]
+                            if data:
+                                sink(np.frombuffer(data, EVENT_DTYPE))
+                    log(f"camera connection closed after {state.get('frames', 0)} frames")
+                    break
+            except Exception:
+                log("camera receive error:\n" + traceback.format_exc())
+            finally:
+                stop_camera(proc)
+            if not stop.is_set():
+                restarts += 1
+                state["status"] = f"camera stopped, restarting the sender (restart {restarts})"
+                log(f"camera sender ended (exit {proc.returncode}), restarting")
+                time.sleep(1.0)
 
 
 def replay_source(args, sink, state, stop):
@@ -162,7 +179,8 @@ class Binner:
             self.save.write(ev)
         self.display(ev)
         f = ev["t"].astype(np.int64) // BIN_US
-        if self.frame_idx is None or f[0] < self.frame_idx - 100:  # first batch or the clock restarted
+        if self.frame_idx is None or f[0] < self.frame_idx - 100 or f[0] > self.frame_idx + 200:
+            # first batch, the camera clock restarted (sender restart) or jumped: start over
             self.frame_idx = int(f[0])
             self.cur[:] = 0
         p, y, x = ev["p"].astype(np.int64), ev["y"].astype(np.int64) // BLOCK, ev["x"].astype(np.int64) // BLOCK
@@ -251,13 +269,19 @@ class BoardBackend:
     """Send every frame to the SPLEAT server on the Kria and read back the output spikes."""
 
     def __init__(self, host, port):
-        addr = host.split("@")[-1]
-        self.sock = socket.create_connection((addr, port), timeout=5)
-        self.sock.settimeout(5)
+        self.addr = (host.split("@")[-1], port)
+        self.sock = None
+        self.reconnect()
         self.msg_id = 0
         import cbor2
         self.cbor2 = cbor2
         self.warned = False
+
+    def reconnect(self):
+        if self.sock is not None:
+            self.sock.close()
+        self.sock = socket.create_connection(self.addr, timeout=5)
+        self.sock.settimeout(5)
 
     def _rx(self, n):
         buf = bytearray()
@@ -308,6 +332,9 @@ def main():
     ap.add_argument("--duration", type=float, default=None, help="close the window after this many seconds")
     ap.add_argument("--screenshot", default=None, help="save the window as PNG when it closes")
     args = ap.parse_args()
+    fault_log = open(LOG_PATH, "a")
+    faulthandler.enable(fault_log)  # a hard crash leaves its stack in /tmp/live_view.log
+    log(f"start: {' '.join(sys.argv[1:])}")
 
     import matplotlib
     import matplotlib.pyplot as plt
@@ -356,9 +383,15 @@ def main():
             t0 = time.monotonic()
             try:
                 sp = backend.run(frames)
-            except Exception as e:  # keep the window alive, show the error
+            except Exception as e:  # keep the window alive, show the error, reconnect
                 state["status"] = f"inference error: {e}"
+                log("inference error:\n" + traceback.format_exc())
                 time.sleep(0.5)
+                if hasattr(backend, "reconnect"):
+                    try:
+                        backend.reconnect()
+                    except Exception as e2:
+                        log(f"reconnect failed: {e2}")
                 continue
             dt = (time.monotonic() - t0) * 1000
             with lock:
@@ -413,11 +446,19 @@ def main():
     decay = np.zeros((SENSOR, SENSOR, 3), np.float32)
 
     def draw(_):
+        try:
+            return _draw()
+        except Exception:
+            log("draw error:\n" + traceback.format_exc())
+            return ()
+
+    def _draw():
         nonlocal decay
         with img_lock:
             acc = img_acc.copy()
             img_acc[:] = 0
         decay *= 0.55
+        decay[decay < 1] = 0
         decay[acc[0] > 0] = off_c
         decay[acc[1] > 0] = on_c
         im.set_data(decay.astype(np.uint8))
