@@ -1,0 +1,14 @@
+application:
+  host: "0.0.0.0"
+  port: 3333
+  weights_file: /root/weights.txt
+  max_concurrency: 40
+inputs:
+  channels: 2
+  height: 80
+  width: 80
+  scaling: 4096.0
+outputs:
+  channels: 11
+  height: 1
+  width: 1

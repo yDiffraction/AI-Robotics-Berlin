@@ -1,0 +1,60 @@
+{
+ "ckpt": "v2/runs/v3_t8_s1/model_f0.pt",
+ "layer_scales": [
+  2.0224,
+  1.0,
+  1.0,
+  1.0,
+  1.0
+ ],
+ "thresholds": [
+  0.4944740067344627,
+  1.0,
+  1.0,
+  1.0,
+  1.0
+ ],
+ "max_abs_weight_scaled": 1.9499999284744263,
+ "max_abs_bias_scaled": 1.0,
+ "q26_range": 1.984375,
+ "taus": [
+  2.3482799530029297,
+  3.5476937294006348,
+  4.228050231933594,
+  2.937081813812256,
+  4.5328898429870605
+ ],
+ "readout": "abs",
+ "theta": 0.85,
+ "check": [
+  {
+   "rec": "201703",
+   "frames": 1169,
+   "spikes_float": 255,
+   "spikes_fixed": 276,
+   "spike_agree": 0.9495295124037639,
+   "alarms_float": 2,
+   "alarms_fixed": 2,
+   "alarms_matched_50ms": 1
+  },
+  {
+   "rec": "201622",
+   "frames": 3165,
+   "spikes_float": 467,
+   "spikes_fixed": 488,
+   "spike_agree": 0.9706161137440759,
+   "alarms_float": 4,
+   "alarms_fixed": 4,
+   "alarms_matched_50ms": 3
+  }
+ ],
+ "n_values": 78501,
+ "n_values_ok": true,
+ "leaks_q412": [
+  1744,
+  1155,
+  969,
+  1395,
+  904
+ ]
+}

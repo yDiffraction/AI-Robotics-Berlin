@@ -1,7 +1,20 @@
-# Early throw-motion detector on the Kria (GOAL B, v2b)
+# Early throw-motion detector on the Kria (GOAL B)
 
-`model/weights.txt` is the early-detection SNN in the board firmware's format: arch v1, 11 outputs, 78501 values,
-weights/bias Q2.6, potentials/threshold/leak Q4.12, md5 `a0a6f2a9afa1af61fa5d49f6fa33918e`.
+Two exports of the early-detection SNN, both in the board firmware's format (arch v1, 11 outputs, 78501 values,
+weights/bias Q2.6, potentials/threshold/leak Q4.12) and both with the same readout rule, only θ differs:
+
+| folder | model | weights.txt md5 | θ (provisional) | held-out 02/03, θ-free comparison at ≤ 1 pause FA/min |
+|---|---|---|---|---|
+| `model/` | v2b: Noah's whfor_s1 + 8 min of v2 training | `a0a6f2a9afa1af61fa5d49f6fa33918e` | 0.70 | 56/107 swings, chance 20 (+36), lead −390 ms |
+| `model_v3/` | v3_t8_s1: 40 min v2 training from DVS-Gesture init | `44f403275d8ea3c87d4e0bf93078cf08` | 0.85 | 48/107 swings, chance 18 (+30), lead −330 ms; 1.7 hard-neg FA/min |
+
+The θ-free numbers pick θ on the test sessions (they compare models; they are not an operating point). v3 is the more
+stable recipe across seeds (+28 to +34 vs +25/+36 for v2) and the first whose pre-registered θ rule works
+(43/107 at 0.33 pause FA/min, lead −320 ms); v2b alarms a bit earlier. Load one, compare live, then calibrate θ on
+the new session. Below, `model/` stands for whichever folder you load.
+
+The rest of this section describes `model/` (v2b); `model_v3/` is built the same way (layer 1 scaled by 2.022,
+float vs fixed point 95–97 % frame agreement, `model_v3/export_log.json`).
 
 - **Output channel 0** = "throw motion is happening" (throws *and* feints count). Channels 1–10 are padding and never fire.
 - **Host readout** (`model/readout.json`): `y = 0.85 * y + 0.15 * spike_ch0` per 10 ms frame; alarm when `y` rises past
@@ -26,7 +39,7 @@ scp live_early/model/weights.txt root@192.168.77.1:/root/weights.txt
 ssh root@192.168.77.1 'md5sum /root/weights.txt && systemctl restart spleat-server && systemctl is-active spleat-server'
 ```
 
-The md5 must be `a0a6f2a9afa1af61fa5d49f6fa33918e`. To go back: copy the backup over `/root/weights.txt` and restart `spleat-server`.
+For v3 use `live_early/model_v3/weights.txt`. The md5 must match the table above. To go back: copy the backup over `/root/weights.txt` and restart `spleat-server`.
 
 ## Check and watch it
 
@@ -39,7 +52,11 @@ python live_early/viewer.py --replay <frames.npy or recording.bin> --backend bot
 python live_early/viewer.py
 # FPGA and the float model side by side
 python live_early/viewer.py --backend both
+# with v3 on the board: same, plus --model live_early/model_v3 (float model and θ of v3)
+python live_early/viewer.py --model live_early/model_v3 --backend both
 ```
+
+`--model` must match what is on the board: it sets θ and the float model the FPGA is compared against.
 
 The viewer starts `despot_debug_camera` on the board over SSH; the camera connects back to the laptop on port 3334
 (allow Python through the firewall). Stop other camera users on the board first (`despot_send_and_forget`,
