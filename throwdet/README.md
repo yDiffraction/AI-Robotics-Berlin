@@ -27,6 +27,7 @@ Each folder contains:
 - **`model.pt`:** float checkpoint for `replay.py` and `adapt.sh`.
 - **`readout.json`:** the live rule at the default operating point of about 2 false alarms per minute.
 - **`readout_fa1.0.json` / `readout_fa4.0.json`:** stricter (about 1 per minute) and more sensitive (about 4 per minute) variants of the same model. Only alpha, threshold and hold change, so no re-export is needed.
+- **`readout_cal_fa*.json`** (A, B, C only): the same readouts with the threshold recalibrated by `calibrate.py`. It matches the CV models' alarm rate on DailyDVS persons that no model has seen. On the 01 stream this was neither clearly better nor clearly worse, so the default stays `readout.json`.
 - **`cv_readout.txt`:** out-of-fold numbers of the CV run behind it, per recording.
 
 ### Live readout (host side, every 10 ms frame)
@@ -46,15 +47,16 @@ Expected timing: the alarm comes during the wind-up, roughly 150 ms before the s
 
 The 25 short recordings of `dataset/01` were played back to back as one 55 s stream (`replay.py`) through the e10 model of the CV fold that did **not** train on them, with the default readout:
 - **23 of 25 swings** got an alarm within -0.6..+0.3 s of the swing peak.
-- 4 more alarms fired. Some come at the hard cuts between the concatenated files, some well before a swing.
+- 3 more alarms fired. Some come at the hard cuts between the concatenated files, some well before a swing.
 
 The three final models (trained on all data, so 01 is in their training set) with their CV-picked readouts:
 
-| model | swings detected | other alarms |
+| model | swings detected (-1.0..+0.3 s) | other alarms in 55 s |
 |---|---|---|
-| A | 21 | 6 |
-| B | 21 | 10 |
-| C | 20 | 6 |
+| D (01 not in training) | 24 / 25 | 3 |
+| A | 25 / 25 | 2 |
+| B | 24 / 25 | 6 |
+| C | 21 / 25 | 5 |
 
 The threshold picked on the CV models does not transfer exactly to a newly trained model. Check it with `replay.py` on a site recording, and move to `readout_fa1.0.json` (stricter) or `readout_fa4.0.json` (more sensitive) if needed.
 

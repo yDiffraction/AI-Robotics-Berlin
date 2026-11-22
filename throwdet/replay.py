@@ -48,6 +48,8 @@ def main():
     ap.add_argument("--hold", type=int, default=1)
     ap.add_argument("--readout", default=None, help="readout.json from export.py (alpha, threshold, hold)")
     ap.add_argument("--labels", default=None)
+    ap.add_argument("--hit-window", type=float, nargs=2, default=(-1.0, 0.3),
+                    help="an alarm counts for a swing if it is within [lo, hi] s of the swing peak")
     ap.add_argument("--png", default=None)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
@@ -86,8 +88,9 @@ def main():
             when = r.get("decision_s") or r.get("peak_s")
             if r.get("file", r.get("source")) == name and r.get("label") in ("throw", "feint") and when:
                 swings.append(float(when))
-        hit = [any(-0.6 <= a - s <= 0.3 for a in alarms) for s in swings]
-        fa = [a for a in alarms if not any(-0.6 <= a - s <= 0.3 for s in swings)]
+        lo, hi = args.hit_window
+        hit = [any(lo <= a - s <= hi for a in alarms) for s in swings]
+        fa = [a for a in alarms if not any(lo <= a - s <= hi for s in swings)]
         print(f"swings {len(swings)}, detected {sum(hit)}, false alarms {len(fa)}")
     import matplotlib
     matplotlib.use("Agg")
