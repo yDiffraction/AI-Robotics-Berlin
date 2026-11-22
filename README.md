@@ -10,8 +10,6 @@ fine-tuned it on the board with human-in-the-loop reinforcement learning, and ru
 **Track level: 2 (Build)**: own data, own SNN, deployed on RiverFPGA, ROS 2 behaviour on the Go2. For level 3,
 see [Robustness](#robustness-and-safe-defaults) and the honest status in [Evidence](#evidence).
 
-> Video walkthrough: _link to be added_
-
 ## Run the demo
 
 The robot stack lives in `/root/dodge/` on the Kria that is mounted on the Go2. From a laptop on the same cable:
@@ -70,7 +68,7 @@ Board file: `perception/model_hitl_step1/weights.txt`, 78,501 values, md5 `d8fd7
 ## Evidence
 
 Full table with conditions and labels: [evidence/README.md](evidence/README.md). Every number is labelled BOARD,
-FLOAT-OOF (out of fold), IN-SAMPLE, SIM or OPEN.
+FLOAT-OOF (out of fold), IN-SAMPLE or SIM.
 
 | What | Number | Label |
 |---|---|---|
@@ -80,10 +78,11 @@ FLOAT-OOF (out of fold), IN-SAMPLE, SIM or OPEN.
 | Unseen recordings `01` | 23/25 swings, 4 other alarms in 55 s, ≈ 150 ms before release | FLOAT-OOF |
 | Start model d_neg11 on person01 | 45/53 throws, 2/68 false alarms | IN-SAMPLE |
 | Dodge motion (deployed parameters) | 0.27 m back, returns within 2 cm | SIM |
-| Dodges before ball arrival, false triggers/min, sensor → command delay on the real Go2 | to be filled in from the live trials | OPEN |
 
-The delay chain is one 10 ms frame + ~2 ms FPGA round trip + at least 3 frames above threshold before
-`/reflex/dash`; [evidence/README.md](evidence/README.md#how-to-measure-the-delay-sensor--command) says how to measure it end to end.
+Not measured in a logged run yet: the success rate of dodges against real throws, false triggers per minute on the
+real Go2, and the end-to-end sensor → command delay. By construction the delay is one 10 ms frame + ~2 ms FPGA
+round trip, plus at least 3 frames above threshold before `/reflex/dash`;
+[evidence/README.md](evidence/README.md#how-to-measure-the-delay-sensor--command) describes how to measure it end to end.
 
 ## What is new and what comes from the Durance starter
 
