@@ -1,0 +1,269 @@
+<!doctype html>
+<!--
+  Throw Reflex: live page of the robot (served by dodge/snn_bridge.py on web_port, default 8080).
+
+  Shows the event camera, the spikes and readout of the SNN on the FPGA with its threshold, the THROW DETECTED
+  moment, the Go2 dodge state and the switch that connects the SNN to ROS (auto-dodge; Y on the remote does the
+  same). Data comes only from the bridge's HTTP API (see app.js); no external URLs, the robot network is offline.
+
+  http://192.168.77.1:8080/          live
+  http://192.168.77.1:8080/?demo=1   synthetic data in the browser, no backend needed (design review)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f5f7">
+<title>Throw Reflex</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff5e7e'/%3E%3Cstop offset='1' stop-color='%23ff3b30'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='7.5' fill='url(%23g)'/%3E%3Ccircle cx='20' cy='15' r='5.2' fill='%23fff'/%3E%3Cpath d='M6.5 11.5h6.5M5 15h7.5M6.5 18.5h6.5' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' opacity='.8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Icons (SF Symbols-like line glyphs, 24 x 24, drawn with currentColor) -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3.2"/><path d="M8.4 7l1.1-2a1.6 1.6 0 0 1 1.4-.8h2.2a1.6 1.6 0 0 1 1.4.8l1.1 2"/><circle cx="12" cy="13.4" r="3.4"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="6" width="13.5" height="12" rx="3"/><path d="M16 10.4l4.3-2.6a.8.8 0 0 1 1.2.7v7a.8.8 0 0 1-1.2.7L16 13.6"/></symbol>
+  <symbol id="i-video-off" viewBox="0 0 24 24"><path d="M9 6h4a3 3 0 0 1 3 3v3.2M16 16a3 3 0 0 1-3 2H5.5a3 3 0 0 1-3-3V9a3 3 0 0 1 2.2-2.9"/><path d="M16 10.4l4.3-2.6a.8.8 0 0 1 1.2.7v7a.8.8 0 0 1-1.2.7"/><path d="M3 3l18 18"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.4"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9.5 2.8V6M14.5 2.8V6M9.5 18v3.2M14.5 18v3.2M2.8 9.5H6M2.8 14.5H6M18 9.5h3.2M18 14.5h3.2"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2.5 13h3.2l2-5.5 3.3 11 3-13 2.6 7.5h4.9"/></symbol>
+  <symbol id="i-paw" viewBox="0 0 24 24"><path d="M12 12.6c-2.6 0-5.4 2.9-5.4 5.2 0 1.5 1.1 2.4 2.5 2.4 1.2 0 1.9-.6 2.9-.6s1.7.6 2.9.6c1.4 0 2.5-.9 2.5-2.4 0-2.3-2.8-5.2-5.4-5.2z"/><ellipse cx="5.2" cy="10.6" rx="1.7" ry="2.2"/><ellipse cx="18.8" cy="10.6" rx="1.7" ry="2.2"/><ellipse cx="9" cy="5.9" rx="1.8" ry="2.4"/><ellipse cx="15" cy="5.9" rx="1.8" ry="2.4"/></symbol>
+  <symbol id="i-ball" viewBox="0 0 24 24"><circle cx="15" cy="12" r="6"/><path d="M11.3 7.4c1.8 1.3 2.7 2.8 2.7 4.6s-.9 3.3-2.7 4.6M18.7 7.4c-1.8 1.3-2.7 2.8-2.7 4.6s.9 3.3 2.7 4.6" opacity=".55"/><path d="M2.5 9h4.5M1.5 12h5M2.5 15h4.5"/></symbol>
+  <symbol id="i-dodge" viewBox="0 0 24 24"><path d="M19.5 12H5.5M10.5 7l-5 5 5 5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.3 4.4L2.7 17.6A2 2 0 0 0 4.4 20.6h15.2a2 2 0 0 0 1.7-3L13.7 4.4a2 2 0 0 0-3.4 0z"/><path d="M12 9.6v4.2M12 17.1v.2"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.2 4.2 0 0 0 6 0l3-3a4.2 4.2 0 0 0-6-6l-1 1"/><path d="M14 10a4.2 4.2 0 0 0-6 0l-3 3a4.2 4.2 0 0 0 6 6l1-1"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v4.5M15 3v4.5M6.5 7.5h11V11a5.5 5.5 0 0 1-11 0z"/><path d="M12 16.5V21"/></symbol>
+</svg>
+
+<header class="bar" id="bar">
+  <div class="bar__inner">
+    <div class="brand">
+      <svg class="brand__icon" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <linearGradient id="brand-g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff5e7e"/><stop offset="1" stop-color="#ff3b30"/>
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="7.5" fill="url(#brand-g)"/>
+        <circle cx="20" cy="15" r="5.2" fill="#fff"/>
+        <path d="M6.5 11.5h6.5M5 15h7.5M6.5 18.5h6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".8"/>
+      </svg>
+      <div class="brand__text">
+        <span class="brand__name">Throw Reflex</span>
+        <span class="brand__sub">Event camera · SNN on FPGA · Go2</span>
+      </div>
+      <span class="badge-demo" id="demo-badge" hidden>Demo</span>
+    </div>
+
+    <ul class="pills" aria-label="System status">
+      <li class="pill" id="pill-camera" data-tone="idle">
+        <span class="dot" aria-hidden="true"></span><span class="pill__label">Camera</span>
+        <span class="pill__value" id="pill-camera-v">—</span>
+      </li>
+      <li class="pill" id="pill-fpga" data-tone="idle">
+        <span class="dot" aria-hidden="true"></span><span class="pill__label">FPGA SNN</span>
+        <span class="pill__value" id="pill-fpga-v">—</span>
+      </li>
+      <li class="pill" id="pill-robot" data-tone="idle">
+        <span class="dot" aria-hidden="true"></span><span class="pill__label">Robot</span>
+        <span class="pill__value" id="pill-robot-v">—</span>
+      </li>
+    </ul>
+
+    <div class="auto" id="auto" data-on="false">
+      <div class="auto__text">
+        <div class="auto__row">
+          <span class="auto__title" id="auto-label">Auto-dodge</span>
+          <span class="auto__state" id="auto-state">Disconnected</span>
+        </div>
+        <span class="auto__hint" id="auto-hint"><span class="keycap" aria-hidden="true">Y</span><span id="auto-hint-text">on the remote toggles</span></span>
+      </div>
+      <button class="switch" id="auto-switch" type="button" role="switch" aria-checked="false"
+              aria-labelledby="auto-label" aria-describedby="auto-state"
+              title="SNN → ROS">
+        <span class="switch__thumb"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="banner" id="conn-banner" role="status" hidden>
+    <span class="spinner" aria-hidden="true"></span><span id="conn-text">Reconnecting to the robot…</span>
+  </div>
+</header>
+
+<main class="layout" id="layout" data-color="off">
+
+  <!-- Event camera -->
+  <section class="card cam" id="card-camera" aria-labelledby="cam-title">
+    <header class="card__head">
+      <span class="card__icon" aria-hidden="true"><svg><use href="#i-camera"/></svg></span>
+      <div class="card__titles">
+        <h2 class="card__title" id="cam-title">Event camera</h2>
+        <p class="card__sub" id="cam-sub">GenX320 · last 40 ms</p>
+      </div>
+      <label class="check">
+        <input type="checkbox" id="color-toggle"><span class="check__box" aria-hidden="true"></span><span>Color camera</span>
+      </label>
+    </header>
+
+    <div class="stage" id="stage">
+      <canvas class="stage__canvas" id="events" width="160" height="160" role="img"
+              aria-label="Event camera image, ON and OFF events of the last 40 ms"></canvas>
+      <div class="stage__badge" id="stage-badge" data-tone="idle" hidden>
+        <span class="dot" aria-hidden="true"></span><span id="stage-badge-text">Live</span>
+      </div>
+      <div class="empty" id="stage-empty" hidden>
+        <span class="empty__icon" aria-hidden="true"><svg><use href="#i-video-off"/></svg></span>
+        <span class="empty__title" id="stage-empty-title">Waiting for the event camera</span>
+        <span class="empty__sub" id="stage-empty-sub">despot_debug_camera has not connected yet.</span>
+      </div>
+      <div class="throw" id="throw" hidden>
+        <div class="throw__card" role="status" aria-live="polite">
+          <span class="throw__glyph" aria-hidden="true"><svg><use href="#i-ball"/></svg></span>
+          <span class="throw__text">
+            <span class="throw__title" id="throw-title">THROW DETECTED</span>
+            <span class="throw__sub" id="throw-sub"><svg aria-hidden="true"><use href="#i-dodge"/></svg><span id="throw-sub-text">Dodging</span></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="card__foot">
+      <span class="legend"><i class="swatch swatch--on"></i>ON</span>
+      <span class="legend"><i class="swatch swatch--off"></i>OFF</span>
+      <span class="legend legend--dim">160 × 160</span>
+      <span class="spacer"></span>
+      <span class="metric"><b id="cam-rate">—</b> events/s</span>
+    </footer>
+  </section>
+
+  <!-- Go2 color camera (optional) -->
+  <section class="card color" id="card-color" aria-labelledby="color-title" hidden>
+    <header class="card__head">
+      <span class="card__icon" aria-hidden="true"><svg><use href="#i-video"/></svg></span>
+      <div class="card__titles">
+        <h2 class="card__title" id="color-title">Color camera</h2>
+        <p class="card__sub" id="color-sub">Go2 front camera</p>
+      </div>
+    </header>
+    <div class="photo" id="photo">
+      <img class="photo__img" id="color-img" alt="Color image of the Go2 front camera" hidden>
+      <div class="empty" id="color-empty">
+        <span class="empty__icon" aria-hidden="true"><svg><use href="#i-video"/></svg></span>
+        <span class="empty__title" id="color-empty-title">Connecting to the Go2 camera…</span>
+        <span class="empty__sub" id="color-empty-sub">Asking the videohub for a frame.</span>
+      </div>
+    </div>
+    <footer class="card__foot">
+      <span class="legend legend--dim" id="color-meta">—</span>
+      <span class="spacer"></span>
+      <span class="metric" id="color-age"></span>
+    </footer>
+  </section>
+
+  <!-- SNN -->
+  <section class="card snn" id="card-snn" aria-labelledby="snn-title">
+    <header class="card__head">
+      <span class="card__icon" aria-hidden="true"><svg><use href="#i-wave"/></svg></span>
+      <div class="card__titles">
+        <h2 class="card__title" id="snn-title">Spiking neural network</h2>
+        <p class="card__sub" id="snn-sub">—</p>
+      </div>
+      <span class="tag" id="snn-tag" data-tone="idle" hidden>Mock</span>
+    </header>
+
+    <div class="stats">
+      <div class="stat stat--big" id="stat-y">
+        <span class="stat__label"><i class="key key--y" aria-hidden="true"></i>Readout <i>y</i></span>
+        <span class="stat__value" id="snn-y">—</span>
+      </div>
+      <div class="stat stat--big">
+        <span class="stat__label"><i class="key key--theta" aria-hidden="true"></i>Threshold <i>θ</i></span>
+        <span class="stat__value" id="snn-theta">—</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">Last throw</span>
+        <span class="stat__value" id="snn-last">—</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">FPGA</span>
+        <span class="stat__value" id="snn-perf">—</span>
+      </div>
+    </div>
+
+    <div class="plot" id="plot">
+      <div class="plot__raster">
+        <span class="plot__label" id="raster-label">Spikes <span>ch 0</span></span>
+        <canvas class="plot__canvas" id="raster" aria-hidden="true"></canvas>
+      </div>
+      <canvas class="plot__canvas plot__canvas--chart" id="chart" role="img"
+              aria-label="Readout y over the last 6 seconds with the threshold"></canvas>
+      <div class="empty empty--plot" id="snn-empty" hidden>
+        <span class="empty__icon" aria-hidden="true"><svg><use href="#i-chip"/></svg></span>
+        <span class="empty__title" id="snn-empty-title">FPGA offline</span>
+        <span class="empty__sub" id="snn-empty-sub">Reconnecting to the SPLEAT server…</span>
+      </div>
+    </div>
+
+    <div class="slider">
+      <label class="slider__label" for="theta">Threshold</label>
+      <input class="slider__input" type="range" id="theta" min="0.05" max="0.99" step="0.01" value="0.85"
+             aria-label="Threshold">
+      <output class="slider__out" id="theta-out" for="theta">—</output>
+      <span class="slider__help" id="theta-help">Lower reacts earlier, higher means fewer false alarms.</span>
+    </div>
+  </section>
+
+  <!-- Robot -->
+  <section class="card robot" id="card-robot" aria-labelledby="robot-title-h">
+   <div class="robot__body">
+    <header class="card__head">
+      <span class="card__icon" aria-hidden="true"><svg><use href="#i-paw"/></svg></span>
+      <div class="card__titles">
+        <h2 class="card__title" id="robot-title-h">Robot</h2>
+        <p class="card__sub">Unitree Go2 · go2_dodge</p>
+      </div>
+    </header>
+
+    <div class="rstate" id="rstate" data-state="unknown">
+      <span class="rstate__dot" aria-hidden="true"></span>
+      <div class="rstate__text">
+        <span class="rstate__title" id="robot-state" aria-live="polite">—</span>
+        <span class="rstate__sub" id="robot-sub">Waiting for go2_dodge…</span>
+      </div>
+    </div>
+
+    <ol class="phases" id="phases" aria-label="Dodge phases">
+      <li class="phase" data-phase="dash"><span class="phase__bar"><i></i></span><span class="phase__name">Dash</span><span class="phase__time">—</span></li>
+      <li class="phase" data-phase="hold"><span class="phase__bar"><i></i></span><span class="phase__name">Hold</span><span class="phase__time">—</span></li>
+      <li class="phase" data-phase="return"><span class="phase__bar"><i></i></span><span class="phase__name">Return</span><span class="phase__time">—</span></li>
+    </ol>
+
+    <dl class="kpis">
+      <div class="kpi"><dt>Last dodge</dt><dd id="kpi-dist">—</dd></div>
+      <div class="kpi"><dt>Detections</dt><dd id="kpi-det">0</dd></div>
+      <div class="kpi"><dt>Dodges</dt><dd id="kpi-dodges">0</dd></div>
+    </dl>
+
+    <div class="log">
+      <h3 class="log__title">Recent</h3>
+      <ol class="log__list" id="log" aria-live="polite"></ol>
+      <p class="log__empty" id="log-empty">No events yet</p>
+    </div>
+   </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="foot__flow">GenX320 event camera <span aria-hidden="true">→</span> spiking CNN on the Kria KV260
+    <span aria-hidden="true">→</span> ROS 2 <span aria-hidden="true">→</span> Unitree Go2</span>
+  <span class="foot__keys" id="foot-keys" hidden>Demo keys: <kbd>T</kbd> throw · <kbd>F</kbd> feint · <kbd>X</kbd> dodge ·
+    <kbd>Y</kbd> auto-dodge · <kbd>C</kbd> camera · <kbd>P</kbd> FPGA</span>
+</footer>
+
+<div class="toast" id="toast" role="alert" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

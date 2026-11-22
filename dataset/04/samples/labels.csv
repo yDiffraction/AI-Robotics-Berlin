@@ -1,0 +1,70 @@
+file,label,decision_s,verified,note
+sample_20261121_215305_541244.bin,throw,0.65,1,"hint 1.92 (throw); swing at file start (arm raised, peak 0.65); hint 1.3 s after swing; no clear ball seen"
+sample_20261121_215305_541244.bin,throw,3.12,claude,hint 3.85 (throw); big forward arm swing near camera 3.12; hint 0.7 s after; no clear separate ball; no whole-image burst
+sample_20261121_215305_541244.bin,throw,81.74,claude,hint 82.37 (throw); arm-up swing after side wind-up (81.74); arm returns ~82.25; no clear ball
+sample_20261121_215305_541244.bin,feint,84.26,claude,hint 85.18 (feint); arm out-and-up swing at 84.26; hint 0.9 s after; arm comes back no ball; next swing 86.2 belongs to idx 4
+sample_20261121_215305_541244.bin,throw,86.21,claude,hint 86.72 (throw); forward swing 86.21 after wind-up 85.8; camera shake at 86.66 (0.45 s after) = impact
+sample_20261121_215305_541244.bin,feint,88.50,claude,hint 89.36 (feint); arm-out swing 88.5; weak (57k/s); hint 0.9 s after; arm returns no ball
+sample_20261121_215305_541244.bin,feint,90.45,claude,hint 90.99 (feint); arm-out swing 90.45 (strong); hint 0.55 s after; arm returns no ball
+sample_20261121_215305_541244.bin,feint,92.53,claude,hint 92.73 (feint); arm swing 92.53; hint 0.2 s after; no ball; stronger swing at 94.12 has no hint in range
+sample_20261121_215305_541244.bin,invalid,98.03,claude,hint 98.03 (throw); no swing near hint: person motionless 97.2-99.7; only weak hand motion at 96.4 (1.6 s before) and arm swing at 100.38 belongs to idx 9
+sample_20261121_215305_541244.bin,feint,100.39,claude,hint 101.39 (feint); arm-out swing 100.39; hint 1.0 s after; arm returns no ball
+sample_20261121_215305_541244.bin,feint,103.01,claude,hint 103.71 (feint); low confidence: small arm/hip motion 103.01 (0.7 s before hint); alternative arm-out swing at 104.4 (0.7 s after)
+sample_20261121_215305_541244.bin,feint,105.13,claude,hint 105.32 (feint); arm swing 105.13 (hint 0.2 s after); second person visible at right edge from 104.5; alt swing 106.37
+sample_20261121_215305_541244.bin,invalid,108.33,claude,hint 108.33 (throw); duplicate of idx 13 (same swing 109.14); only weak hand motion at 108.15 near hint
+sample_20261121_215305_541244.bin,throw,109.14,claude,hint 109.60 (throw); arm-up swing 109.14 (short spike); hint 0.5 s after; no clear ball; no whole-image burst
+sample_20261121_215305_541244.bin,throw,111.24,claude,hint 111.74 (throw); ball visible leaving hand upward at 111.26-111.34; whole-body walking motion at 113.2+ is not a swing
+sample_20261121_215305_541244.bin,throw,130.98,claude,hint 131.33 (throw); ball visible flying up out of top at 131.00-131.08
+sample_20261121_215305_541244.bin,throw,133.28,claude,hint 133.65 (throw); blob at top of frame at 133.32-133.38 after arm swing; ball less distinct than 14/15/22
+sample_20261121_215305_541244.bin,feint,135.28,claude,hint 135.93 (feint); big arm swing 0.65 s before hint; arm returns to belly; no ball blob
+sample_20261121_215305_541244.bin,feint,137.30,claude,hint 137.92 (feint); weak small low arm/hand motion at hip; no clear swing but only candidate within 1 s; no ball
+sample_20261121_215305_541244.bin,feint,139.55,claude,hint 140.43 (feint); arm up then down 139.0-139.6 (rate peak 139.57; also 139.05); no ball
+sample_20261121_215305_541244.bin,feint,141.41,claude,hint 142.43 (feint); wide arm sweep 141.0-141.4 then hand to face 141.8-142.0; no ball
+sample_20261121_215305_541244.bin,feint,143.03,claude,hint 143.79 (feint); wide arm sweep to the left 142.8-143.3 then arm lowered; no ball
+sample_20261121_215305_541244.bin,throw,144.66,claude,hint 145.15 (throw); ball clearly separates from hand and flies up out of top at 144.66-144.73
+sample_20261121_215305_541244.bin,feint,147.43,claude,hint 148.08 (feint); arm up-down cycle 147.4-148.0 (second peak 147.95); no ball
+sample_20261121_215305_541244.bin,feint,149.17,claude,hint 150.00 (feint); wide arm sweep 149.0-149.2 then arm up at 149.53 and again 150.05; no ball
+sample_20261121_215305_541244.bin,feint,151.69,claude,hint 152.08 (feint); sweep 151.27 then arm up 151.69 and down 152.13; no ball
+sample_20261121_215305_541244.bin,throw,154.28,claude,hint 154.56 (throw); arm swings up out of top 154.2-154.3 and hand opens; small blob next to head at 154.40
+sample_20261121_215305_541244.bin,throw,157.13,claude,hint 157.56 (throw); blob leaves hand at top 157.14-157.18 then arm stays outstretched; person whole-body motion at 159.3-159.5
+sample_20261121_215305_541244.bin,feint,171.72,claude,hint 172.35 (feint); arm out to side and back down; no ball
+sample_20261121_215305_541244.bin,throw,173.45,claude,hint 174.06 (throw); ball visible leaving hand to image left at 173.48
+sample_20261121_215305_541244.bin,feint,175.45,claude,hint 176.52 (feint); arm out and lowered; no ball; key 1.07 s late (alt peak 175.80)
+sample_20261121_215305_541244.bin,feint,179.52,claude,hint 179.16 (feint); overhead arm swing down to belly; no ball seen; key 0.36 s early
+sample_20261121_215305_541244.bin,feint,182.12,claude,hint 182.36 (feint); person side-on; arm up and down; ball stays at belly
+sample_20261121_215305_541244.bin,throw,186.28,claude,hint 186.67 (throw); weak slow arm swing; no ball seen; ambiguous
+sample_20261121_215305_541244.bin,throw,190.60,claude,hint 191.18 (throw); fast upward swing; hand leaves top-left; ball not separable
+sample_20261121_215305_541244.bin,throw,194.80,claude,hint 195.34 (throw); overhead swing; ball not separable
+sample_20261121_215305_541244.bin,throw,198.12,claude,hint 199.04 (throw); strong overhead swing; arm returns to chest; no ball seen
+sample_20261121_215305_541244.bin,throw,203.05,claude,hint 203.58 (throw); arm overhead; person then walks toward camera 203.6-205.2 (whole-body activity not shake)
+sample_20261121_215305_541244.bin,throw,229.95,claude,hint 230.35 (throw); arm overhead out of frame top; earlier arm-out swing at 229.55 less likely
+sample_20261121_215305_541244.bin,feint,232.60,claude,hint 233.12 (feint); hand raised to head then down to belly; ball stays; alt 233.10
+sample_20261121_215305_541244.bin,feint,234.48,claude,hint 235.01 (feint); arm out 234.16 then overhead; no ball seen; alt 234.16
+sample_20261121_215305_541244.bin,feint,236.14,claude,hint 236.95 (feint); arm out then lowered; no ball; alt 236.46
+sample_20261121_215305_541244.bin,feint,239.62,claude,hint 239.31 (feint); arm lowers from head then sweeps out (rate peak 239.65); bigger sweep at 238.39 is unclaimed by any hint; no ball
+sample_20261121_215305_541244.bin,feint,241.41,claude,hint 241.20 (feint); hand at head lowers to belly (wind-up raise at 240.47-240.75); no ball
+sample_20261121_215305_541244.bin,throw,243.09,claude,hint 243.11 (throw); wind-up raise at 242.45 then hand lowers with compact blob; no separate ball seen and no burst
+sample_20261121_215305_541244.bin,throw,245.95,claude,hint 245.89 (throw); raise at 245.33 hold at head then hand lowers at 245.95; no separate ball seen
+sample_20261121_215305_541244.bin,feint,247.85,claude,hint 248.16 (feint); hand at head 247.4-247.7 then fast lowering; no ball
+sample_20261121_215305_541244.bin,feint,249.50,claude,hint 249.68 (feint); hand at head 249.1-249.4 then lowers to chest (weak double rate peak 249.44/249.66); no ball
+sample_20261121_215305_541244.bin,throw,251.43,claude,hint 251.46 (throw); raise at 250.97 hold then lowering at 251.43; no separate ball seen
+sample_20261121_215305_541244.bin,feint,254.09,claude,hint 254.00 (feint); hand at head 253.85-254.0 then lowers to hip (weak peak); no ball
+sample_20261121_215305_541244.bin,feint,256.17,claude,hint 256.52 (feint); arm raised out of frame at 255.61 then comes down at 256.17; no ball
+sample_20261121_215305_541244.bin,throw,257.38,claude,hint 257.82 (throw); hand at head lowers to belly 257.35-257.65 then arm sweeps down-left at 258.1-258.6; no clear ball; unhinted similar swing at 259.57
+sample_20261121_215305_541244.bin,invalid,260.70,claude,hint 260.70 (feint); duplicate of idx 53
+sample_20261121_215305_541244.bin,throw,260.79,claude,hint 261.21 (throw); raise at 260.45 then arm lowers at 260.79; person walks toward camera from 261.4 (not shake); no separate ball seen
+sample_20261121_215305_541244.bin,feint,277.39,claude,hint 277.17 (feint); raise at 276.7 hold then lowering at 277.39; no ball
+sample_20261121_215305_541244.bin,feint,280.31,claude,hint 280.42 (feint); raise at 279.87 hold at head then lowering at 280.31; no ball
+sample_20261121_215305_541244.bin,feint,282.68,claude,hint 282.83 (feint); arm drop from head to waist after hold; no ball; ambiguous which of raise or drop is the swing
+sample_20261121_215305_541244.bin,throw,284.39,claude,hint 284.44 (throw); arm drop from head to chest; compact hand blob but no clear separate ball; earlier fast raise at 283.79
+sample_20261121_215305_541244.bin,feint,286.70,claude,hint 286.71 (feint); arm drop from head level to hip; no ball; bigger drop at 285.53 is 1.2 s before hint
+sample_20261121_215305_541244.bin,throw,289.72,claude,hint 289.34 (throw); drop after fast raise at 289.23; hint is 0.38 s before decision; no clear ball
+sample_20261121_215305_541244.bin,feint,294.00,claude,hint 293.79 (feint); slow arm drop 293.6-294.2 (flat rate plateau); no ball
+sample_20261121_215305_541244.bin,throw,295.35,claude,hint 295.41 (throw); drop from head to chest after raise at 294.83; no clear ball
+sample_20261121_215305_541244.bin,throw,298.11,claude,hint 298.16 (throw); low rate drop from head to chest after raise at 297.4; no clear ball
+sample_20261121_215305_541244.bin,feint,300.76,claude,hint 300.57 (feint); low rate drop to chest after raise at 300.1; no ball
+sample_20261121_215305_541244.bin,feint,302.56,claude,hint 302.56 (feint); drop at hint; whole-body motion 303.3-304.0 (peak 303.87) is 1.3 s later
+sample_20261121_215305_541244.bin,feint,304.60,claude,hint 304.57 (feint); drop to chest after whole-body arm sweep peaking at 303.87; no ball
+sample_20261121_215305_541244.bin,throw,306.36,claude,hint 306.39 (throw); drop from head to chest after raise at 305.99; no clear ball
+sample_20261121_215305_541244.bin,invalid,310.95,claude,hint 310.95 (feint); duplicate of idx 68
+sample_20261121_215305_541244.bin,throw,311.15,claude,hint 311.32 (throw); drop 310.95-311.3 after raise at 310.41; person walks to camera from 311.8 (whole-image activity from 312.2 not a ball impact)

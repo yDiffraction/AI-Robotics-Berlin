@@ -1,0 +1,17 @@
+file,label,decision_s,verified,ball_visible,distance,note
+sample_20261121_170441_403603.bin,feint,11.08,claude,0,near,second person walks past on the right
+sample_20261121_170441_403603.bin,feint,13.51,claude,0,near,
+sample_20261121_170441_403603.bin,throw,15.80,claude,1,near,ball hits the camera at 16.5 s (shake)
+sample_20261121_170441_403603.bin,feint,20.58,claude,0,mid,
+sample_20261121_170441_403603.bin,feint,22.93,claude,0,mid,
+sample_20261121_170441_403603.bin,feint,25.39,claude,0,mid,
+sample_20261121_170441_403603.bin,throw,28.39,claude,1,mid,
+sample_20261121_170441_403603.bin,throw,32.25,claude,1,mid,
+sample_20261121_170441_403603.bin,feint,38.50,claude,0,far,
+sample_20261121_170441_403603.bin,feint,40.74,claude,0,far,
+sample_20261121_170441_403603.bin,feint,43.20,claude,0,far,
+sample_20261121_170441_403603.bin,feint,45.73,claude,0,far,second person visible on the right
+sample_20261121_170441_403603.bin,throw,48.21,claude,1,far,
+sample_20261121_170441_403603.bin,feint,52.65,claude,0,far,
+sample_20261121_170441_403603.bin,throw,54.88,claude,1,far,second person visible on the right
+sample_20261121_170441_403603.bin,end,63.60,claude,,,camera is handled from here on

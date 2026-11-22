@@ -1,13 +1,41 @@
-# Large release files from riversdk.dev (wheels, dataset, SDK installers, zips)
+# Durance proprietary material (tools, SDK, docs, dataset) - must not be published
+vendor/
+data/
 downloads/
+starter/
+third_party/
+docs/riversdk/
+docs/*.pdf
+*.zip
+*.whl
+*_sdk_installer.sh
 
 # Python / uv
 .venv/
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
 
-# Durance hand-gesture dataset (proprietary - do not publish)
-data/
+# Build artifacts
+build-yocto/
+install-yocto/
+log/
+logs/
+kria-runtime.tar.gz
 
-# large generated data banks (exceed GitHub 100MB limit)
+# Our own raw recordings and live sessions: large, shared outside git
+recording/sessions/**/*.bin
+recording/logs/
+recording/previews/
+training/hitl/sessions/
+training/hitl/runs/
+live_early/hitl/sessions/
+live_early/hitl/runs/
+
+# Large generated data banks (exceed the GitHub 100 MB limit)
 training/early/banks/*.npz
+experiments/early_v1/banks/*.npz
+
+# Local tooling
+.claude/
+.DS_Store

@@ -1,0 +1,10 @@
+{
+ "output_channel": 0,
+ "meaning": "throw motion (throw or feint), channels 1..10 are padding",
+ "frame_ms": 10,
+ "readout": "abs",
+ "rule": "y_t = 0.85 * y_{t-1} + 0.15 * spike_t",
+ "theta": 0.85,
+ "alarm": "upward crossing of theta, then 1 s refractory",
+ "theta_status": "PROVISIONAL: chosen on held-out test sessions; recalibrate on the new session"
+}

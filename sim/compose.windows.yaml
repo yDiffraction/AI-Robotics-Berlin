@@ -1,0 +1,14 @@
+# Linux with X11 only: Gazebo and RViz open as windows on this desktop instead of the noVNC one.
+# Used by `./sim.sh up windows`, which also writes the X cookie file $SIM_XAUTH.
+services:
+  gazebo:
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/tmp/host.xauth
+      - LIBGL_ALWAYS_SOFTWARE=0  # the image renders in software for noVNC; here Mesa may use the GPU
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ${SIM_XAUTH}:/tmp/host.xauth:ro
+    devices:
+      - /dev/dri:/dev/dri
+    command: sleep infinity
