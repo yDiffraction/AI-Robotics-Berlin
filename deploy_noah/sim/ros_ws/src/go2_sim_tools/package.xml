@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>go2_sim_tools</name>
+  <version>0.1.0</version>
+  <description>Desk simulation helpers for the Go2 + RiverFPGA pipeline: fake LiDAR, Gazebo sport-API bridge, launch files.</description>
+  <maintainer email="noreply@example.com">AI-Robotics-Berlin team</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>unitree_go</exec_depend>
+  <exec_depend>unitree_api</exec_depend>
+  <exec_depend>bringup</exec_depend>
+  <exec_depend>robot_sim</exec_depend>
+  <exec_depend>msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>gesture_node</exec_depend>
+  <exec_depend>obstacle_detection</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

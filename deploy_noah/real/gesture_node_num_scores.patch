@@ -1,0 +1,44 @@
+--- a/src/gesture_node.cpp	2026-11-22 10:17:40.123539643 +0100
++++ b/src/gesture_node.cpp	2026-11-22 10:17:40.123632753 +0100
+@@ -22,6 +22,15 @@
+             "parameter 'window' must be positive, got " + std::to_string(window));
+     return static_cast<size_t>(window);
+ }
++
++// How many float32 scores the model on the board sends per frame. The message keeps its
++// fixed 11 slots; a smaller model's scores fill the first slots and the rest stay 0.
++size_t validated_num_scores(int num_scores, size_t capacity){
++    if (num_scores <= 0 || static_cast<size_t>(num_scores) > capacity)
++        throw rclcpp::exceptions::InvalidParameterValueException(
++            "parameter 'num_scores' must be 1.." + std::to_string(capacity) + ", got " + std::to_string(num_scores));
++    return static_cast<size_t>(num_scores);
++}
+ }
+ 
+ /**
+@@ -36,6 +45,7 @@
+ private:
+     const std::string host_;
+     const int port_;
++    const size_t num_scores_;
+ 
+     SpleatClient client_;
+     rclcpp::Publisher<msgs::msg::Gestures>::SharedPtr publisher_;
+@@ -47,7 +57,7 @@
+ 
+     std::optional<msgs::msg::Gestures> postprocess(const std::vector<uint8_t>& frame){
+         msgs::msg::Gestures msg;
+-        const size_t wanted = msg.scores.size() * sizeof(float);
++        const size_t wanted = num_scores_ * sizeof(float);
+ 
+         std::optional<size_t> data = payload_offset(frame, wanted);
+         if (!data){
+@@ -92,6 +102,8 @@
+       Node("gesture_node"),
+       host_(declare_parameter<std::string>("host", "127.0.0.1")),
+       port_(declare_parameter<int>("port", 3333)),
++      num_scores_(validated_num_scores(declare_parameter<int>("num_scores", 11),
++                                       msgs::msg::Gestures().scores.size())),
+       client_(host_, port_),
+       window_(validated_window(declare_parameter<int>("window", 50))){
+         publisher_ = create_publisher<msgs::msg::Gestures>("/durance/gestures", 1);
