@@ -1,8 +1,19 @@
 # Throw-motion detector (binary SNN, board format)
 
-**TL;DR for the morning**
+**TL;DR: watch it live**
+```bash
+# board connected by Ethernet (192.168.77.1), camera on the board, despot_send_and_forget NOT running
+throwdet/deploy_board.sh throwdet/models/D_e10_fold3 vendor/firmware/throwdet-2class-v1-q3.5   # once
+.venv/bin/python throwdet/live_view.py --backend board        # FPGA does the inference
+.venv/bin/python throwdet/live_view.py                        # same network in float on the laptop
+```
+The window shows the camera events with THROW MOTION / no throw motion on top, the score trace and
+the alarms; see **Live view on the Kria** below. Switch models with `deploy_board.sh <model_dir>`
+(weights only, no new firmware) and `live_view.py --model <model_dir>`.
+
+**TL;DR for the morning (models and readout)**
 1. **Models:** `throwdet/models/`, board files plus the readout. Test them in the order **D, E, A, B, C**.
-2. **Board:** flash `weights.txt`, `model.json` and `config.yaml` like the earlier SNN (`training/export_snn.py` layout). Input 2x80x80 binary at 10 ms, output 2 neurons.
+2. **Board:** `deploy_board.sh` installs the 2-class firmware, `config.yaml` and `weights.txt` (see **Live view on the Kria**). Input 2x80x80 binary at 10 ms, output 2 neurons.
 3. **Host:** run `live_readout.py` with the model's `readout.json` on the two output spike counts per frame. An alarm means a throw motion has started; trigger the dodge.
 4. **Before the demo:** record 1 to 2 minutes at the site and check them with `replay.py`.
    - Too many false alarms (people walking close to the camera are the usual cause): switch to `readout_fa1.0.json`, or adapt with `cut_recording.py --idle` plus `adapt.sh` (about 5 to 10 min on the A100).
@@ -35,7 +46,7 @@ use the board format. A, B and C are trained on all our data (all recordings, sy
 
 Each folder contains:
 - **For the board:** `model.json`, `weights.txt`, `config.yaml`. Same layout as `training/export_snn.py`; confirm the weight order with Durance before flashing.
-- **`model.pt`:** float checkpoint for `replay.py` and `adapt.sh`.
+- **`model.pt`:** float checkpoint for `live_view.py` (mac backend), `replay.py` and `adapt.sh`.
 - **`readout.json`:** the live rule at the default operating point of about 2 false alarms per minute.
 - **`readout_fa1.0.json` / `readout_fa4.0.json`:** stricter (about 1 per minute) and more sensitive (about 4 per minute) variants of the same model. Only alpha, threshold and hold change, so no re-export is needed.
 - **`readout_cal_fa*.json`** (A, B, C only): the same readouts with the threshold recalibrated by `calibrate.py`. It matches the CV models' alarm rate on DailyDVS persons that no model has seen. On the 01 stream this was neither clearly better nor clearly worse, so the default stays `readout.json`.
@@ -102,6 +113,56 @@ So the dodge starts about 0.45 s before impact. A shorter or faster first sidewa
 3. **Throws missed** (new thrower position or distance)? Record with `tools/record_tool.py` from the noah branch: press Space after each throw and `k` after each feint. Then add `--hints <dir>/hints.csv --pauses` to `cut_recording.py`. The swing is found automatically as the event-rate peak in the 2 s before the key press.
 
 
+## Live view on the Kria (`live_view.py`, `deploy_board.sh`)
+
+**Firmware.** One bitstream serves all models here: they share the v1 architecture with 2 output
+neurons, weights Q3.5 and potentials Q4.12; only `weights.txt` differs. It was generated on
+riversdk.dev (firmware job #43 `throwdet-2class-v1-q3.5`, ~8 min): model file = any
+`throwdet/models/*/model.json`, board KV260, Prophesee IP GenX320, weights Q3.5 (3 integer, 5
+fractional bits), potentials Q4.12, strategy "faster generation". The output
+`firmware-kv260.tar.gz` (`spleat.bit.bin`, `spleat.dtbo`) is a Durance tool output and is kept out of
+git in `vendor/firmware/throwdet-2class-v1-q3.5/`; download it again from the job page if needed.
+The 11-class firmware of the gesture demo is job #25.
+
+**Deploy.** `throwdet/deploy_board.sh <model_dir> <firmware_dir>` copies the bitstream to
+`/usr/lib/firmware/xilinx/spleat/`, `config.yaml` to `/root/.config/spleat-server/` and
+`weights.txt` to `/root/`, reloads the FPGA app (`xmutil loadapp spleat`) and restarts
+`spleat-server`. Without `<firmware_dir>` it only swaps `weights.txt` and `config.yaml` (switching
+between our models). Every deploy first backs up the replaced files to `/root/fw_backup/<time>/`;
+`deploy_board.sh --list` shows them and `deploy_board.sh --restore <name>` puts one back (e.g. the
+gesture demo: backup `20261122_092155`). `E_moredd` was exported with Q2.6 weights; use
+`E_moredd_q35` (same network re-exported in Q3.5 for this firmware; float/fixed decision agreement
+92.5 % instead of 97.5 %) on the board.
+
+**Live view.** `live_view.py` starts `despot_debug_camera` on the board over SSH (the sender of
+`river-tools capture`; stop `despot_send_and_forget` first, both need the camera), receives the raw
+events, bins them exactly like the training clips (10 ms, 4x4 blocks, binary 2x80x80) and runs the
+detector on every frame:
+- `--backend board`: each frame goes to the SPLEAT server on the board (TCP 3333; 4-byte
+  big-endian length + CBOR map `{"id": n, "payload": float32[2,80,80] little-endian}`; the reply
+  carries the output spike counts as float32 in `payload`). The FPGA keeps the neuron state from
+  frame to frame. Round trip about 2.3 to 2.6 ms per frame.
+- `--backend mac` (default): the float network (`model.pt`) in PyTorch, neuron potentials carried
+  over between calls like on the FPGA (0.3 to 0.5 ms per frame). Works with any firmware on the board.
+
+The readout is `live_readout.py` with the model's `readout.json`, so the window shows exactly the
+alarms the robot would get. Options: `--model`, `--readout` (e.g. `readout_fa1.0.json`),
+`--replay file.bin [--loop]` (no camera), `--save take.bin` (record what you see, for `replay.py`
+and `cut_recording.py`), `--duration`, `--screenshot`. Quit with `q` or by closing the window; the
+camera sender on the board is stopped with it.
+
+![live view, replay of recording 01](live_view_replay.png)
+
+
+**Checks (22 Nov).**
+- The 55 s stream of recording 01 (25 swings) sent through the FPGA: 27 alarms; the Mac backend
+  also gives 27, and 26 of the 27 board alarms are within 0.3 s of a Mac alarm. The correlation of
+  the smoothed spike difference is 0.985.
+- The Mac backend fed 1 to 7 frames at a time gives bit-identical spikes to one pass over the whole
+  stream.
+- Live camera + FPGA: 100 frames/s, no backlog; an empty, static scene stays at a score of about -0.65
+  (threshold +0.15).
+
 ## Board format
 
 Same as `pretrain/` on the Tim branch, so it runs on the KV260:
@@ -158,10 +219,12 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 | `summary.py`, `auto_eval.sh` | comparison table over all runs (`results_summary.md`); evaluates every finished run automatically |
 | `analyze.py` | older per-run summary from `result.json` (score curves, per recording) |
 | `baseline.py` | non-spiking reference and domain probe |
-| `export.py` | `model.json`, `weights.txt`, `config.yaml`, `readout.json` for the Kria, plus the float vs fixed-point check |
+| `export.py` | `model.json`, `weights.txt`, `config.yaml`, `readout.json` for the Kria, plus the float vs fixed-point check (`--weight-frac 5` forces Q3.5, the firmware format) |
 | `finalize.sh` | exports a final model with the readouts of its CV run at three false-alarm budgets |
 | `calibrate.py` | re-calibrates a final model's threshold on unseen DailyDVS persons (`readout_cal_*.json`) |
 | `live_readout.py` | host-side live rule (board spikes -> alarm), drop-in for the live pipeline |
+| `live_view.py` | live window: camera on the Kria -> detector (FPGA or laptop) -> THROW MOTION / no throw motion, score trace, alarms |
+| `deploy_board.sh` | puts firmware, `config.yaml` and `weights.txt` of a model on the Kria, with backup and restore |
 | `replay.py` | runs a recording of any length through a model exactly like the live loop; writes alarm times and a plot |
 | `cut_recording.py`, `adapt.sh` | cut site recordings into clips and fine-tune a delivered model on them |
 | `soup.py` | weight averaging of runs (tested, does not help) |

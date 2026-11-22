@@ -38,6 +38,9 @@ def main():
     ap.add_argument("--alpha", type=float, default=None, help="readout EMA factor (default: from the checkpoint)")
     ap.add_argument("--hold", type=int, default=1, help="frames the score must stay above the threshold")
     ap.add_argument("--weight-bits", type=int, default=8)
+    ap.add_argument("--weight-frac", type=int, default=None,
+                    help="fractional bits of the weights (default: as many as the largest weight allows); "
+                         "5 = Q3.5, the format of the throwdet firmware")
     ap.add_argument("--potential-bits", type=int, default=16)
     ap.add_argument("--potential-frac", type=int, default=12)
     ap.add_argument("--n-check", type=int, default=200, help="own clips used for the float/fixed comparison")
@@ -60,6 +63,10 @@ def main():
     convs = [m.conv if hasattr(m, "conv") else m for m in fused]
     max_w = max(c.weight.abs().max().item() for c in convs)
     weight_frac = args.weight_bits - 1 - max(0, math.ceil(math.log2(max_w + 1e-12)))
+    if args.weight_frac is not None:
+        if args.weight_frac > weight_frac:
+            raise SystemExit(f"max |weight| {max_w:.3f} does not fit {args.weight_frac} fractional bits")
+        weight_frac = args.weight_frac
     wfmt = FixedPointFormat(total_bits=args.weight_bits, frac_bits=weight_frac, signed=True)
     pfmt = FixedPointFormat(total_bits=args.potential_bits, frac_bits=args.potential_frac, signed=True)
     qcfg = QuantConfig(weight_format=wfmt, potential_format=pfmt,
