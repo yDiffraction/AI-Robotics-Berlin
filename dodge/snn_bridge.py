@@ -10,6 +10,9 @@ model/readout.json; robot.launch.py starts both nodes):
                  (Tim's v3 early throw-motion detector: channel 0, alpha 0.85, theta 0.85 PROVISIONAL)
            diff  d = sum over the last `window` frames of (spike[channel] - spike[neg_channel]), alarm when
                  d >= theta (2-output ball models)
+           throwdet  y = (1 - alpha) * y + alpha * (spike[1] - spike[0]), alarm when y > theta for hold_frames
+                 frames in a row (throwdet / perception hitl models, e.g. model_hitl_step1: alpha 0.2, hold 3,
+                 theta 0.6); shown on the page and set through /api/theta like ema
            then `refractory` s without alarms. An alarm is a detection: /snn/detection and the web page get it.
   reflex   a detection publishes /reflex/dash (go2_dodge.py dodges) ONLY while auto-dodge is on. It starts off;
            Y on the Go2 remote toggles it, so do the web page and /snn/auto_set. X stays the manual dodge
@@ -185,8 +188,8 @@ class Config(object):
             need.append("camera must be local, ssh, listen or replay:<file.bin>")
         if self.snn not in ("fpga", "mock"):
             need.append("snn must be fpga or mock")
-        if self.readout_mode not in ("", "ema", "diff"):
-            need.append("readout_mode must be ema or diff")
+        if self.readout_mode not in ("", "ema", "diff", "throwdet"):
+            need.append("readout_mode must be ema, diff or throwdet")
         if self.remote not in ("lowstate", "wirelesscontroller", "both", "none"):
             need.append("remote must be lowstate, wirelesscontroller, both or none")
         if self.toggle_button != "none" and self.toggle_button.lower() not in BUTTONS:
@@ -409,10 +412,18 @@ def load_readout(path):
         info["error"] = "not a JSON object"
         return info
     info["mode"] = "diff" if str(d.get("readout", "")).lower() == "diff" else "ema"
+    info["hold"] = None
+    if "spike[1]" in str(d.get("score", "")):          # throwdet / perception hitl readout.json
+        info["mode"] = "throwdet"
+        info["hold"] = int(d.get("hold_frames", 1))
+        if d.get("threshold") is not None:
+            info["theta"] = float(d["threshold"])
     m = re.search(r"=\s*([0-9]*\.?[0-9]+)\s*\*\s*y", str(d.get("rule", "")))
     for key, cast in (("alpha", float), ("theta", float), ("window", int), ("name", str)):
         if d.get(key) is not None:
             info[key] = cast(d[key])
+    if info["mode"] == "throwdet" and d.get("threshold") is not None:
+        info["theta"] = float(d["threshold"])
     if info["alpha"] is None and m:
         info["alpha"] = float(m.group(1))
     if d.get("output_channel") is not None:
@@ -441,6 +452,35 @@ class EmaReadout(object):
         prev = self.y
         self.y = self.alpha * prev + (1.0 - self.alpha) * (1.0 if out[self.channel] > 0 else 0.0)
         alarm = prev < self.theta <= self.y and k - self.last >= self.refractory
+        if alarm:
+            self.last = k
+        return self.y, alarm
+
+
+class ThrowdetReadout(object):
+    """y = (1 - alpha) * y + alpha * (spike[pos] - spike[neg]) per frame; alarm when y > theta for `hold` frames in
+    a row and the last alarm is >= refractory frames ago (throwdet live_readout.py / perception readout_spec.py).
+    The page shows it as y in -1..1 (rests near -1 while the "none" neuron fires), theta -0.99..0.99."""
+
+    mode = "throwdet"
+
+    def __init__(self, theta, alpha=0.2, hold=1, refractory=100, pos=1, neg=0):
+        self.theta, self.alpha, self.hold, self.refractory = float(theta), float(alpha), max(int(hold), 1), int(refractory)
+        self.pos, self.neg = pos, neg
+        self.y, self.run, self.last = 0.0, 0, -10 ** 9
+
+    @property
+    def value(self):
+        return self.y
+
+    def reset(self):
+        self.y, self.run = 0.0, 0
+
+    def step(self, k, out):
+        d = (1.0 if out[self.pos] > 0 else 0.0) - (1.0 if out[self.neg] > 0 else 0.0)
+        self.y = (1.0 - self.alpha) * self.y + self.alpha * d
+        self.run = self.run + 1 if self.y > self.theta else 0
+        alarm = self.run == self.hold and k - self.last >= self.refractory
         if alarm:
             self.last = k
         return self.y, alarm
@@ -950,9 +990,12 @@ class Bridge(object):
         elif same and ro["theta"] is not None:
             theta = ro["theta"]
         else:
-            theta = 0.85 if mode == "ema" else 3.0
+            theta = 0.6 if mode == "throwdet" else 0.85 if mode == "ema" else 3.0
         refr = int(round(cfg.refractory * 1e6 / FRAME_US))
-        if mode == "ema":
+        if mode == "throwdet":
+            alpha = float(cfg.alpha) if str(cfg.alpha).strip() else (ro["alpha"] if ro["alpha"] is not None else 0.2)
+            self.readout = ThrowdetReadout(theta, alpha, ro.get("hold") or 1, refr)
+        elif mode == "ema":
             alpha = float(cfg.alpha) if str(cfg.alpha).strip() else (ro["alpha"] if ro["alpha"] is not None else 0.85)
             if not 0 < alpha < 1:
                 raise SystemExit("alpha must be in (0, 1)")
@@ -964,7 +1007,7 @@ class Bridge(object):
         self.model_name = cfg.model_name or ro["name"] or (
             "Mock SNN (airspace tripwire)" if self.mock else
             "Early throw-motion SNN (v3)" if mode == "ema" else "Ball SNN (diff readout)")
-        self.n_out = max(3, cfg.channel + 1, cfg.neg_channel + 1 if mode == "diff" else 0)
+        self.n_out = max(3, cfg.channel + 1, cfg.neg_channel + 1 if mode == "diff" else 0, 2 if mode == "throwdet" else 0)
         # camera and frames
         self.binner, self.display = Binner(), Display()
         self.frames = queue.Queue(maxsize=64)
@@ -996,7 +1039,7 @@ class Bridge(object):
     def start(self):
         self.log.info("model %s: %s readout, theta %g, channel %d, refractory %.1f s%s" % (
             self.model_name, self.readout.mode, self.readout.theta, self.cfg.channel, self.cfg.refractory,
-            ", alpha %g" % self.readout.alpha if self.readout.mode == "ema" else ", window %d" % self.cfg.window))
+            ", alpha %g" % self.readout.alpha if self.readout.mode in ("ema", "throwdet") else ", window %d" % self.cfg.window))
         self.log.info("auto-dodge %s at start (Y on the remote, the web page or /snn/auto_set toggle it)"
                       % ("ON" if self.auto else "off"))
         self.camera = Camera(self, self.cfg)
@@ -1174,7 +1217,8 @@ class Bridge(object):
         theta = float(theta)
         if not math.isfinite(theta):
             raise ValueError("theta must be a finite number")
-        lo, hi = (0.01, 0.99) if self.readout.mode == "ema" else (1.0, float(self.readout.window))
+        lo, hi = ((0.01, 0.99) if self.readout.mode == "ema" else (-0.99, 0.99) if self.readout.mode == "throwdet"
+                  else (1.0, float(self.readout.window)))
         self.readout.theta = round(min(max(theta, lo), hi), 4)
         self.log.info("theta set to %g" % self.readout.theta)
 
@@ -1229,6 +1273,8 @@ class Bridge(object):
                      "mock": self.mock is not None, "y": finite(ro.value, 4), "refractory": self.cfg.refractory}
             if ro.mode == "ema":
                 model["alpha"] = ro.alpha
+            elif ro.mode == "throwdet":
+                model.update(alpha=ro.alpha, hold=ro.hold, channel=ro.pos, neg_channel=ro.neg)
             else:
                 model.update(window=ro.window, neg_channel=ro.neg_channel)
             if self.ros is None:

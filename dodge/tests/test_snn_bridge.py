@@ -28,6 +28,10 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import snn_bridge as B  # noqa: E402
 
+# The ema tests below were written against Tim's v3 readout. model/readout.json now ships the deployed
+# hitl_step1 (throwdet) readout, so those tests load the v3 readout from this fixture instead.
+V3_READOUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "readout_v3.json")
+
 
 # ----------------------------------------------------------------------------- helpers
 def cbor(v):
@@ -340,6 +344,9 @@ class TestReadout(unittest.TestCase):
 
     def test_load_readout(self):
         ro = B.load_readout(os.path.join(os.path.dirname(B.__file__), "model", "readout.json"))
+        self.assertEqual((ro["mode"], ro["alpha"], ro["theta"], ro["error"]),
+                         ("throwdet", 0.2, 0.6, ""))          # the deployed hitl_step1 readout
+        ro = B.load_readout(V3_READOUT)
         self.assertEqual((ro["mode"], ro["alpha"], ro["theta"], ro["channel"], ro["error"]),
                          ("ema", 0.85, 0.85, 0, ""))
         with tempfile.TemporaryDirectory() as d:
@@ -437,10 +444,11 @@ class TestFilesAndParams(unittest.TestCase):
                 B.Config(bad)
 
     def test_theta_from_file_and_overrides(self):
-        self.assertEqual(B.Bridge(B.Config({"snn": "mock"})).readout.theta, 0.85)
-        b = B.Bridge(B.Config({"snn": "mock", "theta": "0.7"}))
+        self.assertEqual(B.Bridge(B.Config({"snn": "mock"})).readout.theta, 0.6)
+        self.assertEqual(B.Bridge(B.Config({"snn": "mock", "readout_file": V3_READOUT})).readout.theta, 0.85)
+        b = B.Bridge(B.Config({"snn": "mock", "readout_file": V3_READOUT, "theta": "0.7"}))
         self.assertEqual((b.readout.mode, b.readout.theta, b.readout.alpha), ("ema", 0.7, 0.85))
-        b = B.Bridge(B.Config({"snn": "mock", "readout_mode": "diff"}))
+        b = B.Bridge(B.Config({"snn": "mock", "readout_file": V3_READOUT, "readout_mode": "diff"}))
         self.assertEqual((b.readout.mode, b.readout.theta, b.readout.window), ("diff", 3.0, 10))
         b.set_theta(50)
         self.assertEqual(b.readout.theta, 10.0)             # clamped to the window
@@ -520,7 +528,7 @@ class TestBridge(unittest.TestCase):
             with open(os.path.join(web, "index.html"), "w") as fh:
                 fh.write("<!doctype html><title>t</title>")
             b = B.Bridge(B.Config({"camera": "replay:" + rec, "snn": "mock", "web_port": 0, "web_host": "127.0.0.1",
-                                   "web_dir": web}))
+                                   "web_dir": web, "readout_file": V3_READOUT}))
             b.start()
             try:
                 self.assertTrue(self.wait(lambda: b.web_port))
@@ -621,7 +629,7 @@ class TestBridge(unittest.TestCase):
             rec = os.path.join(d, "rec.bin")
             synthetic_recording(rec, seconds=2.0, throw_at=0.5)
             b = B.Bridge(B.Config({"camera": "replay:" + rec, "snn": "fpga", "spleat_port": srv.port,
-                                   "web_port": 0, "web_host": "127.0.0.1"}))
+                                   "web_port": 0, "web_host": "127.0.0.1", "readout_file": V3_READOUT}))
             b.start()
             try:
                 self.assertTrue(self.wait(lambda: b.snapshot()["fpga"]["state"] == "connected"))

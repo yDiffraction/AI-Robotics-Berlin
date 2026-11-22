@@ -277,6 +277,7 @@
     }
 
     function yRange() {
+      if (app.mode === 'throwdet') return [-1, 1];                // EMA of spike[1] - spike[0]
       if (app.mode !== 'diff') return [0, 1];
       let lo = 0, hi = 1;
       const k0 = Math.floor(kDisp - SPAN);
@@ -293,6 +294,7 @@
     }
 
     function ticks(lo, hi) {
+      if (app.mode === 'throwdet') return [-1, -0.5, 0, 0.5, 1];
       if (app.mode !== 'diff') return [0, 0.5, 1];
       const span = hi - lo, raw = span / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
       const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => span / s <= 5) || 10 * mag;
@@ -307,7 +309,8 @@
       if (w < 20) return;
       const pw = w - R, k1 = kDisp, k0 = k1 - SPAN;
       const X = (k) => ((k - k0) / SPAN) * pw;
-      const chans = app.mode === 'diff' ? [app.channel, app.channel === 0 ? 1 : 0] : [app.channel];
+      const chans = app.mode === 'diff' ? [app.channel, app.channel === 0 ? 1 : 0]
+        : app.mode === 'throwdet' ? [app.channel, app.negChannel] : [app.channel];
       const gap = 3, rowH = (h - gap * (chans.length - 1)) / chans.length;
       g.font = `500 11px ${FONT}`;
       g.textBaseline = 'middle';
@@ -475,8 +478,10 @@
     if (!s || typeof s !== 'object') return;
     app.status = s;
     const m = s.model || {};
-    const mode = m.readout === 'diff' ? 'diff' : 'ema';
-    if (mode !== app.mode) { app.mode = mode; configureTheta(); plot.setRows(mode === 'diff' ? 2 : 1); }
+    const mode = m.readout === 'diff' ? 'diff' : m.readout === 'throwdet' ? 'throwdet' : 'ema';
+    if (mode !== app.mode) { app.mode = mode; configureTheta(); plot.setRows(mode === 'ema' ? 1 : 2); }
+    app.negChannel = isNum(m.neg_channel) ? m.neg_channel : 0;
+    app.hold = isNum(m.hold) ? m.hold : 1;
     app.channel = isNum(m.channel) ? m.channel : 0;
 
     // auto-dodge: keep an optimistic local change until the bridge confirms it
@@ -514,7 +519,8 @@
   function renderModel() {
     const m = (app.status && app.status.model) || {};
     const name = m.name || 'SNN';
-    const readout = app.mode === 'diff' ? 'Σ(ch0 − ch1) readout' : 'EMA readout';
+    const readout = app.mode === 'diff' ? 'Σ(ch0 − ch1) readout'
+      : app.mode === 'throwdet' ? `EMA(ch ${app.channel} − ch ${app.negChannel}) readout, hold ${app.hold}` : 'EMA readout';
     setText(el.snnSub, `${name} · ${readout}`);
     const fpga = (app.status && app.status.fpga) || {};
     const mock = !!m.mock || fpga.state === 'mock';
@@ -522,7 +528,8 @@
     setText(el.snnTag, mock ? 'Mock SNN' : 'Offline');
     setData(el.snnTag, 'tone', mock ? 'warn' : 'bad');
     const ch = app.channel;
-    const label = app.mode === 'diff' ? `ch ${ch} − ch ${ch === 0 ? 1 : 0}` : `ch ${ch}`;
+    const label = app.mode === 'diff' ? `ch ${ch} − ch ${ch === 0 ? 1 : 0}`
+      : app.mode === 'throwdet' ? `ch ${ch} (throw) · ch ${app.negChannel} (none)` : `ch ${ch}`;
     if (el.rasterLabel.lastChild.textContent !== label) el.rasterLabel.lastChild.textContent = label;
   }
 
@@ -640,8 +647,8 @@
 
   // ============================================================================================ threshold
   function configureTheta() {
-    const diff = app.mode === 'diff';
-    el.theta.min = diff ? '1' : '0.05';
+    const diff = app.mode === 'diff', td = app.mode === 'throwdet';
+    el.theta.min = diff ? '1' : td ? '-0.99' : '0.05';
     el.theta.max = diff ? '20' : '0.99';
     el.theta.step = diff ? '1' : '0.01';
     if (isNum(app.theta)) setTheta(app.theta);
