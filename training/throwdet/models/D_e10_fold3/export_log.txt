@@ -1,0 +1,12 @@
+{
+ "weight_format": "Q3.5",
+ "max_abs_weight": 2.3788516521453857,
+ "potential_format": "Q4.12",
+ "threshold": 0.15,
+ "alpha": 0.05,
+ "n_check": 160,
+ "decision_agreement": 0.98125,
+ "bal_acc_float": 0.9301075268817205,
+ "bal_acc_fixed": 0.9162186379928315
+}
+wrote /home/team-1-user/throwdet/deliver/D_e10_fold3: weights.txt (64092 values), model.json, config.yaml, readout.json

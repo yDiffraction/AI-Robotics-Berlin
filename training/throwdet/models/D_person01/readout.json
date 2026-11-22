@@ -1,0 +1,60 @@
+{
+ "classes": [
+  "none",
+  "throw_motion"
+ ],
+ "frame_ms": 10,
+ "input": "binary 2x80x80 (4x4 blocks of 320x320)",
+ "score": "s_t = (1 - alpha) * s_{t-1} + alpha * (spike[1]_t - spike[0]_t)",
+ "alpha": 0.05,
+ "threshold": -0.08,
+ "hold_frames": 1,
+ "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
+ "refractory_ms": 1000,
+ "ptq_check": {
+  "weight_format": "Q3.5",
+  "max_abs_weight": 2.3788516521453857,
+  "potential_format": "Q4.12",
+  "threshold": -0.08,
+  "alpha": 0.05,
+  "n_check": 160,
+  "decision_agreement": 0.95625,
+  "bal_acc_float": 0.85752688172043,
+  "bal_acc_fixed": 0.8696236559139785
+ },
+ "calibration": {
+  "method": "best balanced accuracy over labelled 3 s windows of the training recordings (in-sample, optimistic)",
+  "model": {
+   "alpha": 0.05,
+   "hold": 1,
+   "threshold": -0.08,
+   "tp": 46,
+   "fn": 7,
+   "fp": 11,
+   "tn": 57,
+   "balanced_accuracy": 0.853
+  },
+  "model_per_camera_best": {
+   "bewegt": {
+    "alpha": 0.05,
+    "hold": 1,
+    "threshold": -0.08,
+    "tp": 23,
+    "fn": 4,
+    "fp": 6,
+    "tn": 41,
+    "balanced_accuracy": 0.862
+   },
+   "fest": {
+    "alpha": 0.2,
+    "hold": 1,
+    "threshold": 0.28,
+    "tp": 24,
+    "fn": 2,
+    "fp": 2,
+    "tn": 19,
+    "balanced_accuracy": 0.914
+   }
+  }
+ }
+}

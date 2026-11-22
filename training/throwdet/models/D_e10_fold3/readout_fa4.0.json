@@ -1,0 +1,25 @@
+{
+ "classes": [
+  "none",
+  "throw_motion"
+ ],
+ "frame_ms": 10,
+ "input": "binary 2x80x80 (4x4 blocks of 320x320)",
+ "score": "s_t = (1 - alpha) * s_{t-1} + alpha * (spike[1]_t - spike[0]_t)",
+ "alpha": 0.1,
+ "threshold": 0.0,
+ "hold_frames": 5,
+ "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
+ "refractory_ms": 1000,
+ "ptq_check": {
+  "weight_format": "Q3.5",
+  "max_abs_weight": 2.3788516521453857,
+  "potential_format": "Q4.12",
+  "threshold": 0.15,
+  "alpha": 0.05,
+  "n_check": 160,
+  "decision_agreement": 0.98125,
+  "bal_acc_float": 0.9301075268817205,
+  "bal_acc_fixed": 0.9162186379928315
+ }
+}

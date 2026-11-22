@@ -1,0 +1,12 @@
+{
+ "weight_format": "Q3.5",
+ "max_abs_weight": 3.099583864212036,
+ "potential_format": "Q4.12",
+ "threshold": 0.25,
+ "alpha": 0.05,
+ "n_check": 160,
+ "decision_agreement": 0.9375,
+ "bal_acc_float": 0.946236559139785,
+ "bal_acc_fixed": 0.8709677419354839
+}
+wrote /home/team-1-user/throwdet/deliver/C_all: weights.txt (64092 values), model.json, config.yaml, readout.json

@@ -1,0 +1,12 @@
+{
+ "weight_format": "Q3.5",
+ "max_abs_weight": 2.6893351078033447,
+ "potential_format": "Q4.12",
+ "threshold": 0.15,
+ "alpha": 0.05,
+ "n_check": 160,
+ "decision_agreement": 0.975,
+ "bal_acc_float": 0.9717741935483871,
+ "bal_acc_fixed": 0.9879032258064516
+}
+wrote /home/team-1-user/throwdet/deliver/A_neg: weights.txt (64092 values), model.json, config.yaml, readout.json

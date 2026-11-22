@@ -1,0 +1,12 @@
+{
+ "weight_format": "Q3.5",
+ "max_abs_weight": 2.355879545211792,
+ "potential_format": "Q4.12",
+ "threshold": 0.4,
+ "alpha": 0.2,
+ "n_check": 160,
+ "decision_agreement": 0.95625,
+ "bal_acc_float": 0.9498207885304659,
+ "bal_acc_fixed": 0.9717741935483871
+}
+wrote /home/team-1-user/throwdet/deliver/B_neg_shiftx: weights.txt (64092 values), model.json, config.yaml, readout.json
