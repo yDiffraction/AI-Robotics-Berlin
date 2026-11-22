@@ -2,7 +2,8 @@
 """Dodge only: the Go2 jumps out of the way when a trigger arrives, then walks slowly back to where it was.
 
 Triggers:
-  X button of the Go2 remote   (/wirelesscontroller, unitree_go/msg/WirelessController, keys bit 10; on press)
+  X button of the Go2 remote   (keys bit 10, on press; read from /lowstate wireless_remote bytes 2-3 and from
+                               /wirelesscontroller, unitree_go WirelessController: some Go2s fill only one of them)
   /reflex/dash                 ros2 topic pub --once /reflex/dash std_msgs/msg/Empty "{}"   (also dodge_keys.py)
   /dodge/stop                  ros2 topic pub --once /dodge/stop std_msgs/msg/Empty "{}"    stop at once (StopMove)
 
@@ -67,6 +68,7 @@ class Go2Dodge(Node):
         odom = p("odom", "sportmodestate").value                          # sportmodestate | odometry | none
         odom_topic = p("odom_topic", "").value
         controller_topic = p("controller_topic", "/wirelesscontroller").value
+        remote = p("remote", "both").value                                # lowstate | wirelesscontroller | both
         if self.direction not in DIRS:
             raise SystemExit("direction must be one of %s" % ", ".join(DIRS))
         if self.button != "none" and self.button not in BUTTONS:
@@ -78,9 +80,14 @@ class Go2Dodge(Node):
             self.create_subscription(Empty, topic, lambda _m, t=topic: self.on_dash(t), 10)
         for topic in ("/dodge/stop", "/reflex/stop"):
             self.create_subscription(Empty, topic, lambda _m: self.stop("stop topic"), 10)
-        if self.button != "none":
+        self.keys = {}
+        if self.button != "none" and remote in ("wirelesscontroller", "both"):
             from unitree_go.msg import WirelessController
-            self.create_subscription(WirelessController, controller_topic, self.on_remote, qos_profile_sensor_data)
+            self.create_subscription(WirelessController, controller_topic,
+                                     lambda m: self.on_keys("wirelesscontroller", int(m.keys)), qos_profile_sensor_data)
+        if self.button != "none" and remote in ("lowstate", "both"):
+            from unitree_go.msg import LowState
+            self.create_subscription(LowState, "/lowstate", self.on_lowstate, qos_profile_sensor_data)
         self.pose, self.pose_time = None, 0.0                             # (x, y, yaw) from the odometry
         if odom == "sportmodestate":
             from unitree_go.msg import SportModeState
@@ -92,7 +99,7 @@ class Go2Dodge(Node):
             self.create_subscription(Odometry, odom_topic or "/odom", self.on_odometry, qos_profile_sensor_data)
 
         self.state, self.since, self.busy_until = IDLE, 0.0, 0.0
-        self.vel, self.last_sent, self.keys = (0.0, 0.0), 0.0, 0
+        self.vel, self.last_sent = (0.0, 0.0), 0.0
         self.start, self.out_dist, self.back_dist = None, 0.0, 0.0
         self.create_timer(0.02, self.tick)
         self.get_logger().info(
@@ -112,12 +119,17 @@ class Go2Dodge(Node):
         yaw = math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
         self.set_pose(m.pose.pose.position.x, m.pose.pose.position.y, yaw)
 
-    def on_remote(self, m):
+    def on_lowstate(self, m):
+        r = m.wireless_remote                                             # head 0x55 0x51, then 2 bytes of keys
+        if len(r) >= 4 and r[0] == 0x55 and r[1] == 0x51:
+            self.on_keys("lowstate", int(r[2]) | int(r[3]) << 8)
+
+    def on_keys(self, source, keys):
         bit = 1 << BUTTONS[self.button]
-        pressed, was = bool(m.keys & bit), bool(self.keys & bit)
-        self.keys = m.keys
-        if pressed and not was:
-            self.on_dash("button " + self.button.upper())
+        was = self.keys.get(source)
+        self.keys[source] = keys
+        if was is not None and keys & bit and not was & bit:            # press, not hold
+            self.on_dash("button %s (%s)" % (self.button.upper(), source))
 
     def odom_fresh(self):
         return self.pose is not None and time.monotonic() - self.pose_time < ODOM_TIMEOUT

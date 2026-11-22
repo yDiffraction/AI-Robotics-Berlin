@@ -20,6 +20,20 @@ python3 dodge/go2_dodge.py                                  # real: X on the rem
 python3 dodge/dodge_keys.py                                 # optional, second terminal: d = dodge, space = STOP, q = quit
 ```
 
+On the Kria of the Go2 (it reaches the Go2 on 192.168.123.99): install the starter overlay once
+(`starter/go2-kria/kria-runtime.tar.gz`, extracted to `/opt/go2-dodge`), copy `go2_dodge.py`, `dodge_keys.py` and
+`kria/*.sh` to `/root/dodge/`, then from the laptop:
+
+```bash
+ssh root@192.168.77.1 /root/dodge/start.sh                    # runs in the background, log /root/dodge/dodge.log
+ssh root@192.168.77.1 /root/dodge/start.sh -p dry_run:=true   # same, log only
+ssh root@192.168.77.1 tail -f /root/dodge/dodge.log
+ssh root@192.168.77.1 /root/dodge/stop.sh
+```
+
+The X button is read from `/lowstate` (`wireless_remote` bytes 2-3) and from `/wirelesscontroller`: on our Go2 only
+`/lowstate` carries the remote, `/wirelesscontroller` stays silent.
+
 Trigger and watch from any shell or agent on the same ROS network:
 
 ```bash
