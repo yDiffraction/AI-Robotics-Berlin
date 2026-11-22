@@ -8,8 +8,11 @@
 #   throwdet/deploy_board.sh --list                         # list the backups on the board
 #
 # firmware_dir holds spleat.bit.bin and spleat.dtbo (riversdk.dev firmware job, firmware-kv260.tar.gz
-# unpacked). One firmware serves all models in throwdet/models (same architecture, 2 outputs,
-# weights Q3.5, potentials Q4.12); only weights.txt differs between them.
+# unpacked). Two firmwares fit our models (same v1 architecture, potentials Q4.12):
+#   2 outputs, weights Q3.5: riversdk job #43, models in throwdet/models/*
+#   11 outputs, weights Q2.6: the gesture firmware (job #25 layout) shared with the rest of the team,
+#     models exported with export.py --pad-outputs 11 --weight-frac 6 (e.g. D_person01_neg_11out)
+# Without firmware_dir the script checks that the board's output count matches the model.
 #
 # Every deploy first copies the files it replaces to /root/fw_backup/<timestamp>/ on the board.
 # Host: KRIA=root@192.168.77.1 (default) or KRIA=root@durance-kria.local.
@@ -60,11 +63,22 @@ FWDIR=${2:-}
 for f in weights.txt config.yaml readout.json; do
   test -f "$MODEL/$f" || { echo "missing $MODEL/$f" >&2; exit 1; }
 done
-grep -q "channels: 2" <(sed -n '/^outputs/,$p' "$MODEL/config.yaml") || { echo "$MODEL/config.yaml: not a 2-output model" >&2; exit 1; }
+outs=$(sed -n '/^outputs/,$p' "$MODEL/config.yaml" | awk '/channels/{print $2; exit}')
 wf=$(python3 -c "import json;print(json.load(open('$MODEL/readout.json'))['ptq_check']['weight_format'])")
-if [ "$wf" != "Q3.5" ]; then
-  echo "$MODEL has weights in $wf, the firmware expects Q3.5 (re-export with export.py --weight-frac 5)" >&2
-  exit 1
+n=$(wc -w < "$MODEL/weights.txt" | tr -d ' ')
+echo "$(basename "$MODEL"): $outs outputs, weights $wf, $n values"
+case "$outs/$wf" in
+  2/Q3.5) ;;   # 2-class firmware, riversdk job #43
+  11/Q2.6) ;;  # 11-output gesture firmware (job #25 layout); export.py --pad-outputs 11 --weight-frac 6
+  *) echo "unknown combination: $outs outputs with $wf weights" >&2; exit 1 ;;
+esac
+if [ -z "$FWDIR" ]; then
+  board_outs=$(ssh "$KRIA" "sed -n '/^outputs/,\$p' $CFG | awk '/channels/{print \$2; exit}'")
+  if [ "$board_outs" != "$outs" ]; then
+    echo "the board firmware has $board_outs outputs, $(basename "$MODEL") needs $outs: pass a firmware dir" \
+         "(2 outputs: vendor/firmware/throwdet-2class-v1-q3.5) or use the ${board_outs}-output export" >&2
+    exit 1
+  fi
 fi
 if [ "$(tail -c1 "$MODEL/weights.txt" | xxd -p)" = 0a ]; then
   echo "$MODEL/weights.txt ends with a newline (the board rejects it)" >&2; exit 1

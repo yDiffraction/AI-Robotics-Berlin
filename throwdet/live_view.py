@@ -305,12 +305,12 @@ class BoardBackend:
             if reply.get("error"):
                 raise RuntimeError(f"SPLEAT server error: {reply['error']}")
             s = np.frombuffer(reply.get("payload") or b"", "<f4")
-            if len(s) != 2:
+            if len(s) < 2:
                 if not self.warned:
-                    print(f"WARNING: the board returns {len(s)} outputs, the throw detector has 2. "
-                          "Deploy the 2-class firmware first (throwdet/deploy_board.sh).", flush=True)
+                    print(f"WARNING: the board returns {len(s)} outputs, the throw detector needs 2.", flush=True)
                     self.warned = True
-                s = np.zeros(2, np.float32) if len(s) < 2 else s[:2]
+                s = np.zeros(2, np.float32)
+            s = s[:2]  # 11-output firmware: outputs 0 and 1 are the detector (export.py --pad-outputs 11)
             out.append(s)
         return np.array(out)
 

@@ -35,14 +35,14 @@ def frames_of(path):
     return x, t0
 
 
-def diff_of(ckpt, frames, dev, fixed=False):
+def diff_of(ckpt, frames, dev, fixed=False, weight_frac=5):
     ck = torch.load(ckpt, map_location="cpu", weights_only=False)
     net = ThrowSNN(2, arch=ck["arch"], tau=ck["args"]["tau"])
     net.load_state_dict(ck["model"])
     net.eval()
     if fixed:  # what the board runs: BN fused, weights Q3.5, potentials Q4.12 (as export.py)
         from riverops.nn import FixedPointFormat, QuantConfig, prepare_ptq
-        q = QuantConfig(weight_format=FixedPointFormat(total_bits=8, frac_bits=5, signed=True),
+        q = QuantConfig(weight_format=FixedPointFormat(total_bits=8, frac_bits=weight_frac, signed=True),
                         potential_format=FixedPointFormat(total_bits=16, frac_bits=12, signed=True),
                         enable_weight_quant=True, enable_potential_quant=True, qat_mode=False)
         seq = prepare_ptq(net.export_module(), q, fuse=True).eval()
@@ -115,6 +115,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--compare", default=None, help="another checkpoint evaluated the same way")
     ap.add_argument("--fixed", action="store_true", help="calibrate on the fixed-point (board) network")
+    ap.add_argument("--weight-frac", type=int, default=5, help="fractional weight bits of the firmware (5 = Q3.5, 6 = Q2.6)")
     ap.add_argument("--fp-weight", type=float, default=1.0,
                     help="cost of a false alarm relative to a missed throw (>1: fewer false alarms)")
     args = ap.parse_args()
@@ -126,7 +127,7 @@ def main():
     res = {}
     for name, ck in (("model", args.checkpoint), ("compare", args.compare)):
         if ck:
-            diffs = {s: diff_of(ck, x, dev, args.fixed) for s, x in frames.items()}
+            diffs = {s: diff_of(ck, x, dev, args.fixed, args.weight_frac) for s, x in frames.items()}
             res[name] = evaluate(diffs, rows, t0s, args.fp_weight)
             per_cam = {}
             for cam in sorted({r["camera"] for r in rows}):

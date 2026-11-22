@@ -43,6 +43,10 @@ def main():
                          "5 = Q3.5, the format of the throwdet firmware")
     ap.add_argument("--potential-bits", type=int, default=16)
     ap.add_argument("--potential-frac", type=int, default=12)
+    ap.add_argument("--pad-outputs", type=int, default=None,
+                    help="export with this many output neurons (e.g. 11 for the gesture firmware): outputs "
+                         "0 and 1 are the detector, the others get zero weights and the lowest bias, so "
+                         "they never spike")
     ap.add_argument("--n-check", type=int, default=200, help="own clips used for the float/fixed comparison")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
@@ -57,6 +61,16 @@ def main():
     model = ThrowSNN(2, arch=ck["arch"], tau=targs["tau"])
     model.load_state_dict(ck["model"])
     model.eval()
+    if args.pad_outputs:
+        big = ThrowSNN(args.pad_outputs, arch=ck["arch"], tau=targs["tau"])
+        sd = {k: v for k, v in ck["model"].items() if not k.startswith("head.conv")}
+        big.load_state_dict(sd, strict=False)
+        with torch.no_grad():
+            big.head.conv.weight.zero_()
+            big.head.conv.weight[:2] = ck["model"]["head.conv.weight"]
+            big.head.conv.bias.fill_(-100.0)  # clamped to the most negative representable value
+            big.head.conv.bias[:2] = ck["model"]["head.conv.bias"]
+        model = big.eval()
     net = model.export_module().eval()
     fused = fuse_model(net).eval()
 
@@ -65,7 +79,9 @@ def main():
     weight_frac = args.weight_bits - 1 - max(0, math.ceil(math.log2(max_w + 1e-12)))
     if args.weight_frac is not None:
         if args.weight_frac > weight_frac:
-            raise SystemExit(f"max |weight| {max_w:.3f} does not fit {args.weight_frac} fractional bits")
+            n_clip = sum(int((c.weight.abs() > 2 ** (args.weight_bits - 1 - args.weight_frac)).sum()) for c in convs)
+            print(f"WARNING: max |weight| {max_w:.3f} exceeds Q{args.weight_bits - args.weight_frac}."
+                  f"{args.weight_frac}; {n_clip} weights are clipped (the float/fixed check below includes this)")
         weight_frac = args.weight_frac
     wfmt = FixedPointFormat(total_bits=args.weight_bits, frac_bits=weight_frac, signed=True)
     pfmt = FixedPointFormat(total_bits=args.potential_bits, frac_bits=args.potential_frac, signed=True)
@@ -113,9 +129,10 @@ def main():
         "application:\n  host: \"0.0.0.0\"\n  port: 3333\n  weights_file: /root/weights.txt\n  max_concurrency: 40\n"
         "inputs:\n  channels: 2\n  height: 80\n  width: 80\n"
         f"  scaling: {float(2 ** args.potential_frac)}\n"
-        "outputs:\n  channels: 2\n  height: 1\n  width: 1\n")
+        f"outputs:\n  channels: {args.pad_outputs or 2}\n  height: 1\n  width: 1\n")
     (out / "readout.json").write_text(json.dumps({
-        "classes": ["none", "throw_motion"], "frame_ms": 10, "input": "binary 2x80x80 (4x4 blocks of 320x320)",
+        "classes": ["none", "throw_motion"] + [f"unused_{k}" for k in range(2, args.pad_outputs or 2)],
+        "frame_ms": 10, "input": "binary 2x80x80 (4x4 blocks of 320x320)",
         "score": "s_t = (1 - alpha) * s_{t-1} + alpha * (spike[1]_t - spike[0]_t)",
         "alpha": alpha, "threshold": thr, "hold_frames": args.hold,
         "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
