@@ -422,7 +422,7 @@ def load_readout(path):
 
 class EmaReadout(object):
     """y = alpha * y + (1 - alpha) * spike per frame; alarm when y rises past theta (prev < theta <= y) and the
-    last alarm is >= refractory frames ago (Tim's live_early readout, frame index k = 10 ms of camera time)."""
+    last alarm is >= refractory frames ago (Tim's perception readout, frame index k = 10 ms of camera time)."""
 
     mode = "ema"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GOAL B v2 (runs/early_ctx): fixes on top of ctx.py (ctx.py itself is unchanged, old results stay reproducible).
+"""GOAL B v2 (experiments/early_ctx_eval): fixes on top of ctx.py (ctx.py itself is unchanged, old results stay reproducible).
 
   train   * batch 32 by default: the PLIF time loop is launch-bound, a 4x bigger batch costs ~15 % more time per step
           * time-budgeted cosine LR (--minutes), so a run fits a wall-clock slot

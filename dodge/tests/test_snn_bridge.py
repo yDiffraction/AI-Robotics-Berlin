@@ -4,7 +4,7 @@
   python3 dodge/tests/test_snn_bridge.py            (or: python3 -m unittest discover dodge/tests)
 
 Pure parts: CBOR / SPLEAT messages, event binning, the display bitmaps, the ema / diff readouts (ema checked
-against Tim's live_early readout), the remote Y edge, readout.json, the mock SNN, .bin reading, parameters.
+against Tim's perception readout), the remote Y edge, readout.json, the mock SNN, .bin reading, parameters.
 In-process: the SPLEAT client and the bridge's FPGA loop against a fake SPLEAT server, and the web API
 (/api/state, POST /api/*, /stream) with a synthetic recording replayed through the mock SNN.
 """
@@ -55,7 +55,7 @@ def result(fid, outs, latency=1234, error=None):
 
 
 class TimReadout:
-    """Reference: live_early/viewer.py Readout on origin/Tim (copied unchanged)."""
+    """Reference: perception/viewer.py Readout on origin/Tim (copied unchanged)."""
 
     def __init__(self, alpha, theta, refractory_frames=100):
         self.alpha, self.theta, self.refr = alpha, theta, refractory_frames

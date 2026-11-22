@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GOAL B early throw detector trained and evaluated on WHOLE recordings (runs/early_ctx).
+"""GOAL B early throw detector trained and evaluated on WHOLE recordings (experiments/early_ctx_eval).
 
   train   windows cut from whole recordings of the training sessions (pauses, walking, ball pick-up and
           camera handling are real negatives; throws AND feints positive), optional foreign negatives

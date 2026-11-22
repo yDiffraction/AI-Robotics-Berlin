@@ -2,7 +2,7 @@
 
 Trains, streams and scores the early-detection SNN on **whole recordings** (pauses, walking, ball pick-up and
 camera handling are real negatives; throws and feints are positive). Runs on the A100 in `~/early_ctx/`;
-this folder is a copy of that code. The exported board models are in `live_early/`.
+this folder is a copy of that code. The exported board models are in `perception/`.
 
 | file | what |
 |---|---|

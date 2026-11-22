@@ -3,7 +3,7 @@
 
 Every clip (1.2 s, timestamps from 0) becomes binary [120, 2, 80, 80] frames of 10 ms, stored as
 sorted active-cell codes (code = ((frame*2+p)*80+y)*80+x), the board's input format (despot
-downsampling 4, 100 Hz). Same encoding as pretrain/prep_throw.py on the Tim branch.
+downsampling 4, 100 Hz). Same encoding as training/pretrain/prep_throw.py on the Tim branch.
 
 Target: 1 = a throw motion is happening (real throw OR feint: the arm swings like a throw),
 0 = anything else. Motion clips have their decision moment (event-rate peak of the swing) at

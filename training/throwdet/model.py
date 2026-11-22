@@ -1,6 +1,6 @@
 """FPGA-exportable spiking conv net for GenX320 frames on the KV260 (riverops).
 
-Constraints from documentation/DEPLOY.md and the riverops exporter:
+Constraints from Durance deployment docs (riversdk.dev, not included here) and the riverops exporter:
   * input  [B, T, 2, 80, 80]  (despot: downsampling=4, 100 Hz -> 10 ms frames)
   * only spiking conv layers (no Linear, no ReduceMean) -> last layer is a
     conv whose output is [B, T, num_classes, 1, 1], read out as spike counts

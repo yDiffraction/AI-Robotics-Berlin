@@ -27,13 +27,11 @@ kria-runtime.tar.gz
 recording/sessions/**/*.bin
 recording/logs/
 recording/previews/
-training/hitl/sessions/
-training/hitl/runs/
-live_early/hitl/sessions/
-live_early/hitl/runs/
+perception/hitl/sessions/
+perception/hitl/runs/
 
-# Large generated data banks (exceed the GitHub 100 MB limit)
-training/early/banks/*.npz
+# Generated training data (regenerate with training/throwdet/datagen, see DATASET.md there)
+dataset/build/
 experiments/early_v1/banks/*.npz
 
 # Local tooling

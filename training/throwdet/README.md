@@ -23,7 +23,7 @@ the alarms; see **Live view on the Kria** below. Switch models with `deploy_boar
 **Question the network answers, every 10 ms in the live feed: is a throw motion happening right now?**
 A real throw and a feint both count as throw motion (the arm swings like a throw). Everything
 else does not: standing, walking, waving, an empty scene. Deciding whether the ball is actually
-released is a separate task (see `pretrain/` and `~/robust` on the Tim branch).
+released is a separate task (see `training/pretrain/` and `~/robust` on the Tim branch).
 
 Status: six candidate models are ready for the live test, see **Models to test live**.
 Experiments ran overnight on 21/22 Nov; the results table is below.
@@ -45,7 +45,7 @@ use the board format. A, B and C are trained on all our data (all recordings, sy
 | `C_all` | e01: balanced domains, DailyDVS thinned to our density | the first, plain recipe; second-best CV (AUC 0.90) |
 
 Each folder contains:
-- **For the board:** `model.json`, `weights.txt`, `config.yaml`. Same layout as `training/export_snn.py`; confirm the weight order with Durance before flashing.
+- **For the board:** `model.json`, `weights.txt`, `config.yaml`. Same layout as `experiments/tiny_snn/export_snn.py`; confirm the weight order with Durance before flashing.
 - **`model.pt`:** float checkpoint for `live_view.py` (mac backend), `replay.py` and `adapt.sh`.
 - **`readout.json`:** the live rule at the default operating point of about 2 false alarms per minute.
 - **`readout_fa1.0.json` / `readout_fa4.0.json`:** stricter (about 1 per minute) and more sensitive (about 4 per minute) variants of the same model. Only alpha, threshold and hold change, so no re-export is needed.
@@ -165,7 +165,7 @@ camera sender on the board is stopped with it.
 
 ## Board format
 
-Same as `pretrain/` on the Tim branch, so it runs on the KV260:
+Same as `training/pretrain/` on the Tim branch, so it runs on the KV260:
 
 | | |
 |---|---|
@@ -229,7 +229,7 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 | `cut_recording.py`, `adapt.sh` | cut site recordings into clips and fine-tune a delivered model on them |
 | `soup.py` | weight averaging of runs (tested, does not help) |
 | `worker.sh` | job queue on the A100 (`~/throwdet/queue.txt`) |
-| `model.py`, `speedpatch.py` | copied from `pretrain/` on the Tim branch |
+| `model.py`, `speedpatch.py` | copied from `training/pretrain/` on the Tim branch |
 | `models/` | the candidate models for the live test |
 
 ## Results

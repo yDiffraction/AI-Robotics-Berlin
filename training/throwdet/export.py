@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a throw-motion detector checkpoint for the Kria (same artefacts as training/export_snn.py).
+"""Export a throw-motion detector checkpoint for the Kria (same artefacts as experiments/tiny_snn/export_snn.py).
 
 Writes into <out>/:
   model.json    River Model Graph (BN fused into the convolutions)
@@ -10,7 +10,7 @@ Writes into <out>/:
 and compares float vs fixed-point (PTQ) on our own clips: agreement of the alarm decision and the
 balanced accuracy of both.
 
-Same layout assumptions as training/export_snn.py (confirm with Durance before flashing).
+Same layout assumptions as experiments/tiny_snn/export_snn.py (confirm with Durance before flashing).
 
   python throwdet/export.py ~/throwdet/runs/<tag>/final.pt --thr 0.1
 """

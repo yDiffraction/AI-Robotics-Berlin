@@ -19,7 +19,7 @@ Pipeline
        durance other human motion from the Durance gesture dataset as extra `idle` (local only)
   5. Write manifest.csv (one row per file) and MP4 review videos / reels.
 
-Output layout (each folder is a "session" for training/train_snn.py):
+Output layout (each folder is a "session" for experiments/tiny_snn/train_snn.py):
   <out>/real_train  real_val  real_test  aug_train  splice_train  synth_train  video_train  durance_train
   <out>/manifest.csv  <out>/videos/*.mp4
 
