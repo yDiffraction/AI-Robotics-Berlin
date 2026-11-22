@@ -60,6 +60,17 @@ The three final models (trained on all data, so 01 is in their training set) wit
 
 The threshold picked on the CV models does not transfer exactly to a newly trained model. Check it with `replay.py` on a site recording, and move to `readout_fa1.0.json` (stricter) or `readout_fa4.0.json` (more sensitive) if needed.
 
+### Integration with the dodge (Tim branch, `sim/deploy/`)
+
+Today the dodge is triggered by hand: a key (`l`/`d`/`r`) or a button. The detector only has to call that trigger when an alarm fires. That needs a thin bridge on the host that reads the board output, applies the readout above and sends the trigger. The dodge controller itself does not change.
+
+Timing budget:
+- **Alarm:** at the default readout it fires about 150 to 180 ms before the swing peak (about the release). The sensitive readout `readout_fa4.0.json` fires about 180 to 210 ms before it, at the cost of more false alarms.
+- **Dodge:** the SAFE dodge needs about 0.6 s to move 30 cm (sim, `results/safe_dodge.json`) and refuses unless the dog has stood still for at least 1 s.
+- **Ball:** thrown from 2 to 3 m at roughly 8 m/s, it is in the air for about 0.3 s.
+
+So the dodge starts about 0.45 s before impact. A shorter or faster first sideways step helps more than a lower detection threshold.
+
 ### Before the demo: check and, if needed, adapt to the site (5 to 10 min)
 
 1. **Check** a recording made at the site:
