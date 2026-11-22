@@ -1,29 +1,42 @@
 # Go2 dodge (ROS 2, trigger only)
 
-Minimal dodge for the real Go2: one node that moves the robot out of the way when `/reflex/dash` arrives,
-and a keyboard node to send that trigger. No perception, no build step: plain `rclpy` scripts.
+Minimal dodge for the real Go2: one node that moves the robot out of the way when you press **X on the Go2 remote**
+(or when `/reflex/dash` arrives), then walks it slowly back to where it stood, plus a keyboard node that sends
+`/reflex/dash`. No perception, no build step: plain `rclpy` scripts.
 
-Needs ROS 2 Humble with the `unitree_api` messages (in the go2-kria overlay, `starter/go2-kria/src/unitree_api`)
-and the Go2 on the same DDS network (domain 0, CycloneDDS; on the Kria: `ROS_DOMAIN_ID=0`,
-`RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`, `CYCLONEDDS_URI=file:///etc/cyclonedds/cyclonedds-go2.xml`).
+Default dodge: **back at 1.1 m/s for 0.5 s**, stand 1 s, then **back to the start at 0.25 m/s**. The way back uses the
+robot's odometry (`/sportmodestate`) and stops within 5 cm of the start; without odometry it walks back 80 % of the
+commanded distance by time, so it never overshoots towards the thrower.
+
+Needs ROS 2 Humble with the `unitree_api` and `unitree_go` messages (in the go2-kria overlay,
+`starter/go2-kria/src/unitree_api`, `.../unitree_go`) and the Go2 on the same DDS network (domain 0, CycloneDDS;
+on the Kria: `ROS_DOMAIN_ID=0`, `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`,
+`CYCLONEDDS_URI=file:///etc/cyclonedds/cyclonedds-go2.xml`).
 
 ```bash
 source /opt/ros/humble/setup.bash && source <go2-kria overlay>/local_setup.bash
-python3 dodge/go2_dodge.py --ros-args -p dry_run:=true      # first: log only, check the trigger arrives
-python3 dodge/go2_dodge.py                                  # real: back off 0.4 m (0.8 m/s, 0.5 s), then walk back
-python3 dodge/dodge_keys.py                                 # second terminal: d = dodge, space = STOP, q = quit
+python3 dodge/go2_dodge.py --ros-args -p dry_run:=true      # first: log only, press X and watch the log
+python3 dodge/go2_dodge.py                                  # real: X on the remote = dodge
+python3 dodge/dodge_keys.py                                 # optional, second terminal: d = dodge, space = STOP, q = quit
 ```
 
-Trigger from any shell or agent on the same ROS network:
+Trigger and watch from any shell or agent on the same ROS network:
 
 ```bash
 ros2 topic pub --once /reflex/dash std_msgs/msg/Empty "{}"   # dodge
 ros2 topic pub --once /dodge/stop std_msgs/msg/Empty "{}"    # stop at once
-ros2 topic echo /dodge/event                                 # what the node did (JSON)
+ros2 topic echo /dodge/event                                 # dash / hold / return / idle with measured distances
+ros2 topic echo /wirelesscontroller --field keys             # X pressed = bit 10 (1024) set
 ```
 
-Parameters (`--ros-args -p name:=value`): `direction` back|left|right|forward (back), `speed` m/s (0.8, max 1.5),
-`duration` s (0.5, max 2), `come_back` (true), `hold` s before coming back (1.0), `return_speed` (0.3),
-`refractory` s (1.0), `dry_run` (false). The move is time based (Move 1008 re-sent every 0.1 s, then
-StopMove 1003); a dash during a running dodge is ignored. Keep the space around the robot free: there is
-no obstacle check. The SNN trigger (or `sim/.../ball_trigger_udp.py`) publishes the same `/reflex/dash`.
+Parameters (`--ros-args -p name:=value`): `button` (x; a, b, y, l1, r1, ... or none), `direction`
+back|left|right|forward (back), `speed` m/s (1.1, max 1.5), `duration` s (0.5, max 2), `come_back` (true), `hold` s
+(1.0), `return_speed` m/s (0.25, max 0.5), `tolerance` m (0.05), `return_scale` (0.8, without odometry), `refractory`
+s (1.0), `odom` sportmodestate|odometry|none, `odom_topic`, `controller_topic` (/wirelesscontroller), `dry_run`
+(false). A trigger during a running dodge is ignored; every phase has a time limit; Ctrl+C sends StopMove.
+Keep the space behind the robot free: there is no obstacle check. The remote's own button functions still work
+as usual; X alone does nothing in the default sport mode as far as we know, check once with `dry_run`.
+
+Gazebo sim (test container, `odom:=odometry -p odom_topic:=/odom/ground_truth_fast`, X pressed via a fake
+`/wirelesscontroller` message): commanded 1.1 m/s for 0.5 s gives 0.27 m back in the CHAMP model (slow
+acceleration there), the way back by odometry ended 2 cm from the start, max tilt 9 deg.
