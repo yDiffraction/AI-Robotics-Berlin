@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Dataset Viewer</title>
+<style>
+:root {
+  --bg: #f5f5f3; --panel: #ffffff; --line: #e2e2de; --text: #1d1d1b; --muted: #6b6b66;
+  --accent: #2f6fd6; --stage: #0e0f12; --on: #ffb02e; --off: #38c6f4;
+  --pos: #1f9d55; --neg: #8a8a84; --heldpos: #b5651d; --amb: #a347c2;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #131416; --panel: #1b1c1f; --line: #2c2d31; --text: #e7e7e4; --muted: #96968f;
+          --accent: #6aa0ff; --pos: #4cc98a; --neg: #8a8a84; --heldpos: #e09a4f; --amb: #c67de0; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+       display: grid; grid-template-rows: auto 1fr; }
+header { display: flex; gap: 12px; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--line);
+         background: var(--panel); flex-wrap: wrap; }
+header h1 { font-size: 14px; margin: 0 8px 0 0; font-weight: 600; }
+select, input, button { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+                        border-radius: 6px; padding: 4px 8px; }
+button { cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.muted { color: var(--muted); }
+main { display: grid; grid-template-columns: 300px 1fr 320px; min-height: 0; }
+aside, section { min-height: 0; overflow: auto; }
+aside { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+aside.right { border-right: 0; border-left: 1px solid var(--line); padding: 10px 12px; }
+.filters { padding: 10px; display: grid; gap: 6px; border-bottom: 1px solid var(--line); }
+.filters select, .filters input { width: 100%; }
+.chips { display: flex; gap: 4px; flex-wrap: wrap; }
+.chip { padding: 2px 8px; border-radius: 99px; font-size: 12px; }
+.counts { font-size: 12px; }
+#list { overflow: auto; flex: 1; }
+.item { padding: 5px 10px; border-bottom: 1px solid var(--line); cursor: pointer; display: grid;
+        grid-template-columns: 8px 1fr auto; gap: 8px; align-items: center; }
+.item:hover { background: var(--bg); }
+.item.sel { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.item .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item .grp { font-size: 11px; color: var(--muted); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neg); }
+.dot.pos { background: var(--pos); } .dot.heldpos { background: var(--heldpos); } .dot.amb { background: var(--amb); }
+section.center { overflow-x: hidden; padding: 12px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+#stageWrap { position: relative; background: var(--stage); border-radius: 8px; padding: 10px; }
+#stage { display: block; image-rendering: pixelated; width: min(62vh, 560px); height: min(62vh, 560px); }
+#hud { position: absolute; left: 16px; top: 14px; color: #ddd; font: 12px/1.3 ui-monospace, Consolas, monospace;
+       text-shadow: 0 0 3px #000; pointer-events: none; white-space: pre; }
+#flash { position: absolute; right: 16px; top: 14px; padding: 2px 8px; border-radius: 4px; font-weight: 600;
+         font-size: 12px; background: #e5484d; color: #fff; display: none; }
+.controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; width: 100%; }
+.controls label { display: flex; align-items: center; gap: 4px; }
+#timeline { width: 100%; max-width: 900px; height: 90px; cursor: crosshair; background: var(--panel);
+            border: 1px solid var(--line); border-radius: 6px; }
+#grid { display: none; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; width: 100%; }
+#grid .cell { background: var(--stage); border-radius: 6px; padding: 4px; cursor: pointer; position: relative; }
+#grid canvas { width: 100%; aspect-ratio: 1; image-rendering: pixelated; display: block; }
+#grid .cap { color: #ccc; font-size: 11px; padding: 2px 2px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#grid .cap b { font-weight: 600; }
+#grid .cell.flash { outline: 2px solid #e5484d; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+td { padding: 3px 4px; border-bottom: 1px solid var(--line); vertical-align: top; word-break: break-all; }
+td:first-child { color: var(--muted); white-space: nowrap; word-break: normal; width: 1%; }
+h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px; }
+h3:first-child { margin-top: 0; }
+.legend { display: flex; gap: 12px; font-size: 12px; color: var(--muted); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+kbd { font: 11px ui-monospace, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+@media (max-width: 1100px) { main { grid-template-columns: 260px 1fr; } aside.right { display: none; } }
+@media (max-width: 720px) { main { grid-template-columns: 1fr; } aside { max-height: 40vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Event dataset viewer</h1>
+  <select id="src" title="source"></select>
+  <span id="resWrap" style="display:none"><button id="res80" class="on">80 × 80</button> <button id="res320">320 native</button></span>
+  <button id="modeClip" class="on">Clip</button><button id="modeGrid">Grid</button>
+  <span class="legend"><span><span class="sw" style="background:var(--on)"></span>ON</span>
+    <span><span class="sw" style="background:var(--off)"></span>OFF</span>
+    <span><span class="sw" style="background:#e5484d"></span>release</span></span>
+  <span class="muted" style="margin-left:auto"><kbd>Space</kbd> play <kbd>←</kbd><kbd>→</kbd> frame
+    <kbd>↑</kbd><kbd>↓</kbd> clip <kbd>R</kbd> release <kbd>G</kbd> grid</span>
+</header>
+<main>
+  <aside>
+    <div class="filters">
+      <div class="chips" id="labels"></div>
+      <select id="fSub"></select>
+      <select id="fGroup"></select>
+      <input id="fText" placeholder="search file / parent / any field">
+      <div class="counts muted" id="counts"></div>
+    </div>
+    <div id="list"></div>
+  </aside>
+  <section class="center">
+    <div id="clipView" style="display:contents">
+      <div id="stageWrap"><canvas id="stage" width="80" height="80"></canvas><div id="hud"></div><div id="flash">RELEASE</div></div>
+      <div class="controls">
+        <button id="play" title="Space">▶ Play</button>
+        <button id="toRel" title="R">⇥ release</button>
+        <label>speed <select id="speed"><option>0.1</option><option>0.25</option><option>0.5</option>
+          <option selected>1</option><option>2</option><option>4</option></select>×</label>
+        <label>trail <input id="trail" type="range" min="1" max="30" value="4" style="width:90px"><span id="trailV">4</span> fr</label>
+        <label>show <select id="pol"><option value="both">ON + OFF</option><option value="on">ON</option>
+          <option value="off">OFF</option><option value="sum">all (mono)</option></select></label>
+        <label><input id="loop" type="checkbox" checked> loop</label>
+      </div>
+      <input id="scrub" type="range" min="0" max="119" value="0" style="width:100%;max-width:900px">
+      <canvas id="timeline" width="900" height="90"></canvas>
+    </div>
+    <div id="gridView" style="display:none;width:100%">
+      <div class="controls" style="margin-bottom:8px">
+        <button id="gPlay">❚❚ Pause</button>
+        <label>show <select id="gN"><option>24</option><option selected>48</option><option>96</option></select> clips</label>
+        <label>offset <input id="gOff" type="number" min="0" value="0" style="width:70px"></label>
+        <button id="gShuffle">shuffle</button>
+        <span class="muted">synced to each clip's release (clips without release: from start) · click a clip to open it</span>
+      </div>
+      <div id="grid"></div>
+    </div>
+  </section>
+  <aside class="right" id="meta"></aside>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const LABELS = ["pos", "heldpos", "neg", "amb"];
+const st = { src: null, meta: [], filt: [], sel: -1, res: 80, clip: null, f: 0, playing: false,
+             labels: new Set(), grid: false, order: null };
+const clipCache = new Map();
+
+async function j(u) { const r = await fetch(u); if (!r.ok) throw new Error(await r.text()); return r.json(); }
+
+async function fetchClip(src, i, res) {
+  const key = `${src}|${i}|${res}`;
+  if (clipCache.has(key)) return clipCache.get(key);
+  const p = fetch(`/api/clip?src=${encodeURIComponent(src)}&i=${i}&res=${res}`).then(r => r.arrayBuffer()).then(buf => {
+    const h = new Uint32Array(buf, 0, 2), codes = new Uint32Array(buf, 8);
+    const R = h[0], n = h[1], per = 2 * R * R;
+    const start = new Uint32Array(n + 1), on = new Uint16Array(n), off = new Uint16Array(n);
+    let k = 0;
+    for (let f = 0; f < n; f++) {
+      start[f] = k;
+      const lim = (f + 1) * per;
+      while (k < codes.length && codes[k] < lim) { (codes[k] % per < R * R ? off : on)[f]++; k++; }
+    }
+    start[n] = codes.length;
+    return { R, n, codes, start, on, off };
+  });
+  clipCache.set(key, p);
+  if (clipCache.size > 400) clipCache.delete(clipCache.keys().next().value);
+  return p;
+}
+
+// ---------------------------------------------------------------- rendering
+const ON = [255, 176, 46], OFF = [56, 198, 244];
+function drawFrames(ctx, c, f, trail, pol, img) {
+  const R = c.R, N = R * R;
+  if (!img || img.width !== R) img = ctx.createImageData(R, R);
+  const a = new Float32Array(N), b = new Float32Array(N);
+  for (let g = Math.max(0, f - trail + 1); g <= f && g < c.n; g++) {
+    const w = trail === 1 ? 1 : 0.25 + 0.75 * (1 - (f - g) / trail);
+    for (let k = c.start[g]; k < c.start[g + 1]; k++) {
+      const r = c.codes[k] % (2 * N), pix = r % N;
+      if (r >= N) a[pix] = Math.max(a[pix], w); else b[pix] = Math.max(b[pix], w);
+    }
+  }
+  const d = img.data;
+  for (let i = 0; i < N; i++) {
+    let x = a[i], y = b[i];
+    if (pol === "on") y = 0; else if (pol === "off") x = 0;
+    let r, gg, bb;
+    if (pol === "sum") { const v = Math.max(x, y) * 235; r = gg = bb = v; }
+    else { r = ON[0] * x + OFF[0] * y; gg = ON[1] * x + OFF[1] * y; bb = ON[2] * x + OFF[2] * y; }
+    d[4 * i] = Math.min(255, 14 + r); d[4 * i + 1] = Math.min(255, 15 + gg); d[4 * i + 2] = Math.min(255, 18 + bb); d[4 * i + 3] = 255;
+  }
+  if (ctx.canvas.width !== R) { ctx.canvas.width = R; ctx.canvas.height = R; }
+  ctx.putImageData(img, 0, 0);
+  return img;
+}
+
+let stageImg = null;
+function render() {
+  const c = st.clip; if (!c) return;
+  const m = st.meta[st.sel], rel = m.rel ?? -1;
+  stageImg = drawFrames($("stage").getContext("2d"), c, st.f, +$("trail").value, $("pol").value, stageImg);
+  const dt = rel >= 0 ? `  Δrel ${((st.f - rel) * 10 >= 0 ? "+" : "")}${(st.f - rel) * 10} ms` : "";
+  $("hud").textContent = `frame ${st.f}/${c.n - 1}  t ${st.f * 10} ms${dt}\nON ${c.on[st.f] || 0}  OFF ${c.off[st.f] || 0} cells  ${c.R}×${c.R}`;
+  $("flash").style.display = rel >= 0 && st.f >= rel && st.f < rel + 8 ? "block" : "none";
+  $("scrub").value = st.f;
+  drawTimeline();
+}
+
+function drawTimeline() {
+  const cv = $("timeline"), ctx = cv.getContext("2d"), c = st.clip, m = st.meta[st.sel];
+  const W = cv.width = cv.clientWidth * devicePixelRatio, H = cv.height = 90 * devicePixelRatio;
+  ctx.clearRect(0, 0, W, H);
+  let mx = 1; for (let f = 0; f < c.n; f++) mx = Math.max(mx, c.on[f] + c.off[f]);
+  const bw = W / c.n, pad = 14 * devicePixelRatio, sc = (H - pad) / mx;
+  const css = getComputedStyle(document.documentElement);
+  for (let f = 0; f < c.n; f++) {
+    const hOn = c.on[f] * sc, hOff = c.off[f] * sc;
+    ctx.fillStyle = css.getPropertyValue("--off"); ctx.fillRect(f * bw, H - hOff, Math.max(1, bw - .5), hOff);
+    ctx.fillStyle = css.getPropertyValue("--on"); ctx.fillRect(f * bw, H - hOff - hOn, Math.max(1, bw - .5), hOn);
+  }
+  if (m.rel >= 0) { ctx.fillStyle = "#e5484d"; ctx.fillRect(m.rel * bw, 0, 2 * devicePixelRatio, H); }
+  ctx.fillStyle = css.getPropertyValue("--text"); ctx.fillRect(st.f * bw, 0, Math.max(1, devicePixelRatio), H);
+  ctx.font = `${10 * devicePixelRatio}px system-ui`; ctx.fillStyle = css.getPropertyValue("--muted");
+  ctx.fillText(`active cells / frame (max ${mx})`, 4, 11 * devicePixelRatio);
+  for (let s = 0; s * 100 < c.n; s++) ctx.fillText(`${s}s`, s * 100 * bw + 2, H - 2);
+}
+
+// ---------------------------------------------------------------- playback
+let last = 0, acc = 0;
+function tick(ts) {
+  const dt = Math.min(100, ts - (last || ts)); last = ts;
+  if (st.playing && st.clip && !st.grid) {
+    acc += dt * +$("speed").value / 10;
+    if (acc >= 1) {
+      const steps = Math.floor(acc); acc -= steps; st.f += steps;
+      if (st.f >= st.clip.n) { if ($("loop").checked) st.f = 0; else { st.f = st.clip.n - 1; setPlay(false); } }
+      render();
+    }
+  }
+  if (st.grid && gridState.playing) gridTick(dt);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+function setPlay(p) { st.playing = p; $("play").textContent = p ? "❚❚ Pause" : "▶ Play"; }
+
+// ---------------------------------------------------------------- sources, filters, list
+async function loadSources() {
+  const srcs = await j("/api/sources");
+  $("src").innerHTML = srcs.map(s => `<option value="${s.name}" data-kind="${s.kind}">${s.name}  (${s.n})</option>`).join("");
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("src") && srcs.some(s => s.name === h.get("src"))) $("src").value = h.get("src");
+  await selectSource(+h.get("i") || 0);
+}
+
+async function selectSource(initial = 0) {
+  st.src = $("src").value;
+  const kind = $("src").selectedOptions[0].dataset.kind;
+  $("resWrap").style.display = kind === "clips" ? "" : "none";
+  if (kind !== "clips") setRes(80, false);
+  st.meta = await j(`/api/meta?src=${encodeURIComponent(st.src)}`);
+  st.meta.forEach((m, i) => m._i = i);
+  const present = LABELS.concat([...new Set(st.meta.map(m => m.label))].filter(l => !LABELS.includes(l)))
+    .filter(l => st.meta.some(m => m.label === l));
+  st.labels = new Set(present);
+  $("labels").innerHTML = present.map(l => `<button class="chip on" data-l="${l}">${l} ${st.meta.filter(m => m.label === l).length}</button>`).join("");
+  $("labels").querySelectorAll("button").forEach(b => b.onclick = () => {
+    b.classList.toggle("on"); b.classList.contains("on") ? st.labels.add(b.dataset.l) : st.labels.delete(b.dataset.l); applyFilter();
+  });
+  const opts = (k, all) => `<option value="">${all}</option>` +
+    [...new Set(st.meta.map(m => m[k]))].sort().map(v => `<option>${v}</option>`).join("");
+  $("fSub").innerHTML = opts("sub", "all classes"); $("fGroup").innerHTML = opts("group", "all groups");
+  st.order = null;
+  applyFilter(initial);
+}
+
+function applyFilter(want) {
+  const sub = $("fSub").value, grp = $("fGroup").value, q = $("fText").value.trim().toLowerCase();
+  st.filt = st.meta.filter(m => st.labels.has(m.label) && (!sub || m.sub === sub) && (!grp || m.group === grp) &&
+    (!q || JSON.stringify(m).toLowerCase().includes(q)));
+  const byL = {}; st.filt.forEach(m => byL[m.label] = (byL[m.label] || 0) + 1);
+  $("counts").textContent = `${st.filt.length} / ${st.meta.length} clips · ` + Object.entries(byL).map(([k, v]) => `${k} ${v}`).join(" · ");
+  $("list").innerHTML = st.filt.map(m => `<div class="item" data-i="${m._i}"><span class="dot ${m.label}"></span>
+    <span class="name" title="${m.file || ""}">${m.sub} <span class="grp">${m.variant || ""}</span></span><span class="grp">${m.group}</span></div>`).join("");
+  $("list").onclick = e => { const it = e.target.closest(".item"); if (it) openClip(+it.dataset.i); };
+  if (st.grid) buildGrid();
+  const target = want !== undefined && st.meta[want] ? want : (st.filt.find(m => m._i === st.sel) || st.filt[0] || {})._i;
+  if (target !== undefined) openClip(target, true); else { st.clip = null; $("meta").innerHTML = "<p class=muted>no clips match</p>"; }
+}
+
+async function openClip(i, keepFrame = false) {
+  const prevRel = st.sel >= 0 && st.meta[st.sel] ? st.meta[st.sel].rel : -1, prevF = st.f;
+  st.sel = i;
+  document.querySelectorAll("#list .item").forEach(el => el.classList.toggle("sel", +el.dataset.i === i));
+  const el = document.querySelector(`#list .item[data-i="${i}"]`); if (el) el.scrollIntoView({ block: "nearest" });
+  history.replaceState(null, "", `#src=${encodeURIComponent(st.src)}&i=${i}`);
+  showMeta(st.meta[i]);
+  const c = await fetchClip(st.src, i, st.res);
+  if (st.sel !== i) return;
+  st.clip = c;
+  $("scrub").max = c.n - 1;
+  const m = st.meta[i];
+  st.f = keepFrame && prevRel >= 0 && m.rel >= 0 ? Math.min(c.n - 1, Math.max(0, prevF - prevRel + m.rel))
+       : m.rel >= 0 ? Math.max(0, m.rel - 50) : 0;
+  stageImg = null; render();
+}
+
+function showMeta(m) {
+  const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  const rows = o => Object.entries(o).filter(([k, v]) => !k.startsWith("_") && typeof v !== "object")
+    .map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(typeof v === "number" && !Number.isInteger(v) ? +v.toFixed(4) : v)}</td></tr>`).join("");
+  let h = `<h3>clip ${m._i}</h3><table>${rows(m)}</table>`;
+  if (m.rel >= 0) h += `<p class="muted">release at frame ${m.rel} = ${m.rel * 10} ms</p>`;
+  for (const [k, v] of Object.entries(m)) if (v && typeof v === "object" && !Array.isArray(v))
+    h += `<h3>${esc(k)}</h3><table>${rows(Object.fromEntries(Object.entries(v).map(([a, b]) => [a, Array.isArray(b) ? b.join(", ") : b])))}</table>`;
+  $("meta").innerHTML = h;
+}
+
+function setRes(r, reload = true) {
+  st.res = r; $("res80").classList.toggle("on", r === 80); $("res320").classList.toggle("on", r === 320);
+  if (reload && st.sel >= 0) { openClip(st.sel, false); if (st.grid) buildGrid(); }
+}
+
+// ---------------------------------------------------------------- grid
+const gridState = { playing: true, t: -50, cells: [], acc: 0 };
+async function buildGrid() {
+  const n = +$("gN").value, off = +$("gOff").value || 0;
+  let list = st.filt;
+  if (st.order) list = st.order.map(i => st.meta[i]).filter(m => st.filt.includes(m));
+  list = list.slice(off, off + n);
+  $("grid").innerHTML = list.map(m => `<div class="cell" data-i="${m._i}"><canvas></canvas>
+    <div class="cap"><b>${m.label}</b> ${m.sub} · ${m.group}</div></div>`).join("");
+  $("grid").onclick = e => { const c = e.target.closest(".cell"); if (c) { setGrid(false); openClip(+c.dataset.i); } };
+  const myBuild = gridState.build = {};
+  gridState.cells = [...$("grid").children].map(el => ({ el, ctx: el.querySelector("canvas").getContext("2d"),
+    m: st.meta[+el.dataset.i], clip: null, img: null }));
+  gridState.t = -50;
+  for (const g of gridState.cells) fetchClip(st.src, g.m._i, st.res).then(c => { if (gridState.build === myBuild) { g.clip = c; } });
+}
+function gridTick(dt) {
+  gridState.acc += dt / 10;
+  if (gridState.acc < 1) return;
+  const steps = Math.floor(gridState.acc); gridState.acc -= steps; gridState.t += steps;
+  if (gridState.t > 70) gridState.t = -70;
+  for (const g of gridState.cells) {
+    if (!g.clip) continue;
+    const base = g.m.rel >= 0 ? g.m.rel : 70, f = Math.max(0, Math.min(g.clip.n - 1, base + gridState.t));
+    g.img = drawFrames(g.ctx, g.clip, f, 4, "both", g.img);
+    g.el.classList.toggle("flash", g.m.rel >= 0 && gridState.t >= 0 && gridState.t < 8);
+  }
+}
+function setGrid(on) {
+  st.grid = on; $("modeGrid").classList.toggle("on", on); $("modeClip").classList.toggle("on", !on);
+  $("gridView").style.display = on ? "" : "none"; $("clipView").style.display = on ? "none" : "contents";
+  $("grid").style.display = on ? "grid" : "none";
+  if (on) { setPlay(false); buildGrid(); } else render();
+}
+
+// ---------------------------------------------------------------- wiring
+$("src").onchange = () => selectSource();
+["fSub", "fGroup"].forEach(id => $(id).onchange = () => applyFilter());
+$("fText").oninput = () => applyFilter();
+$("play").onclick = () => setPlay(!st.playing);
+$("toRel").onclick = () => { const m = st.meta[st.sel]; if (m && m.rel >= 0) { st.f = m.rel; render(); } };
+$("scrub").oninput = e => { st.f = +e.target.value; render(); };
+$("trail").oninput = e => { $("trailV").textContent = e.target.value; render(); };
+$("pol").onchange = render;
+$("res80").onclick = () => setRes(80); $("res320").onclick = () => setRes(320);
+$("modeClip").onclick = () => setGrid(false); $("modeGrid").onclick = () => setGrid(true);
+$("gPlay").onclick = () => { gridState.playing = !gridState.playing; $("gPlay").textContent = gridState.playing ? "❚❚ Pause" : "▶ Play"; };
+$("gN").onchange = buildGrid; $("gOff").onchange = buildGrid;
+$("gShuffle").onclick = () => { st.order = st.meta.map(m => m._i).sort(() => Math.random() - .5); buildGrid(); };
+const seek = e => { if (!st.clip || e.buttons !== 1 && e.type !== "click") return;
+  const r = $("timeline").getBoundingClientRect(); st.f = Math.max(0, Math.min(st.clip.n - 1, Math.floor((e.clientX - r.left) / r.width * st.clip.n))); render(); };
+$("timeline").onmousedown = seek; $("timeline").onmousemove = seek;
+window.onresize = () => st.clip && drawTimeline();
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT" && e.target.type === "text" || e.target.tagName === "SELECT") return;
+  const step = e.shiftKey ? 10 : 1, idx = st.filt.findIndex(m => m._i === st.sel);
+  if (e.key === " ") { st.grid ? $("gPlay").click() : setPlay(!st.playing); }
+  else if (e.key === "ArrowRight" && st.clip) { st.f = Math.min(st.clip.n - 1, st.f + step); render(); }
+  else if (e.key === "ArrowLeft" && st.clip) { st.f = Math.max(0, st.f - step); render(); }
+  else if (e.key === "ArrowDown" && idx < st.filt.length - 1) openClip(st.filt[idx + 1]._i, true);
+  else if (e.key === "ArrowUp" && idx > 0) openClip(st.filt[idx - 1]._i, true);
+  else if (e.key === "r" || e.key === "R") $("toRel").click();
+  else if (e.key === "g" || e.key === "G") setGrid(!st.grid);
+  else return;
+  e.preventDefault();
+});
+loadSources().catch(e => { document.body.innerHTML = `<pre style="padding:20px">${e}</pre>`; });
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@ starts at `phase0`, which picks the diagonal pair that lifts first. The right do
 image: sideways commands negated and the clock shifted by half a cycle (that swaps the two diagonal
 pairs, i.e. mirrors the legs).
 
-The same class runs in sim (run() below) and on the robot (deploy/dodge_controller.py --still), so
+The same class runs in sim (run() below) and on the robot (deploy/dodge_controller.py), so
 the validated sequence is the deployed one.
 
   python still_dodge.py                         # nominal run, left and right

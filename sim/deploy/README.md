@@ -1,18 +1,31 @@
 # Running our own controller on the real Go2
 
-## Real robot: SAFE dodge with sport mode as the default
+## Real robot: STILL dodge with sport mode as the default
 
 `go2_modes.py` keeps Unitree's sport mode in charge and switches to our code only on request:
 
 | Where | Button (remote) | Key (laptop terminal) | What happens |
 |---|---|---|---|
+| sport mode | (sticks) | hold `w` / `x` | walk forward / backward, 0.3 m/s |
+| sport mode | (sticks) | hold `a` / `d` | walk sideways left / right, 0.2 m/s |
+| sport mode | (sticks) | hold `q` / `e` | turn left / right, 0.6 rad/s |
+| sport mode | | **Space** | stop walking (sport `StopMove`) |
+| sport mode | | `u` | stand up (sport `RecoveryStand`, also from lying flat) |
+| sport mode | | `j` | lie down (sport `StandDown`) |
 | sport mode | hold **L1+R1** 1 s | `o` | sport mode lies the dog down, is released; `supervisor.py` starts `dodge_controller.py`, which stands the dog up (~3 s) |
-| our mode | **D-pad ←** or **A** | `l` or `d` | SAFE dodge **left**: 0.5 s stand, ~2 s trotting in place, then ~30 cm (up to ~0.5 m) left, brake, stand. Refused unless the dog has stood still ≥ 1 s. The dodge is the one validated in sim (`../results/safe_dodge.json`), joint targets clamped 0.1 rad inside the range as validated |
-| our mode | **D-pad →** | `r` | the same dodge to the **right**: its mirror image (all sideways commands negated), validated separately (`../results/safe_dodge_right.json`, below) |
-| our mode | **Y** | `s` | dog lies down, our code exits, sport mode comes back (the dog stays lying: stand it up with the remote as usual) |
+| our mode | **D-pad ←** or **A** | `l` | STILL dodge **left**. The dog stands completely still (PD hold, no stepping) until the press, then kicks at the next 50 Hz step. It reaches 30 cm after ~0.56 s, brakes, and stands still again 0.4–0.6 m left. Refused unless the dog has stood still ≥ 1 s (tilt, joint error, joint speed < 1 rad/s, trunk rate < 0.3 rad/s). Validated in sim (`../results/still_dodge.json`, below). Joint targets clamped 0.1 rad inside the range, as validated |
+| our mode | **D-pad →** | `r` | the same dodge to the **right**: its mirror image (sideways commands negated, gait clock half a cycle on), validated with the left one |
+| our mode | **Y** | `s` | dog lies down, our code exits, sport mode comes back (the dog stays lying: `u` stands it up) |
 | our mode | **L2+B** | **Space** or Ctrl+C | **E-STOP**: controller killed, damping (supervisor). Repeated presses do nothing more; damping stays on until `s` / Y |
 | after an E-STOP | **Y** | `s` | damping stops (after ≥ 2 s), sport mode comes back |
-| sport mode | | `q` / Ctrl+C | quit |
+| sport mode | | **Esc** / Ctrl+C | quit (stops walking first) |
+
+Walking from the keyboard (sport mode only):
+- The dog walks only while the key is held. The terminal repeats a held key (~30/s after ~0.5 s); `Move` is re-sent at 10 Hz. Walking stops (`StopMove`) 0.25 s after the last repeat, or 0.6 s after a single tap. A frozen terminal or a dropped key can't leave it walking.
+- Walk keys are ignored while the dog is lying (`u` first). `o` stops walking before it switches to our mode.
+- The speeds are low on purpose: Unitree's obstacle avoidance is not known to act on `Move` commands from the API.
+- These keys mean nothing in our mode (there `l` / `r` dodge). `d` used to be a dodge key too; it was dropped so that `d` never means "left" in one mode and "right" in the other.
+- Not tested on the real dog yet. The fake robot only checks which sport commands arrive and when; the walking itself is Unitree's.
 
 Buttons count only alone (A, Y, D-pad) or exactly together (L1+R1), seen for 60 ms, and each needs a release first. B is not used alone: it is half of the L2+B e-stop. Before handing control to us, `go2_modes.py` checks that sport mode's StandDown has folded the legs; otherwise it aborts and sport mode stays in charge. No command is ever sent while sport mode is active (tested).
 
@@ -43,56 +56,81 @@ This laptop has no Ethernet port: use a USB-Ethernet adapter.
    - Press L2+B: the legs go soft. Y: sport mode back.
    - Again L1+R1, then **unplug the cable**, and note what the dog does (the open question from below).
    - **Do not press A or the D-pad while it hangs** (the policy would trot in the air).
-4. On the floor, no dodge yet: L1+R1, the dog stands; Y, the dog lies down and sport mode is back.
+4. On the floor, no dodge yet:
+   - In sport mode: `u` stands the dog up; tap `w` once (it steps ~0.6 s, then stops); hold `q` briefly; Space; `j` lies it down.
+   - L1+R1 (or `o`), the dog stands; Y (or `s`), the dog lies down and sport mode is back.
 5. **Dodge**:
    - Flat floor with grip, no payload, charged battery.
-   - **≥ 1 m free on the dodge side and ≥ 0.5 m in front**: the 2 s of trotting in place drifts it forward by up to ~0.3 m in the fake robot. The dog may also end up turned by up to ~20° (left) / ~30° (right) in sim.
-   - Someone holds the remote with a thumb near L2+B.
-   - Start with `.\run_go2.ps1 gentle` and press D-pad ← (or A): all sideways speeds × 0.6.
-     - In 300 harsh sim runs per side: 0 falls, 0 unsettled ends, peak tilt 11° left / 10° right (the full SAFE dodge reaches 17°).
-     - It ends 24–30 cm (left) / 22–27 cm (right) away. It usually does not reach 30 cm, which is the only check it fails.
-     - Then D-pad → for the gentle right dodge.
-   - Then `.\run_go2.ps1` for the full SAFE dodge.
+   - **≥ 1 m free on the dodge side and ≥ 0.3 m in front and behind.**
+     - The dog stands still until the press: no more trotting lead-in.
+     - In 1000 harsh sim runs it ended ≤ 0.63 m sideways, ≤ 0.10 m forward/back, turned ≤ 13° (left) / ≤ 23° (right).
+   - Someone keeps a hand at the laptop's **Space** (or holds the remote with a thumb near L2+B).
+   - Start with `.\run_go2.ps1 gentle` and press `l` (D-pad ← / A): all sideways speeds × 0.8.
+     - In 300 harsh sim runs per side: 0 safety failures, peak tilt 16° (full: 18.5°), worst torque 0.88 of the limit (full: 0.96).
+     - It ends 0.24–0.47 m away, often short of 30 cm.
+     - Then `r` (D-pad →) for the gentle right dodge.
+   - Then `.\run_go2.ps1` for the full STILL dodge.
+   - **Measure** the real distance and the time to 30 cm (video). The SAFE dodge went ~0.8× its sim distance on the real dog (0.40 vs 0.50 m). The STILL dodge's sim median is 0.43–0.47 m, so expect ~0.35 m on the real dog.
+   - The previous SAFE dodge (with ~2 s of trotting in place before the kick, which drifted ~40 cm on the real dog) is no longer offered on the robot. It still exists in sim (`../results/safe_dodge.json`, `safe_dodge_right.json`).
 
 The controller prints the longest gap between two commands after each dodge. On the test machine it was 4 ms, while the supervisor trips at 50 ms.
 
-### Right dodge: sim validation (`../results/safe_dodge_right.json`)
+### STILL dodge: sim validation (`../results/still_dodge.json`, details in [../README.md](../README.md))
 
-The right dodge is the SAFE dodge mirrored: kick, hold and brake commands negated, everything else the same. It was run through the same 500 harsh-physics runs as the left one: friction 0.35–1.1, payload −1…+3 kg, motors 80–100 %, 0–30 ms latency, sensor noise, random gait phase at the trigger. Both sides got the same 500 conditions (seed 2026).
+Both sides got the same 500 harsh-physics runs each (seed 2026):
+- friction 0.35–1.1, payload −1…+3 kg, motors 80–100 %, 0–30 ms latency;
+- sensor noise; joint targets clamped 0.1 rad inside the range;
+- 1.2–1.8 s of standing before the trigger.
 
-| 500 harsh runs | Left (SAFE) | Right (mirrored) |
+A run passes when it breaks no SAFE load limit and none of the STILL limits:
+- end distance 0.33–0.60 m in sim;
+- forward drift ≤ 0.15 m;
+- heading change ≤ 30°;
+- drift ≤ 5 mm while standing before the trigger, < 1 cm after the dodge.
+
+| 500 harsh runs per side | Left | Right |
 |---|---|---|
-| failures (fall, unsettled end, load limit, < 30 cm) | 0 | 0 |
-| 30 cm after the kick: median / p95 / worst | 0.58 / 0.64 / 0.88 s | 0.60 / 0.66 / 0.83 s |
-| final distance: median (min) | 0.50 (0.31) m | 0.48 (0.34) m |
-| peak tilt | 16.7° | 13.8° |
-| foot force / trunk acceleration, worst (limits 1.81 BW / 1.93 g) | 1.62 BW / 1.65 g | 1.68 BW / 1.63 g |
-| joint margin to the stop, worst | 0.15 rad | 0.22 rad |
-| forward/backward drift, worst | 0.18 m | 0.14 m |
-| heading change, worst | 19° | 29° |
-| gentle (× 0.6, 300 runs): falls / end distance | 0 / 0.24–0.30 m | 0 / 0.22–0.27 m |
+| safety failures (fall, unsettled end, load / joint / tilt / drift / heading) | **0** | **0** |
+| distance misses (sim end distance outside 0.33–0.60 m) | 4 (up to 0.63 m) | 2 (0.31–0.33 m) |
+| 30 cm after the press: median / p90 / worst | 0.56 / 0.60 / 0.66 s | 0.56 / 0.58 / 0.78 s |
+| end distance: median (min–max) | 0.47 (0.36–0.63) m | 0.43 (0.31–0.55) m |
+| peak tilt / worst torque (limit 0.97) | 18.5° / 0.95 | 17.5° / 0.96 |
+| foot force / trunk acceleration, worst (limits 1.81 BW / 1.93 g) | 1.62 BW / 1.47 g | 1.60 BW / 1.49 g |
+| joint margin to the stop, worst | 0.14 rad | 0.14 rad |
+| forward/backward drift / heading change, worst | 0.08 m / 13° | 0.10 m / 23° |
+| trunk drift while standing before the press | 1 mm | 1 mm |
+| gentle (× 0.8, 300 runs): safety failures / end distance | 0 / 0.28–0.47 m | 0 / 0.24–0.41 m |
 
-The policy is close to symmetric. The right dodge loads the joints a little less, but turns the dog more (up to 29°). Walk-these-ways has no heading control in this setup, so the dog ends wherever the dodge leaves it pointing.
+Starting from a dead stand takes more torque than the trotting start: worst 0.96 of the motor limit vs 0.88. The worst cases are weak motors (80 %) with +3 kg on a slippery floor. Not every limit can be met in sim at 30 cm in ≤ 0.6 s: scaling the commands down only made the dodge too short (`../results/still_validate.log`, `still_*.log`).
 
 ### Tests of the mode switching ([test_modes.py](test_modes.py), `../results/modes_test.log`)
 
 `fake_go2.py` now also provides fake `motion_switcher` and `sport` RPC services on the real Unitree RPC layer.
 - While "sport mode" is active, the fake robot holds its own pose and records any command it receives.
+- `StandDown` / `RecoveryStand` move it to the lying / standing pose; `Move` / `StopMove` are only recorded (the fake can't walk).
 - After a release, SelectMode answers "busy" for 10 s.
 
-The test drives the unmodified `go2_modes.py` → `supervisor.py` → `dodge_controller.py`. **12/12 scenarios pass.**
+The test drives the unmodified `go2_modes.py` → `supervisor.py` → `dodge_controller.py`. **14/14 scenarios pass** (STILL dodge only, plus keyboard driving in sport mode).
+
+Every STILL dodge also checks:
+- the trunk moved < 5 mm in the second before the press;
+- it moved 2 cm sideways within 0.3 s of the press;
+- it moved < 1 cm in the last 0.5 s.
 
 | Scenario | Result |
 |---|---|
-| remote: L1+R1, A or D-pad ←, Y (robot holds / goes limp without commands) | dodge 0.52–0.53 m left, 30 cm after 0.57–0.58 s, tilt ≤ 0.21 rad, standing after; back in sport mode, dog lying |
-| remote: D-pad → | dodge 0.52 m right, 30 cm after 0.58 s, tilt 0.19 rad |
-| keyboard (`o`, `d`, `s`) in a pseudo-terminal | same as left |
-| `--gentle`: A (remote) / `r` (keyboard) | 0.35 m left / 0.30 m right, tilt 0.19 rad |
-| L2+B / Ctrl+C 0.25 s into the kick, then Y | damping after 10–30 ms, dog on its belly (roll < 0.1 rad), Y releases, sport mode back |
+| remote: L1+R1, A or D-pad ←, Y (robot holds / goes limp without commands) | still before the press (trunk 0.7 mm in 1 s); dodge 0.59–0.60 m left, 30 cm after 0.54–0.55 s, forward drift ≤ 2 cm, tilt ≤ 0.26 rad; still after (≤ 0.1 mm); back in sport mode, dog lying |
+| remote: D-pad → | dodge 0.47 m right, 30 cm after 0.58 s, tilt 0.27 rad |
+| keyboard (`o`, `l`, `s`) in a pseudo-terminal | same as left |
+| `--gentle`: A (remote) / `r` (keyboard) | 0.44 m left / 0.38 m right, tilt ≤ 0.24 rad |
+| keyboard driving in sport mode: `w` held 1.5 s, `e` tapped, `a` + Space, `j`, `w` while lying, `u`, `d`, `w` + `o`, walk keys in our mode | Move at 10 Hz while held (longest gap 0.10 s); StopMove 0.24 s after release; a tap turns for 0.61 s, then stops; Space stops; walk keys ignored while lying; `u` stands up; `o` sends StopMove before the release; no sport command in our mode |
+| L2+B / Ctrl+C / SPACE 0.25 s into the kick, then Y / s | damping after 8–24 ms, dog on its belly (roll < 0.1 rad), released, sport mode back |
 | A and Y during the stand-up | A refused, dog lies down, SelectMode "busy" retried until sport mode is back |
 | L1+R1 for 0.6 s; L1+R1+A; A, Y, L2+B in sport mode | nothing happens, nothing sent |
 | go2_modes.py killed while standing | controller lies down by itself (its input closed), supervisor ends cleanly, no processes left |
 | all | **no command ever reached the robot while sport mode was active** |
+
+Longest gap between two controller commands during a dodge: 2.3–4.4 ms (supervisor trips at 50 ms). This needs a free CPU: with an optimizer running on 14 of 16 cores, the fake robot fell behind real time, the gap reached 28 ms, and the dodge only went 0.24 m. Don't run heavy jobs on the laptop that drives the dog.
 
 Bugs found on the way:
 - The first policy call after A took > 50 ms (TorchScript optimises on first use), so the supervisor tripped. The controller now warms the policy up at start.

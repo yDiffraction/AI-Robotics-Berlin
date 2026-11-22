@@ -66,6 +66,61 @@ python validate_dodge.py --dodges safe,purple --runs 500
 
 0/500 is a statement about this simulator, not a guarantee for the real dog. Physical tests still go harness → low gains → floor.
 
+## STILL dodge: the default on the robot now ([still_dodge.py](still_dodge.py))
+
+The SAFE dodge trots in place for ~2 s before the kick. On the real dog that lead-in drifted ~40 cm and kept drifting, and the throw sensors need a still dog. The STILL dodge has no lead-in:
+- **Before the trigger:** the dog stands under PD hold (kp 40 / kd 1), with no stepping at all. Meanwhile the policy's 30-step observation history is fed real observations of the stand: zero command, zero action, gait clock parked at `phase0`. Without that "priming" the history is zeros: in sim that gave more forward drift and joints closer to their stops.
+- **At the trigger:** the policy starts at the next 50 Hz step: kick, hold, brake (counter-command), zero command, then a 0.4 s ramp back to the stand pose.
+- **The right dodge** is the mirror image: sideways commands negated, and the gait clock shifted half a cycle, which swaps the diagonal leg pairs.
+- **One class for sim and robot:** `StillDodgeController` runs both in sim and in `deploy/dodge_controller.py`, so the validated sequence is the deployed one.
+
+**How it was chosen** (`optimize_still.py`). Every run used both sides, harsh physics, and the SAFE load limits. It adds its own STILL limits:
+- end distance 0.33–0.60 m in sim (the real dog went ~0.8× the sim distance with the SAFE dodge);
+- forward drift ≤ 0.15 m;
+- heading change ≤ 30°;
+- drift ≤ 5 mm while standing before the trigger, ≤ 1 cm in the last 0.5 s.
+
+The steps:
+1. **Broad search:** 200 candidates × 6 runs per side.
+   - Its fastest finalists overfit: on 80 fresh runs they failed 1–12, including a fall and torque overshoots.
+2. **Screen:** robust candidates on 100 runs per side (`screen_still.py`).
+3. **Focused search** (`--local`): 100 candidates × 16 runs per side.
+   - Starting from a dead stand, 30 cm p90 plateaus at ~0.58–0.61 s.
+4. **Corner search** (`--corner`): half of the runs in the harsh corner where torque saturated (motors 80–85 %, +2…3 kg, friction 0.35–0.5, 10–30 ms latency). Ranked safety first.
+5. **Validation:** 500 fresh harsh runs per side (seed 2026), at 97 % of the corner winner's speed commands.
+
+| 500 harsh runs per side | STILL left | STILL right | SAFE left (trot start) |
+|---|---|---|---|
+| safety failures (fall, unsettled, any load / joint / tilt / drift / yaw limit) | **0** | **0** | 0 |
+| distance misses (sim end < 0.33 or > 0.60 m) | 4 (> 0.60) | 2 (0.31–0.33) | n/a |
+| 30 cm after the trigger: median / p90 / worst | **0.56 / 0.60 / 0.66 s** | **0.56 / 0.58 / 0.78 s** | 2.5 s trotting first, then 0.58 / (p95) 0.64 / 0.88 s |
+| reached 30 cm within 0.60 s / 0.65 s | 95 % / 99.8 % | 94 % / 97 % | |
+| end distance median (min–max) | 0.47 (0.36–0.63) m | 0.43 (0.31–0.55) m | 0.50 (min 0.31) m |
+| forward drift worst / heading worst | 0.08 m / 13° | 0.10 m / 23° | 0.18 m (+ trotting lead-in) / 19° |
+| tilt / torque / foot force / trunk acc worst | 18.5° / 0.95 / 1.62 BW / 1.47 g | 17.5° / 0.96 / 1.60 BW / 1.49 g | 17.4° / 0.88 / 1.56 BW / 1.65 g |
+| joint margin worst | 0.14 rad | 0.14 rad | 0.15 rad |
+| trunk drift while standing before the trigger | 1 mm | 1 mm | (trots) |
+
+Parameters (`results/still_dodge.json`): kick 1.67 m/s for 0.41 s, hold 0.33 m/s until 0.32 s, brake −0.82 m/s for 0.17 s, trot 3.57 Hz, stance width 0.28 m, footswing 0.08 m, height +0.02 m, phase0 1.0 (left).
+
+**The price of starting from a dead stand:** the kick needs more torque than the SAFE dodge does.
+- Worst torque is 0.95–0.96 of the motor limit (SAFE: 0.88), against a 0.97 limit.
+- The worst cases are 80 % motors carrying +3 kg on low friction. With no payload and a charged battery there is more margin.
+
+**Gentle (× 0.8, 300 runs per side):**
+- 0 safety failures; worst torque 0.88, tilt 16°.
+- Ends 0.24–0.47 m out (often < 30 cm); 30 cm median 0.70 s.
+- For the first tries on the real dog.
+
+```bash
+python optimize_still.py                              # broad search -> results/still_optimize.json
+python screen_still.py --runs 100                     # -> results/still_screen.json
+python optimize_still.py --local --rand 15            # -> results/still_local.json
+python optimize_still.py --corner --seeds "10;11;12;1" --rand 12   # -> results/still_corner.json
+python optimize_still.py --validate --corner-rank 0 --scale 0.97   # 500/side -> results/still_dodge.json
+python still_dodge.py                                 # nominal run of the chosen one, both sides
+```
+
 ## Optimization ([optimize_dodge.py](optimize_dodge.py))
 
 Knobs searched together: kick vy and duration, hold vy, total dodge time, step frequency, stance width, footswing, body height, and a counter-command at the start of braking. Stage 1 is 500 random candidates. Stage 2 is 360 local refinements. Every candidate runs on the same 13 physics settings: nominal plus 12 randomized (friction 0.4–1.0, trunk mass −1…+2 kg, motor strength 85–100 %, latency 0–20 ms), and only candidates stable in all 13 count. Stage 3 validates the 8 finalists on 40 fresh, harsher settings (friction 0.35–1.1, mass −1.5…+3 kg, motors 80–100 %, latency 0–30 ms) and on 20 copies of their own settings perturbed by about ±10 %.

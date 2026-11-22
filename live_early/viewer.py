@@ -57,6 +57,17 @@ def stop_camera(proc):
         proc.kill()
 
 
+def recv_exact(conn, n):
+    """n bytes, or fewer if the peer closed the connection."""
+    buf = bytearray()
+    while len(buf) < n:
+        c = conn.recv(n - len(buf))
+        if not c:
+            break
+        buf += c
+    return bytes(buf)
+
+
 def camera_frames(a, stop):
     proc = None
     with socket.create_server(("", a.listen_port)) as server:
@@ -80,11 +91,11 @@ def camera_frames(a, stop):
             with conn:
                 conn.settimeout(2.0)
                 while not stop.is_set():
-                    h = conn.recv(4, socket.MSG_WAITALL)
+                    h = recv_exact(conn, 4)          # MSG_WAITALL fails on Windows sockets with a timeout
                     if len(h) < 4:
                         return
                     size = struct.unpack(">I", h)[0]
-                    data = conn.recv(size, socket.MSG_WAITALL) if size else b""
+                    data = recv_exact(conn, size) if size else b""
                     if not data:
                         continue
                     ev = np.frombuffer(data, dtype=EVENT_DTYPE, count=len(data) // EVENT_DTYPE.itemsize)

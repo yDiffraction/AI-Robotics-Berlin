@@ -5,13 +5,20 @@
 Our code only runs between "enter" and "back"; the rest of the time Unitree's sport mode is in charge
 and this program only listens.
 
-  SPORT mode (Unitree in control; walk with the remote as usual)
+  SPORT mode (Unitree in control; walk with the remote, or drive from the laptop keyboard)
+    keys w / x      (hold)           -> walk forward / backward (0.3 m/s)
+    keys a / d      (hold)           -> walk sideways left / right (0.2 m/s)
+    keys q / e      (hold)           -> turn left / right (0.6 rad/s)
+                                        Walking only while the key is held (terminal key repeat): it stops
+                                        0.25 s after the last repeat (0.6 s after a single tap).
+    SPACE                            -> stop walking (sport StopMove)
+    key u                            -> stand up (sport RecoveryStand, also from lying flat)
+    key j                            -> lie down (sport StandDown)
     hold L1+R1 for 1 s  (or key o)   -> the dog lies down (sport StandDown), sport mode is released,
                                         supervisor.py starts dodge_controller.py, the dog stands up
   OUR mode (dodge_controller.py under supervisor.py)
-    D-pad Left  or A  (key l or d)   -> STILL dodge: the dog stands still until the press, then kicks
+    D-pad Left  or A  (key l)        -> STILL dodge: the dog stands still until the press, then kicks
                                         at once, ~30 cm to the LEFT in ~0.5 s, brakes, stands still
-                                        (--trot-start: the previous SAFE dodge, ~2.5 s trotting first)
     D-pad Right       (key r)        -> the same to the RIGHT (mirror image, validated in sim)
     Y        (or key s)              -> the dog lies down, sport mode comes back
     L2+B                             -> E-STOP: controller killed, damping (supervisor.py)
@@ -19,10 +26,11 @@ and this program only listens.
                                         until s / Y)
   after an E-STOP / trip (dog damped on the floor)
     Y        (or key s)              -> stop damping (after >= 2 s) and give the dog back to sport mode
-  after sport mode is back the dog lies on the floor: stand it up with the remote as usual.
+  after sport mode is back the dog lies on the floor: u stands it up (or the remote, as usual).
 
 Buttons count only when pressed alone (A, Y, D-pad) or exactly together (L1+R1), seen for 60 ms; every
-press needs a release first. (B is not used alone: it is half of the L2+B e-stop.) Key q quits (only in sport mode).
+press needs a release first. (B is not used alone: it is half of the L2+B e-stop.) Esc or Ctrl+C quits
+(only in sport mode; walking is stopped first).
 """
 from __future__ import annotations
 
@@ -58,6 +66,14 @@ SELECT_TIMEOUT = 45.0             # SelectMode answers "busy" (7002) for ~10 s a
 IGNORE_AFTER_ENTER_S = 1.0
 STABLE_SAMPLES = 3                # a button counts once it is seen alone for 3 polls (60 ms)
 NAMES = {v: k for k, v in B.items()}
+# sport-mode driving from the keyboard: key -> (vx, vy, vyaw, what). Slow on purpose: Unitree's obstacle
+# avoidance is not known to act on API Move commands.
+DRIVE = {"w": (0.3, 0.0, 0.0, "forward"), "x": (-0.3, 0.0, 0.0, "backward"),
+         "a": (0.0, 0.2, 0.0, "sideways left"), "d": (0.0, -0.2, 0.0, "sideways right"),
+         "q": (0.0, 0.0, 0.6, "turning left"), "e": (0.0, 0.0, -0.6, "turning right")}
+DRIVE_FIRST_S = 0.6               # after a key's first character (terminal key repeat starts after ~0.5 s)
+DRIVE_REPEAT_S = 0.25             # once the key repeats (~30 per second)
+MOVE_PERIOD = 0.1                 # Move is re-sent at 10 Hz while a key is held
 
 
 def key_names(k: int) -> str:
@@ -156,13 +172,21 @@ class Keyboard:
             return ""
         out = ""
         while select.select([sys.stdin], [], [], 0)[0]:
-            out += os.read(sys.stdin.fileno(), 32).decode(errors="ignore")
+            chunk = os.read(sys.stdin.fileno(), 32)
+            if not chunk:                              # terminal gone
+                break
+            out += chunk.decode(errors="ignore")
         return out.lower()
 
     def restore(self) -> None:
         if self.old is not None:
             import termios
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old)
+
+
+def escape_pressed(typed: str) -> bool:
+    """A lone Esc (not the start of an arrow / function key sequence)."""
+    return "\x1b" in typed and not re.search("\x1b[\\[O]", typed)
 
 
 class Modes:
@@ -179,6 +203,11 @@ class Modes:
         self.t_entered = 0.0
         self.n_sigint = 0
         self.estop_sent = False
+        self.drive: str | None = None          # key currently driving the dog in sport mode
+        self.drive_t = self.next_move = 0.0
+        self.drive_repeats = 0
+        self.lying_said = False
+        self.last_action, self.last_action_t = "", 0.0
 
     # ---- sport side ------------------------------------------------------------------------
     def check_mode(self) -> str | None:
@@ -189,7 +218,53 @@ class Modes:
             return None
         return res.get("name", "")
 
+    # ---- driving in sport mode -------------------------------------------------------------
+    def drive_key(self, k: str, now: float) -> None:
+        if self.view.lying():
+            if not self.lying_said:
+                log("dog is lying: u stands it up first (walk keys ignored)")
+                self.lying_said = True
+            return
+        self.lying_said = False
+        if k != self.drive:
+            vx, vy, vyaw, what = DRIVE[k]
+            log(f"walking {what} (vx {vx:+.1f} m/s, vy {vy:+.1f} m/s, yaw {vyaw:+.1f} rad/s) while {k} is held")
+            self.drive, self.drive_repeats, self.next_move = k, 0, now
+        else:
+            self.drive_repeats += 1
+        self.drive_t = now
+
+    def drive_tick(self, now: float) -> None:
+        if self.drive is None:
+            return
+        if now - self.drive_t > (DRIVE_REPEAT_S if self.drive_repeats else DRIVE_FIRST_S):
+            self.stop_move("key released")
+        elif now >= self.next_move:
+            vx, vy, vyaw, _ = DRIVE[self.drive]
+            code = self.sc.Move(vx, vy, vyaw)
+            if code != 0:
+                log(f"Move not sent (code {code})")
+            self.next_move = now + MOVE_PERIOD
+
+    def stop_move(self, why: str, always: bool = False) -> None:
+        if self.drive is None and not always:
+            return
+        self.drive = None
+        code = self.sc.StopMove()
+        log(f"stop ({why})" + (f": StopMove answered code {code}" if code else ""))
+
+    def sport_action(self, what: str, call) -> None:
+        now = time.monotonic()
+        if what == self.last_action and now - self.last_action_t < 1.5:
+            return                                 # key repeat of the same key: once is enough
+        self.last_action, self.last_action_t = what, now
+        self.stop_move(what)
+        log(f"{what} ...")
+        code = call()
+        log(f"{what}: " + ("ok" if code == 0 else f"code {code} (sport mode refused or did not answer)"))
+
     def enter(self) -> None:
+        self.stop_move("switching to our mode")
         name = self.check_mode()
         if name is None:
             return
@@ -228,15 +303,13 @@ class Modes:
             cmd_sup.append("--no-remote-check")
         if self.a.gentle:
             cmd_ctl.append("--gentle")
-        if self.a.trot_start:
-            cmd_ctl.append("--trot-start")
         # own session: a terminal Ctrl+C reaches only this program, which forwards it deliberately
         self.sup = subprocess.Popen(cmd_sup + ["--"] + cmd_ctl, stdin=subprocess.PIPE, text=True,
                                     start_new_session=True)
         self.mode, self.t_entered = "ours", time.monotonic()
         self.estop_sent = False
-        log("OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, "
-            "Y = back to sport mode, L2+B = E-STOP")
+        log("OUR mode: dog stands up. l (D-pad Left / A) = dodge left, r (D-pad Right) = dodge right, "
+            "s (Y) = back to sport mode, SPACE (L2+B) = E-STOP")
 
     def hand_back(self) -> None:
         name = self.sport_name
@@ -248,8 +321,8 @@ class Modes:
             now_name = self.check_mode()
             if now_name:
                 self.mode = "sport"
-                log(f"SPORT mode '{now_name}' is back (dog lying: {self.view.lying()}). Stand it up with the remote as usual. "
-                    "Hold L1+R1 1 s (or o) for our mode again.")
+                log(f"SPORT mode '{now_name}' is back (dog lying: {self.view.lying()}). u stands it up "
+                    "(or the remote), then w/x/a/d/q/e walk. Hold L1+R1 1 s (or o) for our mode again.")
                 return
             if not busy_said:
                 log(f"sport service not ready yet (code {code}), retrying for up to {SELECT_TIMEOUT:.0f} s")
@@ -283,6 +356,8 @@ class Modes:
             self._run(kb)
         finally:
             kb.restore()
+            if self.drive is not None:
+                self.stop_move("exiting")
             if self.sup is not None and self.sup.poll() is None:
                 log("exiting while our mode is active: the controller lies the dog down by itself")
 
@@ -299,11 +374,13 @@ class Modes:
             return
         if name:
             self.sport_name = name
-            log(f"robot connected, SPORT mode '{name}' active. Hold L1+R1 1 s (or o) for our mode, q quits.")
+            log(f"robot connected, SPORT mode '{name}' active (dog lying: {self.view.lying()}). "
+                "u stand up, j lie down, hold w/x/a/d/q/e to walk, SPACE stop. "
+                "Hold L1+R1 1 s (or o) for our mode, Esc quits.")
         else:
             self.mode = "off"
             log("robot connected, but sport mode is OFF (released). Y / s = give it back to sport mode, "
-                "L1+R1 / o = our mode (dog must be lying), q quits.")
+                "L1+R1 / o = our mode (dog must be lying), Esc quits.")
         left_btns = [Button(k) for k in DODGE_LEFT_KEYS]
         right_btn, back_btn = Button(DODGE_RIGHT_KEYS), Button(BACK_KEYS)
         shown = 0
@@ -329,9 +406,22 @@ class Modes:
             new_sigint = self.n_sigint > handled_sigint
             handled_sigint = self.n_sigint
             if self.mode in ("sport", "off"):
-                if new_sigint or "q" in typed:
+                if new_sigint or escape_pressed(typed):
+                    self.stop_move("quitting")
                     log("bye")
                     return
+                if self.mode == "sport":
+                    if " " in typed:
+                        self.stop_move("SPACE", always=True)
+                    elif "u" in typed:
+                        self.sport_action("stand up (RecoveryStand)", self.sc.RecoveryStand)
+                    elif "j" in typed:
+                        self.sport_action("lie down (StandDown)", self.sc.StandDown)
+                    else:
+                        walk = [ch for ch in typed if ch in DRIVE]
+                        if walk:
+                            self.drive_key(walk[-1], now)
+                    self.drive_tick(time.monotonic())
                 # hold_t: None = idle, time = L1+R1 held since, -1 = fired, waiting for all buttons released
                 if keys == ENTER_KEYS:
                     if hold_t is None:
@@ -368,7 +458,7 @@ class Modes:
                     log("E-STOP already active (damping). s / Y gives the dog back to sport mode.")
             if now - self.t_entered < IGNORE_AFTER_ENTER_S:
                 continue
-            if want_left or "d" in typed or "l" in typed:
+            if want_left or "l" in typed:
                 self.tell("dodge left")
             elif want_right or "r" in typed:
                 self.tell("dodge right")
@@ -384,8 +474,6 @@ def main() -> None:
     ap.add_argument("--domain", type=int, default=0)
     ap.add_argument("--sport-mode", default="normal", help="mode to restore if it cannot be read from the robot")
     ap.add_argument("--gentle", action="store_true", help="dodge with scaled-down sideways speed (first tries)")
-    ap.add_argument("--trot-start", action="store_true",
-                    help="previous SAFE dodge (~2 s trotting in place before the kick; drifted on the real dog)")
     ap.add_argument("--no-remote-check", action="store_true", help="passed to supervisor.py (see remote_probe.py)")
     a = ap.parse_args()
     iface = find_iface() if a.iface == "auto" else a.iface

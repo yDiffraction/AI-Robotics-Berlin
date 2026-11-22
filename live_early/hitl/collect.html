@@ -1,0 +1,109 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Throw Labeller</title><style>
+:root{--bg:#f6f7f9;--panel:#fff;--ink:#1d2330;--mute:#677085;--line:#dde1e8;--ok:#1f8a4c;--alarm:#d1342f;--press:#1f8a4c;--net:#2f6fdf;--th:#8a5cd1;--btn:#2f6fdf}
+@media (prefers-color-scheme:dark){:root{--bg:#12151b;--panel:#1b2029;--ink:#e6e9ef;--mute:#9aa3b5;--line:#2c3340;--ok:#35b66d;--alarm:#ff5a52;--press:#35b66d;--net:#6ea0ff;--th:#b48cff;--btn:#3b6fd8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1180px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:minmax(0,420px) minmax(0,1fr)}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+h1{font-size:15px;margin:0 0 10px}#img{width:100%;aspect-ratio:1;image-rendering:pixelated;background:#000;border-radius:6px;display:block}
+#btn{width:100%;margin-top:12px;padding:22px 10px;font:700 20px system-ui;border:0;border-radius:10px;background:var(--btn);color:#fff;cursor:pointer;user-select:none;touch-action:none}
+#btn.on{background:var(--press)}#status{font-size:22px;font-weight:700;text-align:center;padding:10px;border-radius:8px;color:#fff;background:var(--ok)}
+#status.alarm{background:var(--alarm)}#trace{width:100%;height:240px;display:block;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:10px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:8px}.stat b{display:block;font-size:18px}.stat span{color:var(--mute);font-size:12px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--mute);font-size:12px;margin-top:6px}.sw{display:inline-block;width:12px;height:3px;vertical-align:middle;margin-right:4px}
+#live{display:none;grid-column:1/-1}#live.on{display:block}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.row label{color:var(--mute);font-size:12px;min-width:120px}input[type=range]{flex:1;min-width:180px}
+.b2{padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 14px system-ui;cursor:pointer}
+.b2.pri{background:var(--btn);color:#fff;border-color:transparent}input[type=number]{width:70px;padding:6px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+#msg{font-weight:600}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.note{color:var(--mute);font-size:12px;margin-top:8px;word-break:break-all}kbd{border:1px solid var(--line);border-radius:4px;padding:0 4px}
+</style></head><body><main>
+<section class="card"><h1>Camera (last 30 ms)</h1><canvas id="img" width="80" height="80"></canvas>
+<button id="btn">SHOULD SPIKE NOW</button>
+<div class="note"><kbd>Space</kbd> = should spike now (hold OK) &middot; <kbd>Backspace</kbd> = undo last press (within 5 s)</div></section>
+<section class="card"><div id="status">quiet</div><canvas id="trace"></canvas>
+<div class="legend"><span><i class="sw" style="background:var(--net)"></i>readout y</span><span><i class="sw" style="background:var(--th)"></i>&theta;</span>
+<span><i class="sw" style="background:var(--alarm)"></i>network alarm</span><span><i class="sw" style="background:var(--press)"></i>your press</span><span>ticks = output spikes</span></div>
+<div class="stats"><div class="stat"><span>hits</span><b id="hit">0</b></div><div class="stat"><span>misses</span><b id="mis">0</b></div>
+<div class="stat"><span>false alarms</span><b id="fa">0</b></div><div class="stat"><span>alarm vs press</span><b id="lat">&ndash;</b></div>
+<div class="stat"><span>presses</span><b id="np">0</b></div><div class="stat"><span>recorded</span><b id="min">0 min</b></div>
+<div class="stat"><span>frames/s</span><b id="fps">&ndash;</b></div><div class="stat"><span>board round trip</span><b id="rtt">&ndash;</b></div></div>
+<div class="note" id="note"></div></section><section class="card" id="evalc" style="display:none;grid-column:1/-1"><h1>Final evaluation: pick the model on the board</h1>
+<div class="note">Each model keeps its own score from the moment it is loaded. Press SPACE whenever it should fire;
+a hit is an alarm from 600 ms before to 300 ms after your press. Switching models restarts the board (~3 s).</div>
+<div style="overflow-x:auto"><table id="mt" style="width:100%;border-collapse:collapse;margin-top:10px;font-size:13px"></table></div></section>
+<section class="card" id="live"><h1>Live training</h1><div class="grid2">
+<div><div class="row"><label>alarm threshold &theta;</label><input type="range" id="th" min="0.3" max="0.99" step="0.01"><b id="thv">&ndash;</b></div>
+<div class="note">Sets the board's alarm readout now and the &theta; the trainer's reward uses (sent with the next upload).</div>
+<div class="row"><button class="b2" id="watch">Just watching: OFF</button><span class="note" id="watchnote">recording counts as training data: unpressed time = should NOT fire</span></div>
+<div class="row"><button class="b2 pri" id="upd">Update board now</button><button class="b2" id="rev">Back to start model</button></div>
+<div class="row"><label>auto-update every</label><input type="number" id="auto" min="0" step="0.5"> min <button class="b2" id="autoset">Set</button><span class="note">0 = only by button</span></div>
+<div class="row"><span id="msg"></span></div></div>
+<div><div class="stats"><div class="stat"><span>board runs</span><b id="bd">&ndash;</b></div><div class="stat"><span>newest snapshot</span><b id="ls">&ndash;</b></div>
+<div class="stat"><span>trainer step</span><b id="ts">&ndash;</b></div><div class="stat"><span>trainer data</span><b id="td">&ndash;</b></div>
+<div class="stat"><span>RL return / output rate</span><b id="tr">&ndash;</b></div><div class="stat"><span>uploaded chunks</span><b id="up">&ndash;</b></div></div>
+<div class="note" id="tst"></div></div></div></section></main>
+<script>
+const N=600,css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),yr=()=>(cfg&&cfg.y_range)||[0,1];
+let H={y:[],s:[],a:[],h:[],p:[]},cfg=null,lastAlarm=-1e9,k=0;
+const ic=document.getElementById('img').getContext('2d'),im=ic.createImageData(80,80),tc=document.getElementById('trace'),tx=tc.getContext('2d');
+function fit(){const r=tc.getBoundingClientRect();tc.width=r.width*devicePixelRatio;tc.height=r.height*devicePixelRatio}addEventListener('resize',fit);fit();
+const post=p=>fetch('/'+p,{method:'POST'}).catch(()=>{});let down=false;const btn=document.getElementById('btn');
+function press(on){if(on===down)return;down=on;btn.classList.toggle('on',on);post(on?'down':'up')}
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(!e.repeat)press(true)}else if(e.code==='Backspace'){e.preventDefault();post('undo')}});
+addEventListener('keyup',e=>{if(e.code==='Space'){e.preventDefault();press(false)}});
+btn.addEventListener('pointerdown',e=>{e.preventDefault();btn.setPointerCapture(e.pointerId);press(true)});
+btn.addEventListener('pointerup',()=>press(false));btn.addEventListener('pointercancel',()=>press(false));addEventListener('blur',()=>press(false));
+function drawImg(b64){const b=atob(b64);for(let i=0;i<6400;i++){const v=b.charCodeAt(i),o=i*4;let r=0,g=0,bl=0;
+ if(v&2){r=g=bl=255}else if(v&1){r=61;g=139;bl=255}im.data[o]=r;im.data[o+1]=g;im.data[o+2]=bl;im.data[o+3]=255}ic.putImageData(im,0,0)}
+function draw(){const W=tc.width,Hh=tc.height,p=10*devicePixelRatio,n=H.y.length,X=i=>W-(n-1-i)*(W/N),Y=v=>{const[a,b]=yr();return p+(1-(Math.min(b,Math.max(a,v))-a)/(b-a))*(Hh-2*p)};tx.clearRect(0,0,W,Hh);
+ tx.globalAlpha=.18;tx.fillStyle=css('--press');for(let i=0;i<n;i++)if(H.h[i])tx.fillRect(X(i),0,W/N+1,Hh);tx.globalAlpha=1;
+ tx.strokeStyle=css('--line');tx.lineWidth=1;for(const v of[yr()[0],(yr()[0]+yr()[1])/2,yr()[1]]){tx.beginPath();tx.moveTo(0,Y(v));tx.lineTo(W,Y(v));tx.stroke()}
+ if(cfg){tx.setLineDash([6,4]);tx.strokeStyle=css('--th');tx.lineWidth=1.5*devicePixelRatio;tx.beginPath();tx.moveTo(0,Y(cfg.theta));tx.lineTo(W,Y(cfg.theta));tx.stroke();tx.setLineDash([])}
+ const bar=(arr,col,y0,h)=>{tx.fillStyle=col;for(let i=0;i<n;i++)if(arr[i])tx.fillRect(X(i)-1.5*devicePixelRatio,y0,3*devicePixelRatio,h)};
+ bar(H.a,css('--alarm'),0,Hh/2);bar(H.p,css('--press'),Hh/2,Hh/2);
+ tx.globalAlpha=.5;tx.fillStyle=css('--net');for(let i=0;i<n;i++)if(H.s[i]>0)tx.fillRect(X(i),Hh-6*devicePixelRatio,1.5*devicePixelRatio,6*devicePixelRatio);tx.globalAlpha=1;
+ tx.strokeStyle=css('--net');tx.lineWidth=2*devicePixelRatio;tx.beginPath();for(let i=0;i<n;i++){i?tx.lineTo(X(i),Y(H.y[i])):tx.moveTo(X(i),Y(H.y[i]))}tx.stroke()}
+const es=new EventSource('/stream'),$=id=>document.getElementById(id);
+es.onmessage=e=>{const d=JSON.parse(e.data);if(d.cfg){cfg=d.cfg;$('note').textContent=`model ${cfg.model} on ${cfg.primary}, θ ${cfg.theta} · source ${cfg.source} · recording to ${cfg.out}`}
+ for(const r of d.rows){H.y.push(r[0]);H.s.push(r[1]);H.a.push(r[2]);H.h.push(r[3]);H.p.push(r[4]);k++;if(r[2])lastAlarm=k}
+ for(const q in H)if(H[q].length>N)H[q].splice(0,H[q].length-N);if(d.img)drawImg(d.img);draw();
+ const on=k-lastAlarm<100;$('status').className=on?'alarm':'';$('status').textContent=on?'NETWORK ALARM':'quiet';
+ const s=d.score||{};$('hit').textContent=s.hits??0;$('mis').textContent=s.misses??0;$('fa').textContent=s.fas??0;
+ $('lat').textContent=s.lat_ms==null?'–':(s.lat_ms>0?'+':'')+s.lat_ms+' ms';$('np').textContent=d.presses;$('min').textContent=d.minutes+' min';
+ $('fps').textContent=d.fps;$('rtt').textContent=d.rtt_ms>=0?d.rtt_ms+' ms':'–'};
+const ago=t=>t?Math.max(0,Math.round(Date.now()/1000-t))+' s ago':'';let thInit=false;
+const th=$('th');th.addEventListener('input',()=>{$('thv').textContent=(+th.value).toFixed(2)});
+th.addEventListener('change',()=>fetch('/theta?v='+th.value,{method:'POST'}));
+$('upd').onclick=()=>fetch('/update',{method:'POST'});$('rev').onclick=()=>{if(confirm('Load the start model ('+(cfg&&cfg.start_model)+') back onto the board?'))fetch('/revert',{method:'POST'})};
+let watching=false;$('watch').onclick=()=>fetch('/watch?on='+(watching?0:1),{method:'POST'});
+$('autoset').onclick=()=>fetch('/auto?min='+($('auto').value||0),{method:'POST'});
+th.addEventListener('keydown',e=>e.stopPropagation());$('auto').addEventListener('keydown',e=>e.stopPropagation());
+let mtKey='';
+$('mt').addEventListener('pointerdown',e=>{const b=e.target.closest('button[data-i]');if(!b||b.disabled)return;
+ e.preventDefault();for(const x of $('mt').querySelectorAll('button[data-i]'))x.disabled=true;b.textContent='loading…';
+ fetch('/load?i='+b.dataset.i,{method:'POST'})});
+function evalTable(d){if(!d.eval||!d.models)return;$('evalc').style.display='block';
+ const key=JSON.stringify(d.models);if(key===mtKey)return;mtKey=key;   // redraw only on change: a redraw kills a click in progress
+ for(const id of ['upd','autoset','auto','watch'])$(id).style.display='none';
+ const f=v=>v==null?'–':v;
+ let h='<tr style="text-align:left;color:var(--mute)"><th></th><th>model</th><th>md5</th><th>min</th><th>presses</th><th>hits</th><th>misses</th><th>recall</th><th>false alarms</th><th>FA/min</th><th>alarm − press</th></tr>';
+ for(const m of d.models){
+  const act=m.on_board?'<b style="color:var(--ok)">ON BOARD</b>':'<button class="b2" data-i="'+m.i+'">Load</button>';
+  h+='<tr style="border-top:1px solid var(--line)'+(m.on_board?';font-weight:700':'')+'"><td style="padding:6px 4px">'+act+'</td><td>'+m.label+'</td><td>'+m.md5+'</td><td>'+m.min+'</td><td>'+m.presses+'</td><td>'+m.hits+'</td><td>'+m.misses+'</td><td>'+f(m.recall)+'</td><td>'+m.fas+'</td><td>'+f(m.fa_per_min)+'</td><td>'+(m.lat_ms==null?'–':m.lat_ms+' ms')+'</td></tr>'}
+ $('mt').innerHTML=h}
+function live(d){evalTable(d);if(!('theta' in d))return;$('live').classList.add('on');if(cfg)cfg.theta=d.theta;
+ if(!thInit&&cfg&&cfg.theta_range){th.min=cfg.theta_range[0];th.max=cfg.theta_range[1]}if(!thInit){th.value=d.theta;$('auto').value=d.auto_min;thInit=true}if(document.activeElement!==th)$('thv').textContent=d.theta.toFixed(2);
+ const b=d.board||{};$('bd').textContent=b.label||'–';const l=d.latest;$('ls').textContent=l?('step '+l.step):'none yet';
+ const t=d.trainer||{};$('ts').textContent=t.step??'–';$('td').textContent=t.human_min!=null?(t.human_min+' min, '+t.presses+' presses'):'–';
+ $('tr').textContent=(t['return']??'–')+(t.out_rate!=null?' / '+(100*t.out_rate).toFixed(2)+' %':'');const u=d.upload;$('up').textContent=u?(u.err?'ERROR':u.chunks):'–';
+ $('tst').textContent='trainer: '+(t.state||'')+(t.t?' ('+ago(t.t)+')':'')+(l?' · snapshot '+ago(l.t):'')+' · auto '+(d.auto_min>0?('every '+d.auto_min+' min'):'off')+(u&&u.err?' · upload error: '+u.err:'')+(d.gpu?' · '+d.gpu:'');
+ $('msg').textContent=d.msg||'';watching=!!d.watching;
+ $('watch').textContent='Just watching: '+(watching?'ON':'OFF');$('watch').classList.toggle('pri',watching);
+ $('watchnote').textContent=watching?'not used for training (presses are ignored)':'recording counts as training data: unpressed time = should NOT fire';
+ btn.style.opacity=watching?.4:1;if(watching)$('status').textContent+=' · watching only'}
+es.addEventListener('message',e=>live(JSON.parse(e.data)));
+es.onerror=()=>{$('status').textContent='stopped';$('status').className=''};
+</script></body></html>

@@ -9,7 +9,8 @@ What the real Go2 does when commands stop is unknown; `on_silence` models both g
 ("hold": keep the last command, "passive": zero torque after 0.1 s).
 
 Sport mode (for go2_modes.py): fake 'motion_switcher' (CheckMode / SelectMode / ReleaseMode) and
-'sport' (StandDown) RPC services on the real Unitree RPC layer. While a sport mode is active the fake
+'sport' (StandDown, RecoveryStand, Move, StopMove) RPC services on the real Unitree RPC layer.
+Move / StopMove only get recorded (robot.sport_calls): the fake cannot walk; Move is refused while lying. While a sport mode is active the fake
 holds its own pose (PD 60/5) and ignores rt/lowcmd, recording any as 'while_sport' (must never
 happen). SelectMode answers 7002 (busy) for SELECT_BUSY_S after ReleaseMode, as reported for the
 real Go2.
@@ -76,9 +77,26 @@ class _FakeSport(Server):
     def Init(self):
         self._SetApiVersion("1.0.0.1")
         self._RegistHandler(1005, self._stand_down, False)
+        self._RegistHandler(1006, self._recovery_stand, False)
+        self._RegistHandler(1008, self._move, False)
+        self._RegistHandler(1003, self._stop_move, False)
 
     def _stand_down(self, _p):
+        self.robot.record("StandDown")
         return (0, "") if self.robot.sport_move(SPORT_LIE, 1.5) else (3103, "")
+
+    def _recovery_stand(self, _p):
+        self.robot.record("RecoveryStand")
+        return (0, "") if self.robot.sport_move(SPORT_STAND, 1.5) else (3103, "")
+
+    def _move(self, p):
+        v = json.loads(p)
+        self.robot.record("Move", (v["x"], v["y"], v["z"]))
+        return 0, ""
+
+    def _stop_move(self, _p):
+        self.robot.record("StopMove")
+        return (0, "") if self.robot.sport_name else (3103, "")
 
 
 class FakeGo2:
@@ -101,12 +119,18 @@ class FakeGo2:
         self.sub.Init(self._on_cmd, 0)
         self.sport_name = ""
         self.released_at = -1e9
+        self.sport_calls: list = []
         self.servers = [_FakeSwitcher(self), _FakeSport(self)]
         for srv in self.servers:
             srv.Init()
             srv.Start(False)
 
     # ---- fake sport mode (called from the RPC threads) -------------------------------------------
+    def record(self, name: str, arg=None) -> None:
+        """(sim t, call, arg, sport mode active) per sport RPC received."""
+        with self.lock:
+            self.sport_calls.append((self.t, name, arg, bool(self.sport_name)))
+
     def sport_on(self, name: str) -> None:
         with self.lock:
             q = self.d.qpos[self.qadr].copy()
@@ -166,6 +190,7 @@ class FakeGo2:
             self.cmd = None           # (q, dq, kp, kd, tau) arrays of the last valid command
             self.cmd_t = None
             self.rx = []              # (t, kind) per received command: child | damp | bad_crc | nonfinite
+            self.sport_calls = []
         # fault switches (set from the test)
         self.keys_state = 0           # buttons as seen in lowstate.wireless_remote
         self.keys_remote = 0          # buttons as seen on rt/wirelesscontroller

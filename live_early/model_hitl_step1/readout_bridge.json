@@ -1,0 +1,72 @@
+{
+ "classes": [
+  "none",
+  "throw_motion",
+  "unused_2",
+  "unused_3",
+  "unused_4",
+  "unused_5",
+  "unused_6",
+  "unused_7",
+  "unused_8",
+  "unused_9",
+  "unused_10"
+ ],
+ "frame_ms": 10,
+ "input": "binary 2x80x80 (4x4 blocks of 320x320)",
+ "score": "s_t = (1 - alpha) * s_{t-1} + alpha * (spike[1]_t - spike[0]_t)",
+ "alpha": 0.2,
+ "threshold": 0.6,
+ "hold_frames": 3,
+ "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
+ "refractory_ms": 1000,
+ "ptq_check": {
+  "weight_format": "Q2.6",
+  "max_abs_weight": 2.3788516521453857,
+  "potential_format": "Q4.12",
+  "threshold": -0.04,
+  "alpha": 0.2,
+  "n_check": 160,
+  "decision_agreement": 0.925,
+  "bal_acc_float": 0.8131720430107527,
+  "bal_acc_fixed": 0.8454301075268817
+ },
+ "calibration": {
+  "fixed_point": true,
+  "fp_weight": 2.0,
+  "method": "best recall - fp_weight * false-alarm rate over labelled 3 s windows of the training recordings (in-sample, optimistic)",
+  "model": {
+   "alpha": 0.2,
+   "hold": 3,
+   "threshold": -0.04,
+   "tp": 45,
+   "fn": 8,
+   "fp": 2,
+   "tn": 66,
+   "balanced_accuracy": 0.91
+  },
+  "model_per_camera_best": {
+   "bewegt": {
+    "alpha": 0.2,
+    "hold": 1,
+    "threshold": -0.02,
+    "tp": 22,
+    "fn": 5,
+    "fp": 1,
+    "tn": 46,
+    "balanced_accuracy": 0.897
+   },
+   "fest": {
+    "alpha": 0.2,
+    "hold": 3,
+    "threshold": 0.06,
+    "tp": 22,
+    "fn": 4,
+    "fp": 0,
+    "tn": 21,
+    "balanced_accuracy": 0.923
+   }
+  }
+ },
+ "name": "HITL step 1 (d_neg11 + 1 RL step)"
+}

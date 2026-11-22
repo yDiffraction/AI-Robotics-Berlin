@@ -24,6 +24,10 @@ Provenance:
 - `dd`: `~/ext/dailydvs` on the A100, imported from DailyDVS-200.
 - `dvsg`: `data/dvsg_{train,test}.npz`.
 
+To look at the clips: `python training/early/viewer/viewer.py [more.npz | clip folder ...]`, then open
+http://127.0.0.1:8765. It plays every bank and every `match.py` clip folder (80×80, or native 320×320
+for clip folders) and shows the release marker, the activity per frame and all metadata.
+
 ## Training samples are streams, not clips
 
 The chip runs forever, so every training sample is a multi-second stream (default

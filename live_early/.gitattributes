@@ -1,2 +1,4 @@
 model/weights.txt -text
 model_v3/weights.txt -text
+model_d_neg11/weights.txt -text
+model_hitl_step1/weights.txt -text

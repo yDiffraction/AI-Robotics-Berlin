@@ -4,10 +4,14 @@ Start the Go2 tools in WSL (Ubuntu-22.04, /root/go2_sim/venv) from a normal Powe
     .\run_go2.ps1 check     # network: wired interface, ping the robot
     .\run_go2.ps1 probe     # read-only: robot state rate, remote buttons, remote topic (safe in sport mode)
     .\run_go2.ps1 gentle    # same as below, but the dodge at reduced sideways speed (use this first)
-    .\run_go2.ps1           # go2_modes.py: sport mode <-> our controller, STILL dodge on A / D-pad
-    .\run_go2.ps1 trot      # the previous SAFE dodge (trots ~2 s in place before the kick)
+    .\run_go2.ps1           # go2_modes.py: sport mode <-> our controller, STILL dodge
+
+Keys in go2_modes.py:
+    sport mode:  u stand up, j lie down, hold w/x walk fwd/back, a/d sideways, q/e turn, SPACE stop,
+                 o our mode, Esc quit
+    our mode:    l dodge left, r dodge right, s back to sport mode, SPACE e-stop
 #>
-param([ValidateSet("modes", "gentle", "trot", "probe", "check")][string]$What = "modes")
+param([ValidateSet("modes", "gentle", "probe", "check")][string]$What = "modes")
 $deploy = "/mnt/" + $PSScriptRoot.Substring(0, 1).ToLower() + $PSScriptRoot.Substring(2).Replace('\', '/')
 $py = "/root/go2_sim/venv/bin/python"
 switch ($What) {
@@ -17,5 +21,4 @@ switch ($What) {
     "probe" { wsl -d Ubuntu-22.04 -u root -- $py -u "$deploy/remote_probe.py" --iface auto }
     "modes" { wsl -d Ubuntu-22.04 -u root -- $py -u "$deploy/go2_modes.py" }
     "gentle" { wsl -d Ubuntu-22.04 -u root -- $py -u "$deploy/go2_modes.py" --gentle }
-    "trot" { wsl -d Ubuntu-22.04 -u root -- $py -u "$deploy/go2_modes.py" --trot-start }
 }

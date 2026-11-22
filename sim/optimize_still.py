@@ -14,7 +14,10 @@ Ranking, safety first:
   cd sim && python optimize_still.py               # ~15 min on 14 cores -> results/still_optimize.json
   cd sim && python screen_still.py                 # robust candidates on 100 runs per side (the search overfits)
   cd sim && python optimize_still.py --local       # focused search around the screened ones, 16 runs per side
-  cd sim && python optimize_still.py --validate --local-rank 1   (or --screened "<name>")
+  cd sim && python optimize_still.py --corner --seeds "10;11;12;1" --rand 12
+                                                   # same, half of the runs in the harsh corner (weak motors,
+                                                   #   +2..3 kg, low friction), safety ranked above speed
+  cd sim && python optimize_still.py --validate --corner-rank 0   (or --local-rank / --screened "<name>")
                                                    # 500 harsh runs per side (scaled down until 0 fail)
                                                    #   -> results/still_dodge.json (what the robot runs)
 """
@@ -193,6 +196,36 @@ def local(a) -> None:
     print(f"-> {out}")
 
 
+def corner_physics(rng: np.random.Generator) -> g.Physics:
+    """The harsh corner where the 500-run validation found torque saturation: weak motors, heavy
+    payload, low friction, long latency (still inside harsh_physics' ranges)."""
+    return g.Physics(friction=rng.uniform(0.35, 0.5), mass_add=rng.uniform(2.0, 3.0),
+                     motor_strength=rng.uniform(0.8, 0.85), latency=rng.uniform(0.01, 0.03),
+                     obs_noise=1.0, target_margin=0.1, pre_offset=rng.uniform(-0.3, 0.3),
+                     seed=int(rng.integers(1 << 30)))
+
+
+T30_P90_REQ = 0.62      # corner search: speed requirement (p90 incl. the corner runs)
+
+
+def corner(a) -> None:
+    """Search around still_local.json candidates on half harsh / half corner physics; ranked safety
+    first: failures, speed requirement met, then load margin."""
+    lim = v.limits()
+    rng = np.random.default_rng(a.seed + 13)
+    phys = [g.harsh_physics(rng) for _ in range(a.rand)] + [corner_physics(rng) for _ in range(a.rand)]
+    top = json.loads((HERE / "results/still_local.json").read_text())["top"]
+    seeds = [top[int(i)]["params"] for i in a.seeds.split(";")]
+    cand = seeds + [perturb(p, rng, sc) for p in seeds for sc in np.linspace(0.02, 0.08, a.refine_n)]
+    print(f"corner: {len(cand)} candidates x 2 sides x {len(phys)} physics ({a.rand} harsh + {a.rand} corner)", flush=True)
+    res = sorted(pool_map(phys, lim, cand, a.workers),
+                 key=lambda r: (r["fails"], r["t30_p90"] > T30_P90_REQ, round(r["load_cost"], 2), r["t30_p90"]))
+    table(res, 15)
+    out = HERE / "results/still_corner.json"
+    out.write_text(json.dumps({"seeds": a.seeds, "n_harsh": a.rand, "n_corner": a.rand, "top": res[:30]}, indent=1))
+    print(f"-> {out}")
+
+
 def safe_anchor() -> dict:
     p = json.loads((HERE / "results/safe_dodge.json").read_text())["chosen"]["params"]
     return {k: float(p.get(k, 0.0)) for k in SPACE}
@@ -234,14 +267,34 @@ def search(a) -> None:
     print(f"-> {OUT}")
 
 
-SCALES = (1.0, 0.95, 0.9, 0.85, 0.8)
+SCALES = (1.0, 0.97, 0.94, 0.9)
+
+
+GOAL_REASONS = ("short", "far", "never")      # distance goal, not a load or stability limit
+
+
+def safety_fails(r: dict) -> int:
+    """Runs (both sides) with a fall, unsettled end, load/joint/tilt limit, drift or yaw violation."""
+    return sum(any(w.split(" ")[0] not in GOAL_REASONS for w in run["violations"])
+               for side in ("left", "right") for run in r[side]["runs"])
+
+
+def goal_misses(r: dict) -> int:
+    return sum(any(w.split(" ")[0] in GOAL_REASONS for w in run["violations"])
+               for side in ("left", "right") for run in r[side]["runs"])
 
 
 def validate(a) -> None:
-    """500 harsh runs per side for the best finalist; if any run fails, scale its sideways commands
-    down (like the SAFE dodge's scale sweep) until both sides pass every run."""
+    """500 harsh runs per side; accepted when NO run breaks a safety limit (fall, unsettled end, load,
+    joint margin, torque, tilt, drift, yaw). Runs that only miss the distance window (sim end distance
+    0.33-0.60 m, or 30 cm never reached) are counted and reported, not hidden. If a safety limit is
+    broken, the sideways commands are scaled down (like the SAFE dodge's scale sweep); --scale fixes
+    the scale."""
     lim = v.limits()
-    if a.local_rank is not None:
+    if a.corner_rank is not None:
+        p0 = json.loads((HERE / "results/still_corner.json").read_text())["top"][a.corner_rank]["params"]
+        a.screened = f"still_corner.json rank {a.corner_rank}"
+    elif a.local_rank is not None:
         p0 = json.loads((HERE / "results/still_local.json").read_text())["top"][a.local_rank]["params"]
         a.screened = f"still_local.json rank {a.local_rank}"
     elif a.screened:
@@ -252,17 +305,19 @@ def validate(a) -> None:
     rng = np.random.default_rng(a.seed_val)
     phys = [g.harsh_physics(rng) for _ in range(a.runs)]
     sweep = []
-    for sc in SCALES:
+    for sc in ((a.scale,) if a.scale else SCALES):
         p = s.StillDodge.from_params(p0).scaled(sc).params()
         p = {k: p[k] for k in SPACE}
         r = pool_map(phys, lim, [p], a.workers)[0] if a.workers <= 1 else _split(phys, lim, p, a.workers)
         r["scale"] = sc
+        r["safety_fails"], r["goal_misses"] = safety_fails(r), goal_misses(r)
         sweep.append(r)
-        print(f"x{sc:.2f}: fails L {r['left']['fails']}/{a.runs} R {r['right']['fails']}/{a.runs}, "
-              f"t30 p90 {r['t30_p90']:.2f}, load {r['load_cost']:.2f}  {r['left']['why'] + r['right']['why']}", flush=True)
-        if r["fails"] == 0:
+        print(f"x{sc:.2f}: safety failures {r['safety_fails']}/{2 * a.runs}, distance misses {r['goal_misses']}/{2 * a.runs} "
+              f"(L {r['left']['fails']} R {r['right']['fails']}), t30 p90 {r['t30_p90']:.2f}, load {r['load_cost']:.2f}  "
+              f"{r['left']['why'] + r['right']['why']}", flush=True)
+        if r["safety_fails"] == 0:
             break
-    ok = [r for r in sweep if r["fails"] == 0]
+    ok = [r for r in sweep if r["safety_fails"] == 0]
     if not ok:
         print("no scale passed every run")
         return
@@ -271,10 +326,12 @@ def validate(a) -> None:
     for gs in (0.8, 0.7):          # gentle version for the first tries on the real dog
         pg = {k: s.StillDodge.from_params(best["params"]).scaled(gs).params()[k] for k in SPACE}
         rg = _split(phys[:300], lim, pg, a.workers)
-        print(f"gentle x{gs}: fails {rg['fails']}/{rg['n']}, t30 p90 {rg['t30_p90']:.2f}, "
-              f"y_final {rg['left']['y_final_min']:.2f}-{rg['left']['y_final_max']:.2f}, load {rg['load_cost']:.2f}")
+        rg["safety_fails"], rg["goal_misses"] = safety_fails(rg), goal_misses(rg)
+        print(f"gentle x{gs}: safety failures {rg['safety_fails']}/{rg['n']}, distance misses {rg['goal_misses']}, "
+              f"t30 p90 {rg['t30_p90']:.2f}, y_final L {rg['left']['y_final_min']:.2f}-{rg['left']['y_final_max']:.2f} "
+              f"R {rg['right']['y_final_min']:.2f}-{rg['right']['y_final_max']:.2f}, load {rg['load_cost']:.2f}")
         gentle = {"scale": gs, **rg}
-        if not [w for w in rg["left"]["why"] + rg["right"]["why"] if w != "short"]:
+        if rg["safety_fails"] == 0:
             break
     s.STILL_PATH.write_text(json.dumps({"chosen": {"params": {**best["params"], "prime": True}, **best},
                                         "gentle": gentle, "sweep": sweep, "limits": lim,
@@ -322,13 +379,19 @@ def main() -> None:
     ap.add_argument("--validate", action="store_true")
     ap.add_argument("--pick", type=int, default=0, help="--validate: which finalist (0 = best)")
     ap.add_argument("--screened", default=None, help="--validate: a candidate name from results/still_screen.json")
+    ap.add_argument("--corner-rank", type=int, default=None, help="--validate: a candidate from results/still_corner.json")
     ap.add_argument("--local-rank", type=int, default=None, help="--validate: a candidate from results/still_local.json")
+    ap.add_argument("--scale", type=float, default=None, help="--validate: only this scale of the candidate")
     ap.add_argument("--runs", type=int, default=500)
     ap.add_argument("--seed-val", type=int, default=2026)
+    ap.add_argument("--corner", action="store_true", help="search around still_local.json ranks --seeds (e.g. 10;1;11) "
+                    "on harsh + corner physics")
     ap.add_argument("--local", action="store_true", help="focused search around --seeds (names in still_screen.json)")
     ap.add_argument("--seeds", default="F2 x0.9;F2 x1;F1 (search best) x0.9;SAFE params, phase 0.5 x1", help="; separated")
     a = ap.parse_args()
-    if a.local:
+    if a.corner:
+        corner(a)
+    elif a.local:
         local(a)
     else:
         validate(a) if a.validate else search(a)

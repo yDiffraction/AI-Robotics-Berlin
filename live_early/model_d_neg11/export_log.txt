@@ -1,0 +1,13 @@
+WARNING: max |weight| 2.379 exceeds Q2.6; 3 weights are clipped (the float/fixed check below includes this)
+{
+ "weight_format": "Q2.6",
+ "max_abs_weight": 2.3788516521453857,
+ "potential_format": "Q4.12",
+ "threshold": -0.04,
+ "alpha": 0.2,
+ "n_check": 160,
+ "decision_agreement": 0.925,
+ "bal_acc_float": 0.8131720430107527,
+ "bal_acc_fixed": 0.8454301075268817
+}
+wrote /home/team-1-user/throwdet/deliver/D_person01_neg_11out: weights.txt (78501 values), model.json, config.yaml, readout.json

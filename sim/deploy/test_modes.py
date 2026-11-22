@@ -30,11 +30,11 @@ DOMAIN = 77
 B = safety.BUTTON_BIT
 OUT = HERE.parent / "results"
 LOG_LINES: list[str] = []
-T30_MAX = {"still": 0.70, "trot": 0.90}     # s after the kick; sim worst: see results/still_dodge.json, safe_dodge.json
+T30_MAX = 0.70     # s after the kick; sim worst: see results/still_dodge.json
 
 
-def dodge_for(gentle: bool = False, side: str = "left", trot: bool = False):
-    return dc.load_safe_dodge(gentle, side) if trot else dc.load_still_dodge(gentle, side)
+def dodge_for(gentle: bool = False, side: str = "left"):
+    return dc.load_still_dodge(gentle, side)
 
 
 def keys(*names: str) -> int:
@@ -152,7 +152,6 @@ def enter_by_remote(s: Session, c: Checks) -> bool:
 
 
 def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: int, min_dy: float = 0.30) -> None:
-    still = dodge.t0 == 0.0
     side = "right" if dodge.cmd.vy < 0 else "left"
     sign = -1.0 if side == "right" else 1.0
     hit = s.wait(r"DODGE:", 3, start_line)
@@ -160,12 +159,11 @@ def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: in
              s.lines[hit[0]][2] if hit else ""):
         return
     t_cmd = hit[1]
-    if still:
-        P = log_window(robot, t_cmd - 1.0, t_cmd - 0.02)
-        travel = float(np.hypot(np.ptp(P["x"]), np.ptp(P["y"])))
-        rock = float(np.ptp(np.r_[P["roll"]]) + np.ptp(P["pitch"]))
-        c("dog stood still for 1 s before the command (trunk moved < 5 mm)", travel < 0.005 and rock < 0.02,
-          f"{travel * 1000:.1f} mm, roll+pitch range {rock:.3f} rad")
+    P = log_window(robot, t_cmd - 1.0, t_cmd - 0.02)
+    travel = float(np.hypot(np.ptp(P["x"]), np.ptp(P["y"])))
+    rock = float(np.ptp(np.r_[P["roll"]]) + np.ptp(P["pitch"]))
+    c("dog stood still for 1 s before the command (trunk moved < 5 mm)", travel < 0.005 and rock < 0.02,
+      f"{travel * 1000:.1f} mm, roll+pitch range {rock:.3f} rad")
     done = s.wait(r"dodge done", 20, hit[0])
     if not c("dodge finished, standing again", done is not None):
         return
@@ -178,18 +176,16 @@ def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: in
     t30 = float(reach[0] - t_kick) if len(reach) else float("nan")
     tilt = float(np.abs(np.r_[W["roll"], W["pitch"]]).max())
     end = log_window(robot, done[1] - 0.2, done[1] + 0.2)
-    if still:
-        moved = W["t"][(W["t"] >= t_kick) & (dy >= 0.02)]
-        t2 = float(moved[0] - t_kick) if len(moved) else float("nan")
-        c("dog moving sideways right after the command (2 cm within 0.3 s)", t2 <= 0.3, f"{t2:.2f} s")
-        E = log_window(robot, done[1] - 0.5, done[1])
-        c("still again at the end (trunk moved < 1 cm in the last 0.5 s)",
-          np.hypot(np.ptp(E["x"]), np.ptp(E["y"])) < 0.01, f"{np.hypot(np.ptp(E['x']), np.ptp(E['y'])) * 1000:.1f} mm")
+    moved = W["t"][(W["t"] >= t_kick) & (dy >= 0.02)]
+    t2 = float(moved[0] - t_kick) if len(moved) else float("nan")
+    c("dog moving sideways right after the command (2 cm within 0.3 s)", t2 <= 0.3, f"{t2:.2f} s")
+    E = log_window(robot, done[1] - 0.5, done[1])
+    c("still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+      np.hypot(np.ptp(E["x"]), np.ptp(E["y"])) < 0.01, f"{np.hypot(np.ptp(E['x']), np.ptp(E['y'])) * 1000:.1f} mm")
     c(f"dodge moved the dog >= {min_dy:.2f} m to the {side.upper()}", dy.max() >= min_dy,
       f"max {dy.max():.2f} m, end {dy[-1]:+.2f} m, x drift {W['x'][-1] - W['x'][0]:+.2f} m")
     if min_dy >= 0.30:
-        lim = T30_MAX["still" if still else "trot"]
-        c(f"30 cm reached within {lim:.2f} s of the kick", t30 <= lim, f"{t30:.2f} s")
+        c(f"30 cm reached within {T30_MAX:.2f} s of the kick", t30 <= T30_MAX, f"{t30:.2f} s")
     c("tilt stayed below 0.4 rad", tilt < 0.4, f"max {tilt:.2f} rad")
     c("standing at the end (trunk > 0.24 m)", end["z"].min() > 0.24, f"z {end['z'].min():.2f} m")
     s.result = {"t30": t30, "dy_max": float(dy.max()), "tilt": tilt}
@@ -212,16 +208,16 @@ def final_checks(s: Session, c: Checks, robot: F.FakeGo2, lying: bool = True) ->
 
 
 # ---- scenarios -------------------------------------------------------------------------------------
-def sc_happy(robot: F.FakeGo2, silence: str, button: str = "A", side: str = "left", trot: bool = False) -> Checks:
-    c = Checks(f"remote: enter, {button} = dodge {side}, back ({silence})" + (" --trot-start" if trot else ""))
+def sc_happy(robot: F.FakeGo2, silence: str, button: str = "A", side: str = "left") -> Checks:
+    c = Checks(f"remote: enter, {button} = dodge {side}, back ({silence})")
     robot.reset(silence, sport="normal").start()
-    s = Session(robot, extra=("--trot-start",) if trot else ())
+    s = Session(robot)
     try:
         if enter_by_remote(s, c):
             time.sleep(1.5)
             n = len(s.lines)
             s.press(keys(button))
-            dodge_metrics(robot, s, c, dodge_for(side=side, trot=trot), n)
+            dodge_metrics(robot, s, c, dodge_for(side=side), n)
             time.sleep(1.0)
             back_by_remote(s, c, robot, len(s.lines))
             kinds = [k for _, k in robot.rx]
@@ -273,7 +269,7 @@ def sc_gentle(robot: F.FakeGo2, side: str = "left") -> Checks:
 
 
 def sc_keyboard(robot: F.FakeGo2) -> Checks:
-    c = Checks("keyboard: o, d, s")
+    c = Checks("keyboard: o, l, s")
     robot.reset("hold", sport="normal").start()
     s = Session(robot, keyboard=True)
     try:
@@ -282,14 +278,14 @@ def sc_keyboard(robot: F.FakeGo2) -> Checks:
             if c("o -> standing", s.wait(r"standing\. Ready", 40) is not None):
                 time.sleep(1.5)
                 n = len(s.lines)
-                s.type("d")
+                s.type("l")
                 dodge_metrics(robot, s, c, dodge_for(), n)
                 n = len(s.lines)
                 s.type("s")
                 c("s -> sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
         final_checks(s, c, robot)
-        s.type("q")
-        c("q quits", s.wait(r"bye", 5) is not None)
+        s.type("\x1b")
+        c("Esc quits", s.wait(r"bye", 5) is not None)
     finally:
         s.close()
         robot.stop()
@@ -378,8 +374,115 @@ def sc_keyboard_estop(robot: F.FakeGo2) -> Checks:
                 c("s releases the damping", s.wait(r"damping stopped", 5, n) is not None)
                 c("sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
         final_checks(s, c, robot, lying=False)
-        s.type("q")
-        c("q quits", s.wait(r"bye", 5) is not None)
+        s.type("\x1b")
+        c("Esc quits", s.wait(r"bye", 5) is not None)
+    finally:
+        s.close()
+        robot.stop()
+    return c
+
+
+def calls(robot: F.FakeGo2, name: str, t0: float = 0.0, t1: float = 1e9) -> list:
+    return [x for x in robot.sport_calls if x[1] == name and t0 <= x[0] <= t1]
+
+
+def hold_key(s: Session, ch: str, dur: float, rate: float = 30.0, first_gap: float = 0.5) -> None:
+    """Like a held key in a terminal: one character, a pause, then key repeat at `rate`."""
+    s.type(ch)
+    time.sleep(first_gap)
+    t_end = time.monotonic() + dur - first_gap
+    while time.monotonic() < t_end:
+        s.type(ch)
+        time.sleep(1.0 / rate)
+
+
+def sc_drive(robot: F.FakeGo2) -> Checks:
+    """Sport mode driven from the keyboard: walk keys (held / tapped), SPACE, j, u, then o / s."""
+    c = Checks("keyboard driving in sport mode: w held, e tapped, a + SPACE, j, w while lying, u, o, s")
+    robot.reset("hold", sport="normal").start()
+    s = Session(robot, keyboard=True)
+    try:
+        if c("sport mode seen", s.wait(r"SPORT mode 'normal' active", 30) is not None):
+            # w held 1.5 s
+            t0 = robot.t
+            hold_key(s, "w", 1.5)
+            t_rel = robot.t
+            time.sleep(1.0)
+            mv = calls(robot, "Move", t0)
+            c("w held: Move forward (0.3, 0, 0) sent", bool(mv) and all(x[2] == (0.3, 0.0, 0.0) for x in mv),
+              f"{len(mv)} Move")
+            gaps = np.diff([x[0] for x in mv]) if len(mv) > 1 else np.array([9.0])
+            c("... continuously at ~10 Hz while held (no gap > 0.2 s)", len(mv) >= 10 and gaps.max() < 0.2,
+              f"{len(mv)} Move over {t_rel - t0:.1f} s, longest gap {gaps.max():.2f} s")
+            stop = calls(robot, "StopMove", t0)
+            c("released: StopMove within 0.4 s", bool(stop) and stop[0][0] - t_rel < 0.4,
+              f"{stop[0][0] - t_rel:.2f} s" if stop else "none")
+            c("... and no Move after the StopMove", bool(stop) and not calls(robot, "Move", stop[0][0]))
+            # e tapped once: turns for ~0.6 s, then stops by itself
+            t0 = robot.t
+            s.type("e")
+            time.sleep(1.5)
+            mv, stop = calls(robot, "Move", t0), calls(robot, "StopMove", t0)
+            dur = (stop[0][0] - mv[0][0]) if mv and stop else float("nan")
+            c("e tapped once: turns right (yaw -0.6) and stops by itself after ~0.6 s",
+              bool(mv) and mv[0][2] == (0.0, 0.0, -0.6) and 0.5 <= dur <= 0.9, f"{len(mv)} Move, stop after {dur:.2f} s")
+            # a held, SPACE in the middle
+            t0 = robot.t
+            s.type("a")
+            time.sleep(0.3)
+            s.type(" ")
+            time.sleep(0.5)
+            mv, stop = calls(robot, "Move", t0), calls(robot, "StopMove", t0)
+            c("a: sideways left (vy +0.2)", bool(mv) and mv[0][2] == (0.0, 0.2, 0.0), f"{len(mv)} Move")
+            c("SPACE: StopMove, no Move after it", bool(stop) and not calls(robot, "Move", stop[0][0] + 1e-6))
+            # j lies down; walk keys are refused while lying
+            n = len(s.lines)
+            s.type("j")
+            c("j -> StandDown ok", s.wait(r"lie down \(StandDown\): ok", 5, n) is not None)
+            time.sleep(2.0)
+            t0 = robot.t
+            hold_key(s, "w", 0.8)
+            time.sleep(0.3)
+            c("w while lying: refused, no Move", not calls(robot, "Move", t0) and s.seen(r"dog is lying: u stands it up"))
+            # u stands up, then walking works again
+            n = len(s.lines)
+            s.type("u")
+            c("u -> RecoveryStand ok", s.wait(r"stand up \(RecoveryStand\): ok", 5, n) is not None)
+            time.sleep(2.0)
+            z = log_window(robot, robot.t - 0.3)["z"]
+            c("dog standing after u", z.min() > 0.24, f"z {z.min():.2f} m")
+            t0 = robot.t
+            hold_key(s, "d", 0.8)
+            time.sleep(0.6)
+            mv = calls(robot, "Move", t0)
+            c("d after standing up: sideways right (vy -0.2)", bool(mv) and mv[0][2] == (0.0, -0.2, 0.0), f"{len(mv)} Move")
+            # walking, then o: stops first, then our mode as before
+            t0 = robot.t
+            s.type("w")
+            time.sleep(0.2)
+            n = len(s.lines)
+            s.type("o")
+            ok = c("o while walking -> StopMove, then our mode", s.wait(r"standing\. Ready", 40, n) is not None
+                   and s.seen(r"stop \(switching to our mode\)"))
+            st = calls(robot, "StopMove", t0)
+            rel = [t for t, k in robot.rx if k == "child"]
+            c("StopMove before sport mode was released, no Move after it",
+              bool(st) and not calls(robot, "Move", st[-1][0] + 1e-6) and bool(rel) and st[-1][0] < rel[0])
+            if ok:
+                t0 = robot.t
+                for ch in "wxadqeuj":
+                    s.type(ch)
+                    time.sleep(0.1)
+                time.sleep(0.5)
+                c("walk / u / j keys in our mode: no sport RPC sent", not [x for x in robot.sport_calls if x[0] >= t0])
+                n = len(s.lines)
+                s.type("s")
+                c("s -> sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
+        c("no sport Move / StopMove while sport mode was released",
+          not [x for x in robot.sport_calls if x[1] in ("Move", "StopMove") and not x[3]])
+        final_checks(s, c, robot)
+        s.type("\x1b")
+        c("Esc quits", s.wait(r"bye", 5) is not None)
     finally:
         s.close()
         robot.stop()
@@ -469,7 +572,7 @@ def main() -> None:
             lambda: sc_refused_and_busy(robot), lambda: sc_entry_guards(robot), lambda: sc_switcher_killed(robot),
             lambda: sc_gentle(robot), lambda: sc_happy(robot, "hold", "Right", "right"),
             lambda: sc_happy(robot, "passive", "Left", "left"), lambda: sc_gentle(robot, "right"),
-            lambda: sc_keyboard_estop(robot), lambda: sc_happy(robot, "hold", "A", "left", trot=True)]
+            lambda: sc_keyboard_estop(robot), lambda: sc_drive(robot)]
     only = sys.argv[1:]
     for i, run in enumerate(plan):
         if only and str(i) not in only:

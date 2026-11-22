@@ -3,7 +3,7 @@
 Never start this by hand: go2_modes.py starts it as the child of supervisor.py once sport mode is
 released. Commands arrive on stdin, one per line (go2_modes.py writes them):
   dodge left | dodge right    (plain "dodge" = left)
-          default: the STILL dodge (../still_dodge.py, validated in ../results/still_dodge.json).
+          the STILL dodge (../still_dodge.py, validated in ../results/still_dodge.json).
           The dog stands completely still (PD hold, no stepping) until the command; the kick starts
           at the very next policy step: kick + sideways, brake, back to the stand pose, still.
           Only accepted from a settled, still stand (>= 1 s, low tilt, joint error and joint/trunk
@@ -12,8 +12,9 @@ released. Commands arrive on stdin, one per line (go2_modes.py writes them):
   EOF     (go2_modes.py died) = down.
 
   --gentle  all sideways speed commands scaled down (factor in still_dodge.json "gentle"). First tries.
-  --trot-start  the previous SAFE dodge instead (results/safe_dodge.json): 0.5 s stand, ~2 s trotting
-          in place, then the kick. On the real dog the trotting drifted ~40 cm: not for the demo.
+
+(The previous SAFE dodge, which trotted in place for ~2 s before the kick, is no longer offered here:
+on the real dog the trotting drifted ~40 cm. It still exists in sim: ../results/safe_dodge.json.)
 
 Joint targets are clamped 0.1 rad inside the joint range, as in the harsh-physics validation.
 """
@@ -37,7 +38,6 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import go2_dodge_sim as g  # noqa: E402
-import optimize_dodge as o  # noqa: E402
 import safety  # noqa: E402
 import still_dodge as sd  # noqa: E402
 
@@ -58,18 +58,6 @@ MARGIN = 0.1
 Q_LO, Q_HI = safety.Q_RANGE[:, 0] + MARGIN, safety.Q_RANGE[:, 1] - MARGIN
 SETTLED_S, SETTLED_TILT, SETTLED_ERR = 1.0, 0.15, 0.2     # dodge only from this calm a stand
 SETTLED_DQ, SETTLED_GYRO = 1.0, 0.3                       # rad/s: joints and trunk not moving (STILL)
-
-
-GENTLE_SCALE = 0.6
-
-
-def load_safe_dodge(gentle: bool = False, side: str = "left") -> g.Dodge:
-    """side='right' mirrors the dodge: all sideways commands negated (+vy = left)."""
-    p = dict(json.loads((HERE.parent / "results/safe_dodge.json").read_text())["chosen"]["params"])
-    s = (GENTLE_SCALE if gentle else 1.0) * (-1.0 if side == "right" else 1.0)
-    for k in ("kick_vy", "hold_vy", "brake_vy"):   # same as validate_dodge.scaled(p, s)
-        p[k] *= s
-    return o.to_dodge(p, ("SAFE x0.6 (gentle)" if gentle else "SAFE") + f" {side}")
 
 
 def load_still_dodge(gentle: bool = False, side: str = "left") -> sd.StillDodge:
@@ -121,23 +109,19 @@ def main() -> None:
     ap.add_argument("--domain", type=int, default=0)
     ap.add_argument("--iface", default=None)
     ap.add_argument("--gentle", action="store_true", help="sideways speeds scaled down (validated, see above)")
-    ap.add_argument("--trot-start", action="store_true", help="previous SAFE dodge with ~2 s trotting in place first")
     a = ap.parse_args()
     torch.set_num_threads(1)
     log = lambda s: print(f"[controller] {s}", flush=True)       # noqa: E731
 
-    still = not a.trot_start
-    load = load_still_dodge if still else load_safe_dodge
-    dodges = {side: load(a.gentle, side) for side in ("left", "right")}
+    dodges = {side: load_still_dodge(a.gentle, side) for side in ("left", "right")}
     dodge = dodges["left"]          # stand gains and timing are the same for both sides
-    # STILL: one policy per side, both primed with the stand while the dog holds still (their gait
-    # clocks are parked half a cycle apart), so either side can kick at the next policy step
-    policies = {side: g.WTWPolicy() for side in ("left", "right")} if still else {"left": g.WTWPolicy()}
-    policies.setdefault("right", policies["left"])
+    # one policy per side, both primed with the stand while the dog holds still (their gait clocks
+    # are parked half a cycle apart), so either side can kick at the next policy step
+    policies = {side: g.WTWPolicy() for side in ("left", "right")}
     # TorchScript optimises on the first calls (100s of ms): do that now, not mid-dodge, where a
     # stall > 50 ms trips the supervisor
     dt = []
-    for policy in {id(p): p for p in policies.values()}.values():
+    for policy in policies.values():
         for _ in range(40):
             t = time.perf_counter()
             policy.targets(np.array([0.0, 0.0, -1.0]), g.DEFAULT_Q, np.zeros(12), dodge.cmd)
@@ -172,19 +156,15 @@ def main() -> None:
             sys.exit(4)
         time.sleep(0.01)
     q0 = robot.snapshot()[0].copy()
-    if still:
-        log(f"standing up (dodge: {dodge.name} left / right from a still stand, kick {dodge.kick_vy:.2f} m/s "
-            f"for {dodge.kick_s:.2f} s, hold {dodge.hold_vy:.2f} m/s to {max(dodge.dodge_s, dodge.kick_s):.2f} s, "
-            f"brake {dodge.brake_vy:.2f} m/s for {dodge.brake_s:.2f} s, kick at the command)")
-    else:
-        log(f"standing up (dodge: {dodge.name} / right, kick {dodge.kick_vy:.2f} m/s for {dodge.kick_s:.2f} s, "
-            f"hold {dodge.cmd.vy:.2f}, trigger {dodge.t0:.1f} s after the command)")
+    log(f"standing up (dodge: {dodge.name} left / right from a still stand, kick {dodge.kick_vy:.2f} m/s "
+        f"for {dodge.kick_s:.2f} s, hold {dodge.hold_vy:.2f} m/s to {max(dodge.dodge_s, dodge.kick_s):.2f} s, "
+        f"brake {dodge.brake_vy:.2f} m/s for {dodge.brake_s:.2f} s, kick at the command)")
 
     mode, t_mode = "up", time.monotonic()
     want_down = False
     from_q = q0                     # ramp start for 'up' and 'down'
     ctl = hold_since = None
-    armed: dict = {}                # STILL: controllers being primed during the hold
+    armed: dict = {}                # controllers being primed during the hold
     n_primed, next_prime = 0, 0.0
     target, kp, kd = q0.copy(), MOVE_KP, MOVE_KD
     next_policy = 0.0
@@ -207,26 +187,18 @@ def main() -> None:
                 if mode != "hold" or want_down:
                     log(f"dodge refused: not standing still ({mode})")
                 elif (now - hold_since < SETTLED_S or tilt > SETTLED_TILT or err > SETTLED_ERR
-                      or (still and (spd > SETTLED_DQ or gyro > SETTLED_GYRO or n_primed < g.N_HIST))):
+                      or spd > SETTLED_DQ or gyro > SETTLED_GYRO or n_primed < g.N_HIST):
                     log(f"dodge refused: not settled (stand {now - hold_since:.1f} s, tilt {tilt:.2f} rad, "
                         f"joint error {err:.2f} rad, joint speed {spd:.2f} rad/s, trunk rate {gyro:.2f} rad/s)")
                 else:
                     active = dodges[side]
-                    if still:
-                        ctl = armed[side]
-                        ctl.start()
-                        armed = {}       # the next hold primes fresh controllers
-                    else:
-                        policy = policies["left"]
-                        policy.reset()
-                        ctl = g.DodgeController(active, robot, policy)
+                    ctl = armed[side]
+                    ctl.start()
+                    armed = {}           # the next hold primes fresh controllers
                     mode, t_mode, tm, next_policy = "dodge", now, 0.0, 0.0
                     worst_gap, t_prev = 0.0, now
-                    if still:
-                        log(f"DODGE: kick to the {side.upper()} now, from a still stand (stood "
-                            f"{now - hold_since:.1f} s, joint speed {spd:.2f} rad/s, trunk rate {gyro:.2f} rad/s)")
-                    else:
-                        log(f"DODGE: trotting in place, kick to the {side.upper()} in {active.t0:.1f} s")
+                    log(f"DODGE: kick to the {side.upper()} now, from a still stand (stood "
+                        f"{now - hold_since:.1f} s, joint speed {spd:.2f} rad/s, trunk rate {gyro:.2f} rad/s)")
             elif c:
                 log(f"unknown command {c!r}")
 
@@ -250,17 +222,16 @@ def main() -> None:
                 log("standing. Ready to dodge.")
         if mode == "hold":
             target, kp, kd = STAND, dodge.stand_kp, dodge.stand_kd
-            if still:
-                if not armed:            # (re)entered the hold: fresh controllers, primed from scratch
-                    armed = {k: sd.StillDodgeController(dodges[k], robot, policies[k]) for k in dodges}
-                    n_primed, next_prime = 0, now
-                if now >= next_prime:    # 50 Hz, as in sim: feed the stand into both policy histories
-                    for c_ in armed.values():
-                        c_.hold()
-                    n_primed += 1
-                    next_prime += g.POLICY_DT
-                    if now - next_prime > 0.1:
-                        next_prime = now
+            if not armed:                # (re)entered the hold: fresh controllers, primed from scratch
+                armed = {k: sd.StillDodgeController(dodges[k], robot, policies[k]) for k in dodges}
+                n_primed, next_prime = 0, now
+            if now >= next_prime:        # 50 Hz, as in sim: feed the stand into both policy histories
+                for c_ in armed.values():
+                    c_.hold()
+                n_primed += 1
+                next_prime += g.POLICY_DT
+                if now - next_prime > 0.1:
+                    next_prime = now
         elif mode == "dodge":
             worst_gap, t_prev = max(worst_gap, now - t_prev), now
             if tm >= next_policy:                           # 50 Hz policy step on the wall clock

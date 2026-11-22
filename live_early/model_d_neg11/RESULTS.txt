@@ -1,0 +1,21 @@
+D_person01_neg_11out - D_person01_neg exported for the 11-output gesture firmware (22 Nov 2026)
+
+Same network as D_person01_neg, exported for the firmware that is on the board for the rest of the
+team: v1 architecture, 11 outputs, weights Q2.6, potentials Q4.12 -> weights.txt has 78,501 values
+(the 2-output Q3.5 export has 64,092 and needs riversdk job #43). No new bitstream is needed.
+
+  outputs 0, 1   the detector (none, throw_motion)
+  outputs 2..10  zero weights, most negative bias: they never spike
+Checked in the riverops fixed-point simulation: outputs 0/1 are bit-identical to the 2-output Q2.6
+network, outputs 2..10 give 0 spikes. 3 layer-0 weights exceed the Q2.6 range and are clipped
+(included in all numbers below).
+
+Labelled person01 session, 121 windows of 3 s (53 throw, 68 no-throw), Q2.6 fixed-point network,
+in-sample (trained and evaluated on the same recordings):
+  readout.json     alpha 0.2, threshold -0.04, hold 3:  45 / 53 throws (85 %), 2 / 68 false alarms (3 %)
+  readout_w1.json  alpha 0.2, threshold -0.02, hold 1:  46 / 53 throws (87 %), 3 / 68 false alarms (4 %)
+
+Run (board with the 11-output firmware):
+  throwdet/deploy_board.sh throwdet/models/D_person01_neg_11out
+  .venv/bin/python throwdet/live_view.py --model throwdet/models/D_person01_neg_11out --backend board
+A host reading the SPLEAT payload takes the first two float32 values (spike[0], spike[1]).

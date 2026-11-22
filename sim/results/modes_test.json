@@ -1,7 +1,7 @@
 [
  {
   "scenario": "remote: enter, A = dodge left, back (hold)",
-  "ok": false,
+  "ok": true,
   "checks": [
    {
     "check": "go2_modes sees sport mode",
@@ -26,7 +26,7 @@
    {
     "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
     "ok": true,
-    "detail": "4.2 mm, roll+pitch range 0.003 rad"
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
    },
    {
     "check": "dodge finished, standing again",
@@ -36,27 +36,27 @@
    {
     "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
     "ok": true,
-    "detail": "0.20 s"
+    "detail": "0.16 s"
    },
    {
     "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
     "ok": true,
-    "detail": "1.0 mm"
+    "detail": "0.1 mm"
    },
    {
     "check": "dodge moved the dog >= 0.30 m to the LEFT",
-    "ok": false,
-    "detail": "max 0.24 m, end +0.24 m, x drift -0.01 m"
+    "ok": true,
+    "detail": "max 0.60 m, end +0.59 m, x drift -0.01 m"
    },
    {
     "check": "30 cm reached within 0.70 s of the kick",
-    "ok": false,
-    "detail": "nan s"
+    "ok": true,
+    "detail": "0.54 s"
    },
    {
     "check": "tilt stayed below 0.4 rad",
     "ok": true,
-    "detail": "max 0.21 rad"
+    "detail": "max 0.26 rad"
    },
    {
     "check": "standing at the end (trunk > 0.24 m)",
@@ -95,6 +95,1004 @@
    },
    {
     "check": "Ctrl+C in sport mode quits go2_modes",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "remote: enter, A = dodge left, back (passive)",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge left started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the LEFT now, from a still stand (stood 1.5 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.16 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.1 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.30 m to the LEFT",
+    "ok": true,
+    "detail": "max 0.61 m, end +0.59 m, x drift -0.01 m"
+   },
+   {
+    "check": "30 cm reached within 0.70 s of the kick",
+    "ok": true,
+    "detail": "0.54 s"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.26 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "Y -> lying down",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor: controller finished, dog lying",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": "robot mode 'normal'"
+   },
+   {
+    "check": "last commands before sport mode were the supervisor's damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   },
+   {
+    "check": "Ctrl+C in sport mode quits go2_modes",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "keyboard: o, l, s",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "o -> standing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge left started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the LEFT now, from a still stand (stood 1.5 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.16 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.1 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.30 m to the LEFT",
+    "ok": true,
+    "detail": "max 0.61 m, end +0.59 m, x drift -0.01 m"
+   },
+   {
+    "check": "30 cm reached within 0.70 s of the kick",
+    "ok": true,
+    "detail": "0.55 s"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.27 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "s -> sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   },
+   {
+    "check": "Esc quits",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "L2+B during the kick, then Y",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge started",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor tripped",
+    "ok": true,
+    "detail": "[supervisor] TRIP: e-stop (L2+B, lowstate) -> controller killed, sending DAMPING. Ctrl+C to stop sending."
+   },
+   {
+    "check": "damping reached the robot within 60 ms",
+    "ok": true,
+    "detail": "10 ms"
+   },
+   {
+    "check": "no controller command after the first damping",
+    "ok": true,
+    "detail": "0"
+   },
+   {
+    "check": "dog down on its belly, not on its side",
+    "ok": true,
+    "detail": "z 0.09 m, roll -0.00 rad"
+   },
+   {
+    "check": "Y releases the damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   }
+  ]
+ },
+ {
+  "scenario": "Ctrl+C during the kick, then Y",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge started",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor tripped",
+    "ok": true,
+    "detail": "[supervisor] TRIP: operator (Ctrl+C) -> controller killed, sending DAMPING. Ctrl+C to stop sending."
+   },
+   {
+    "check": "damping reached the robot within 60 ms",
+    "ok": true,
+    "detail": "16 ms"
+   },
+   {
+    "check": "no controller command after the first damping",
+    "ok": true,
+    "detail": "0"
+   },
+   {
+    "check": "dog down on its belly, not on its side",
+    "ok": true,
+    "detail": "z 0.09 m, roll -0.00 rad"
+   },
+   {
+    "check": "Y releases the damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   }
+  ]
+ },
+ {
+  "scenario": "A during stand-up is refused; Y during stand-up; SelectMode busy",
+  "ok": true,
+  "checks": [
+   {
+    "check": "sport mode seen",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller standing up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "A during stand-up -> refused",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "... and no dodge",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "Y during stand-up -> lies down",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "SelectMode busy right after release -> retried",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   }
+  ]
+ },
+ {
+  "scenario": "entry needs exactly L1+R1 for 1 s",
+  "ok": true,
+  "checks": [
+   {
+    "check": "sport mode seen",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 for 0.6 s: nothing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1+A for 1.5 s: nothing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "A, Y, L2+B in sport mode: nothing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog still standing in sport mode",
+    "ok": true,
+    "detail": "z 0.31"
+   },
+   {
+    "check": "nothing sent at all",
+    "ok": true,
+    "detail": "0 commands"
+   }
+  ]
+ },
+ {
+  "scenario": "go2_modes killed while our controller stands",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller lies down by itself (stdin closed)",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor finishes cleanly",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no commands any more (robot gets nothing, lying)",
+    "ok": true,
+    "detail": "last 1.5 s ago"
+   },
+   {
+    "check": "supervisor and controller gone",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog lying, never fell (tilt < 0.3)",
+    "ok": true,
+    "detail": "z 0.08"
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   }
+  ]
+ },
+ {
+  "scenario": "--gentle: enter, dodge left (reduced speed), back",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller runs the gentle dodge",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge left started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the LEFT now, from a still stand (stood 1.6 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.18 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.0 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.20 m to the LEFT",
+    "ok": true,
+    "detail": "max 0.46 m, end +0.44 m, x drift +0.03 m"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.25 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "Y -> lying down",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor: controller finished, dog lying",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": "robot mode 'normal'"
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   }
+  ]
+ },
+ {
+  "scenario": "remote: enter, Right = dodge right, back (hold)",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge right started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the RIGHT now, from a still stand (stood 1.6 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.16 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.5 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.30 m to the RIGHT",
+    "ok": true,
+    "detail": "max 0.48 m, end +0.48 m, x drift -0.02 m"
+   },
+   {
+    "check": "30 cm reached within 0.70 s of the kick",
+    "ok": true,
+    "detail": "0.57 s"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.26 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "Y -> lying down",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor: controller finished, dog lying",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": "robot mode 'normal'"
+   },
+   {
+    "check": "last commands before sport mode were the supervisor's damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   },
+   {
+    "check": "Ctrl+C in sport mode quits go2_modes",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "remote: enter, Left = dodge left, back (passive)",
+  "ok": true,
+  "checks": [
+   {
+    "check": "go2_modes sees sport mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "L1+R1 held 1.3 s -> sport mode released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller stands the dog up",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge left started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the LEFT now, from a still stand (stood 1.6 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.16 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.1 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.30 m to the LEFT",
+    "ok": true,
+    "detail": "max 0.61 m, end +0.60 m, x drift -0.01 m"
+   },
+   {
+    "check": "30 cm reached within 0.70 s of the kick",
+    "ok": true,
+    "detail": "0.54 s"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.25 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "Y -> lying down",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor: controller finished, dog lying",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": "robot mode 'normal'"
+   },
+   {
+    "check": "last commands before sport mode were the supervisor's damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   },
+   {
+    "check": "Ctrl+C in sport mode quits go2_modes",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "--gentle: enter, dodge right (reduced speed), back (keyboard)",
+  "ok": true,
+  "checks": [
+   {
+    "check": "sport mode seen",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "o -> standing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "controller runs the gentle dodge",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dodge right started",
+    "ok": true,
+    "detail": "[controller] DODGE: kick to the RIGHT now, from a still stand (stood 1.5 s, joint speed 0.00 rad/s, trunk rate 0.00 rad/s)"
+   },
+   {
+    "check": "dog stood still for 1 s before the command (trunk moved < 5 mm)",
+    "ok": true,
+    "detail": "0.7 mm, roll+pitch range 0.001 rad"
+   },
+   {
+    "check": "dodge finished, standing again",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog moving sideways right after the command (2 cm within 0.3 s)",
+    "ok": true,
+    "detail": "0.17 s"
+   },
+   {
+    "check": "still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+    "ok": true,
+    "detail": "0.5 mm"
+   },
+   {
+    "check": "dodge moved the dog >= 0.20 m to the RIGHT",
+    "ok": true,
+    "detail": "max 0.38 m, end +0.37 m, x drift +0.03 m"
+   },
+   {
+    "check": "tilt stayed below 0.4 rad",
+    "ok": true,
+    "detail": "max 0.22 rad"
+   },
+   {
+    "check": "standing at the end (trunk > 0.24 m)",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "s -> sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   }
+  ]
+ },
+ {
+  "scenario": "keyboard only: SPACE x3 + Ctrl+C during the kick, then s",
+  "ok": true,
+  "checks": [
+   {
+    "check": "sport mode seen",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "o -> standing",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "r -> dodge right started",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "SPACE -> E-STOP",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "supervisor tripped",
+    "ok": true,
+    "detail": "[supervisor] TRIP: operator (Ctrl+C) -> controller killed, sending DAMPING. Ctrl+C to stop sending."
+   },
+   {
+    "check": "further SPACE / Ctrl+C: 'already active'",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "damping reached the robot within 60 ms",
+    "ok": true,
+    "detail": "20 ms"
+   },
+   {
+    "check": "damping still being sent 3 s later",
+    "ok": true,
+    "detail": "last 0.00 s ago"
+   },
+   {
+    "check": "supervisor did not stop damping on the repeated presses",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog down on its belly, not on its side",
+    "ok": true,
+    "detail": "z 0.09 m, roll +0.00 rad"
+   },
+   {
+    "check": "s releases the damping",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "Esc quits",
+    "ok": true,
+    "detail": ""
+   }
+  ]
+ },
+ {
+  "scenario": "keyboard driving in sport mode: w held, e tapped, a + SPACE, j, w while lying, u, o, s",
+  "ok": true,
+  "checks": [
+   {
+    "check": "sport mode seen",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "w held: Move forward (0.3, 0, 0) sent",
+    "ok": true,
+    "detail": "17 Move"
+   },
+   {
+    "check": "... continuously at ~10 Hz while held (no gap > 0.2 s)",
+    "ok": true,
+    "detail": "17 Move over 1.5 s, longest gap 0.10 s"
+   },
+   {
+    "check": "released: StopMove within 0.4 s",
+    "ok": true,
+    "detail": "0.24 s"
+   },
+   {
+    "check": "... and no Move after the StopMove",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "e tapped once: turns right (yaw -0.6) and stops by itself after ~0.6 s",
+    "ok": true,
+    "detail": "6 Move, stop after 0.62 s"
+   },
+   {
+    "check": "a: sideways left (vy +0.2)",
+    "ok": true,
+    "detail": "3 Move"
+   },
+   {
+    "check": "SPACE: StopMove, no Move after it",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "j -> StandDown ok",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "w while lying: refused, no Move",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "u -> RecoveryStand ok",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "dog standing after u",
+    "ok": true,
+    "detail": "z 0.30 m"
+   },
+   {
+    "check": "d after standing up: sideways right (vy -0.2)",
+    "ok": true,
+    "detail": "10 Move"
+   },
+   {
+    "check": "o while walking -> StopMove, then our mode",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "StopMove before sport mode was released, no Move after it",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "walk / u / j keys in our mode: no sport RPC sent",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "s -> sport mode restored",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no sport Move / StopMove while sport mode was released",
+    "ok": true,
+    "detail": ""
+   },
+   {
+    "check": "no command ever reached the robot while sport mode was active",
+    "ok": true,
+    "detail": "0 commands"
+   },
+   {
+    "check": "dog lying (trunk < 0.16 m)",
+    "ok": true,
+    "detail": "z 0.08 m"
+   },
+   {
+    "check": "Esc quits",
     "ok": true,
     "detail": ""
    }
