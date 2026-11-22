@@ -1,0 +1,98 @@
+{
+ "files": [
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_170441_403603.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_195808_507547.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_200001_461331.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_200828_124951.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_201452_881893.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_201622_818200.npz",
+  "runs/early_tim/stream/r2_ext_fa/sample_20261121_201703_662612.npz"
+ ],
+ "table": {
+  "0.6": {
+   "throw_hit": [
+    32,
+    42
+   ],
+   "feint_hit": [
+    43,
+    65
+   ],
+   "lat_ms_median": {
+    "throw": -110,
+    "feint": -400
+   },
+   "fa_per_min": 59.65,
+   "fa": 59,
+   "minutes": 1.0
+  },
+  "0.7": {
+   "throw_hit": [
+    22,
+    42
+   ],
+   "feint_hit": [
+    27,
+    65
+   ],
+   "lat_ms_median": {
+    "throw": -30,
+    "feint": -560
+   },
+   "fa_per_min": 36.39,
+   "fa": 36,
+   "minutes": 1.0
+  },
+  "0.8": {
+   "throw_hit": [
+    14,
+    42
+   ],
+   "feint_hit": [
+    19,
+    65
+   ],
+   "lat_ms_median": {
+    "throw": -65,
+    "feint": -410
+   },
+   "fa_per_min": 22.24,
+   "fa": 22,
+   "minutes": 1.0
+  },
+  "0.9": {
+   "throw_hit": [
+    11,
+    42
+   ],
+   "feint_hit": [
+    15,
+    65
+   ],
+   "lat_ms_median": {
+    "throw": -40,
+    "feint": -200
+   },
+   "fa_per_min": 11.12,
+   "fa": 11,
+   "minutes": 1.0
+  },
+  "0.95": {
+   "throw_hit": [
+    8,
+    42
+   ],
+   "feint_hit": [
+    14,
+    65
+   ],
+   "lat_ms_median": {
+    "throw": -120,
+    "feint": -25
+   },
+   "fa_per_min": 4.04,
+   "fa": 4,
+   "minutes": 1.0
+  }
+ }
+}
