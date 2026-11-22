@@ -35,6 +35,8 @@ def main():
     ap.add_argument("checkpoint")
     ap.add_argument("--table", default=str(Path.home() / "throwdet/data/table.npz"))
     ap.add_argument("--thr", type=float, default=None, help="alarm threshold (default: from the checkpoint)")
+    ap.add_argument("--alpha", type=float, default=None, help="readout EMA factor (default: from the checkpoint)")
+    ap.add_argument("--hold", type=int, default=1, help="frames the score must stay above the threshold")
     ap.add_argument("--weight-bits", type=int, default=8)
     ap.add_argument("--potential-bits", type=int, default=16)
     ap.add_argument("--potential-frac", type=int, default=12)
@@ -44,7 +46,7 @@ def main():
 
     ck = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     targs = ck["args"]
-    alpha = ck["readout"]["alpha"]
+    alpha = args.alpha if args.alpha is not None else ck["readout"]["alpha"]
     thr = args.thr if args.thr is not None else ck["readout"]["thr"]
     out = Path(args.out or Path(args.checkpoint).parent / "export")
     out.mkdir(parents=True, exist_ok=True)
@@ -69,14 +71,17 @@ def main():
     own = np.flatnonzero(tb.domain == "own")
     idx = np.sort(rng.choice(own, min(args.n_check, len(own)), replace=False))
     res = {}
+    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     with torch.no_grad():
         for name, m in (("float", net), ("fixed", fixed)):
+            m.to(dev)
             sc = []
             for k in range(0, len(idx), 16):
-                x = tb.dense(idx[k:k + 16]).float()
-                sp = m(x).flatten(2)
+                x = tb.dense(idx[k:k + 16]).float().to(dev)
+                sp = m(x).flatten(2).cpu()
                 sc.append(score_of(sp, alpha)[:, 15:].max(1).values)
             res[name] = torch.cat(sc).numpy()
+            m.cpu()
     y = tb.y[idx]
     rep = {"weight_format": f"Q{args.weight_bits - weight_frac}.{weight_frac}", "max_abs_weight": max_w,
            "potential_format": f"Q{args.potential_bits - args.potential_frac}.{args.potential_frac}",
@@ -105,7 +110,9 @@ def main():
     (out / "readout.json").write_text(json.dumps({
         "classes": ["none", "throw_motion"], "frame_ms": 10, "input": "binary 2x80x80 (4x4 blocks of 320x320)",
         "score": "s_t = (1 - alpha) * s_{t-1} + alpha * (spike[1]_t - spike[0]_t)",
-        "alpha": alpha, "threshold": thr, "refractory_ms": 1000, "ptq_check": rep}, indent=1))
+        "alpha": alpha, "threshold": thr, "hold_frames": args.hold,
+        "rule": "alarm when score > threshold for hold_frames consecutive frames; then 1 s refractory",
+        "refractory_ms": 1000, "ptq_check": rep}, indent=1))
     print(f"wrote {out}: weights.txt ({len(lines)} values), model.json, config.yaml, readout.json")
 
 

@@ -11,6 +11,7 @@ hits / misses / false alarms are counted (a hit = alarm within -600..+300 ms of 
 """
 import argparse
 import csv
+import json
 import struct
 import sys
 from pathlib import Path
@@ -43,6 +44,9 @@ def main():
     ap.add_argument("checkpoint")
     ap.add_argument("recording")
     ap.add_argument("--thr", type=float, default=None)
+    ap.add_argument("--alpha", type=float, default=None)
+    ap.add_argument("--hold", type=int, default=1)
+    ap.add_argument("--readout", default=None, help="readout.json from export.py (alpha, threshold, hold)")
     ap.add_argument("--labels", default=None)
     ap.add_argument("--png", default=None)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
@@ -51,8 +55,12 @@ def main():
     model = ThrowSNN(2, arch=ck["arch"], tau=ck["args"]["tau"])
     model.load_state_dict(ck["model"])
     model.to(args.device).eval()
-    alpha = ck["readout"]["alpha"]
+    alpha = args.alpha if args.alpha is not None else ck["readout"]["alpha"]
     thr = args.thr if args.thr is not None else ck["readout"]["thr"]
+    hold = args.hold
+    if args.readout:
+        ro = json.load(open(args.readout))
+        alpha, thr, hold = ro["alpha"], ro["threshold"], ro.get("hold_frames", 1)
     x, _ = frames_of(args.recording)
     out = []
     with torch.no_grad():
@@ -63,9 +71,10 @@ def main():
     spikes = torch.cat(out)
     sc = score_of(spikes[None], alpha)[0].numpy()
     above = sc > thr
-    alarms, last = [], -10**9
-    for t in np.flatnonzero(above[1:] & ~above[:-1]) + 1:
-        if t - last >= 100:
+    alarms, last, run = [], -10**9, 0
+    for t in range(len(sc)):
+        run = run + 1 if above[t] else 0
+        if run == hold and t - last >= 100:
             alarms.append(t / 100)
             last = t
     print(f"{Path(args.recording).name}: {len(x) / 100:.1f} s, {len(alarms)} alarms at "
