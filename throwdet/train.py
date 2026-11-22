@@ -28,6 +28,7 @@ Evaluation (no model selection on held-out data, the model after the last step i
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import math
 import queue
@@ -308,14 +309,27 @@ def false_alarms(stream_spikes, args, thr):
 
 
 # ----------------------------------------------------------------------------- training
-def train_one(tb, train_idx, args, dev, rng, log):
-    model = build_model(args, dev)
+def qat_config(model, weight_bits=8, potential_bits=16, potential_frac=12):
+    """Same fixed-point formats as throwdet/export.py (weight frac bits from the BN-fused weights)."""
+    from riverops.nn import FixedPointFormat, QuantConfig, fuse_model
+    fused = fuse_model(copy.deepcopy(model.export_module()).eval().cpu())
+    max_w = max((m.conv if hasattr(m, "conv") else m).weight.abs().max().item() for m in fused)
+    wf = weight_bits - 1 - max(0, math.ceil(math.log2(max_w + 1e-12)))
+    return QuantConfig(weight_format=FixedPointFormat(weight_bits, wf, True),
+                       potential_format=FixedPointFormat(potential_bits, potential_frac, True),
+                       enable_weight_quant=True, enable_potential_quant=True, qat_mode=True)
+
+
+def train_one(tb, train_idx, args, dev, rng, log, model=None, steps=None, lr=None):
+    model = build_model(args, dev) if model is None else model
+    steps = steps or args.steps
+    lr = lr or args.lr
     bb = [p for n, p in model.named_parameters() if not n.startswith("head")]
     hd = [p for n, p in model.named_parameters() if n.startswith("head")]
-    opt = torch.optim.Adam([{"params": bb, "lr": args.lr * args.bb_lr}, {"params": hd, "lr": args.lr}],
+    opt = torch.optim.Adam([{"params": bb, "lr": lr * args.bb_lr}, {"params": hd, "lr": lr}],
                            weight_decay=1e-4)
-    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=[args.lr * args.bb_lr, args.lr],
-                                                total_steps=args.steps, pct_start=0.1)
+    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=[lr * args.bb_lr, lr],
+                                                total_steps=steps, pct_start=0.1)
     shares = {}
     for spec in args.shares.split(","):
         k, w = spec.split("=")
@@ -325,7 +339,7 @@ def train_one(tb, train_idx, args, dev, rng, log):
     bg_pool = train_idx[(tb.domain[train_idx] == "own") & (tb.y[train_idx] == 0)]
     gen = prefetch(lambda: (lambda i: (i, tb.dense(i)))(sampler.draw(args.batch)))
     t0 = time.time()
-    for step in range(1, args.steps + 1):
+    for step in range(1, steps + 1):
         idx, xb = next(gen)
         x, src = augment(xb.to(dev, non_blocking=True).float(), tb, idx, bg_pool, args, rng)
         tgt, mask = targets(tb, idx, src, args)
@@ -345,7 +359,7 @@ def train_one(tb, train_idx, args, dev, rng, log):
         opt.step()
         sched.step()
         if step % 100 == 0 or step == 1:
-            log(f"  step {step}/{args.steps} loss {loss.item():.4f} out-rate {spikes.mean().item():.3f} "
+            log(f"  step {step}/{steps} loss {loss.item():.4f} out-rate {spikes.mean().item():.3f} "
                 f"({(time.time() - t0) / step:.2f}s/step)")
     return model
 
@@ -388,6 +402,7 @@ def main():
     ap.add_argument("--drop", type=float, default=0.2)
     ap.add_argument("--noise", type=float, default=0.002)
     ap.add_argument("--bg", type=float, default=0.5, help="probability of OR-ing own idle background into external clips")
+    ap.add_argument("--qat-steps", type=int, default=0, help="quantization-aware fine-tuning steps after training")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
@@ -434,6 +449,13 @@ def main():
         log(f"fold {k}: train {len(train_idx)} clips, held-out own {len(test_own)} "
             f"(pos {int(tb.y[test_own].sum())}), dd test {len(dd_test)}")
         model = train_one(tb, train_idx, args, dev, rng, log)
+        if args.qat_steps > 0:
+            from riverops.nn import prepare_qat
+            qcfg = qat_config(model)
+            log(f"  QAT: weights {qcfg.weight_format}, potentials {qcfg.potential_format}")
+            model = prepare_qat(model, qcfg, fused_bn=True).to(dev).train()
+            model = train_one(tb, train_idx, args, dev, rng, log, model=model, steps=args.qat_steps,
+                              lr=args.lr * 0.05)
         name = "final" if k is None else f"fold{k}"
         torch.save({"model": model.state_dict(), "arch": model.arch, "args": vars(args),
                     "readout": {"alpha": args.alpha, "thr": args.thr, "classes": ["none", "throw_motion"]}},

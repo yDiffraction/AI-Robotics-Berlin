@@ -79,12 +79,25 @@ minute) and on the idle clips.
 | run | what changes | AUC own | recall @1 FA/min | recall @2 FA/min | recall @4 FA/min |
 |---|---|---|---|---|---|
 | activity baseline | logistic regression on the activity curve (not an SNN) | bal. acc 0.77 | | | |
+| e10_nodens_negheavy | all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned | **0.924** | **0.64** | **0.79** | **0.90** |
+| e01_all_v1 | all sources, density-matched, balanced | 0.903 | 0.42 | 0.72 | 0.88 |
+| e16_hardneg_shiftx25 | e11 + horizontal shift ±25 px | 0.907 | 0.51 | 0.69 | 0.82 |
+| e11_nodens_hardneg | e10 + hard-negative sampling (dense idle clips more often) | 0.892 | 0.51 | 0.70 | 0.86 |
+| e05_all_v1_nodens | e01, DailyDVS not thinned | 0.898 | 0.32 | 0.68 | 0.82 |
+| e13_hardneg_mid | e11 with the larger "mid" backbone | 0.863 | 0.31 | 0.71 | 0.86 |
+| e07_all_mid | e01 with the "mid" backbone | 0.859 | 0.32 | 0.64 | 0.83 |
 | e02_ownonly_v1 | own clips + own aug only | 0.845 | 0.39 | 0.62 | 0.73 |
-| e01_all_v1 | + synth, video, DailyDVS (density-matched, balanced) | 0.903 | 0.43 | 0.72 | 0.88 |
-| e05_all_v1_nodens | as e01, DailyDVS not thinned | 0.898 | | | |
+| e12_hardneg_tau4 | e11 with neuron tau 4 instead of 2 | 0.866 | 0.44 | 0.61 | 0.84 |
+| e03_all_v1_scratch | e01 without DVS-Gesture pretraining | 0.861 | 0.48 | 0.59 | 0.70 |
+| e04_all_v1_noarm | e01 without the DailyDVS arm-swing negatives | 0.878 | 0.44 | 0.58 | 0.81 |
+| e17_all_shiftx25 | e01 + horizontal shift ±25 px | 0.830 | | | |
 
 Findings so far:
 - **The external data helps.** DailyDVS, synth and video raise the out-of-fold AUC on new recordings from 0.845 to 0.90. The domain balancing keeps them from acting as a shortcut.
 - **Thinning DailyDVS to our density does not help our camera** (AUC 0.898 vs. 0.903). It does make DailyDVS throws unlearnable: held-out DailyDVS AUC is 0.56 thinned vs. 0.63 unthinned.
 - **Almost all false alarms come from people walking close to the camera** (legs and torso filling the view) and from a hand right in front of the lens. An empty scene and whole-image motion do not trigger alarms. Run e11 and later sample such hard negatives more often.
+- **Pretraining on DVS Gesture helps** (0.861 without it vs. 0.903 with it). So do the DailyDVS arm-swing negatives (0.878 without vs. 0.903 with).
+- **Weighting our own negatives up is the biggest single gain** (e10). The larger backbones ("mid") and a longer neuron time constant (tau 4) are worse.
+- **The hardest recording is `04/215305`.** The thrower stands at the left image edge and part of the swing leaves the view. e10 detects 64 % of its throws and 56 % of its feints at 2 FA/min; the `03` recordings are at 100 %. A final model trained on all data has this recording in training.
+- **Fixed point.** PTQ to 8-bit weights (Q3.5) and Q4.12 potentials keeps 97 % of the alarm decisions; balanced accuracy goes from 0.94 to 0.92 on 120 clips. `--qat-steps` adds quantization-aware fine-tuning. It works and the checkpoint exports unchanged, but it is slow (about 11 s per step).
 - **Detection time.** At the 2 FA/min operating point, the alarm comes about 150 to 180 ms before the swing peak, i.e. during the wind-up.
