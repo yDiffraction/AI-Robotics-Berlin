@@ -145,37 +145,51 @@ Reference: `baseline.py`, a logistic regression on the activity curve, reaches 7
 
 ## Results
 
-All numbers are out-of-fold on our own camera (724 clips, 181 with throw motion, grouped 4-fold CV by
-recording) plus the held-out idle stream (5.8 min, people walking through the view). `summary.md` on the
-A100 (`~/throwdet/summary.md`) is regenerated automatically after every finished run.
+All numbers are out of fold on our own camera: 724 clips, 181 of them with throw motion, grouped 4-fold CV by recording. They also include the held-out idle stream (5.8 min, with people walking through the view).
+- **Recall @k FA/min:** the share of throw motions (throws and feints) detected between 250 ms before and 300 ms after the swing peak. It uses the best readout (alpha, hold, threshold) that stays within k alarms per minute on the idle stream and within the matching idle-clip budget.
+- **Full table of all 37 runs:** `results_summary.md`, regenerated on the A100 in `~/throwdet/summary.md`.
 
-**Recall at a false-alarm budget** is the number that matters for the live demo: the share of throw
-motions (throws and feints) detected between 250 ms before and 300 ms after the swing peak, using the
-best readout (alpha, hold, threshold) that stays within the budget on the idle stream (alarms per
-minute) and on the idle clips.
+**Read this first: seed-to-seed variance is large.** The same configuration trained with a different random seed moves the AUC by up to 0.06 and the recall at 2 FA/min by up to 0.25. Most of it comes from the fold that holds out recording `04` (a new setup). Single-run differences below about 0.04 AUC mean nothing.
 
-| run | what changes | AUC own | recall @1 FA/min | recall @2 FA/min | recall @4 FA/min |
+| configuration | runs (seeds) | AUC own | recall @1 FA/min | recall @2 FA/min | recall @4 FA/min |
 |---|---|---|---|---|---|
-| activity baseline | logistic regression on the activity curve (not an SNN) | bal. acc 0.77 | | | |
-| e10_nodens_negheavy | all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned | **0.924** | **0.64** | **0.79** | **0.90** |
-| e01_all_v1 | all sources, density-matched, balanced | 0.903 | 0.42 | 0.72 | 0.88 |
-| e16_hardneg_shiftx25 | e11 + horizontal shift ±25 px | 0.907 | 0.51 | 0.69 | 0.82 |
-| e11_nodens_hardneg | e10 + hard-negative sampling (dense idle clips more often) | 0.892 | 0.51 | 0.70 | 0.86 |
-| e05_all_v1_nodens | e01, DailyDVS not thinned | 0.898 | 0.32 | 0.68 | 0.82 |
-| e13_hardneg_mid | e11 with the larger "mid" backbone | 0.863 | 0.31 | 0.71 | 0.86 |
-| e07_all_mid | e01 with the "mid" backbone | 0.859 | 0.32 | 0.64 | 0.83 |
-| e02_ownonly_v1 | own clips + own aug only | 0.845 | 0.39 | 0.62 | 0.73 |
-| e12_hardneg_tau4 | e11 with neuron tau 4 instead of 2 | 0.866 | 0.44 | 0.61 | 0.84 |
-| e03_all_v1_scratch | e01 without DVS-Gesture pretraining | 0.861 | 0.48 | 0.59 | 0.70 |
-| e04_all_v1_noarm | e01 without the DailyDVS arm-swing negatives | 0.878 | 0.44 | 0.58 | 0.81 |
-| e17_all_shiftx25 | e01 + horizontal shift ±25 px | 0.830 | | | |
+| activity baseline (logistic regression on the activity curve, not an SNN) | 1 | bal. acc 0.77 | | | |
+| **e10: all sources, own negatives weighted up (own:0 = 30 %), DailyDVS unthinned** | 4 (+1 with 2000 steps) | **0.865 to 0.924** | 0.23 to 0.64 | **0.54 to 0.79** | 0.75 to 0.90 |
+| e01: all sources, balanced, DailyDVS density-matched | 2 | 0.852 to 0.903 | 0.33 to 0.42 | 0.59 to 0.72 | 0.81 to 0.88 |
+| e10 + DailyDVS static-camera clips only | 2 | 0.886 to 0.888 | 0.48 to 0.54 | 0.73 to 0.75 | 0.82 to 0.83 |
+| e10 + readout alpha 0.05 in training | 2 | 0.864 to 0.890 | 0.37 to 0.51 | 0.69 to 0.72 | 0.84 to 0.87 |
+| e10 + cell dropout up to 50 % | 2 | 0.801 to 0.883 | 0.24 to 0.44 | 0.60 to 0.63 | 0.78 to 0.87 |
+| e10 without the aug/splice clips | 2 | 0.734 to 0.897 | 0.18 | 0.43 to 0.56 | 0.61 to 0.81 |
+| **e10 without synth and video** | 2 | **0.826 to 0.846** | 0.18 to 0.28 | 0.55 to 0.65 | 0.76 to 0.80 |
+| own clips + own aug only (e02) | 1 | 0.845 | 0.39 | 0.62 | 0.73 |
 
-Findings so far:
-- **The external data helps.** DailyDVS, synth and video raise the out-of-fold AUC on new recordings from 0.845 to 0.90. The domain balancing keeps them from acting as a shortcut.
-- **Thinning DailyDVS to our density does not help our camera** (AUC 0.898 vs. 0.903). It does make DailyDVS throws unlearnable: held-out DailyDVS AUC is 0.56 thinned vs. 0.63 unthinned.
-- **Almost all false alarms come from people walking close to the camera** (legs and torso filling the view) and from a hand right in front of the lens. An empty scene and whole-image motion do not trigger alarms. Run e11 and later sample such hard negatives more often.
-- **Pretraining on DVS Gesture helps** (0.861 without it vs. 0.903 with it). So do the DailyDVS arm-swing negatives (0.878 without vs. 0.903 with).
-- **Weighting our own negatives up is the biggest single gain** (e10). The larger backbones ("mid") and a longer neuron time constant (tau 4) are worse.
-- **The hardest recording is `04/215305`.** The thrower stands at the left image edge and part of the swing leaves the view. e10 detects 64 % of its throws and 56 % of its feints at 2 FA/min; the `03` recordings are at 100 %. A final model trained on all data has this recording in training.
-- **Fixed point.** PTQ to 8-bit weights (Q3.5) and Q4.12 potentials keeps 97 % of the alarm decisions; balanced accuracy goes from 0.94 to 0.92 on 120 clips. `--qat-steps` adds quantization-aware fine-tuning. It works and the checkpoint exports unchanged, but it is slow (about 11 s per step).
-- **Detection time.** At the 2 FA/min operating point, the alarm comes about 150 to 180 ms before the swing peak, i.e. during the wind-up.
+Single runs (one seed each, so only large differences count):
+
+| run | change | AUC own | recall @2 FA/min |
+|---|---|---|---|
+| e26 | e10 with twice the DailyDVS share | 0.919 | 0.73 (but 0.08 @1) |
+| e18 / e16 | horizontal shift ±25 px (on e10 / on e11) | 0.896 / 0.907 | 0.73 / 0.69 |
+| e11 | hard-negative sampling (dense idle clips more often) | 0.892 | 0.70 |
+| e25 | e10 without background compositing | 0.878 | 0.67 |
+| e03 | e01 without DVS-Gesture pretraining | 0.861 | 0.59 |
+| e04 | e01 without DailyDVS arm-swing negatives | 0.878 | 0.58 |
+| e06 | motion label from 400 ms instead of 250 ms before the peak | 0.873 | 0.68 |
+| e07 / e13 | larger "mid" backbone | 0.859 / 0.863 | 0.64 / 0.71 |
+| e12 | neuron tau 4 instead of 2 | 0.866 | 0.61 |
+| e08 / e21 | 2400 / 2000 steps instead of 1200 | 0.862 / 0.900 | 0.63 / 0.69 |
+| e32 | full 1.2 s windows instead of random 0.8 s crops | 0.854 | 0.58 |
+| e19 | own negatives at 40 % | 0.857 | 0.51 |
+| e17 | e01 + horizontal shift ±25 px | 0.830 | 0.34 |
+| s10 | weight average of two e10 seeds | 0.865 | 0.70 |
+
+What holds up:
+- **External data helps on new recordings.** With own data only, the fold that holds out recording `04` drops to an AUC of 0.75; with synth, video and DailyDVS it is 0.85 to 0.94. Synth and video in particular: removing them made both seeds worse than every e10 seed.
+- **People walking close to the camera cause almost all false alarms.** So do hands right in front of the lens. An empty scene and whole-image motion do not trigger alarms.
+- **The hardest case is a new setup.** In recording `04/215305` the thrower stands at the left image edge and part of the swing leaves the view. The `03` recordings are detected 100 %; `04` only 40 to 65 % when it is held out. The final models have `04` in training.
+- **Nothing beat the plain v1 backbone with 1200 steps.** Not bigger backbones, not a longer neuron time constant, not longer training, not full windows, not weight averaging.
+
+What is not clear (within the seed noise): DVS-Gesture pretraining, the DailyDVS arm-swing negatives, density matching, hard-negative sampling, horizontal shift and the aug/splice clips. All of them changed one or two runs by less than the seed spread.
+
+**Fixed point.** PTQ to 8-bit weights (Q3.5) and Q4.12 potentials keeps 94 to 98 % of the alarm decisions (`ptq_check` in each `readout.json`). `--qat-steps` adds quantization-aware fine-tuning. It works and the checkpoint exports unchanged, but it is slow (about 11 s per step) and was not needed.
+
+**Detection time.** At the 2 FA/min operating point, the alarm comes about 150 to 180 ms before the swing peak, i.e. during the wind-up.
