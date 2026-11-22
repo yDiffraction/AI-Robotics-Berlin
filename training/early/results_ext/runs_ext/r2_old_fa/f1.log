@@ -1,0 +1,10 @@
+bank: 6176 clips, 541M codes
+{"step": 100, "loss": 0.1156, "y_pos": 0.607, "y_neg": 0.1287, "neg_gt.5": 0.0653, "dom_acc": NaN, "min": 2.6}
+{"step": 200, "loss": 0.0793, "y_pos": 0.732, "y_neg": 0.0996, "neg_gt.5": 0.062, "dom_acc": NaN, "min": 5.1}
+{"step": 300, "loss": 0.0631, "y_pos": 0.778, "y_neg": 0.0819, "neg_gt.5": 0.0498, "dom_acc": NaN, "min": 7.6}
+{"step": 400, "loss": 0.0534, "y_pos": 0.803, "y_neg": 0.0755, "neg_gt.5": 0.0423, "dom_acc": NaN, "min": 10.1}
+{"step": 500, "loss": 0.0479, "y_pos": 0.816, "y_neg": 0.0693, "neg_gt.5": 0.0383, "dom_acc": NaN, "min": 12.7}
+{"step": 600, "loss": 0.0439, "y_pos": 0.819, "y_neg": 0.0624, "neg_gt.5": 0.0325, "dom_acc": NaN, "min": 15.2}
+{"step": 700, "loss": 0.0448, "y_pos": 0.834, "y_neg": 0.067, "neg_gt.5": 0.0372, "dom_acc": NaN, "min": 17.8}
+{"step": 800, "loss": 0.0391, "y_pos": 0.83, "y_neg": 0.0591, "neg_gt.5": 0.0282, "dom_acc": NaN, "min": 20.4}
+fold 1 done

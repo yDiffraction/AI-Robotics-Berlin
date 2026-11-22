@@ -1,0 +1,7 @@
+validating still_local.json rank 1: {'kick_vy': 1.7444525689500376, 'kick_s': 0.38535958447076585, 'hold_vy': 0.36080360372219944, 'dodge_s': 0.3238632478669004, 'brake_vy': -0.9145034468249849, 'brake_s': 0.19433178673851922, 'freq': 3.6283436451709363, 'stance_width': 0.28, 'footswing': 0.08522349153071956, 'height': 0.012910228905144218, 'phase0': 0.9893474840595993}
+x1.00: fails L 2/500 R 13/500, t30 p90 0.60, load 1.03  ['far', 'peak_tilt_deg', 'short', 'torque_frac']
+x0.95: fails L 1/500 R 40/500, t30 p90 0.62, load 1.02  ['short', 'short', 'torque_frac']
+x0.90: fails L 17/500 R 112/500, t30 p90 0.66, load 1.01  ['short', 'never', 'short', 'torque_frac']
+x0.85: fails L 80/500 R 237/500, t30 p90 0.78, load 1.00  ['never', 'short', 'never', 'short']
+x0.80: fails L 202/500 R 379/500, t30 p90 9.00, load 0.97  ['never', 'short', 'never', 'short']
+no scale passed every run

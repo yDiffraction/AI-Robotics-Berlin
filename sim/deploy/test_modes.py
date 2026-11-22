@@ -30,6 +30,11 @@ DOMAIN = 77
 B = safety.BUTTON_BIT
 OUT = HERE.parent / "results"
 LOG_LINES: list[str] = []
+T30_MAX = {"still": 0.70, "trot": 0.90}     # s after the kick; sim worst: see results/still_dodge.json, safe_dodge.json
+
+
+def dodge_for(gentle: bool = False, side: str = "left", trot: bool = False):
+    return dc.load_safe_dodge(gentle, side) if trot else dc.load_still_dodge(gentle, side)
 
 
 def keys(*names: str) -> int:
@@ -147,6 +152,7 @@ def enter_by_remote(s: Session, c: Checks) -> bool:
 
 
 def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: int, min_dy: float = 0.30) -> None:
+    still = dodge.t0 == 0.0
     side = "right" if dodge.cmd.vy < 0 else "left"
     sign = -1.0 if side == "right" else 1.0
     hit = s.wait(r"DODGE:", 3, start_line)
@@ -154,6 +160,12 @@ def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: in
              s.lines[hit[0]][2] if hit else ""):
         return
     t_cmd = hit[1]
+    if still:
+        P = log_window(robot, t_cmd - 1.0, t_cmd - 0.02)
+        travel = float(np.hypot(np.ptp(P["x"]), np.ptp(P["y"])))
+        rock = float(np.ptp(np.r_[P["roll"]]) + np.ptp(P["pitch"]))
+        c("dog stood still for 1 s before the command (trunk moved < 5 mm)", travel < 0.005 and rock < 0.02,
+          f"{travel * 1000:.1f} mm, roll+pitch range {rock:.3f} rad")
     done = s.wait(r"dodge done", 20, hit[0])
     if not c("dodge finished, standing again", done is not None):
         return
@@ -166,10 +178,18 @@ def dodge_metrics(robot: F.FakeGo2, s: Session, c: Checks, dodge, start_line: in
     t30 = float(reach[0] - t_kick) if len(reach) else float("nan")
     tilt = float(np.abs(np.r_[W["roll"], W["pitch"]]).max())
     end = log_window(robot, done[1] - 0.2, done[1] + 0.2)
+    if still:
+        moved = W["t"][(W["t"] >= t_kick) & (dy >= 0.02)]
+        t2 = float(moved[0] - t_kick) if len(moved) else float("nan")
+        c("dog moving sideways right after the command (2 cm within 0.3 s)", t2 <= 0.3, f"{t2:.2f} s")
+        E = log_window(robot, done[1] - 0.5, done[1])
+        c("still again at the end (trunk moved < 1 cm in the last 0.5 s)",
+          np.hypot(np.ptp(E["x"]), np.ptp(E["y"])) < 0.01, f"{np.hypot(np.ptp(E['x']), np.ptp(E['y'])) * 1000:.1f} mm")
     c(f"dodge moved the dog >= {min_dy:.2f} m to the {side.upper()}", dy.max() >= min_dy,
       f"max {dy.max():.2f} m, end {dy[-1]:+.2f} m, x drift {W['x'][-1] - W['x'][0]:+.2f} m")
     if min_dy >= 0.30:
-        c("30 cm reached within 0.9 s of the kick (sim worst 0.88 s left, 0.83 s right)", t30 <= 0.9, f"{t30:.2f} s")
+        lim = T30_MAX["still" if still else "trot"]
+        c(f"30 cm reached within {lim:.2f} s of the kick", t30 <= lim, f"{t30:.2f} s")
     c("tilt stayed below 0.4 rad", tilt < 0.4, f"max {tilt:.2f} rad")
     c("standing at the end (trunk > 0.24 m)", end["z"].min() > 0.24, f"z {end['z'].min():.2f} m")
     s.result = {"t30": t30, "dy_max": float(dy.max()), "tilt": tilt}
@@ -192,16 +212,16 @@ def final_checks(s: Session, c: Checks, robot: F.FakeGo2, lying: bool = True) ->
 
 
 # ---- scenarios -------------------------------------------------------------------------------------
-def sc_happy(robot: F.FakeGo2, silence: str, button: str = "A", side: str = "left") -> Checks:
-    c = Checks(f"remote: enter, {button} = dodge {side}, back ({silence})")
+def sc_happy(robot: F.FakeGo2, silence: str, button: str = "A", side: str = "left", trot: bool = False) -> Checks:
+    c = Checks(f"remote: enter, {button} = dodge {side}, back ({silence})" + (" --trot-start" if trot else ""))
     robot.reset(silence, sport="normal").start()
-    s = Session(robot)
+    s = Session(robot, extra=("--trot-start",) if trot else ())
     try:
         if enter_by_remote(s, c):
             time.sleep(1.5)
             n = len(s.lines)
             s.press(keys(button))
-            dodge_metrics(robot, s, c, dc.load_safe_dodge(side=side), n)
+            dodge_metrics(robot, s, c, dodge_for(side=side, trot=trot), n)
             time.sleep(1.0)
             back_by_remote(s, c, robot, len(s.lines))
             kinds = [k for _, k in robot.rx]
@@ -218,7 +238,7 @@ def sc_happy(robot: F.FakeGo2, silence: str, button: str = "A", side: str = "lef
 def sc_gentle(robot: F.FakeGo2, side: str = "left") -> Checks:
     """Left by remote (A); right by keyboard (o, r, s) in a pseudo-terminal."""
     kb = side == "right"
-    c = Checks(f"--gentle: enter, dodge {side} x0.6, back" + (" (keyboard)" if kb else ""))
+    c = Checks(f"--gentle: enter, dodge {side} (reduced speed), back" + (" (keyboard)" if kb else ""))
     robot.reset("hold", sport="normal").start()
     s = Session(robot, keyboard=kb, extra=("--gentle",))
     try:
@@ -230,14 +250,14 @@ def sc_gentle(robot: F.FakeGo2, side: str = "left") -> Checks:
         else:
             ok = enter_by_remote(s, c)
         if ok:
-            c("controller runs the gentle dodge", s.seen(r"SAFE x0\.6 \(gentle\)"))
+            c("controller runs the gentle dodge", s.seen(r"dodge: STILL x0\.\d"))
             time.sleep(1.5)
             n = len(s.lines)
             if kb:
                 s.type("r")
             else:
                 s.press(keys("A"))
-            dodge_metrics(robot, s, c, dc.load_safe_dodge(gentle=True, side=side), n, min_dy=0.20)
+            dodge_metrics(robot, s, c, dodge_for(gentle=True, side=side), n, min_dy=0.20)
             time.sleep(1.0)
             if kb:
                 n = len(s.lines)
@@ -263,7 +283,7 @@ def sc_keyboard(robot: F.FakeGo2) -> Checks:
                 time.sleep(1.5)
                 n = len(s.lines)
                 s.type("d")
-                dodge_metrics(robot, s, c, dc.load_safe_dodge(), n)
+                dodge_metrics(robot, s, c, dodge_for(), n)
                 n = len(s.lines)
                 s.type("s")
                 c("s -> sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
@@ -287,7 +307,7 @@ def sc_estop_mid_dodge(robot: F.FakeGo2, how: str) -> Checks:
             s.press(keys("A"))
             hit = s.wait(r"DODGE:", 3, n)
             if c("dodge started", hit is not None):
-                d = dc.load_safe_dodge()
+                d = dodge_for()
                 time.sleep(max(0.0, d.t0 + 0.25 - (robot.t - hit[1])))      # 0.25 s into the kick
                 t_stop = robot.t
                 if how == "L2+B":
@@ -310,6 +330,56 @@ def sc_estop_mid_dodge(robot: F.FakeGo2, how: str) -> Checks:
                 c("Y releases the damping", s.wait(r"damping stopped", 5, n) is not None)
                 c("sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
         final_checks(s, c, robot, lying=False)
+    finally:
+        s.close()
+        robot.stop()
+    return c
+
+
+def sc_keyboard_estop(robot: F.FakeGo2) -> Checks:
+    """No remote at all: o, r, SPACE x3 + Ctrl+C during the kick, damping must stay on until s."""
+    c = Checks("keyboard only: SPACE x3 + Ctrl+C during the kick, then s")
+    robot.reset("passive", sport="normal").start()
+    s = Session(robot, keyboard=True)
+    try:
+        ok = c("sport mode seen", s.wait(r"SPORT mode 'normal' active", 30) is not None)
+        if ok:
+            s.type("o")
+            ok = c("o -> standing", s.wait(r"standing\. Ready", 40) is not None)
+        if ok:
+            time.sleep(1.5)
+            n = len(s.lines)
+            s.type("r")
+            hit = s.wait(r"DODGE:.*RIGHT", 3, n)
+            if c("r -> dodge right started", hit is not None):
+                d = dodge_for(side="right")
+                time.sleep(max(0.0, d.t0 + 0.25 - (robot.t - hit[1])))
+                t_stop = robot.t
+                for _ in range(3):
+                    s.type(" ")
+                    time.sleep(0.15)
+                os.killpg(s.p.pid, signal.SIGINT)
+                c("SPACE -> E-STOP", s.wait(r"SPACE -> E-STOP", 2, n) is not None)
+                trip = s.wait(r"TRIP", 3, n)
+                c("supervisor tripped", trip is not None, s.lines[trip[0]][2] if trip else "")
+                c("further SPACE / Ctrl+C: 'already active'", s.wait(r"E-STOP already active", 2, n) is not None)
+                time.sleep(3.0)
+                damp = [t for t, k in robot.rx if k == "damp" and t >= t_stop]
+                c("damping reached the robot within 60 ms", bool(damp) and damp[0] - t_stop < 0.06,
+                  f"{(damp[0] - t_stop) * 1000:.0f} ms" if damp else "none")
+                c("damping still being sent 3 s later", bool(damp) and robot.t - damp[-1] < 0.05,
+                  f"last {robot.t - damp[-1]:.2f} s ago" if damp else "")
+                c("supervisor did not stop damping on the repeated presses", not s.seen(r"damping stopped"))
+                W = log_window(robot, t_stop)
+                c("dog down on its belly, not on its side", W["z"][-50:].max() < 0.2 and np.abs(W["roll"][-50:]).max() < 0.6,
+                  f"z {W['z'][-1]:.2f} m, roll {W['roll'][-1]:+.2f} rad")
+                n = len(s.lines)
+                s.type("s")
+                c("s releases the damping", s.wait(r"damping stopped", 5, n) is not None)
+                c("sport mode restored", s.wait(r"SPORT mode 'normal' is back", 50, n) is not None)
+        final_checks(s, c, robot, lying=False)
+        s.type("q")
+        c("q quits", s.wait(r"bye", 5) is not None)
     finally:
         s.close()
         robot.stop()
@@ -398,7 +468,8 @@ def main() -> None:
             lambda: sc_estop_mid_dodge(robot, "L2+B"), lambda: sc_estop_mid_dodge(robot, "Ctrl+C"),
             lambda: sc_refused_and_busy(robot), lambda: sc_entry_guards(robot), lambda: sc_switcher_killed(robot),
             lambda: sc_gentle(robot), lambda: sc_happy(robot, "hold", "Right", "right"),
-            lambda: sc_happy(robot, "passive", "Left", "left"), lambda: sc_gentle(robot, "right")]
+            lambda: sc_happy(robot, "passive", "Left", "left"), lambda: sc_gentle(robot, "right"),
+            lambda: sc_keyboard_estop(robot), lambda: sc_happy(robot, "hold", "A", "left", trot=True)]
     only = sys.argv[1:]
     for i, run in enumerate(plan):
         if only and str(i) not in only:

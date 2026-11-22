@@ -1,0 +1,38 @@
+limits {'limit_margin_min': 0.05, 'torque_frac_max': 0.97, 'peak_tilt_deg_max': 20.0, 'foot_force_bw_max': 1.807, 'touchdown_p95_max': 3.729, 'trunk_acc_g_max': 1.934} + {'y_final_min': 0.33, 'y_final_max': 0.6, 'y_max_max': 0.65, 'x_abs_max': 0.15, 'yaw_abs_max': 20.0, 'hold_drift_max': 0.005, 'end_travel_max': 0.01}
+stage 1: 200 candidates x 2 sides x 6 harsh physics
+    fail t30p90  load  yfin L/R tilt    x yaw  params
+   0/12    0.54  0.94 0.43/0.40   19 0.14  14  kick_vy 2.19 kick_s 0.30 hold_vy 0.42 dodge_s 0.50 brake_vy -0.75 brake_s 0.29 freq 3.75 stance_width 0.37 footswing 0.07 height 0.00 phase0 0.92
+   0/12    0.58  0.96 0.51/0.48   19 0.12  19  kick_vy 1.89 kick_s 0.40 hold_vy 0.41 dodge_s 0.33 brake_vy -0.97 brake_s 0.19 freq 3.63 stance_width 0.28 footswing 0.09 height 0.01 phase0 0.03
+   0/12    0.66  0.86 0.42/0.37   17 0.10  17  kick_vy 1.58 kick_s 0.33 hold_vy 0.95 dodge_s 0.34 brake_vy -0.23 brake_s 0.01 freq 3.19 stance_width 0.41 footswing 0.07 height -0.03 phase0 0.92
+   0/12    0.64  0.86 0.45/0.42   15 0.12  19  kick_vy 1.45 kick_s 0.40 hold_vy 0.22 dodge_s 0.31 brake_vy -0.15 brake_s 0.14 freq 3.17 stance_width 0.32 footswing 0.07 height 0.01 phase0 0.47
+   0/12    0.65  0.87 0.47/0.40   17 0.11  17  kick_vy 1.34 kick_s 0.45 hold_vy 0.91 dodge_s 0.31 brake_vy -0.62 brake_s 0.09 freq 3.19 stance_width 0.41 footswing 0.08 height 0.01 phase0 0.60
+   0/12    0.64  0.88 0.46/0.45   14 0.09  16  kick_vy 1.36 kick_s 0.41 hold_vy 0.51 dodge_s 0.48 brake_vy -0.40 brake_s 0.04 freq 3.74 stance_width 0.33 footswing 0.08 height -0.03 phase0 0.50
+   0/12    0.64  0.90 0.54/0.49   14 0.12  12  kick_vy 1.66 kick_s 0.39 hold_vy 0.20 dodge_s 0.42 brake_vy -0.20 brake_s 0.11 freq 3.40 stance_width 0.28 footswing 0.11 height -0.04 phase0 0.38
+   0/12    0.64  0.90 0.45/0.39   15 0.07  14  kick_vy 1.93 kick_s 0.19 hold_vy 0.90 dodge_s 0.40 brake_vy -0.12 brake_s 0.10 freq 3.62 stance_width 0.40 footswing 0.10 height -0.02 phase0 0.97
+   0/12    0.64  0.91 0.43/0.40   14 0.13  17  kick_vy 1.95 kick_s 0.17 hold_vy 0.80 dodge_s 0.45 brake_vy -0.42 brake_s 0.02 freq 3.88 stance_width 0.32 footswing 0.09 height -0.03 phase0 0.91
+   0/12    0.62  0.96 0.45/0.46   16 0.13  15  kick_vy 2.03 kick_s 0.34 hold_vy 0.06 dodge_s 0.44 brake_vy -0.41 brake_s 0.09 freq 3.89 stance_width 0.31 footswing 0.06 height -0.05 phase0 0.34
+
+stage 2: refine top 10 x 12
+    fail t30p90  load  yfin L/R tilt    x yaw  params
+   0/12    0.59  0.90 0.54/0.52   15 0.11  16  kick_vy 1.50 kick_s 0.41 hold_vy 0.58 dodge_s 0.51 brake_vy -0.47 brake_s 0.06 freq 3.78 stance_width 0.33 footswing 0.08 height -0.03 phase0 0.51
+   0/12    0.55  0.93 0.45/0.41   18 0.14  17  kick_vy 2.15 kick_s 0.32 hold_vy 0.40 dodge_s 0.50 brake_vy -0.73 brake_s 0.27 freq 3.83 stance_width 0.37 footswing 0.07 height -0.00 phase0 0.94
+   0/12    0.58  0.93 0.50/0.48   19 0.12  20  kick_vy 1.88 kick_s 0.40 hold_vy 0.42 dodge_s 0.33 brake_vy -1.00 brake_s 0.19 freq 3.63 stance_width 0.28 footswing 0.08 height 0.02 phase0 0.02
+   0/12    0.54  0.94 0.43/0.40   19 0.14  14  kick_vy 2.19 kick_s 0.30 hold_vy 0.42 dodge_s 0.50 brake_vy -0.75 brake_s 0.29 freq 3.75 stance_width 0.37 footswing 0.07 height 0.00 phase0 0.92
+   0/12    0.55  0.94 0.49/0.45   19 0.10  17  kick_vy 2.20 kick_s 0.30 hold_vy 0.47 dodge_s 0.46 brake_vy -0.75 brake_s 0.30 freq 3.68 stance_width 0.36 footswing 0.08 height 0.00 phase0 0.01
+   0/12    0.53  0.94 0.52/0.47   17 0.15  15  kick_vy 2.20 kick_s 0.31 hold_vy 0.50 dodge_s 0.50 brake_vy -0.77 brake_s 0.24 freq 3.74 stance_width 0.37 footswing 0.07 height -0.00 phase0 0.95
+   0/12    0.60  0.95 0.45/0.42   19 0.13  18  kick_vy 1.66 kick_s 0.32 hold_vy 0.98 dodge_s 0.39 brake_vy -0.29 brake_s 0.00 freq 3.16 stance_width 0.42 footswing 0.09 height -0.03 phase0 0.71
+   0/12    0.59  0.95 0.47/0.42   19 0.09  18  kick_vy 1.91 kick_s 0.38 hold_vy 0.36 dodge_s 0.32 brake_vy -1.00 brake_s 0.19 freq 3.65 stance_width 0.28 footswing 0.09 height 0.01 phase0 0.04
+   0/12    0.58  0.96 0.51/0.48   19 0.12  19  kick_vy 1.89 kick_s 0.40 hold_vy 0.41 dodge_s 0.33 brake_vy -0.97 brake_s 0.19 freq 3.63 stance_width 0.28 footswing 0.09 height 0.01 phase0 0.03
+   0/12    0.64  0.81 0.54/0.43   15 0.12  12  kick_vy 1.39 kick_s 0.43 hold_vy 0.23 dodge_s 0.32 brake_vy -0.17 brake_s 0.13 freq 3.25 stance_width 0.32 footswing 0.07 height 0.02 phase0 0.56
+
+stage 3: top 6 on 40 fresh harsh physics per side
+  validation:
+    fail t30p90  load  yfin L/R tilt    x yaw  params
+   1/80    0.58  0.94 0.46/0.45   19 0.11  20  kick_vy 1.88 kick_s 0.40 hold_vy 0.42 dodge_s 0.33 brake_vy -1.00 brake_s 0.19 freq 3.63 stance_width 0.28 footswing 0.08 height 0.02 phase0 0.02  [yaw]
+   4/80    0.60  1.02 0.53/0.52   17 0.14  20  kick_vy 1.50 kick_s 0.41 hold_vy 0.58 dodge_s 0.51 brake_vy -0.47 brake_s 0.06 freq 3.78 stance_width 0.33 footswing 0.08 height -0.03 phase0 0.51  [far,torque_frac]
+   4/80    0.54  1.03 0.50/0.43   19 0.15  19  kick_vy 2.20 kick_s 0.31 hold_vy 0.50 dodge_s 0.50 brake_vy -0.77 brake_s 0.24 freq 3.74 stance_width 0.37 footswing 0.07 height -0.00 phase0 0.95  [foot_force_bw,torque_frac]
+   7/80    0.56  1.04 0.44/0.38   20 0.15  21  kick_vy 2.15 kick_s 0.32 hold_vy 0.40 dodge_s 0.50 brake_vy -0.73 brake_s 0.27 freq 3.83 stance_width 0.37 footswing 0.07 height -0.00 phase0 0.94  [foot_force_bw,short,torque_frac,yaw]
+   9/80    0.58  1.03 0.46/0.43   20 0.12  18  kick_vy 2.20 kick_s 0.30 hold_vy 0.47 dodge_s 0.46 brake_vy -0.75 brake_s 0.30 freq 3.68 stance_width 0.36 footswing 0.08 height 0.00 phase0 0.01  [fell,torque_frac]
+  12/80    0.56  3.37 0.42/0.37   21 0.16  23  kick_vy 2.19 kick_s 0.30 hold_vy 0.42 dodge_s 0.50 brake_vy -0.75 brake_s 0.29 freq 3.75 stance_width 0.37 footswing 0.07 height 0.00 phase0 0.92  [foot_force_bw,joint,peak_tilt_deg,short,torque_frac,x_drift,yaw]
+  neighbours ok: 2/8, 7/8, 4/8, 2/8, 2/8, 4/8
+-> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_optimize.json

@@ -8,3 +8,6 @@ __pycache__/
 
 # Durance hand-gesture dataset (proprietary - do not publish)
 data/
+
+# large generated data banks (exceed GitHub 100MB limit)
+training/early/banks/*.npz

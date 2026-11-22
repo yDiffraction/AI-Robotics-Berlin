@@ -1,0 +1,10 @@
+bank: 6176 clips, 541M codes
+{"step": 100, "loss": 0.1116, "y_pos": 0.638, "y_neg": 0.1162, "neg_gt.5": 0.0632, "dom_acc": NaN, "min": 1.6}
+{"step": 200, "loss": 0.0647, "y_pos": 0.792, "y_neg": 0.0834, "neg_gt.5": 0.0549, "dom_acc": NaN, "min": 3.6}
+{"step": 300, "loss": 0.0559, "y_pos": 0.81, "y_neg": 0.0759, "neg_gt.5": 0.0484, "dom_acc": NaN, "min": 5.5}
+{"step": 400, "loss": 0.0492, "y_pos": 0.823, "y_neg": 0.0684, "neg_gt.5": 0.0431, "dom_acc": NaN, "min": 7.4}
+{"step": 500, "loss": 0.0446, "y_pos": 0.832, "y_neg": 0.066, "neg_gt.5": 0.0404, "dom_acc": NaN, "min": 9.2}
+{"step": 600, "loss": 0.0388, "y_pos": 0.846, "y_neg": 0.0587, "neg_gt.5": 0.0335, "dom_acc": NaN, "min": 11.2}
+{"step": 700, "loss": 0.0414, "y_pos": 0.842, "y_neg": 0.0635, "neg_gt.5": 0.038, "dom_acc": NaN, "min": 13.0}
+{"step": 800, "loss": 0.0382, "y_pos": 0.834, "y_neg": 0.0529, "neg_gt.5": 0.0298, "dom_acc": NaN, "min": 14.9}
+{"final": "runs_ext_final/final_old_fa/final.pt", "log": [{"step": 600, "loss": 0.0388, "y_pos": 0.846, "y_neg": 0.0587, "neg_gt.5": 0.0335, "dom_acc": NaN, "min": 11.2}, {"step": 700, "loss": 0.0414, "y_pos": 0.842, "y_neg": 0.0635, "neg_gt.5": 0.038, "dom_acc": NaN, "min": 13.0}, {"step": 800, "loss": 0.0382, "y_pos": 0.834, "y_neg": 0.0529, "neg_gt.5": 0.0298, "dom_acc": NaN, "min": 14.9}]}

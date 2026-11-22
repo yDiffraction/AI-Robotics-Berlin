@@ -1,0 +1,581 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Go2 Throw Detection Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column (~72ch) with wide tables in their own scroll boxes; goal tags mark every section. */
+:root{
+  --bg:#f7f8f7; --surface:#ffffff; --fg:#1b2023; --muted:#5b666c; --line:#d9dfe1;
+  --accent:#0f6f7a; --accent-soft:#e2f1f2;
+  --old:#8a5a00; --old-soft:#fbf0d9; --cur:#1d4fa0; --cur-soft:#e3ebf9;
+  --good:#1f7a3f; --bad:#a3302a;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121618; --surface:#191e21; --fg:#e4e9eb; --muted:#9aa6ac; --line:#2c3438;
+  --accent:#5cc3cd; --accent-soft:#16343a; --old:#e3b257; --old-soft:#33280f; --cur:#86aef0; --cur-soft:#182640;
+  --good:#6fd08f; --bad:#f08a80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121618; --surface:#191e21; --fg:#e4e9eb; --muted:#9aa6ac; --line:#2c3438;
+  --accent:#5cc3cd; --accent-soft:#16343a; --old:#e3b257; --old-soft:#33280f; --cur:#86aef0; --cur-soft:#182640;
+  --good:#6fd08f; --bad:#f08a80; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px}
+main{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.prose{max-width:74ch}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:2rem;font-weight:600}
+h2{font-size:1.45rem;font-weight:600;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+h3{font-size:1.1rem;font-weight:600;margin-top:22px}
+p,ul,ol{margin:8px 0}
+li{margin:3px 0}
+a{color:var(--accent)}
+code,.mono{font-family:var(--mono);font-size:.88em}
+code{background:var(--accent-soft);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+pre{font-family:var(--mono);font-size:.82rem;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;line-height:1.45;margin:10px 0}
+pre code{background:none;padding:0}
+.lede{color:var(--muted);font-size:1.05rem;max-width:74ch}
+.meta{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;vertical-align:middle;margin-right:6px;white-space:nowrap}
+.tag.old{background:var(--old-soft);color:var(--old)}
+.tag.cur{background:var(--cur-soft);color:var(--cur)}
+.tag.this{background:var(--accent-soft);color:var(--accent)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin:12px 0}
+.box.key{border-left:4px solid var(--accent)}
+.box.warn{border-left:4px solid var(--bad)}
+.tw{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;font-variant-numeric:tabular-nums}
+th,td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;background:var(--accent-soft);white-space:nowrap}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.best td{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
+.good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+nav.toc{columns:2;column-gap:32px;font-size:.92rem;margin:12px 0}
+nav.toc a{display:block;padding:1px 0;text-decoration:none;color:var(--fg)}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);text-decoration:underline}
+@media (max-width:640px){nav.toc{columns:1}h1{font-size:1.6rem}}
+small{color:var(--muted)}
+</style>
+
+<main>
+<header class="prose">
+<p class="meta">AI-Robotics-Berlin · Durance track · 22 Nov 2026 · Go2 reflex on GenX320 + Kria SNN</p>
+<h1>Throw detection: everything tested so far</h1>
+<p class="lede">All experiments in this repo on detecting throws from the GenX320 event camera: the earlier work on telling real throws from fakes, the current work on detecting throwing intention early, and the external-positive dataset and training runs from today. Every result says how it was produced, so it can be rerun.</p>
+<p><span class="tag old">Earlier goal</span> Real vs. fake: separate a real throw (ball leaves the hand) from a feint.<br>
+<span class="tag cur">Current goal</span> Early intent: fire as early as possible on any throw motion (real or feint) and stay silent on everything else.</p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+<a href="#summary">1. Summary and recommendation</a>
+<a href="#data">2. Data inventory</a>
+<a href="#format">3. Board format and model</a>
+<a href="#old">4. Earlier goal: real vs. fake</a>
+<a href="#throwdet">5. Current goal: throw-detector branch</a>
+<a href="#early1">6. Current goal: early_cv iteration 1</a>
+<a href="#extpos">7. Today: external positives that look like ours</a>
+<a href="#train">8. Today: training with them</a>
+<a href="#models">9. Checkpoints and how to use them</a>
+<a href="#repro">10. Reproduce everything</a>
+<a href="#limits">11. Caveats</a>
+<a href="#next">12. Open questions and next moves</a>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="summary">1. Summary and recommendation</h2>
+<div class="prose">
+<div class="box key">
+<p><strong><span class="tag cur">Current goal</span> Where we stand.</strong> On our own held-out recording sessions (2-fold CV by session, 181 throw motions = 77 throws + 104 feints), the best models detect:</p>
+<ul>
+<li><strong>Old banks + false-alarm recipe</strong> (<code>r2_old_fa</code>): 106 of 181 at 2.0 false alarms/min on our idle footage, about 390 ms before release. In the 7 ordinary sessions it gets 98 of 107. Almost all misses are in two sessions: 215305 (key-press labels, 6 of 64) and d01 (ball invisible, 2 of 10).</li>
+<li><strong>Matched external positives + false-alarm recipe</strong> (<code>r2_ext_fa</code>): 79 of 181 with 0 false alarms in 2 minutes of held-out idle (88 of 181 at 1.5/min). It detects later (median 80–235 ms before release) and also catches 46–55 % of DailyDVS throws by people it has never seen.</li>
+</ul>
+<p><strong>For labelling our next recordings, use <code>final_old_fa.pt</code> at threshold 0.95.</strong> It is clearly better in ordinary sessions (98/107 vs. 72/107) and detects earlier. Switch to <code>final_ext_fa.pt</code> (threshold 0.90–0.95) where people walk through the scene and false alarms matter more than recall. That is the one case where the old-bank model cannot get below 3 false alarms/min.</p>
+</div>
+<p><strong>What today's work established</strong></p>
+<ol>
+<li><strong>"Our throws are different from the dataset throws" was a preprocessing artefact.</strong> With the old DailyDVS import, a logistic regression told DailyDVS clips from ours with 90 % balanced accuracy, and our models detected 0 of 590 DailyDVS throws. After sensor matching, the same probe is at chance (0.52–0.55). A model trained only on our positives already detects 59–92 of 366 matched DailyDVS throws. Training on them reaches 169–242 of 366.</li>
+<li><strong>The false-alarm recipe was the biggest single gain.</strong> Positive weight 1.5 instead of 3, 45 % own idle in the negative mix, and light augmentation. With it, both bank versions reach ≤ 2 false alarms/min on our idle stream. The previous recipe could not get below 3/min at any threshold.</li>
+<li><strong>Mixing external positives into training costs own recall at this model size.</strong> At 40 % of the positives the network spends capacity on DailyDVS throws and fires on DailyDVS arm actions (10–20 FA/min). At 20 % (<code>r3</code>) it is no better.</li>
+<li><strong>Video converted with v2e from 30 fps HMDB51 is still recognisable as video</strong> (probe 0.73–0.94). Events bunch at the video frames, and interpolation does not fix that. It was not used for training.</li>
+</ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="data">2. Data inventory</h2>
+<div class="prose">
+<h3>Our own GenX320 recordings</h3>
+<p>Recorded on 21 Nov 2026 with <code>river-tools capture</code> from the Kria. Raw format: 4-byte length, then big-endian events <code>x u16, y u16, polarity u8, t i64 (µs)</code>, 320×320.</p>
+</div>
+<div class="tw"><table>
+<tr><th>Dataset</th><th>Where</th><th>Content</th><th>Used by</th></tr>
+<tr><td><code>dataset/01</code></td><td>data-pipeline branch</td><td>25 short recordings (1.5–3 s), one person, overhand throws and feints, auto labels from event-rate profile. Recorded in blocks (throws 13:05–13:08, feints 13:08–13:14). Ball not visible to the sensor.</td><td><span class="tag old">Earlier</span> pretrain/train_throw.py, robust (old24)</td></tr>
+<tr><td><code>_dataset01_010203</code></td><td>noah branch</td><td>372 clips of 1.2 s: 49 throw, 68 feint, 255 idle (pauses between swings), 8 sessions, release at 700 ms</td><td><span class="tag old">Earlier</span> robust (l_*, n_*), throwdet (idle only)</td></tr>
+<tr><td><code>_dataset01_01020304</code></td><td>noah branch, c936f55</td><td>469 clips of 1.2 s: <strong>77 throw + 104 feint</strong> from 9 sessions, <strong>288 idle</strong> from one 5:47 min idle take (04/211821) with people walking through. Idle clips pre-thinned to one event per 10 ms / polarity / 4×4 block. Release (event-rate peak of the swing) at 700 ms.</td><td><span class="tag old">Earlier</span> robust (b_*) · <span class="tag cur">Current</span> throwdet, early_cv (bank <code>noah</code>)</td></tr>
+</table></div>
+<div class="prose"><p>Throw-motion clips per session in <code>_dataset01_01020304</code> (the CV groups):</p></div>
+<div class="tw"><table>
+<tr><th>Session</th><th class="n">clips</th><th>Note</th></tr>
+<tr><td>d01 (dataset 01)</td><td class="n">10</td><td>ball invisible, short files</td></tr>
+<tr><td>170441</td><td class="n">15</td><td></td></tr>
+<tr><td>195808</td><td class="n">10</td><td></td></tr>
+<tr><td>200001</td><td class="n">25</td><td></td></tr>
+<tr><td>200828</td><td class="n">46</td><td></td></tr>
+<tr><td>201452 / 201622 / 201703</td><td class="n">5 / 4 / 2</td><td></td></tr>
+<tr><td>215305</td><td class="n">64</td><td>recorded with <code>record_tool.py</code>: labels from key presses (Space = throw, k = feint), the swing matched to the key by Claude agents, ball rarely visible. Several assignments marked uncertain.</td></tr>
+</table></div>
+
+<div class="prose"><h3>External event data</h3></div>
+<div class="tw"><table>
+<tr><th>Bank</th><th>Sensor</th><th>Content</th><th>Role before today</th><th>Role after today</th></tr>
+<tr><td><code>mb</code> motion_buddy (Durance, proprietary, not to be published)</td><td>GenX320, noise-filtered (noise floor 0)</td><td>sit / lay-down / hello / dance / no-action, 14 sessions; 6 clips per class and session = 1,254 clips</td><td>negative</td><td>negative (no throw-like class exists)</td></tr>
+<tr><td><code>dvsg</code> DVS Gesture</td><td>DVS128</td><td>11 hand/arm gestures, 29 users, 1,341 clips clipped to 3 s</td><td>negative, pretraining</td><td>negative (no throw-like class)</td></tr>
+<tr><td><code>dd</code> DailyDVS-200 (MIT)</td><td>DVXplorer Lite 320×240</td><td>200 actions, 47 people, 22,046 recordings</td><td>old importer: 2,522 negatives + 590 held-out throw/toss clips (never detected)</td><td>matched: 366 pos, 2,906 neg, 356 amb (section 7)</td></tr>
+<tr><td><code>hmdb</code> HMDB51 via v2e</td><td>RGB video, simulated</td><td>throw + 17 negative + 9 ambiguous classes</td><td>–</td><td>built (172 pos, 82 neg), not used: fails the shortcut probe</td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="format">3. Board format and model (shared by all work)</h2>
+<div class="prose">
+<ul>
+<li><strong>Input:</strong> binary <code>[T, 2, 80, 80]</code>, 10 ms frames. A cell is 1 if any event of that polarity fell into its 4×4 block of the 320×320 sensor (despot <code>downsampling: 4</code>, <code>frequency: 100</code>).</li>
+<li><strong>Network:</strong> riverops <code>SpikingConvBN2d</code> stack 16-32-64-64 (stride 2, 80→5), PLIF neurons, conv head <code>[T, K, 1, 1]</code>. About 63k weights with a 1-output head. Only conv-LIF layers, because the exporter supports nothing else.</li>
+<li><strong>Pretraining</strong> (<code>pretrain/</code>, Tim branch): DVS Gesture, 30 epochs, held-out users 24–29: <strong>87.9 %</strong> per 0.64 s window, 91.3 % per recording. Checkpoint <code>pretrain/checkpoints/dvsg_best.pt</code>; on the A100 the early trainer initialises from <code>~/snn_pretrain/runs/sweep_v1/best.pt</code>.</li>
+<li><strong>Export:</strong> fuse, then <code>export_for_river</code>, giving <code>model.json</code>, <code>weights.txt</code> and <code>config.yaml</code> (<code>training/export_snn.py</code> on data-pipeline, <code>throwdet/export.py</code> on throw-detector). QAT accuracy has not been measured.</li>
+<li><strong>Live readout</strong> <span class="tag cur">Current goal</span>: host side, <code>y_t = α·y_{t−1} + (1−α)·spike_t</code> with α = 0.85 (about 65 ms). An alarm is a crossing of threshold θ, followed by 1 s refractory. <code>throwdet/live_readout.py</code> uses the two-neuron variant with a hold-frames rule.</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="old">4. <span class="tag old">Earlier goal</span> Real vs. fake</h2>
+<div class="prose">
+<p>The task was to decide, after the swing, whether the ball really left the hand. None of this is used by the current goal except the infrastructure (bank format, pretrained backbone, shortcut probes, session-grouped CV).</p>
+
+<h3>4.1 data-pipeline branch: dataset, generators, simulator</h3>
+<p>Commits 3d2054a…ee0e2da. <code>tools/build_dataset.py</code> made auto labels for the 25 recordings of <code>dataset/01</code>: 13 throw, 11 feint, 1 invalid. A frame-by-frame review agreed with the arm-motion labels but found the yarn ball invisible to the sensor in every clip.</p>
+<p>Generated training sets in <code>dataset/build/</code>:</p>
+<ul>
+<li><code>aug_train</code>: real windows augmented (speed, mirror, scale, shift, rotation, thinning, shake, distractor person, noise, refractory, time jitter).</li>
+<li><code>splice_train</code>: throw wind-up cross-faded into a feint's return phase.</li>
+<li><code>synth_train</code>: procedural 3-D arm renderer plus our own event simulator <code>tools/event_sim.py</code>, v2 and v3.</li>
+<li><code>video_train</code>: Wikimedia phone videos through <code>tools/video_to_events.py</code>.</li>
+</ul>
+<p><strong>Shortcut probe</strong> (<code>tools/shortcut_probe.py</code>, generated vs. real, 0.5 = indistinguishable):</p>
+<ul>
+<li>cut-and-reverse feints: 100 %</li>
+<li>splice feints: 95.5 %, then 84.7 % after fixes</li>
+<li>aug throws / feints: 62 / 70 %</li>
+<li>synth v2 throws / feints: 83 / 86 %; synth v3: 82–96 %</li>
+</ul>
+<p><strong>Synthetic from scratch does not transfer.</strong> <code>pretrain/runs_throw/summary.json</code>, 38 real windows, 3-class:</p>
+<ul>
+<li>5-fold CV on real data: 0.76 (CI 0.62–0.89); throw vs. feint 0.78.</li>
+<li>Train on synth, test on real: 0.18–0.37; throw vs. feint 0.00–0.26.</li>
+<li>Firing rates differ between real and synth already at the first layer (<code>eval_model_*.json</code>), and synth clips have about half the event rate of real ones (<code>eval_input_stats.json</code>).</li>
+</ul>
+
+<h3>4.2 training/robust: fighting early wrong fitting (Tim and data-pipeline branches)</h3>
+<p><strong>Diagnosis on the 24 old recordings.</strong> Leave-one-recording-out logistic regression gets 0.75 from the active-cell count in the first 100 ms and 0.92 from an 8×8 activity map 300–200 ms before release, but only 0.54 after release. The label was predictable from the prefix, for two reasons: block recording, and an auto-label rule that used pre-release activity.</p>
+<p><strong>Method</strong> (<code>robust_cv.py</code>):</p>
+<ul>
+<li>Windows cut on the fly from full recordings.</li>
+<li>Generation from real data only:
+  <ul>
+  <li><code>thin</code>: global event thinning.</li>
+  <li><code>swap</code>: context before a cut 120–450 ms pre-release comes from another recording.</li>
+  <li><code>overlay</code>: OR-in a thinned, shifted chunk of idle.</li>
+  <li><code>mix</code>: EventMix.</li>
+  </ul>
+</li>
+<li>Per-frame loss after release + 50 ms.</li>
+<li><strong>Prefix symmetry</strong> <code>--sym</code>: before release, the throw and feint logits must be equal.</li>
+<li>AdamW, EMA weights with BN re-estimation, no checkpoint selection.</li>
+<li>Shortcut metrics: <code>prefix_tf@−200ms</code> should be about 0.5; <code>swap_tf</code> should equal accuracy.</li>
+</ul>
+</div>
+<div class="tw"><table>
+<tr><th>Data</th><th>Config</th><th>CV</th><th class="n">acc throw/feint</th><th class="n">prefix@−200</th><th class="n">swap</th><th>Take-away</th></tr>
+<tr><td rowspan="3">old 24 recordings</td><td>h_base_rate (old pipeline)</td><td>4-fold by rec.</td><td class="n">0.75</td><td class="n">0.71</td><td class="n">0.60</td><td>decides from the prefix</td></tr>
+<tr><td>h_ts_sym (symmetry only)</td><td></td><td class="n">0.71</td><td class="n">0.54</td><td class="n">0.68</td><td>symmetry removes the prefix cue</td></tr>
+<tr class="best"><td>h_tso_sym (thin + swap + overlay + sym)</td><td></td><td class="n">0.85</td><td class="n">0.56</td><td class="n">0.85</td><td>best; EventMix and 40×40 input worse</td></tr>
+<tr><td rowspan="4"><code>_dataset01_010203</code></td><td>l_base_rate</td><td>session</td><td class="n">0.50</td><td class="n">0.51</td><td class="n">0.51</td><td rowspan="2">chance on unseen sessions, 0.95+ train acc: memorises where the thrower stands</td></tr>
+<tr><td>l_tso_sym</td><td>session</td><td class="n">0.56</td><td class="n">0.50</td><td class="n">0.56</td></tr>
+<tr><td>lc_tso_ball (clip-level folds)</td><td>clip</td><td class="n">0.89</td><td class="n">0.52</td><td class="n">0.91</td><td>works within sessions</td></tr>
+<tr><td>x-shift ±25 px (2 seeds)</td><td>session</td><td class="n">0.69 / 0.62</td><td class="n">0.52 / 0.57</td><td class="n">0.69 / 0.63</td><td>first above chance on new sessions; a one-feature "ball leaves top rows" probe gets 0.91</td></tr>
+</table></div>
+<div class="prose">
+<p><strong>Binary throw vs. no-throw</strong> (still the earlier goal: feint counts as <em>no throw</em>). Data <code>_dataset01_01020304</code>, 4-fold session CV, 1000 steps, <code>training/robust/results/summary_binary_it1.json</code>:</p>
+</div>
+<div class="tw"><table>
+<tr><th>Config</th><th class="n">bal. acc (95 % CI)</th><th class="n">throw recall</th><th class="n">false trigger feint</th><th class="n">false trigger idle</th><th class="n">throw vs feint</th></tr>
+<tr><td>b_x (shift ±25 px)</td><td class="n">0.62 (0.57–0.66)</td><td class="n">0.44</td><td class="n">0.34</td><td class="n">0.08</td><td class="n">0.55</td></tr>
+<tr><td>b_x_pre30 (−300…+500 ms)</td><td class="n">0.54 (0.51–0.58)</td><td class="n">0.29</td><td class="n">0.34</td><td class="n">0.07</td><td class="n">0.48</td></tr>
+<tr class="best"><td>b_x_symwin (symmetry only over last 300 ms)</td><td class="n">0.65 (0.59–0.71)</td><td class="n">0.51</td><td class="n">0.37</td><td class="n">0.03</td><td class="n">0.57</td></tr>
+</table></div>
+<div class="prose">
+<p>A final <code>b_x_symwin</code> model trained on all 469 clips was started on the A100 (<code>training/robust/results/b_x_symwin_final.pt</code>). DANN code was written but not tested. <strong>Conclusion for this goal:</strong> telling real from fake across sessions is near chance unless the ball is visible. It needs better recordings (visible ball, interleaved takes, video labels), not a different network.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="throwdet">5. <span class="tag cur">Current goal</span> The throw-detector branch (<code>throwdet/</code>)</h2>
+<div class="prose">
+<p>A parallel line of work on the same question: is a throw motion happening right now? It is <strong>not</strong> run on today's banks, and its metrics differ from section 8 (clip level, window −250…+300 ms), so compare trends, not numbers.</p>
+<ul>
+<li><strong>Data</strong> (5,615 clips, <code>prep.py</code>):
+  <ul>
+  <li>own 181 throw motions + 543 idle</li>
+  <li>own_aug / splice: 423 + 108</li>
+  <li>synth v2 + video: 832 + 416</li>
+  <li>DailyDVS via the old importer: 590 throw-like positives + 2,522 negatives</li>
+  </ul>
+</li>
+<li><strong>Countermeasures:</strong>
+  <ul>
+  <li>balanced sampling per (domain, label)</li>
+  <li>DailyDVS thinned to our density</li>
+  <li>our idle OR-ed under external clips</li>
+  <li>mirror, scale, shift, speed, dropout</li>
+  </ul>
+  A logistic regression still told DailyDVS from our camera with 93 % accuracy.</li>
+<li><strong>Results</strong> (4-fold by recording, 724 own clips, readout tuned per false-alarm budget):
+  <ul>
+  <li>e10 (own negatives weighted up): AUC 0.865–0.924, recall 0.54–0.79 at 2 FA/min.</li>
+  <li>e26 (twice the DailyDVS share): AUC 0.88–0.92, recall 0.58–0.82 at 2 FA/min.</li>
+  <li>Without synth/video: AUC 0.83–0.85.</li>
+  <li>Activity baseline: 0.77 balanced accuracy.</li>
+  <li>Seed variance: up to 0.06 AUC and 0.25 recall.</li>
+  </ul>
+</li>
+<li><strong>Replay of the 01 stream</strong> (55 s, unseen by model D): 23 of 25 swings detected, 3–4 other alarms, alarm about 150 ms before release.</li>
+<li><strong>Deliverables:</strong> models A–E with <code>readout_fa{1,2,4}.json</code>, <code>live_readout.py</code>, <code>replay.py</code>, <code>adapt.sh</code> (site fine-tuning in 5–10 min).</li>
+</ul>
+<p><strong>Relevance today:</strong> its DailyDVS positives came through the old importer, so they carried the "DailyDVS look" shortcut that section 7 removes. Its readout (two neurons, difference, hold frames) gives more control over false alarms than the threshold-only rule used in section 8.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="early1">6. <span class="tag cur">Current goal</span> early_cv iteration 1 (previous session)</h2>
+<div class="prose">
+<p><code>training/early/</code> (untracked), A100 <code>~/early/runs_early/</code>. One output neuron, training samples are 3 s <strong>streams</strong> stitched from clips (positive with p = 0.5, release at a random position; negatives from noah-idle 0.3, mb 0.25, dd 0.25, dvsg 0.2; 15 % quiet gaps).</p>
+<p><strong>Target:</strong> 1 from <code>R − onset</code> to <code>R + 300 ms</code>, ignored for <code>dc</code> before that, 0 elsewhere. <strong>Loss:</strong> weighted MSE on the EMA readout (positive weight 3, early ×2). PLIF τ capped at 80 ms so nothing integrates for minutes.</p>
+<p><strong>Anti-shortcut set:</strong> density normalisation to 80–500 cells/frame, a foreign "bed" layer under 70 % of streams, polarity swap, flip / shift / zoom, time stretch, random clip boundaries, noise and hot pixels.</p>
+<p><strong>Evaluation per held-out fold:</strong> 60 s negative stream per source (FA/min with 1 s refractory), a 60 s noise-only drift stream, and each held-out positive after 3 s of held-out negatives (detection within −800…+300 ms). Four folds, 800 steps, all at θ = 0.95:</p>
+</div>
+<div class="tw"><table>
+<tr><th>Config</th><th class="n">throw</th><th class="n">feint</th><th class="n">DailyDVS throws</th><th class="n">latency</th><th class="n">FA/min own idle / mb / dd / dvsg</th></tr>
+<tr><td>e1_base</td><td class="n">0.61</td><td class="n">0.68</td><td class="n">0.01</td><td class="n">−430 ms</td><td class="n">11 / 6.8 / 1.5 / 0</td></tr>
+<tr><td>e1_noaug</td><td class="n">0.60</td><td class="n">0.68</td><td class="n">0.00</td><td class="n">−445 ms</td><td class="n">4.8 / 3.0 / 0 / 0</td></tr>
+<tr><td>e1_ddpos (old DailyDVS throws as positives)</td><td class="n">0.29</td><td class="n">0.44</td><td class="n">0.28</td><td class="n">−320 ms</td><td class="n">5 / 2.8 / 16 / 0</td></tr>
+<tr><td>e1_onset500</td><td class="n">0.69</td><td class="n">0.71</td><td class="n">0.02</td><td class="n">−470 ms</td><td class="n">14 / 7 / 1.3 / 0</td></tr>
+</table></div>
+<div class="prose">
+<p><strong>Conclusions then:</strong></p>
+<ul>
+<li>Early detection works (about −450 ms).</li>
+<li>False alarms on our own idle and on motion_buddy are the blocker.</li>
+<li>The net learned "a throw in Noah's setup": DailyDVS throws were almost never detected, and adding them as positives hurt.</li>
+<li>The countermeasures did not pay off.</li>
+<li>The drift test was clean.</li>
+</ul>
+<p>The last conclusion, <em>"our throws need to be told apart from the dataset throws"</em>, is the one section 7 tested and found to be a preprocessing artefact.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="extpos">7. <span class="tag this">Today</span> <span class="tag cur">Current goal</span> External positives that look like our GenX320</h2>
+<div class="prose">
+<p>Code: <code>training/early/extpos/</code>, with its own README. A100: <code>~/extpos/</code>.</p>
+<p><strong>Principle:</strong> every external clip (positive, negative or ambiguous) goes through exactly the same steps, so preprocessing cannot become a label cue. All targets are <em>sampled per clip</em> from our own 181 throw motions (<code>own_profile.json</code>). Everything is measured on the board grid, because that is all the network sees.</p>
+
+<h3>7.1 Label policy (<code>labels.py</code>)</h3>
+</div>
+<div class="tw"><table>
+<tr><th>Source</th><th>pos (throw motion)</th><th>neg</th><th>amb (never negative)</th></tr>
+<tr><td>DailyDVS</td><td>147 throwing ball, 37 throw things, 187 pitch</td><td>punch, wave hands, point, rotate arm, stretch, surrender, salute, bounce ball; yawn, hands in pockets, cross arms, phone, nod, shake head, check time, walk, touch nose, stand up</td><td>badminton swing, hit people with things, throw hats in the air, throw rubbish, bounce volleyball</td></tr>
+<tr><td>HMDB51</td><td>throw</td><td>wave, punch, clap, walk, stand, turn, pick, shake hands, kick ball, kick, jump, run, brush hair, drink, talk, smoke, push, climb stairs</td><td>catch, shoot ball, swing baseball, golf, hit, fencing, sword, sword exercise, draw sword</td></tr>
+</table></div>
+<div class="prose">
+<p>Why amb exists: a feint is a positive for us, and an overhand swing without release (a badminton smash) <em>is</em> a feint by that definition. The throw-detector branch and iteration 1 used these swings as negatives, which contradicts the feint positives.</p>
+
+<h3>7.2 Fetching</h3>
+<ul>
+<li><strong>DailyDVS</strong> (<code>fetch_dailydvs.py</code>): reads the 91 GB zip's central directory with HTTP range requests on the HF mirror <code>Charlieqaq/DailyDVS-200</code> and fetches only the selected members as <em>raw</em> events (no crop, no anchor). 3,114 recordings, about 10 GB, about 15 min on the A100; 32 lost to HTTP 429 rate limits. Recordings with <code>Move = 1</code> (camera moving) are skipped, which leaves 2,063.</li>
+<li><strong>HMDB51</strong> (<code>fetch_hmdb.py</code>): HF mirror <code>divm/hmdb51</code>, one mp4 per clip, 4,122 clips / 516 MB for the selected classes. The tags (camera motion, view, body, quality, number of people) go into the manifest; the CV group is the source video. On the A100 the download hit rate limits, so the laptop copy was uploaded instead.</li>
+</ul>
+
+<h3>7.3 Video to events with v2e (<code>v2e_convert.py</code>)</h3>
+<ul>
+<li><strong>Simulator:</strong> v2e 1.8.5 (<code>pip install v2e</code>, needs Python 3.14). SuperSloMo frame interpolation (checkpoint <code>SuperSloMo39.ckpt</code>, auto-downloaded) plus the v2e DVS pixel model. Per clip: threshold 0.15–0.25 (±10 % ON/OFF), mismatch σ 0.02–0.05, photoreceptor cutoff 0.25–0.9 × f<sub>out</sub>/2π (keeps the IIR stable), refractory 0.1–1 ms, no leak or shot noise.</li>
+<li><strong>Camera motion:</strong> LK feature tracking + RANSAC similarity fit; reject if background p90 > 0.5 px/frame. Calibrated on the HMDB tags: keeps 72 % of "static" and 10 % of "moving" clips. Phase correlation and border-change tests rejected everything and were dropped.</li>
+<li><strong>Crop and window:</strong> square crop of the full frame height around the motion (no padding). Window from motion-energy peak −1.1 s to +0.8 s, including a 0.2 s pre-roll for the pixel model.</li>
+<li><strong>Cost:</strong> SuperSloMo takes about 500 s per clip on the laptop CPU and about 3.3 s per clip on the A100 (6 parallel). <code>--interp dis</code> (OpenCV DIS optical flow) is a CPU fallback at about 2.5 s per clip.</li>
+<li><strong>Yield:</strong> 46 of 102 throw videos are usable (46 camera moves, 10 slow-motion or too short). 82 negative clips from 15 per class.</li>
+</ul>
+
+<h3>7.4 Sensor matching (<code>match.py</code>), in this order</h3>
+<ol>
+<li><strong>Foreign noise.</strong> Background-activity filter (≥ 2 other events within ±1 px, ±3 ms bins), then cells with fewer than 2 active neighbours (3×3, ±1 frame) are removed. Without this, DVXplorer noise drew the source field of view as a visible rectangle.</li>
+<li><strong>Actor mask.</strong> Activity map smoothed 7×7 cells, above 8 % of its maximum, largest component, grown by 2 cells. Only the actor is taken from foreign data. Positives with less than 75 % of their activity on one actor are dropped (distant or diffuse recordings: 546 → 366 DailyDVS positive clips).</li>
+<li><strong>Anchor.</strong> Event-rate peak (20 ms bins, 3-tap smoothing) becomes release = 700 ms in a 1.2 s clip, the same rule as our labels. Negatives are anchored the same way (their busiest moment), plus one random window per negative (<code>--neg-random</code>).</li>
+<li><strong>Geometry.</strong> Motion height (5–95 % of active cells, −500…+300 ms) scaled to a sampled own value ×U(0.85, 1.15), clamp 0.3–2.5. Centre moved to a sampled own centre ±6/±3 cells. Sub-pixel jitter when enlarging. Source frame edges inside the image are faded out over 12 % of the source size. A first version that moved cut edges to the bottom border shifted everything down (cy 51 vs. our 41) and was replaced.</li>
+<li><strong>Polarity.</strong> ON share of cells moved to a sampled own value by raising the dominant polarity's threshold (bisection). DVXplorer is ON-heavy: 0.55 against our 0.48. Doing this before the density step mattered: in the other order density undershot by 25 %.</li>
+<li><strong>Density.</strong> Active cells per frame in the swing window matched to sampled own ×U(0.85, 1.2) by a per-pixel threshold increase: keep every k-th event of a pixel and polarity, fractional k, random phase, bisection. This thins weak edges first; random dropout would leave speckle.</li>
+<li><strong>Noise.</strong> Our sensor's per-cell noise map (from the 92 empty-scene idle clips, including hot cells, mean 0.4 cells/frame) is added with gain exp(N(0.7, 0.5)).</li>
+<li><strong>Video only:</strong> <code>--time-jitter-us 33333</code> (uniform, one frame period).</li>
+</ol>
+<p>Outputs: <code>.bin</code> clips in our format plus <code>labels.csv</code> in our schema, with src, role, cls, group (person / video), variant, all parameters and stats. <code>to_bank.py</code> writes the early_cv bank, with amb clips in a separate <code>*_amb.npz</code>. DailyDVS: 3 variants per positive, 1 + 1 random per negative.</p>
+
+<h3>7.5 Shortcut probe results (<code>probe.py</code>)</h3>
+<p>Logistic regression (Newton, L2, class-balanced), 5-fold CV grouped by person / video / session, balanced accuracy where 0.5 = indistinguishable. Three feature sets:</p>
+<ul>
+<li><em>sensor</em>: noise floor, isolated cells, ON share, edge run length, lag-1/3 autocorrelation, empty frames</li>
+<li><em>level</em>: density, p90, peakiness, extent, centre, touched area</li>
+<li><em>map</em>: 8×8 occupancy</li>
+</ul>
+</div>
+<div class="tw"><table>
+<tr><th>Question</th><th>Features</th><th class="n">DailyDVS naive (old importer)</th><th class="n">DailyDVS matched (full)</th><th class="n">HMDB matched</th></tr>
+<tr><td rowspan="2">external positives vs. our positives</td><td>sensor</td><td class="n bad">0.99</td><td class="n">0.60</td><td class="n bad">0.94</td></tr>
+<tr><td>all</td><td class="n bad">0.99</td><td class="n">0.58</td><td class="n bad">0.83</td></tr>
+<tr><td rowspan="3">any external vs. any own clip</td><td>sensor</td><td class="n bad">0.94</td><td class="n good">0.53</td><td class="n">0.79</td></tr>
+<tr><td>all</td><td class="n bad">0.90</td><td class="n good">0.55</td><td class="n">0.73</td></tr>
+<tr><td>8×8 map</td><td class="n">0.56</td><td class="n good">0.48</td><td class="n">0.50</td></tr>
+<tr><td>external pos vs. external neg (same source)</td><td>sensor</td><td class="n">0.61</td><td class="n">0.72</td><td class="n">0.66</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Median (board grid)</th><th class="n">ours</th><th class="n">DailyDVS naive</th><th class="n">DailyDVS matched</th><th class="n">HMDB matched</th></tr>
+<tr><td>active cells / frame, swing window</td><td class="n">90</td><td class="n">320</td><td class="n">83</td><td class="n">97</td></tr>
+<tr><td>noise floor (10th pct cells/frame)</td><td class="n">36</td><td class="n">200</td><td class="n">27</td><td class="n">18</td></tr>
+<tr><td>isolated cells</td><td class="n">0.035</td><td class="n">0.124</td><td class="n">0.030</td><td class="n">0.041</td></tr>
+<tr><td>ON share</td><td class="n">0.48</td><td class="n">0.54</td><td class="n">0.47</td><td class="n">0.52</td></tr>
+<tr><td>motion height / width (cells)</td><td class="n">38 / 16</td><td class="n">60 / 57</td><td class="n">35 / 26</td><td class="n">34 / 29</td></tr>
+<tr><td>30 ms autocorrelation of activity</td><td class="n">0.78</td><td class="n">0.83</td><td class="n">0.84</td><td class="n bad">0.39</td></tr>
+</table></div>
+<div class="prose">
+<ul>
+<li><strong>DailyDVS passes.</strong> What remains is motion content: wider motion, partly lateral views, and quieter idle-type negatives. Within DailyDVS the "sensor" features separate pos from neg at 0.72 because negatives move less; both went through the identical pipeline.</li>
+<li><strong>HMDB fails</strong> on temporal structure. With 30 fps sources, SuperSloMo cannot interpolate fast arms, so events bunch at real frames. Needs ≥ 120 fps sources.</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="train">8. <span class="tag this">Today</span> <span class="tag cur">Current goal</span> Training with the new banks</h2>
+<div class="prose">
+<p><strong>Changes to <code>early_cv.py</code></strong> (backward compatible; the original is kept on the A100 as <code>early_cv.pre_extpos.py</code>):</p>
+<ul>
+<li>sources <code>noah, mb, dd, dvsg, hmdb</code>; missing banks are skipped</li>
+<li><code>--pos-w-src</code>: positive shares per source</li>
+<li><code>--pos-srcs</code>: restrict which sources' positives are trained on</li>
+<li><code>--w-hmdb</code></li>
+</ul>
+<p><code>aggregate_early.py</code> gained <code>--fa-src noah</code>, which picks the threshold on our own idle stream only (the deployment criterion).</p>
+<p><strong>Setup:</strong></p>
+<ul>
+<li><strong>2-fold CV</strong> (as asked, for speed), fold seed 0. Fold 0 holds out d01, 170441, 201703 and 215305 (91 clips, the hard ones); fold 1 holds out 195808, 200001, 200828, 201452 and 201622 (90 clips). The idle take is split into two contiguous halves.</li>
+<li>External sources are split by person or user.</li>
+<li>800 steps, batch 16, 3 s streams, onset 500 ms, dc 200 ms, post 300 ms.</li>
+<li>Initialised from the DVS-Gesture backbone, one seed.</li>
+<li>Each fold process took 14–22 min with 6 processes sharing the A100 (about 10 GB GPU memory each).</li>
+</ul>
+<p><strong>Banks:</strong></p>
+<ul>
+<li><code>banks/</code> (old): noah + mb + dvsg + old dd = 6,176 clips.</li>
+<li><code>banks_ext/</code>: noah + mb + dvsg + matched dd = 6,336 clips. HMDB is left out.</li>
+</ul>
+<p><strong>Flag sets:</strong></p>
+<ul>
+<li><code>LIGHT</code> = <code>--p-bed 0.3 --dnorm 0 --thin-min 0.6 --noise 3e-4 --hot 1</code></li>
+<li><code>FA</code> = <code>--pos-w 1.5 --w-noah 0.45 --w-mb 0.2 --w-dd 0.25 --w-dvsg 0.1</code></li>
+</ul>
+</div>
+<div class="tw"><table>
+<tr><th>Run</th><th>Banks</th><th>Positives</th><th>Flags</th></tr>
+<tr><td>x_old</td><td>old</td><td>own only (old DailyDVS throws held out)</td><td>defaults (iteration-1 recipe, = e1_onset500 with 2 folds)</td></tr>
+<tr><td>x_ext</td><td>ext</td><td>own 0.6, dd 0.4</td><td>defaults</td></tr>
+<tr><td>x_ext_light</td><td>ext</td><td>own 0.6, dd 0.4</td><td>LIGHT</td></tr>
+<tr><td>x_own_light</td><td>ext</td><td>own only (<code>--pos-srcs noah</code>)</td><td>LIGHT</td></tr>
+<tr><td>r2_old_fa</td><td>old</td><td>own only</td><td>LIGHT + FA</td></tr>
+<tr><td>r2_ext_fa</td><td>ext</td><td>own 0.6, dd 0.4</td><td>LIGHT + FA</td></tr>
+<tr><td>r3_ext_own80</td><td>ext</td><td>own 0.8, dd 0.2</td><td>LIGHT + FA</td></tr>
+</table></div>
+<div class="prose">
+<p><strong>Results at threshold 0.95</strong>, all held out:</p>
+<ul>
+<li><strong>Detected:</strong> the EMA readout crosses θ within −800…+300 ms of release and did not cross during the 3 s held-out context before it.</li>
+<li><strong>Ordinary:</strong> the 107 clips outside sessions 215305 and d01.</li>
+<li><strong>FA/min:</strong> alarm onsets with 1 s refractory on a 60 s stream of held-out negatives per source, mean of the 2 folds.</li>
+<li><strong>Latency:</strong> median first crossing relative to release, own clips.</li>
+</ul>
+</div>
+<div class="tw"><table>
+<tr><th>Run</th><th class="n">throws /77</th><th class="n">feints /104</th><th class="n">all /181</th><th class="n">ordinary /107</th><th class="n">DailyDVS pos</th><th class="n">latency</th><th class="n">FA own idle</th><th class="n">FA mb</th><th class="n">FA dd</th><th class="n">FA dvsg</th></tr>
+<tr><td>x_old</td><td class="n">49</td><td class="n">69</td><td class="n">118</td><td class="n">98</td><td class="n">4/590</td><td class="n">−470</td><td class="n bad">6.0</td><td class="n bad">8.5</td><td class="n">0.0</td><td class="n">0</td></tr>
+<tr><td>x_ext</td><td class="n">34</td><td class="n">53</td><td class="n">87</td><td class="n">74</td><td class="n">197/366</td><td class="n">−260</td><td class="n">2.0</td><td class="n bad">6.0</td><td class="n bad">17.0</td><td class="n">0</td></tr>
+<tr><td>x_ext_light</td><td class="n">36</td><td class="n">61</td><td class="n">97</td><td class="n">76</td><td class="n">242/366</td><td class="n">−370</td><td class="n">2.0</td><td class="n">1.5</td><td class="n bad">21.5</td><td class="n">0</td></tr>
+<tr><td>x_own_light</td><td class="n">29</td><td class="n">43</td><td class="n">72</td><td class="n">68</td><td class="n">59/366</td><td class="n">−295</td><td class="n">2.0</td><td class="n">3.5</td><td class="n">7.0</td><td class="n">0</td></tr>
+<tr class="best"><td>r2_old_fa</td><td class="n">40</td><td class="n">66</td><td class="n">106</td><td class="n good">98</td><td class="n">1/590</td><td class="n">−390</td><td class="n">2.0</td><td class="n">1.5</td><td class="n">0.0</td><td class="n">0</td></tr>
+<tr class="best"><td>r2_ext_fa</td><td class="n">32</td><td class="n">47</td><td class="n">79</td><td class="n">72</td><td class="n">169/366</td><td class="n">−80</td><td class="n good">0.0</td><td class="n">0.5</td><td class="n">10.5</td><td class="n">0</td></tr>
+<tr><td>r3_ext_own80</td><td class="n">29</td><td class="n">46</td><td class="n">75</td><td class="n">69</td><td class="n">140/366</td><td class="n">−140</td><td class="n">1.5</td><td class="n">0.5</td><td class="n">9.0</td><td class="n">0</td></tr>
+</table></div>
+<div class="prose"><p>The same runs at θ = 0.90 and 0.99 (own counts / FA on own idle):</p></div>
+<div class="tw"><table>
+<tr><th>Run</th><th class="n">θ 0.90: all /181</th><th class="n">ordinary</th><th class="n">FA own</th><th class="n">latency</th><th class="n">θ 0.99: all /181</th><th class="n">ordinary</th><th class="n">FA own</th><th class="n">latency</th></tr>
+<tr><td>x_old</td><td class="n">123</td><td class="n">96</td><td class="n">7.0</td><td class="n">−510</td><td class="n">110</td><td class="n">100</td><td class="n">3.0</td><td class="n">−365</td></tr>
+<tr><td>x_ext</td><td class="n">91</td><td class="n">72</td><td class="n">3.5</td><td class="n">−370</td><td class="n">69</td><td class="n">63</td><td class="n">1.5</td><td class="n">−150</td></tr>
+<tr><td>x_ext_light</td><td class="n">101</td><td class="n">71</td><td class="n">3.0</td><td class="n">−440</td><td class="n">75</td><td class="n">65</td><td class="n">1.5</td><td class="n">−230</td></tr>
+<tr><td>x_own_light</td><td class="n">86</td><td class="n">80</td><td class="n">3.0</td><td class="n">−400</td><td class="n">54</td><td class="n">52</td><td class="n">1.5</td><td class="n">−215</td></tr>
+<tr><td>r2_old_fa</td><td class="n">115</td><td class="n">104</td><td class="n">2.5</td><td class="n">−490</td><td class="n">78</td><td class="n">77</td><td class="n">1.5</td><td class="n">−225</td></tr>
+<tr><td>r2_ext_fa</td><td class="n">88</td><td class="n">74</td><td class="n">1.5</td><td class="n">−235</td><td class="n">43</td><td class="n">41</td><td class="n">0.0</td><td class="n">+110</td></tr>
+<tr><td>r3_ext_own80</td><td class="n">88</td><td class="n">77</td><td class="n">2.0</td><td class="n">−255</td><td class="n">39</td><td class="n">37</td><td class="n">0.5</td><td class="n">+90</td></tr>
+</table></div>
+<div class="prose"><p>Per session at θ = 0.95 (detected / clips):</p></div>
+<div class="tw"><table>
+<tr><th>Run</th><th class="n">d01</th><th class="n">170441</th><th class="n">195808</th><th class="n">200001</th><th class="n">200828</th><th class="n">201452</th><th class="n">201622</th><th class="n">201703</th><th class="n">215305</th></tr>
+<tr><td>x_old</td><td class="n">3/10</td><td class="n">14/15</td><td class="n">10/10</td><td class="n">23/25</td><td class="n">40/46</td><td class="n">5/5</td><td class="n">4/4</td><td class="n">2/2</td><td class="n">17/64</td></tr>
+<tr><td>x_ext_light</td><td class="n">2/10</td><td class="n">13/15</td><td class="n">6/10</td><td class="n">17/25</td><td class="n">30/46</td><td class="n">5/5</td><td class="n">3/4</td><td class="n">2/2</td><td class="n">19/64</td></tr>
+<tr><td>x_own_light</td><td class="n">0/10</td><td class="n">12/15</td><td class="n">5/10</td><td class="n">18/25</td><td class="n">28/46</td><td class="n">1/5</td><td class="n">2/4</td><td class="n">2/2</td><td class="n">4/64</td></tr>
+<tr><td>r2_old_fa</td><td class="n">2/10</td><td class="n">13/15</td><td class="n">9/10</td><td class="n">24/25</td><td class="n">42/46</td><td class="n">4/5</td><td class="n">4/4</td><td class="n">2/2</td><td class="n">6/64</td></tr>
+<tr><td>r2_ext_fa</td><td class="n">1/10</td><td class="n">12/15</td><td class="n">7/10</td><td class="n">17/25</td><td class="n">27/46</td><td class="n">4/5</td><td class="n">3/4</td><td class="n">2/2</td><td class="n">6/64</td></tr>
+<tr><td>r3_ext_own80</td><td class="n">1/10</td><td class="n">13/15</td><td class="n">5/10</td><td class="n">19/25</td><td class="n">26/46</td><td class="n">2/5</td><td class="n">2/4</td><td class="n">2/2</td><td class="n">5/64</td></tr>
+</table></div>
+<div class="prose">
+<h3>8.1 What the runs show</h3>
+<ul>
+<li><strong>Sensor matching makes external throws learnable</strong> (x_old 4/590 → x_ext_light 242/366). Even without training on them, x_own_light detects 59–92 of 366. Our throws and DailyDVS throws share the motion once the sensor differences are gone.</li>
+<li><strong>With the matched data the task gets honestly harder.</strong> Final training loss 0.07–0.10 against 0.015–0.05 on the old banks. "Foreign look = negative" no longer works as a shortcut.</li>
+<li><strong>Light augmentation beats the full anti-shortcut set</strong> (x_ext_light vs. x_ext), as iteration 1 suggested. Once preprocessing matches the sensors, the heavy noise and density normalisation only hurt.</li>
+<li><strong>The FA recipe is the most effective lever for our idle stream.</strong> x_old 6.0 → r2_old_fa 2.0 FA/min at θ 0.95 with the same ordinary-session recall (98/107), and motion_buddy 8.5 → 1.5.</li>
+<li><strong>Old vs. ext banks under the FA recipe.</strong>
+  <ul>
+  <li>Old: better recall in ordinary sessions (98 vs. 72 of 107) and earlier (−390 vs. −80 ms).</li>
+  <li>Ext: quieter on the busy half of our idle (fold 0, with people walking). r2_ext_fa has 0 alarms from θ 0.95; r2_old_fa stays at 3/min even at θ 0.99.</li>
+  <li>Ext also generalises to other people's throws.</li>
+  </ul>
+</li>
+<li><strong>Every model fires on DailyDVS arm actions</strong> once it has seen DailyDVS throws (punch, wave, point: 9–21 FA/min). These matched clips are honest hard negatives, so this is a real weakness that the old banks hid behind the domain shortcut.</li>
+<li><strong>Sessions 215305 and d01 are near 0 for every model.</strong> The labels there (key presses, invisible ball) and the recording conditions are the likely cause, not the model.</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="models">9. Checkpoints and how to use them</h2>
+<div class="tw"><table>
+<tr><th>File (laptop, untracked)</th><th>A100</th><th>Trained on</th><th>Use</th></tr>
+<tr class="best"><td><code>training/early/models/final_old_fa.pt</code></td><td><code>~/early/runs_ext_final/final_old_fa/final.pt</code></td><td>all clips, old banks, recipe r2_old_fa, 800 steps</td><td><strong>Primary for labelling our next recordings.</strong> θ 0.95 (CV: 59 % of all, 92 % of ordinary sessions, 2 FA/min, −390 ms). θ 0.90 if recall matters more.</td></tr>
+<tr><td><code>training/early/models/final_ext_fa.pt</code></td><td><code>~/early/runs_ext_final/final_ext_fa/final.pt</code></td><td>all clips, ext banks, recipe r2_ext_fa</td><td>Busy scenes or new people. θ 0.90 (49 %, 1.5 FA/min) or 0.95 (44 %, 0 FA in 2 min).</td></tr>
+<tr><td><code>training/early/results_ext/runs_ext/&lt;run&gt;/model_f{0,1}.pt</code></td><td><code>~/early/runs_ext/</code></td><td>CV fold models of every run</td><td>Evaluation without retraining</td></tr>
+</table></div>
+<div class="prose">
+<p>Each checkpoint stores <code>{"model": state_dict, "config": {arch, num_classes: 1, readout: "ema", alpha: 0.85, frame_ms: 10, input: [2,80,80], taus, args}}</code>. Load with <code>ThrowSNN(1, arch=arch_from_config(cfg))</code> from <code>training/robust/snn_model.py</code>, feed binary <code>[B,T,2,80,80]</code>, and apply <code>ema_readout(spikes, 0.85)</code> from <code>early_cv.py</code>. Alarm at θ with 1 s refractory.</p>
+<p>The thresholds come from the CV fold models; the final models were not evaluated themselves. Before trusting a threshold, replay one of the new recordings through the model (as <code>throwdet/replay.py</code> does) and check it.</p>
+<p>The exported board files (<code>weights.txt</code>, <code>model.json</code>, <code>config.yaml</code>) still have to be made: QAT, fuse, export.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="repro">10. Reproduce everything</h2>
+<div class="prose">
+<h3>10.1 Where things are</h3>
+<ul>
+<li><strong>Laptop (nothing committed):</strong>
+  <ul>
+  <li><code>training/early/extpos/</code>: the external-data pipeline, with its README</li>
+  <li><code>training/early/early_cv.py</code> and <code>aggregate_early.py</code>: modified</li>
+  <li><code>training/early/results_ext/</code>: all CV results and logs, probe JSONs</li>
+  <li><code>training/early/models/</code>: the final checkpoints</li>
+  <li><code>data/extpos/</code>: local samples (gitignored)</li>
+  </ul>
+</li>
+<li><strong>A100</strong> (<code>team-1-user@38.128.233.249</code>, key <code>~/.ssh/hackathon_a100</code>):
+  <ul>
+  <li><code>~/extpos/</code>: <code>code/</code>, <code>v2eenv/</code> (Python 3.14 + v2e), raw data, <code>clips_dd/</code>, <code>clips_hmdb/</code>, <code>banks/</code>, <code>own_clips/</code>, logs</li>
+  <li><code>~/early/</code>: <code>banks/</code>, <code>banks_ext/</code> (symlinks), <code>runs_ext/</code>, <code>runs_ext_final/</code>, <code>launch.sh</code>, <code>cmp_ext.py</code>, <code>counts_ext.py</code></li>
+  </ul>
+</li>
+<li><strong>Earlier work:</strong> <code>training/robust/</code> and <code>pretrain/</code> on Tim; <code>tools/</code>, <code>dataset/</code> and <code>training/</code> on data-pipeline; <code>throwdet/</code> on throw-detector; the own dataset on noah.</li>
+</ul>
+
+<h3>10.2 External data (A100, about 50 min total)</h3>
+</div>
+<pre><code># environment for the simulator and fetchers (v2e 1.8.5 needs Python 3.14)
+uv venv --python 3.14 ~/extpos/v2eenv && uv pip install --python ~/extpos/v2eenv/bin/python v2e scikit-image
+cd ~/extpos/code                       # = training/early/extpos
+PY=~/extpos/v2eenv/bin/python
+$PY profile_own.py ~/extpos/own_clips ~/extpos/own_profile.json        # own_clips = _dataset01_01020304
+# DailyDVS
+$PY fetch_dailydvs.py index --out ~/extpos/dailydvs
+$PY fetch_dailydvs.py fetch --out ~/extpos/dailydvs --workers 16      # rerun with --workers 4 to pick up 429 failures
+$PY match.py --src dd --raw ~/extpos/dailydvs --profile ~/extpos/own_profile.json \
+    --out ~/extpos/clips_dd --variants-pos 3 --neg-random --jobs 24
+$PY to_bank.py ~/extpos/clips_dd ~/extpos/banks/dd.npz --src dd
+# HMDB51 (optional; fails the probe)
+$PY fetch_hmdb.py --out ~/extpos/hmdb
+$PY v2e_convert.py --manifest ~/extpos/hmdb/manifest.csv --videos ~/extpos/hmdb/videos --out ~/extpos/hmdb/raw \
+    --interp slomo --roles pos --jobs 6 --threads 3
+$PY v2e_convert.py ... --roles neg,amb --limit-per-class 15 --skip-bad --jobs 6 --threads 3
+$PY match.py --src hmdb --raw ~/extpos/hmdb/raw --profile ~/extpos/own_profile.json --out ~/extpos/clips_hmdb \
+    --variants-pos 4 --time-jitter-us 33333 --jobs 12
+$PY to_bank.py ~/extpos/clips_hmdb ~/extpos/banks/hmdb.npz --src hmdb
+# shortcut probe
+$PY probe.py --own ~/extpos/own_clips --ext ~/extpos/clips_dd --ext ~/extpos/clips_hmdb --out ~/extpos/probe.json
+# or all of it: OUT=~/extpos OWN=~/extpos/own_clips bash run_cloud.sh</code></pre>
+<div class="prose"><h3>10.3 Banks and training (A100, about 20 min per round with 6 processes)</h3></div>
+<pre><code>cd ~/early
+# old banks (previous session): prep_sources.py noah|mb|dd|dvsg ... -> banks/{noah,mb,dd,dvsg}.npz
+mkdir -p banks_ext && cd banks_ext && ln -s ../banks/noah.npz ../banks/mb.npz ../banks/dvsg.npz . \
+  && ln -s ~/extpos/banks/dd.npz . && cd ..
+# launch.sh &lt;banks&gt; &lt;tag&gt; &lt;args&gt;: one process per fold, --folds 2 --steps 800 --onset 500 --dc 200
+LIGHT="--p-bed 0.3 --dnorm 0 --thin-min 0.6 --noise 3e-4 --hot 1"
+FA="--pos-w 1.5 --w-noah 0.45 --w-mb 0.2 --w-dd 0.25 --w-dvsg 0.1"
+bash launch.sh banks     x_old
+bash launch.sh banks_ext x_ext        --pos-w-src noah:0.6,dd:0.4
+bash launch.sh banks_ext x_ext_light  --pos-w-src noah:0.6,dd:0.4 $LIGHT
+bash launch.sh banks_ext x_own_light  --pos-srcs noah $LIGHT
+bash launch.sh banks     r2_old_fa    $LIGHT $FA
+bash launch.sh banks_ext r2_ext_fa    --pos-w-src noah:0.6,dd:0.4 $LIGHT $FA
+bash launch.sh banks_ext r3_ext_own80 --pos-w-src noah:0.8,dd:0.2 $LIGHT $FA
+python aggregate_early.py runs_ext --fa-src noah --fa 2 --groups     # threshold on own idle
+python3 counts_ext.py                                                # counts per run at 0.90 / 0.95 / 0.99
+# final models on all data
+python early_cv.py --banks banks     --out runs_ext_final --tag final_old_fa --final --steps 800 --onset 500 --dc 200 $LIGHT $FA
+python early_cv.py --banks banks_ext --out runs_ext_final --tag final_ext_fa --final --steps 800 --onset 500 --dc 200 \
+    --pos-w-src noah:0.6,dd:0.4 $LIGHT $FA</code></pre>
+<div class="prose">
+<p>Python for training: <code>~/snn_pretrain/.venv/bin/python</code>, with <code>OMP_NUM_THREADS=2</code> per process. Two things to watch: 6 processes plus v2e exceeded 80 GB and two folds hit OOM during evaluation, and <code>pkill -f &lt;pattern&gt;</code> also kills your own SSH command if it contains the pattern.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="limits">11. Caveats</h2>
+<div class="prose">
+<div class="box warn">
+<ul>
+<li><strong>Small evaluation.</strong> Own-idle FA comes from one 60 s stream per fold (2 min in total), so 1 alarm = 0.5 FA/min in the table. "0.0" means no alarm in 2 minutes.</li>
+<li><strong>One seed, 2 folds.</strong> The throw-detector branch saw up to 0.25 recall variance between seeds of one config. Differences under about 10 clips (5 %) between runs are noise.</li>
+<li><strong>Threshold grid stops at 0.99.</strong> The old recipe could not reach low FA within it; a hold-frames rule or a finer grid might.</li>
+<li><strong>Final models are not evaluated themselves.</strong> Thresholds transfer from CV only approximately (the throw-detector branch saw this too).</li>
+<li><strong>The own idle data is one recording.</strong> Its two halves differ a lot: people walking in fold 0, quiet in fold 1. All own FA numbers depend on it.</li>
+<li><strong>"Ordinary sessions" is a post-hoc split</strong> (215305 and d01 removed). It is reported because the overall number is dominated by 215305 (64 of 181 clips).</li>
+<li><strong>The DailyDVS motion distribution is not ours.</strong> 47 % of positives are lateral views and motion is wider. Probe 0.58 means "hard to tell", not "identical".</li>
+<li><strong>Nothing is committed.</strong> The data-pipeline worktree has other people's uncommitted changes, which were not touched.</li>
+</ul>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="next">12. Open questions and next moves</h2>
+<div class="prose">
+<p>For discussion with the team, in my order of expected value:</p>
+<ol>
+<li><strong>Record more of our own data in the demo setup.</strong> This is the one thing every line of work points to. Interleave throws and feints, label from a phone video or a spoken note (not key presses), and record 5–10 min of idle with people walking, waving and reaching. Session 215305-style labels cap every model at about 10–28 %.</li>
+<li><strong>Make own hard negatives explicit.</strong> Our idle has walking people but no arm actions. The DailyDVS results show arm actions (punch, wave, point) are what fires a throw detector once the domain shortcut is gone. A minute of us waving and pointing would test this on our camera.</li>
+<li><strong>Use the matched external data for pretraining, not mixing.</strong> Train throw-motion detection on matched DailyDVS (pos + neg, 47 people), then fine-tune on our data with the r2 recipe. That keeps the generality (it detects other people's throws) without splitting capacity during the final training.</li>
+<li><strong>Better readout before more training.</strong> Add the throw-detector branch's hold-frames rule and thresholds above 0.99 to <code>evaluate()</code>, then compare r2_old_fa and r2_ext_fa at exactly equal FA.</li>
+<li><strong>Multi-seed runs of the two r2 recipes</strong> (3 seeds × 2 folds, about 25 min on the A100) before trusting the ranking.</li>
+<li><strong>Bring the throw-detector models onto the same evaluation.</strong> Run their A–E models through <code>evaluate()</code>, or the r2 models through their <code>replay.py</code> on the 01 stream, so both lines of work are comparable.</li>
+<li><strong>Video sources only with high frame rate.</strong> Phone slow motion (≥ 120 fps) through <code>v2e_convert.py --up 4</code>, or Kinetics clips at 60 fps. 30 fps video stays recognisable after interpolation.</li>
+<li><strong>Earlier goal (real vs. fake), if revisited:</strong> make the ball visible (larger, brighter, calm background) and record interleaved takes. The one-feature "ball leaves the top rows" probe (0.91 across sessions) beat every network.</li>
+</ol>
+</div>
+
+<p class="meta" style="margin-top:40px">Sources: this session's runs (A100 ~/early/runs_ext, ~/extpos), training/early/README.md (iteration 1), training/robust/README.md and results/*.json, pretrain/README.md and runs_throw/*.json, data-pipeline dataset/README.md, noah dataset/_dataset01_01020304/README.md, throw-detector throwdet/README.md.</p>
+</main>
+
+</body></html>

@@ -9,11 +9,14 @@ and this program only listens.
     hold L1+R1 for 1 s  (or key o)   -> the dog lies down (sport StandDown), sport mode is released,
                                         supervisor.py starts dodge_controller.py, the dog stands up
   OUR mode (dodge_controller.py under supervisor.py)
-    D-pad Left  or A  (key l or d)   -> SAFE dodge: ~2.5 s trotting in place, then ~30 cm to the LEFT
+    D-pad Left  or A  (key l or d)   -> STILL dodge: the dog stands still until the press, then kicks
+                                        at once, ~30 cm to the LEFT in ~0.5 s, brakes, stands still
+                                        (--trot-start: the previous SAFE dodge, ~2.5 s trotting first)
     D-pad Right       (key r)        -> the same to the RIGHT (mirror image, validated in sim)
     Y        (or key s)              -> the dog lies down, sport mode comes back
     L2+B                             -> E-STOP: controller killed, damping (supervisor.py)
-    Ctrl+C                           -> same as L2+B
+    SPACE or Ctrl+C (laptop)         -> same as L2+B. Repeated presses do nothing more (damping stays on
+                                        until s / Y)
   after an E-STOP / trip (dog damped on the floor)
     Y        (or key s)              -> stop damping (after >= 2 s) and give the dog back to sport mode
   after sport mode is back the dog lies on the floor: stand it up with the remote as usual.
@@ -175,6 +178,7 @@ class Modes:
         self.sup: subprocess.Popen | None = None
         self.t_entered = 0.0
         self.n_sigint = 0
+        self.estop_sent = False
 
     # ---- sport side ------------------------------------------------------------------------
     def check_mode(self) -> str | None:
@@ -224,10 +228,13 @@ class Modes:
             cmd_sup.append("--no-remote-check")
         if self.a.gentle:
             cmd_ctl.append("--gentle")
+        if self.a.trot_start:
+            cmd_ctl.append("--trot-start")
         # own session: a terminal Ctrl+C reaches only this program, which forwards it deliberately
         self.sup = subprocess.Popen(cmd_sup + ["--"] + cmd_ctl, stdin=subprocess.PIPE, text=True,
                                     start_new_session=True)
         self.mode, self.t_entered = "ours", time.monotonic()
+        self.estop_sent = False
         log("OUR mode: dog stands up. D-pad Left / A = dodge left, D-pad Right = dodge right, "
             "Y = back to sport mode, L2+B = E-STOP")
 
@@ -351,9 +358,14 @@ class Modes:
                 self.sup = None
                 self.hand_back()
                 continue
-            if new_sigint:
-                log("Ctrl+C -> E-STOP via the supervisor (Y / s afterwards gives the dog back to sport mode)")
-                self.signal_sup(signal.SIGINT)
+            if new_sigint or " " in typed:
+                if not self.estop_sent:
+                    self.estop_sent = True
+                    log(f"{'Ctrl+C' if new_sigint else 'SPACE'} -> E-STOP via the supervisor "
+                        "(s / Y afterwards gives the dog back to sport mode)")
+                    self.signal_sup(signal.SIGINT)
+                else:                                  # a 2nd SIGINT would make the supervisor stop damping
+                    log("E-STOP already active (damping). s / Y gives the dog back to sport mode.")
             if now - self.t_entered < IGNORE_AFTER_ENTER_S:
                 continue
             if want_left or "d" in typed or "l" in typed:
@@ -371,7 +383,9 @@ def main() -> None:
     ap.add_argument("--iface", default="auto", help="interface wired to the Go2 (default: the one with 192.168.123.x)")
     ap.add_argument("--domain", type=int, default=0)
     ap.add_argument("--sport-mode", default="normal", help="mode to restore if it cannot be read from the robot")
-    ap.add_argument("--gentle", action="store_true", help="SAFE dodge at 0.6x sideways speed (first tries)")
+    ap.add_argument("--gentle", action="store_true", help="dodge with scaled-down sideways speed (first tries)")
+    ap.add_argument("--trot-start", action="store_true",
+                    help="previous SAFE dodge (~2 s trotting in place before the kick; drifted on the real dog)")
     ap.add_argument("--no-remote-check", action="store_true", help="passed to supervisor.py (see remote_probe.py)")
     a = ap.parse_args()
     iface = find_iface() if a.iface == "auto" else a.iface

@@ -1,0 +1,5 @@
+# iteration 1: does the anti-shortcut recipe matter, do extra-camera positives help, earlier target
+e1_base     --steps 800
+e1_noaug    --steps 800 --dnorm 0 --p-bed 0 --pswap 0 --noise 2e-4 --hot 0
+e1_ddpos    --steps 800 --dd-pos
+e1_onset500 --steps 800 --onset 500 --dc 200

@@ -1,0 +1,8 @@
+F1 (search best) x1          fails  10/200  t30 med 0.56/0.52 p90 0.58/0.56 worst 0.64/0.68  load 1.03  tilt 19  y_end 0.35-0.60  x 0.13 yaw 24  ['far', 'torque_frac', 'yaw']
+F1 (search best) x0.9        fails   6/200  t30 med 0.59/0.54 p90 0.64/0.60 worst 0.74/0.70  load 1.01  tilt 18  y_end 0.31-0.54  x 0.10 yaw 21  ['short', 'torque_frac', 'yaw']
+F2 x1                        fails  11/200  t30 med 0.58/0.56 p90 0.62/0.60 worst 0.72/0.68  load 1.03  tilt 17  y_end 0.37-0.64  x 0.13 yaw 25  ['far', 'torque_frac', 'yaw']
+F2 x0.9                      fails   1/200  t30 med 0.62/0.60 p90 0.66/0.64 worst 0.78/0.70  load 0.98  tilt 16  y_end 0.34-0.57  x 0.11 yaw 22  ['yaw']
+SAFE params, phase 0.5 x1    fails   6/200  t30 med 0.62/0.60 p90 0.68/0.64 worst 0.92/0.72  load 0.98  tilt 16  y_end 0.33-0.55  x 0.11 yaw 22  ['short', 'yaw']
+SAFE params, phase 0.0 x1    fails  48/200  t30 med 0.62/0.60 p90 0.64/0.62 worst 0.70/0.66  load 1.02  tilt 14  y_end 0.37-0.53  x 0.11 yaw 25  ['fell', 'torque_frac', 'yaw']
+low-load (search #10) x1     fails   3/200  t30 med 0.58/0.62 p90 0.60/0.68 worst 0.66/0.76  load 0.99  tilt 17  y_end 0.34-0.58  x 0.13 yaw 16  ['end_travel', 'fell']
+-> C:\Users\diffr\code\AI-Robotics-Berlin\sim\results\still_screen.json

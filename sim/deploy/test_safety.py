@@ -193,6 +193,33 @@ def test_safe_dodge_never_trips(n: int = 20) -> None:
           f"worst {worst_tilt:.2f} rad = {math.degrees(worst_tilt):.0f} deg")
 
 
+def test_still_dodge_never_trips(n: int = 20) -> None:
+    print(f"false alarms: STILL dodge, {n} harsh-physics runs per side (stand + dodge), every command and tilt sample")
+    import still_dodge as sd
+    pol = g.WTWPolicy()
+    rng = np.random.default_rng(7)
+    worst = {"tilt": 0.0, "n": 0}
+    problems: list[str] = []
+
+    def on_cmd(sim, qt, kp, kd):
+        if sim.phys.target_margin > 0:        # what goes on the wire: the deploy clamp is applied first
+            qt = np.clip(qt, sim.q_lo + sim.phys.target_margin, sim.q_hi - sim.phys.target_margin)
+        p = S.check_command(np.asarray(qt)[POLICY_TO_SDK], [0] * 12, [kp] * 12, [kd] * 12, [0] * 12, [1] * 12)
+        worst["n"] += 1
+        if p:
+            problems.append(p)
+        worst["tilt"] = max(worst["tilt"], *map(abs, S.tilt_from_quat(sim.d.qpos[3:7])))
+
+    for side in ("left", "right"):
+        d = sd.load(side=side)
+        for _ in range(n):
+            sd.run(d, g.harsh_physics(rng), pol, on_cmd=on_cmd)
+    check("no STILL-dodge command rejected", not problems, f"{worst['n']} commands, {len(problems)} rejected "
+          + (problems[0] if problems else ""))
+    check("tilt stays below the 0.8 rad trip", worst["tilt"] < 0.8 * 0.75,
+          f"worst {worst['tilt']:.2f} rad = {math.degrees(worst['tilt']):.0f} deg")
+
+
 if __name__ == "__main__":
     torch.set_num_threads(1)
     test_remote()
@@ -200,5 +227,6 @@ if __name__ == "__main__":
     test_tilt()
     test_supervisor_logic()
     test_safe_dodge_never_trips()
+    test_still_dodge_never_trips()
     print(f"\n{'ALL PASSED' if not FAILS else f'{len(FAILS)} FAILED: ' + ', '.join(FAILS)}")
     sys.exit(1 if FAILS else 0)

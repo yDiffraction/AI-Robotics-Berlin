@@ -10,7 +10,7 @@
 | our mode | **D-pad ←** or **A** | `l` or `d` | SAFE dodge **left**: 0.5 s stand, ~2 s trotting in place, then ~30 cm (up to ~0.5 m) left, brake, stand. Refused unless the dog has stood still ≥ 1 s. The dodge is the one validated in sim (`../results/safe_dodge.json`), joint targets clamped 0.1 rad inside the range as validated |
 | our mode | **D-pad →** | `r` | the same dodge to the **right**: its mirror image (all sideways commands negated), validated separately (`../results/safe_dodge_right.json`, below) |
 | our mode | **Y** | `s` | dog lies down, our code exits, sport mode comes back (the dog stays lying: stand it up with the remote as usual) |
-| our mode | **L2+B** | Ctrl+C | **E-STOP**: controller killed, damping (supervisor) |
+| our mode | **L2+B** | **Space** or Ctrl+C | **E-STOP**: controller killed, damping (supervisor). Repeated presses do nothing more; damping stays on until `s` / Y |
 | after an E-STOP | **Y** | `s` | damping stops (after ≥ 2 s), sport mode comes back |
 | sport mode | | `q` / Ctrl+C | quit |
 

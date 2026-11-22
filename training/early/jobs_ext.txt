@@ -1,0 +1,13 @@
+# Runs of 22 Nov 2026 (extpos data), all via: bash launch_ext.sh <banks> <tag> <args>
+# banks      = old banks: noah, mb, dvsg + dd from the old DailyDVS importer (throws there are "heldpos": never trained)
+# banks_ext  = noah, mb, dvsg (same files) + dd.npz from extpos/match.py (366 pos / 2,906 neg, same pipeline)
+# LIGHT = --p-bed 0.3 --dnorm 0 --thin-min 0.6 --noise 3e-4 --hot 1
+# FA    = --pos-w 1.5 --w-noah 0.45 --w-mb 0.2 --w-dd 0.25 --w-dvsg 0.1
+x_old         banks      (defaults = e1_onset500 recipe)
+x_ext         banks_ext  --pos-w-src noah:0.6,dd:0.4
+x_ext_light   banks_ext  --pos-w-src noah:0.6,dd:0.4 LIGHT
+x_own_light   banks_ext  --pos-srcs noah LIGHT
+r2_old_fa     banks      LIGHT FA
+r2_ext_fa     banks_ext  --pos-w-src noah:0.6,dd:0.4 LIGHT FA
+r3_ext_own80  banks_ext  --pos-w-src noah:0.8,dd:0.2 LIGHT FA
+# final models (all data, --final instead of --folds/--only-fold): final_ext_fa = r2_ext_fa, final_old_fa = r2_old_fa
