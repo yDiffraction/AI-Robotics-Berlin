@@ -5,16 +5,19 @@ A real throw and a feint both count as throw motion (the arm swings like a throw
 else does not: standing, walking, waving, an empty scene. Deciding whether the ball is actually
 released is a separate task (see `pretrain/` and `~/robust` on the Tim branch).
 
-Status: three candidate models are ready for the live test, see **Models to test live**.
+Status: four candidate models are ready for the live test, see **Models to test live**.
 Experiments ran overnight on 21/22 Nov; the results table is below.
 
 ## Models to test live
 
 `throwdet/models/<name>/`; the same files are on the A100 in `~/throwdet/deliver/<name>/`. All three
-use the board format, trained on all our data (all recordings, synth, video, DailyDVS).
+use the board format. A, B and C are trained on all our data (all recordings, synth, video, DailyDVS); D on three quarters of our recordings plus all external data.
+
+**Test in this order: D, A, B, C.**
 
 | name | training config (CV run) | why test it |
 |---|---|---|
+| `D_e10_fold3` | e10, the CV model of fold 3: trained on recordings 02, 03, 04 (incl. the setup closest to the demo), idle chunks 0 to 2 and all external data | the only candidate whose threshold was picked out of fold for exactly this network; on the unseen 01 recordings it detected 23 of 25 swings with 4 other alarms in 55 s (plot below) |
 | `A_neg` | e10: own negatives weighted up (own:0 = 30 %) | best out-of-fold result (AUC 0.92, 79 % recall at 2 false alarms/min), but a second seed of the same config reached only 0.87 |
 | `B_neg_shiftx` | e18: as A, plus horizontal shift ±25 px | the same recipe, more robust when the thrower stands near the image edge; AUC 0.93 on the held-out recording `04` |
 | `C_all` | e01: balanced domains, DailyDVS thinned to our density | the first, plain recipe; second-best CV (AUC 0.90) |
