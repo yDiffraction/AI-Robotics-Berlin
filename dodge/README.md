@@ -71,6 +71,8 @@ python3 dodge/snn_bridge.py --no-ros --ros-args -p camera:=replay:rec.bin -p snn
 
 `ros2 launch dodge/robot.launch.py --show-args` lists all arguments (camera local|ssh|listen|replay:<file>, snn
 fpga|mock, spleat_host, theta, auto, web_port, color, dry_run, speed, return_speed, odom, ...). The readout of the
-current FPGA model (Tim's v3 early throw-motion detector, channel 0, y = 0.85 y + 0.15 spike, theta 0.85,
-provisional) is in `model/readout.json`. `web/?demo=1` shows the UI with synthetic data, no backend needed.
-Tests: `python3 dodge/tests/test_snn_bridge.py`.
+deployed FPGA model is in `model/readout.json`: `perception/model_hitl_step1` (readout mode `throwdet`:
+y = 0.8 y + 0.2 (spike[1] − spike[0]) per 10 ms frame, alarm when y > 0.6 for 3 frames in a row, then 1 s
+refractory). The earlier v3 readout (ema on channel 0, theta 0.85) is kept as `tests/readout_v3.json`.
+`web/?demo=1` shows the UI with synthetic data, no backend needed.
+Tests: `python3 dodge/tests/test_snn_bridge.py` (27 tests).

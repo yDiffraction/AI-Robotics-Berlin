@@ -1,0 +1,4 @@
+trial,time,kind,thrower_distance_m,auto_dodge,detected,dodge_started_before_ball,alarm_minus_release_ms,notes
+1,,throw,,on,,,,
+2,,feint,,on,,,,
+3,,walk_through,,on,,,,

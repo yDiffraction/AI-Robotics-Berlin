@@ -1,4 +1,22 @@
-# Early throw-motion detector on the Kria (GOAL B)
+# Perception: the throw-motion SNN on the Kria
+
+**What runs in the demo:** [`model_hitl_step1/`](model_hitl_step1/README.md). It is one human-in-the-loop RL step
+([`hitl/`](hitl/README.md), `live_loop.py --loss pg`) on top of Laurenz's throwdet model
+[`model_d_neg11/`](model_d_neg11/RESULTS.txt), which in turn comes from [`training/throwdet`](../training/throwdet/README.md).
+It was picked in a live A/B evaluation against its start model and later RL snapshots. Its readout is in
+`dodge/model/readout.json`.
+
+| folder | role |
+|---|---|
+| `model_hitl_step1/` | **deployed** (board `weights.txt` md5 `d8fd7d025d666acb48ee31b4bc558fc7`) |
+| `model_d_neg11/` | start model of the RL loop (throwdet `D_person01_neg_11out`) |
+| `model/`, `model_v3/` | earlier early-detection exports (v2b, v3), described below; `model_v3/` is also the export template |
+| `hitl/` | the human-in-the-loop loop: label live, train on the GPU, load onto the board |
+| `viewer.py` | live viewer: camera → board → readout |
+
+The rest of this file describes the earlier v2b/v3 exports.
+
+## Early throw-motion detector on the Kria (GOAL B, v2b and v3)
 
 Two exports of the early-detection SNN, both in the board firmware's format (arch v1, 11 outputs, 78501 values,
 weights/bias Q2.6, potentials/threshold/leak Q4.12) and both with the same readout rule, only θ differs:
